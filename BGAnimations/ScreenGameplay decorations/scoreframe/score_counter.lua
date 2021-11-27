@@ -29,12 +29,13 @@ return Def.ActorFrame{
 		OnCommand=THEME:GetMetric(loading_screen,metrics_prefix.."OnCommand"),
 		OffCommand=THEME:GetMetric(loading_screen,metrics_prefix.."OffCommand"),
 		AfterStatsEngineMessageCommand=function(s,p)
-			if not p.Player == player then return end
-			local value = p.Data[data_source].Score 
-			if value~=last_value then 
-				s:targetnumber(value) 
-			last_value = value 
-			end 
+			if p.Player == player then
+				local value = p.Data[data_source].Score 
+				if value~=last_value then 
+					s:targetnumber(value) 
+				last_value = value 
+				end 
+			end
 		end
 	},
 	Def.BitmapText{

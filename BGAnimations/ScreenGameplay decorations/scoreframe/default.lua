@@ -54,7 +54,7 @@ t[#t+1] = Def.ActorFrame{
 };
 
 --ScoreFrames
-for _, pn in pairs(GAMESTATE:GetEnabledPlayers()) do
+for _,pn in ipairs(GAMESTATE:GetEnabledPlayers()) do
 	local profileID = GetProfileIDForPlayer(ToEnumShortString(pn))
 	local pPrefs = ProfilePrefs.Read(profileID)
 t[#t+1] = Def.ActorFrame{
@@ -68,7 +68,7 @@ t[#t+1] = Def.ActorFrame{
 			Texture=ex.."frame",
 			InitCommand=function(s) s:rotationy(pn==PLAYER_1 and 0 or 180):halign(0) end,
 		};
-		loadfile(THEME:GetPathB("ScreenGameplay","decorations/scoreframe/score_counter"))(pn);
+		loadfile(THEME:GetPathB("ScreenGameplay","decorations/scoreframe/score_counter"))(pn,pPrefs);
 	};
 	Def.ActorFrame{
 		InitCommand=function(s)
