@@ -27,7 +27,7 @@
 * Overwrite all files.
 
 ## Extras ##
-* SNCharacters and DancerVideos can be downloaded from here: https://drive.google.com/drive/folders/1dUpl4qsrITAqAd3bDk-pcxpG7fmnu5Gc
+* Updated SNCharacters and DancerVideos can be downloaded from here: https://drive.google.com/drive/folders/1dUpl4qsrITAqAd3bDk-pcxpG7fmnu5Gc
 
 =========================================================================
 
