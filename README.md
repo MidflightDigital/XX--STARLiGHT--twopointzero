@@ -1,10 +1,12 @@
-![alt text][logo]
+<h1 align="center">
+  <br>
+  <img src="https://github.com/MidflightDigital/XX--STARLiGHT--twopointzero/blob/main/xxlogo.png?raw=true" alt="STARLiGHT Logo" width="600">
+  <br>
+  XX -STARLiGHT- twopointzero
+  <br>
+</h1>
 
-[logo]:https://bitbucket.org/inorizushi/xx-starlight-download/raw/dbf6e4dcc4c6f03820068d2a65a83f7549bc99c7/xxlogo.png "DDR XX -starlight- logo"
-
-# README #
-
-This repository acts as the download source for the DDR XX -starlight- theme for StepMania 5.0.12 and 5.1-new
+<h4 align="center">Repository for the XX -STARLiGHT- twopointzero theme by Midflight Digital.</h4>
 
 ## Where's the Download? ##
 
@@ -15,7 +17,8 @@ This repository acts as the download source for the DDR XX -starlight- theme for
 ### Theme Package: ###
 * Delete any previous installations of the theme before updating!
 * Open the XX -starlight- .zip
-* Extract the folders in the XX -starlight- folder into the root of your StepMania directory
+* Extract the folders in the XX -starlight- folder into the root of your StepMania directory (Please note that the SNCharacters Folder must be placed in the Appearance Folder     when using Project Outfox)
+
 * Extract the "group.ini" and "jacket.png" files into your DDR XX song pack folder.
 
 ### Hotfix: ###
@@ -40,7 +43,9 @@ You are allowed to borrow code/metrics if you ask the Metrics/Lua team or if cre
 
 You are allowed to edit this theme for PERSONAL USE ONLY.
 
-You are allowed to run this theme in a public setting only with permission from the DDR XX team.
+This theme is NOT to be used with Pay Mode enabled. Free Play is accepted however.
+
+You are allowed to run this theme in a public setting only with permission from the Midflight Digital team.
 
 
 =========================================================================
@@ -62,6 +67,8 @@ silverdragon754
 
 Inorizushi
 
+xRGTMx/Drisello
+
 black4ever
 
 KowalskiPenguin10897
@@ -70,9 +77,9 @@ DDRDAIKENKAI
 
 riskofsoundingnerdy/leeium
 
-HypnoticMarten77
+Nicolas/Capacity
 
-Haley Halcyon
+HypnoticMarten77
 
 ## CODING + PROGRAMMING ##
 
@@ -80,7 +87,7 @@ Inorizushi
 
 tertu
 
-### Special Thanks to: ###
+### With Special Thanks to: ###
 
 dbk2
 
@@ -96,6 +103,10 @@ Kyzentun
 
 ZTS
 
+The Rave It Out Team
+
+Team Outfox
+
 The StepMania Team
 
 Konami
@@ -109,6 +120,8 @@ NewbStepper/hnkul702
 DDRDAIKENKAI
 
 RIME
+
+xRGTMx
 
 KexMiX
 
@@ -133,10 +146,8 @@ xRGTMx/Drisello
 
 Quickman
 
-Sigrev2
+DJ Vortivask
 
 djVERTICAI
-
-Haley Halcyon
 
 
