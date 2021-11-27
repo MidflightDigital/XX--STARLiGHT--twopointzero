@@ -27,9 +27,7 @@
 * Overwrite all files.
 
 ## Extras ##
-* DancerVideos can be downloaded from here (1GB): https://mega.nz/#!7tpW2JxT!183BKx6l6W-ppFqKngFfQtwXVtaU17wU_-MDkWUVJFI
-* Place the video files inside the "DancerVideos" folder of each corresponding character's folder inside "SNCharacters"
-
+* SNCharacters and DancerVideos can be downloaded from here: https://drive.google.com/drive/folders/1dUpl4qsrITAqAd3bDk-pcxpG7fmnu5Gc
 
 =========================================================================
 
