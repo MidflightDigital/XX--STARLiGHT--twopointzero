@@ -10,7 +10,7 @@
 
 ## Where's the Download? ##
 
-* Click on the [Downloads](https://bitbucket.org/inorizushi/xx-starlight-download/downloads/) options in the sidebar and download the latest dated .zip file.
+* Click on the [Releases](https://github.com/MidflightDigital/XX--STARLiGHT--twopointzero/releases) options in the sidebar and download the latest dated release.
 
 ## Installation Instructions ##
 
