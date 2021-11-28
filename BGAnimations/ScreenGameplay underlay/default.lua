@@ -3,7 +3,7 @@ local style = GAMESTATE:GetCurrentStyle():GetStyleType()
 local st = GAMESTATE:GetCurrentStyle():GetStepsType();
 local show_cutins = GAMESTATE:GetCurrentSong() and (not GAMESTATE:GetCurrentSong():HasBGChanges()) or true;
 
-local filter_color= color("1,1,1,0")
+local filter_color= color("0,0,0,0")
 local screen = Var"LoadingScreen"
 
 local x_table = {
