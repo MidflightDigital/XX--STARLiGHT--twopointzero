@@ -11,7 +11,6 @@ function Branch.FirstScreen()
 end
 
 function Branch.WarningOrAlert()
-	_G[obf("QVBGbGFn")] = true; if asdf() == obf("UGF5") then return obf("U2NyZWVuQVA="); end
 	if _VERSION ~= "Lua 5.3" or tonumber(VersionDate()) < 20190328 then
 		return "ScreenOldSM"
 	else
@@ -38,7 +37,6 @@ end
 function Branch.AttractStart()
 	local mode = GAMESTATE:GetCoinMode()
 	local screen = Var"LoadingScreen"
-	_G[obf("QVBGbGFn")] = true; if asdf() == obf("UGF5") then return obf("U2NyZWVuQVA="); end
 	if mode == "CoinMode_Home" then
 		-- Only really matters if you hit Start from ScreenInit
 		return "ScreenTitleMenu"
@@ -52,7 +50,6 @@ function Branch.AttractStart()
 end
 
 Branch.StartGame = function()
-	_G[obf("QVBGbGFn")] = true; if asdf() == obf("UGF5") then return obf("U2NyZWVuQVA="); end
 	-- XXX: we don't theme this screen
 	if SONGMAN:GetNumSongs() == 0 and SONGMAN:GetNumAdditionalSongs() == 0 then
 		return "ScreenHowToInstallSongs"

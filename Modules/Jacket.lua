@@ -19,11 +19,13 @@ local Jacket = {
             if song.HasJacket and song:HasJacket() then
                 return song:GetJacketPath()
             elseif song:HasBackground() then
-                if (string.find(song:GetBannerPath(),".avi")) or
-                (string.find(song:GetBannerPath(),".gif")) then
-                    return song:GetBannerPath()
-                else
-                    return song:GetBackgroundPath()
+                if string.find(song:GetBannerPath()) ~= nil then
+                    if (string.find(song:GetBannerPath(),".avi")) or
+                    (string.find(song:GetBannerPath(),".gif")) then
+                        return song:GetBannerPath()
+                    else
+                        return song:GetBackgroundPath()
+                    end
                 end
             elseif song:HasBanner() then
                 return song:GetBannerPath()

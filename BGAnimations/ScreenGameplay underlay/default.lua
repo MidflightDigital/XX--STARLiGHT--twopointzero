@@ -3,7 +3,7 @@ local style = GAMESTATE:GetCurrentStyle():GetStyleType()
 local st = GAMESTATE:GetCurrentStyle():GetStepsType();
 local show_cutins = GAMESTATE:GetCurrentSong() and (not GAMESTATE:GetCurrentSong():HasBGChanges()) or true;
 
-local filter_color= color("0,0,0,0")
+local filter_color= color("1,1,1,0")
 local screen = Var"LoadingScreen"
 
 local x_table = {
@@ -70,7 +70,7 @@ for _, pn in ipairs(GAMESTATE:GetEnabledPlayers()) do
     width = style:GetWidth(pn)*(NumColumns/3.7)
   end
   local X
-  if PREFSMAN:GetPreference("Center1Player") then
+  if PREFSMAN:GetPreference("Center1Player") and GAMESTATE:GetNumPlayersEnabled() == 1 then
     X = _screen.cx
   else
     X = ScreenGameplay_X(pn)
@@ -114,8 +114,8 @@ for _, pn in ipairs(GAMESTATE:GetEnabledPlayers()) do
 
   t[#t+1] = Def.ActorFrame{
     InitCommand=function(s)
-      s:y(_screen.cy):SetUpdateFunction(FilterUpdate)
-      s:x(X)
+      s:SetUpdateFunction(FilterUpdate)
+      s:xy(X,_screen.cy)
     end,
     Def.Quad{
       InitCommand=function(s)

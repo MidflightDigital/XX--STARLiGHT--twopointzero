@@ -19,10 +19,7 @@ if highlightedNoteSkin ~= "EXIT" then
             };
         };
     else
-        t[#t+1] = Def.ActorFrame{
-            NOTESKIN:LoadActorForNoteSkin(GameDirections[curgame],"Tap Note",highlightedNoteSkin or "default");
-            
-        }
+        t[#t+1] = NOTESKIN:LoadActorForNoteSkin(GameDirections[curgame],"Tap Note",highlightedNoteSkin or "default");
     end
 else
     t[#t+1] = Def.BitmapText{
