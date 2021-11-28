@@ -136,7 +136,7 @@ return Def.ActorFrame{
 		end,
 		OffCommand=function(s) s:stopeffect():sleep(0.2):diffusealpha(0) end,
 		Def.Sprite{
-			Texture="hl.png",
+			Texture="HL.png",
 			InitCommand=function(s) s:diffuseramp():effectcolor1(color("1,1,1,0.2"))
 				:effectcolor2(color("1,1,1,1")):effectclock('beatnooffset')
 			end,
