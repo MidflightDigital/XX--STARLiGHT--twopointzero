@@ -1,4 +1,4 @@
-local function obf(st)
+--[[local function obf(st)
     return base64decode(st)
 end
 
@@ -8,7 +8,7 @@ end
 
 function Branch.FirstScreen()
 	return "ScreenMDSplash"
-end
+end]]
 
 function Branch.WarningOrAlert()
 	if _VERSION ~= "Lua 5.3" or tonumber(VersionDate()) < 20190328 then
