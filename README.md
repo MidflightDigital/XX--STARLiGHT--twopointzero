@@ -7,6 +7,9 @@
 </h1>
 
 <h4 align="center">Repository for the XX -STARLiGHT- twopointzero theme by Midflight Digital.</h4>
+<h1 align="center">
+  <img src="https://inori.s-ul.eu/CbXKGk7K.png" alt="Screenshots" width="600">
+</h1>
 
 ## Where's the Download? ##
 
@@ -134,7 +137,7 @@ funkyzukin/MiDO
 
 riskofsoundingnerdy/leeium
 
-aiden9030/saiiko2
+aidan9030/saiiko2
 
 Dreamland200/tykoneko
 
