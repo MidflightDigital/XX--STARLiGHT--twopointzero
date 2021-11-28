@@ -41,25 +41,26 @@ for _, pn in ipairs(GAMESTATE:GetEnabledPlayers()) do
   end
   if show_cutins and st ~= 'StepsType_Dance_Double' and ThemePrefs.Get("FlashyCombo") == true and song:HasBGChanges() == false then
   --use ipairs here because i think it expects P1 is loaded before P2
-
-  t[#t+1] = Def.ActorFrame{
-    loadfile(THEME:GetPathB("ScreenGameplay","underlay/Cutin.lua"))(pn)..{
-      OnCommand=function(s) s:setsize(450,SCREEN_HEIGHT) end,
-      InitCommand=function(self)
-        self:CenterY()
-        if style == "StyleType_TwoPlayersTwoSides" or GAMESTATE:GetPlayMode() == 'PlayMode_Rave' then
-  		  	self:x(SCREEN_CENTER_X);
-        else
-          if PREFSMAN:GetPreference("Center1Player") then
-            self:x(pn==PLAYER_1 and _screen.cx-600 or _screen.cx+600)
+  if #Characters.GetAllCharacterNames() ~= 0 then
+    t[#t+1] = Def.ActorFrame{
+      loadfile(THEME:GetPathB("ScreenGameplay","underlay/Cutin.lua"))(pn)..{
+        OnCommand=function(s) s:setsize(450,SCREEN_HEIGHT) end,
+        InitCommand=function(self)
+          self:CenterY()
+          if style == "StyleType_TwoPlayersTwoSides" or GAMESTATE:GetPlayMode() == 'PlayMode_Rave' then
+  		    	self:x(SCREEN_CENTER_X);
           else
-            self:x(x_table[pn][1]);
-          end
+            if PREFSMAN:GetPreference("Center1Player") then
+              self:x(pn==PLAYER_1 and _screen.cx-600 or _screen.cx+600)
+            else
+              self:x(x_table[pn][1]);
+            end
+         end;
         end;
-      end;
+      };
     };
-  };
-  end;
+  end
+end;
 
   local style=GAMESTATE:GetCurrentStyle(pn)
   local alf=getenv("ScreenFilter"..ToEnumShortString(pn)) or 0

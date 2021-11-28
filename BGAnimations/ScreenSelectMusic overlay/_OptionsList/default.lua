@@ -46,7 +46,7 @@ table.insert(fixedNS,"EXIT")
 
 local fixedChar = Characters.GetAllCharacterNames()
 table.insert(fixedChar, 1, "OFF")
-if #fixedChar ~= 0 then
+if #fixedChar > 0 then
     table.insert(fixedChar, 2, "RANDOM")
 end
 table.insert(fixedChar, "EXIT")
