@@ -4,11 +4,11 @@ end
 
 local function asdf()
     return _G[obf('VG9FbnVtU2hvcnRTdHJpbmc=')](_G[obf('R0FNRVNUQVRF')][obf('R2V0Q29pbk1vZGU=')](_G[obf('R0FNRVNUQVRF')]))
-end
+end]]
 
 function Branch.FirstScreen()
 	return "ScreenMDSplash"
-end]]
+end
 
 function Branch.WarningOrAlert()
 	if _VERSION ~= "Lua 5.3" or tonumber(VersionDate()) < 20190328 then
