@@ -334,3 +334,25 @@ function CalculateReadBPM(song)
 
     return math.min(read_bpm, mMod_high_cap)
 end
+
+function HasThumbnail(song)
+	local dir = FILEMAN:GetDirListing( song:GetSongDir(), false, true )
+	
+	for i=1, #dir do
+		if string.find(dir[i], "-tn") then
+			return true
+		end
+	end
+	
+	return false
+end
+
+function GetThumbnailPath(song)
+	local dir = FILEMAN:GetDirListing( song:GetSongDir(), false, true )
+	
+	for i=1, #dir do
+		if string.find(dir[i], "-tn") then
+			return dir[i]
+		end
+	end
+end

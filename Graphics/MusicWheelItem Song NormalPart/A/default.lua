@@ -2,31 +2,31 @@ local SongAttributes = LoadModule "SongAttributes.lua"
 local top
 local jk = LoadModule"Jacket.lua"
 
-function arrangeXPosition(myself, index)
-	if index then
-		--[[local xVal = index%3
-		myself:x((xVal-1)*250+(math.floor((index+3)/3)-1))]]
-		if index%3==0 then
-			myself:x(-250)
-		elseif index%3==1 then
-			myself:x(0)
-		elseif index%3==2 then
-			myself:x(250)
+local function GetExpandedSectionIndex()
+	local mWheel = SCREENMAN:GetTopScreen():GetMusicWheel()
+	local curSections = mWheel:GetCurrentSections()
+	
+	for i=1, #curSections do
+		if curSections[i] == GAMESTATE:GetExpandedSectionName() then
+			return i-1
 		end
-	end;
+	end
 end
 
---technika2/3 style hack ;)
-function arrangeYPosition(myself, index)
-	if index then
-		if index%3==0 then
-			myself:y(80);
-		elseif index%3==1 then
-			myself:y(0);
-		elseif index%3==2 then
-			myself:y(-80);
-		end;
-	end;
+local function SetXYPosition(self, param)
+	if GetExpandedSectionIndex() then
+		local index = param.Index-GetExpandedSectionIndex()-1
+		
+		if index%3 == 0 then
+			self:x(-250):y(80)
+		elseif index%3 == 1 then
+			self:x(0):y(0)
+		else
+			self:x(250):y(-80)
+		end
+		
+		self:addy(-30)
+	end
 end
 
 local clearglow = Def.ActorFrame{};
@@ -48,9 +48,9 @@ return Def.ActorFrame{
 	end;
 	SetMessageCommand=function(self,params)
 		local index = params.Index
-		arrangeXPosition(self,index);
-		arrangeYPosition(self,index);
+		
 		if index ~= nil then
+			SetXYPosition(self, params)
 			self:zoom(params.HasFocus and 1.2 or 1);
 			self:name(tostring(params.Index))
 		end
@@ -99,7 +99,13 @@ return Def.ActorFrame{
 		SetMessageCommand=function(s,p)
 			local song = p.Song
 			if song then
-				s:Load(jk.GetSongGraphicPath(song))
+				if HasThumbnail(song) then
+					--- rescaling down 256x256 and above yields bad image quality, unreadable and slows down screen performance so we use thumbnail images instead
+					--- thumbnail image uses "-tn" filename affix; preferably 104x104 (for 720p) or 156x156 (for 1080p) dimension
+					s:Load(GetThumbnailPath(song))
+				else
+					s:Load(jk.GetSongGraphicPath(song))
+				end
 			end
 			s:setsize(140,140):xy(2,-1)
 		end
@@ -136,7 +142,7 @@ return Def.ActorFrame{
 		end,
 		OffCommand=function(s) s:stopeffect():sleep(0.2):diffusealpha(0) end,
 		Def.Sprite{
-			Texture="hl.png",
+			Texture="HL.png",
 			InitCommand=function(s) s:diffuseramp():effectcolor1(color("1,1,1,0.2"))
 				:effectcolor2(color("1,1,1,1")):effectclock('beatnooffset')
 			end,
