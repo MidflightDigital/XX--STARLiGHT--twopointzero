@@ -1,17 +1,15 @@
 local t = Def.ActorFrame{};
 
-local px
-
-if PREFSMAN:GetPreference("Center1Player") and GAMESTATE:GetNumPlayersEnabled() == 1 then
-	px = _screen.cx
-else
-	px = ScreenGameplay_X(pn)
-end
-
 for _, pn in ipairs(GAMESTATE:GetEnabledPlayers()) do
 	t[#t+1] = Def.ActorFrame{
 		loadfile(THEME:GetPathB("ScreenGameplay","overlay/FullCombo"))(pn)..{
-			InitCommand=function(s) s:x(px) end,
+			InitCommand=function(s)
+				if PREFSMAN:GetPreference("Center1Player") and GAMESTATE:GetNumPlayersEnabled() == 1 then
+					s:x(_screen.cx)
+				else
+					s:x(ScreenGameplay_X(pn))
+				end
+			end,
 		};
 		Def.Sprite{
 			Texture="GO"..ToEnumShortString(pn);
