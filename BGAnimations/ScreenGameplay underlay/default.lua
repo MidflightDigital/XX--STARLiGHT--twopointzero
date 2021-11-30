@@ -137,6 +137,12 @@ end;
           s:linear(0.1)
           if param.HealthState == "HealthState_Danger" then
             s:diffuse(color("#ff1b00"))
+          elseif param.HealthState == "HealthState_Dead" then
+            if GAMESTATE:GetPlayerState(pn):GetPlayerOptions('ModsLevel_Current'):FailSetting() == 'FailType_Immediate' then
+              s:diffusealpha(0)
+            else
+              s:diffuse(filter_color)
+            end
           elseif param.HealthState == "HealthState_Alive" then
             s:diffuse(filter_color)
           else

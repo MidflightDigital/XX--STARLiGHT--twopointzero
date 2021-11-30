@@ -1,22 +1,37 @@
 local t = Def.ActorFrame{};
 
+local px
+
+if PREFSMAN:GetPreference("Center1Player") and GAMESTATE:GetNumPlayersEnabled() == 1 then
+	px = _screen.cx
+else
+	px = ScreenGameplay_X(pn)
+end
+
 for _, pn in ipairs(GAMESTATE:GetEnabledPlayers()) do
 	t[#t+1] = Def.ActorFrame{
 		loadfile(THEME:GetPathB("ScreenGameplay","overlay/FullCombo"))(pn)..{
-			InitCommand=function(s) s:x(ScreenGameplay_X(pn)) end,
+			InitCommand=function(s) s:x(px) end,
 		};
 		Def.Sprite{
 			Texture="GO"..ToEnumShortString(pn);
-			InitCommand=function(s) s:visible(false):x(ScreenGameplay_X(pn)) end,
+			InitCommand=function(s) s:visible(false) end,
 			BobCommand=function(s) s:bob():effectmagnitude(0,10,0):effectperiod(1) end,
 			HealthStateChangedMessageCommand= function(self, param)
 				if param.PlayerNumber == pn then
 					if param.HealthState == 'HealthState_Dead' then 
 						if GAMESTATE:GetPlayerState(pn):GetPlayerOptions('ModsLevel_Current'):FailSetting() == 'FailType_Immediate' then
+							--can't use px due to the placement switching we have going on.
+							if PREFSMAN:GetPreference("Center1Player") and GAMESTATE:GetNumPlayersEnabled() == 1 then
+								self:x(_screen.cx)
+							else
+								self:x(ScreenGameplay_X(pn))
+							end
 							self:y(_screen.cy)
 						else
 							--Move the GameOver graphic onto the life bar so it doesn't block the notefield
-							self:y(SCREEN_TOP+60):zoom(0.75)
+							--Since it now displays over the lifebar, we force it to always use ScreenGameplay_X so it displays over the lifebar no matter what.
+							self:xy(ScreenGameplay_X(pn),SCREEN_TOP+60):zoom(0.75)
 						end
 						self:visible(true):rotationz(360):linear(0.2):rotationz(0):queuecommand("Bob")
 					end
