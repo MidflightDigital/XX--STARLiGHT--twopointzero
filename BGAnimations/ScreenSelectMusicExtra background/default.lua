@@ -1,5 +1,5 @@
 return Def.ActorFrame{
-    LoadActor("EXMovie.avi")..{
+    LoadActor("EXMovie.mp4")..{
         InitCommand=function(s) s:Center() end,
     };
 }

@@ -348,7 +348,7 @@ if GAMESTATE:HasEarnedExtraStage() then
       OffCommand=function(s) s:linear(0.3):diffusealpha(1):sleep(3) end,
     };
     Def.Sprite{
-      Texture="movie.avi",
+      Texture="movie.mp4",
       InitCommand=function(s) s:Center():blend(Blend.Add):pause():diffusealpha(0) end,
       OffCommand=function(s) s:play():linear(0.3):diffusealpha(1) end,
     }
