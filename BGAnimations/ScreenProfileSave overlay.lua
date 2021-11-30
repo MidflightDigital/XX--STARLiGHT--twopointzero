@@ -19,7 +19,7 @@ local x = Def.ActorFrame{
 		end
 	};
 	Def.Sprite{
-		Texture=THEME:GetPathB("ScreenEvaluation","decorations/movie.avi"),
+		Texture=THEME:GetPathB("ScreenEvaluation","decorations/movie.mp4"),
 		InitCommand=function(s) s:Center():visible(false):pause() end,
 		BeginCommand=function(s)
 			if GAMESTATE:IsAnExtraStage() and SCREENMAN:GetTopScreen():GetNextScreenName() == "ScreenSelectMusicExtra" then

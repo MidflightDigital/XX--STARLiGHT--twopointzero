@@ -8,8 +8,7 @@ return Def.ActorFrame{
 	};
 	-- Failed
 	loadfile(THEME:GetPathB("","_StageDoors"))()..{
-		InitCommand=function(s) s:diffuse(color("1,0.2,0.2,0")) end,
-		OnCommand=function(s) s:queuecommand("SetOff"):queuecommand("SetNone"):diffusealpha(1):queuecommand("AnOn"):sleep(4):queuecommand("AnOff"):sleep(2) end,
+		OnCommand=function(s) s:queuecommand("SetOff"):queuecommand("SetFail"):diffusealpha(1):queuecommand("AnOn"):sleep(4):queuecommand("AnOff"):sleep(2) end,
 	};
 	Def.Sprite{
 		Texture="failed",
