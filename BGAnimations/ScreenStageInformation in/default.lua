@@ -9,6 +9,7 @@ local t = Def.ActorFrame {
 	LoadActor(THEME:GetPathB("","_StageDoors"))..{
 		OnCommand=function(s) s:playcommand("AnOn") end,
 	};
+	LoadActor("SoundStage");
 };
 t[#t+1] = Def.ActorFrame {
 	InitCommand=function(self)
