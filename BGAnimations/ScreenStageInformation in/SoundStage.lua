@@ -13,20 +13,7 @@ else
 	sStage = sStage;
 end;
 
-local rename = {
-	Stage_1st	= "stage 1",
-	Stage_2nd	= "stage 2",
-	Stage_3rd	= "stage 3",
-	Stage_4th	= "stage 4",
-	Stage_5th	= "stage 5",
-	Stage_6th	= "stage 6",
-	Stage_Final = "stage final",
-	Stage_Extra = "stage extra1",
-	Stage_Extra1 = "stage extra1",
-	Stage_Extra2 = "stage extra2",
-}
-
-local asound = rename[sStage]
+local asound = "stage "..GAMESTATE:GetCurrentStageIndex() + 1
 
 if GAMESTATE:GetCurrentStageIndex() >= 5 then
 	asound = "stage event"
