@@ -6,10 +6,19 @@ t[#t+1] = Def.ActorFrame{
 	OnCommand=function(s) s:draworder(-10):addy(SCREEN_HEIGHT):sleep(0.2):decelerate(0.2):addy(-SCREEN_HEIGHT) end,
 	OffCommand=function(s) s:accelerate(0.2):addy(-SCREEN_HEIGHT) end,
 	Def.ActorFrame{
-		InitCommand=function(s) s:xy(_screen.cx-417,SCREEN_CENTER_Y-90) end,
-		Def.Sprite{
-			Texture="DialogBox",
-		};
+		InitCommand=function(s) s:xy(_screen.cx,SCREEN_CENTER_Y-90) end,
+		Def.ActorFrame{
+			InitCommand=function(s) s:diffusealpha(0.5) end,
+			Def.Quad{
+				InitCommand=function(s) s:setsize(1280,596):diffuse(Alpha(Color.White,0.25)) end,
+			},
+			Def.Quad{
+				InitCommand=function(s) s:setsize(1276,592):diffuse(Color.Black) end,
+			},
+			Def.Quad{
+				InitCommand=function(s) s:setsize(1276,592):diffuse(Color.Black) end,
+			},
+		},
 		Def.Sprite{
 			Texture="DialogTop",
 			InitCommand=function(s) s:y(-320) end,
@@ -22,8 +31,8 @@ t[#t+1] = Def.ActorFrame{
 		end,
 	};
 	Def.Sprite{
-		Texture="expbox",
-		InitCommand=function(s) s:xy(_screen.cx-417,SCREEN_BOTTOM-180) end,
+		Texture="explain.png",
+		InitCommand=function(s) s:xy(_screen.cx,SCREEN_BOTTOM-180) end,
 	};
 };
 

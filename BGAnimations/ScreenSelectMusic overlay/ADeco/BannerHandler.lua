@@ -128,7 +128,7 @@ return Def.ActorFrame{
   end,
   ShowCommand=function(s)
     if AnimPlayed == false then 
-      s:diffusealpha(0):linear(0.05):diffusealpha(0.75)
+      s:finishtweening():diffusealpha(0):linear(0.05):diffusealpha(0.75)
       :linear(0.1):diffusealpha(0.25):linear(0.1):diffusealpha(1)
       s:queuecommand("UpdateShow")
     end
@@ -136,7 +136,7 @@ return Def.ActorFrame{
   UpdateShowCommand=function(s) AnimPlayed = true end,
   HideCommand=function(s)
     if AnimPlayed == true then
-      s:diffusealpha(1):sleep(0.05):diffusealpha(0):sleep(0.05):diffusealpha(0.5)
+      s:finishtweening():diffusealpha(1):sleep(0.05):diffusealpha(0):sleep(0.05):diffusealpha(0.5)
       :sleep(0.05):diffusealpha(0):sleep(0.05):diffusealpha(0.25):sleep(0.05)
       :linear(0.05):diffusealpha(0)
       s:queuecommand("UpdateHide")

@@ -42,6 +42,9 @@ local t = Def.ActorFrame{
                         if wait ~= 0 then
 						    if curIndex <= 3 then
 						    	curState = "MenuState_"..MenuChoices[curIndex]
+								--[[setenv("photwonchoice",curState)
+								self:RemoveAllChildren()
+								self:AddChildFromPath(THEME:GetPathB("ScreenPHOTwON","overlay/AIO/default.lua"))]]
 						    elseif curIndex == 4 then
 						    	curState = "MenuState_Gameplay";
 						    	SCREENMAN:AddNewScreenToTop("ScreenOptionsTheme","SM_GoToNextScreen")

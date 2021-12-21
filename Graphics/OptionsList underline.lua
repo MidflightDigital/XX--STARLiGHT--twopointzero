@@ -9,7 +9,7 @@ return Def.ActorFrame {
 	Def.Sprite{
 		Texture="_underline",
 		InitCommand=function(s)
-			s:y(10):diffuseshift():effectcolor1(Color.White):effectcolor2(Alpha(Color.White,0.5))
+			s:y(20):diffuseshift():effectcolor1(Color.White):effectcolor2(Alpha(Color.White,0.5))
 		end,
 	};
 };
