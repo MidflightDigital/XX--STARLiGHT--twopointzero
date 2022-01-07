@@ -893,12 +893,18 @@ function MusicRate()
 		OneChoiceForAllPlayers=true,
 		ExportOnChange=true,
 		LoadSelections=function(self,list, pn)
-			if pn == PLAYER_1 or self.NumPlayers == 1 then
-				list[1]= true
-			else
-				list[2]= true
-			end
+			local nearest_i
+			local best_difference = math.huge
 			setenv("NumRate",#list)
+			for i,v2 in ipairs(self.Choices) do
+				local rate = GAMESTATE:GetSongOptionsObject("ModsLevel_Preferred"):MusicRate()
+				local this_diff = math.abs(rate - v2:gsub("(%d+)%%", tonumber) / 100)
+				if this_diff < best_difference then
+					best_difference = this_diff
+					nearest_i = i
+				end
+			end
+			list[nearest_i] = true
 		end,
 		SaveSelections = function(self,list,pn)
 			for i,choice in ipairs(self.Choices) do

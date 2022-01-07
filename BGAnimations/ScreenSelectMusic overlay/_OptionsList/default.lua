@@ -54,7 +54,10 @@ table.insert(fixedChar, "EXIT")
 local NumMini = fornumrange(-100,100,5)
 table.insert(NumMini, "EXIT")
 
-local _CHAR, _NSKIN, _MINI = {},{},{};
+local NumRate = fornumrange(10,200,5)
+table.insert(NumRate,"EXIT")
+
+local _CHAR, _NSKIN, _MINI, _RATE = {},{},{},{};
 for i=1,#fixedChar do
     local CurrentCharacter = fixedChar[i];
     _CHAR[i] = Def.ActorFrame{
@@ -99,6 +102,26 @@ for i=1,#NumMini do
     }
 end;
 
+for i=1,#NumRate do
+    local CurrentRate = NumRate[i];
+    _RATE[i] = Def.ActorFrame{
+        Def.Sprite{
+            Texture="optionIcon",
+            InitCommand=function(s) s:zoom(1.5) end,
+        };
+        Def.BitmapText{
+            Font="_avenirnext lt pro bold 20px",
+            InitCommand=function(s) s:zoom(1.5)
+                if CurrentRate ~= "EXIT" then
+                    s:settext(CurrentRate.."%")
+                else
+                    s:settext("EXIT")
+                end
+            end,
+        };
+    }
+end;
+
 
 
 if THEME:GetMetric("ScreenSelectMusic","UseOptionsList") then
@@ -115,9 +138,8 @@ if THEME:GetMetric("ScreenSelectMusic","UseOptionsList") then
             end
         end
     end
-
+    --I really ought to just make these unified.
     local function CurrentMiniVal(p)
-
         local nearest_i
         local best_difference = math.huge
         for i,v2 in ipairs(stringify(fornumrange(-100,100,5), "%g%%")) do
@@ -130,6 +152,29 @@ if THEME:GetMetric("ScreenSelectMusic","UseOptionsList") then
         end
         return NumMini[nearest_i]
     end
+
+    local function CurrentRateVal(p)
+        local nearest_i
+        local best_difference = math.huge
+        for i,v2 in ipairs(stringify(fornumrange(10,200,5), "%g%%")) do
+            local rate = GAMESTATE:GetSongOptionsObject("ModsLevel_Preferred"):MusicRate()
+            local this_diff = math.abs(rate - v2:gsub("(%d+)%%", tonumber) / 100)
+            if this_diff < best_difference then
+                best_difference = this_diff
+                nearest_i = i
+            end
+        end
+        return NumRate[nearest_i]
+    end
+
+    local function GetRateIndex(Rate)
+        local index={}
+        for k,v in pairs(NumRate) do
+            index[v] = k
+        end
+        return index[Rate]
+    end
+        
 
     local function GetCNSIndex(CNS)
         local index={}
@@ -219,7 +264,7 @@ if THEME:GetMetric("ScreenSelectMusic","UseOptionsList") then
             Def.Actor{
                 AdjustCommand=function(s,p)
                     if p.Player == pn then
-                        if currentOpList == "NoteSkins" or currentOpList == "Characters" or currentOpList == "Mini" then
+                        if currentOpList == "NoteSkins" or currentOpList == "Characters" or currentOpList == "Mini" or currentOpList == "MusicRate" then
                             optionsListActor:stoptweening():diffusealpha(0)
                         else
                             optionsListActor:stoptweening():diffusealpha(1)
@@ -271,11 +316,11 @@ if THEME:GetMetric("ScreenSelectMusic","UseOptionsList") then
                                 else s:settext("")
                                 end
                             end
-                            if currentOpList == "Mini" or currentOpList == "Characters" or currentOpList == "NoteSkins" then
+                            if currentOpList == "Mini" or currentOpList == "Characters" or currentOpList == "NoteSkins" or currentOpList == "MusicRate" then
                                 s:settext(THEME:GetString("OptionExplanations",currentOpList))
                             end
                         end
-                        if currentOpList == "Mini" or currentOpList == "MusicRate" or currentOpList == "Characters" then
+                        if currentOpList == "Mini" or currentOpList == "MusicRate" or currentOpList == "Characters" or currentOpList == "MusicRate" then
                             local curRow
                             if OPLIST_splitAt < OpListMax[currentOpList] then
                                 curRow = math.floor((p.Selection)/2)+1
@@ -299,7 +344,7 @@ if THEME:GetMetric("ScreenSelectMusic","UseOptionsList") then
                             else
                                 optionsListActor:stoptweening():y(SCREEN_CENTER_Y-140) --Reset the positioning
                             end
-                            if params.Menu ~= "SongMenu" and params.Menu ~= "AdvMenu" then
+                            if params.Menu ~= "SongMenu" and params.Menu ~= "AdvMenu" and params.Menu ~= "RemMenu" then
                                 self:settext(THEME:GetString("OptionExplanations",params.Menu))
                             else
                                 --SCREENMAN:SystemMessage(params.Size);
@@ -482,7 +527,7 @@ if THEME:GetMetric("ScreenSelectMusic","UseOptionsList") then
                 end,
                 AdjustCommand=function(self,params)
                     if currentOpList then
-                        if currentOpList == "SongMenu" or currentOpList == "AdvMenu" or string.find(currentOpList, "Speed") then
+                        if currentOpList == "SongMenu" or string.find(currentOpList, "Speed") then
                             self:queuecommand("UpdateText");
                             self:visible(true)
                         else
@@ -637,6 +682,86 @@ if THEME:GetMetric("ScreenSelectMusic","UseOptionsList") then
                     end,
                     AdjustCommand=function(self,params)
                         if params.Player == pn and currentOpList == "NoteSkins" then
+                            self:SetDestinationItem(params.Selection)
+                        end
+                    end,
+                };
+                Def.Sprite{
+                    Texture="arrow",
+                    InitCommand=function(s) s:x(-260):zoom(2):diffusealpha(1):bounce():effectmagnitude(3,0,0):effectperiod(1) end,
+                    OptionsListLeftMessageCommand=function(s) s:finishtweening():diffuse(color("#8080ff")):sleep(0.3):linear(0.4):diffuse(color("1,1,1,1")) end,
+                };
+                Def.Sprite{
+                    Texture="arrow",
+                    InitCommand=function(s) s:x(260):basezoom(2):zoomx(-1):diffusealpha(1):bounce():effectmagnitude(-3,0,0):effectperiod(1) end,
+                    OptionsListRightMessageCommand=function(s) s:finishtweening():diffuse(color("#8080ff")):sleep(0.3):linear(0.4):diffuse(color("1,1,1,1")) end,
+                };
+            };
+            --Mini
+            Def.ActorFrame{
+                InitCommand=function(s) s:y(-100):zoom(1):diffusealpha(0) end,
+                OptionsMenuChangedMessageCommand=function(self,params)
+                    if params.Player == pn then
+                        if params.Menu == "MusicRate" then
+                            self:playcommand("On")
+                            self:stoptweening():linear(.3):diffusealpha(1);
+                        else
+                            self:diffusealpha(0);
+                        end;
+                    end;
+                end;
+                Def.BitmapText{
+                    Font="_avenirnext lt pro bold 36px",
+                    InitCommand=function(s) s:y(180):maxwidth(500):strokecolor(Color.Black) end,
+                    OnCommand=function(self)
+                        if CurrentRateVal(pn) ~= nil then
+                            self:settext("Select\n"..CurrentRateVal(pn).."%\nas your song speed.")
+                        else
+                            self:settext("Invalid song speed is set.")
+                        end
+                    end,
+                    AdjustCommand=function(self,params)
+                        if params.Player == pn and currentOpList == "MusicRate" then
+                            if params.Selection < #NumRate then
+                                if NumRate[params.Selection+1] == "EXIT" then
+                                    self:settext("Exit.")
+                                else
+                                    self:settext("Select\n"..string.format("%01d",NumRate[params.Selection+1]).."%\nas song speed.")
+                                end
+                            else
+                                self:settext("")
+                            end
+                        end
+                    end,
+                };
+                --MusicRate
+                Def.ActorScroller{
+                    Name="MusicRate Scroller",
+                    NumItemsToDraw=5;
+                    SecondsPerItem=0.2;
+                    children = _RATE;
+                    InitCommand=function(s)
+                        s:SetLoop(true):SetWrap(true)
+                        :SetDrawByZPosition(true):SetFastCatchup(true)
+                    end,
+                    OptionsMenuChangedMessageCommand=function(self,params)
+                        if params.Player == pn then
+                            if GetRateIndex(CurrentRateVal(pn)) ~= nil then
+                                
+                                self:SetCurrentAndDestinationItem(GetRateIndex(CurrentRateVal(pn))-1)
+                            else
+                                self:SetCurrentAndDestinationItem(0)
+                            end
+                        end;
+                    end;
+                    TransformFunction=function(s,offset,itemIndex,numItems)
+                        local sign = offset == 0 and 1 or offset/math.abs(offset)
+                        s:x((offset*160*math.cos((math.pi/10*offset))+math.min(math.abs(offset),1)*sign*0))
+                        :z((offset*-62*3*math.sin((math.pi/10)*offset))+(math.min(math.abs(offset),1)*0))
+                        :rotationy(offset*(360/(10*1.135)))
+                    end,
+                    AdjustCommand=function(self,params)
+                        if params.Player == pn and currentOpList == "MusicRate" then
                             self:SetDestinationItem(params.Selection)
                         end
                     end,

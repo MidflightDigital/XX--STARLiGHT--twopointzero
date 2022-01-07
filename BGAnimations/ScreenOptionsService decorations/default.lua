@@ -2,6 +2,14 @@ local t = LoadFallbackB();
 
 local screenName = Var "LoadingScreen";
 
+local bars = Def.ActorFrame{}
+
+for i=1,7 do
+	bars[#bars+1] = Def.Quad{
+		InitCommand=function(s) s:y(80*i):diffuse(Alpha(Color.White,0.2)):setsize(1276,34) end,
+	};
+end
+
 t[#t+1] = Def.ActorFrame{
 	OnCommand=function(s) s:draworder(-10):addy(SCREEN_HEIGHT):sleep(0.2):decelerate(0.2):addy(-SCREEN_HEIGHT) end,
 	OffCommand=function(s) s:accelerate(0.2):addy(-SCREEN_HEIGHT) end,
@@ -23,6 +31,9 @@ t[#t+1] = Def.ActorFrame{
 			Texture="DialogTop",
 			InitCommand=function(s) s:y(-320) end,
 		};
+		bars..{
+			InitCommand=function(s) s:y(-342) end,
+		}
 	};
 	Def.BitmapText{
 		Font="Common normal",
