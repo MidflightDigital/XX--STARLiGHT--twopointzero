@@ -41,7 +41,7 @@ function LoadCard(cColor,cColor2,Player,IsJoinFrame)
 			InitCommand=function(s) s:y(-292) end,
 			OnCommand=function(s) s:y(0):sleep(0.3):linear(0.3):y(-292) end,
 			OffCommand=function(s)
-				s:sleep(IsJoinFrame and 0 or 0.3):linear(0.1):y(0):sleep(0):diffusealpha(IsJoinFrame and 0 or 1)
+				s:sleep(IsJoinFrame and 0 or 0.3):linear(0.1):y(0):sleep(0):diffusealpha(0)
 			end,
 			Def.Sprite{
 				Texture=THEME:GetPathG("","ScreenSelectProfile/BGTOP_"..ToEnumShortString(Player));
@@ -52,7 +52,7 @@ function LoadCard(cColor,cColor2,Player,IsJoinFrame)
 			Name="Bottom",
 			OnCommand=function(s) s:y(0):sleep(0.3):linear(0.3):y(286) end,
 			OffCommand=function(s)
-				s:sleep(IsJoinFrame and 0 or 0.3):linear(0.1):y(0):sleep(0):diffusealpha(IsJoinFrame and 0 or 1)
+				s:sleep(IsJoinFrame and 0 or 0.3):linear(0.1):y(0):sleep(0):diffusealpha(0)
 			end,
 			Def.Sprite{
 				Texture=THEME:GetPathG("","ScreenSelectProfile/BGBOTTOM"),
@@ -546,6 +546,7 @@ local t = Def.ActorFrame{
 			Texture=THEME:GetPathG("","ScreenSelectProfile/Cab outline");
 			InitCommand=function(s) s:Center():diffusealpha(0) end,
 			OnCommand=function(s) s:sleep(0.2):diffusealpha(0.5):sleep(0.1):diffusealpha(0):sleep(0.12):diffusealpha(0.2):linear(0.2):diffusealpha(1) end,
+			OffCommand=function(s) s:diffusealpha(0):sleep(0.1):diffusealpha(0.5):sleep(0.1):diffusealpha(0):sleep(0.12):diffusealpha(1):linear(0.2):diffusealpha(0) end,
 		};
 		Def.ActorFrame{
 			Name="P1Frame";

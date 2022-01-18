@@ -4,16 +4,12 @@ local screenName = THEME:GetMetric(screen,"FooterText");
 
 local out = Def.ActorFrame{
   InitCommand=function(s) s:xy(_screen.cx,SCREEN_BOTTOM-68) end,
-  OnCommand=function(s)
-    if screen ~= "ScreenSelectProfilePrefs" then
-      s:addy(140):decelerate(0.18):addy(-140)
-    end
-  end,
-  OffCommand =function(s) 
-    if screen ~= "ScreenSelectProfile" then
-      s:linear(0.15):addy(140)
-    end
-  end,
+  OnCommand = function(s)
+		s:diffusealpha(0):addy(140):smooth(0.3):addy(-140):diffusealpha(1)
+	end,
+	OffCommand = function(s)
+		s:accelerate(0.3):addy(140):diffusealpha(0)
+	end,
   LoadActor("base");
   LoadActor("side glow")..{
     InitCommand=function(s) s:y(0) end,

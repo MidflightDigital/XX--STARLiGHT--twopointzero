@@ -2,16 +2,12 @@ local screen = Var "LoadingScreen"
 local screenName = THEME:GetMetric(screen,"HeaderText");
 
 local out = Def.ActorFrame {
-	InitCommand = function(s)s:xy(_screen.cx,SCREEN_TOP+68) end,
+	InitCommand = function(s)s:xy(_screen.cx,SCREEN_TOP+68):diffusealpha(0) end,
 	OnCommand = function(s)
-		if screen ~= "ScreenSelectProfilePrefs" then
-			s:addy(-140):decelerate(0.18):addy(140)
-		end
+		s:diffusealpha(0):addy(-140):smooth(0.3):addy(140):diffusealpha(1)
 	end,
 	OffCommand = function(s)
-		if screen ~= "ScreenSelectProfile" then
-			s:linear(0.15):addy(-140)
-		end
+		s:accelerate(0.3):addy(-140):diffusealpha(0)
 	end,
 	LoadActor("header/default.lua") .. {
 		InitCommand = function(s) s:valign(0) end,
