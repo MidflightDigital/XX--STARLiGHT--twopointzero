@@ -1,1 +1,0 @@
-return GetMenuMusicPath "profile"
