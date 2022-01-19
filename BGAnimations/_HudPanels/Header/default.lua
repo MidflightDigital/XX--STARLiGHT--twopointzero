@@ -1,5 +1,5 @@
 local screen = Var"LoadingScreen"
-local HeaderText = THEME:GetMetric(screen,"HeaderText");
+local HeaderText = ...
 
 local yoffsetted = {
     "ScreenSelectMusic",

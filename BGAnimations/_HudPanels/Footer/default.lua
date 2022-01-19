@@ -1,5 +1,5 @@
 local screen = Var"LoadingScreen"
-local FooterText = THEME:GetMetric(screen,"FooterText");
+local FooterText = ...
 
 local text = Def.ActorFrame{}
 

@@ -104,6 +104,6 @@ end
 
 return Def.ActorFrame{
   t;
-  loadfile(THEME:GetPathB("","_HudPanels/Header/default.lua"))();
-  loadfile(THEME:GetPathB("","_HudPanels/Footer/default.lua"))();
+  loadfile(THEME:GetPathB("","_HudPanels/Header/default.lua"))("selstyle");
+  loadfile(THEME:GetPathB("","_HudPanels/Footer/default.lua"))("analyzing");
 }

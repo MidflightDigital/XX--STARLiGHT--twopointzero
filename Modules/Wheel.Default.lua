@@ -567,7 +567,7 @@ return function(Style)
 
 			-- Check if we want to go to ScreenPlayerOptions instead of ScreenGameplay.
 			if StartOptions then
-				SCREENMAN:GetTopScreen():SetNextScreenName("ScreenPlayerOptions"):StartTransitioningScreen("SM_GoToNextScreen")
+				SCREENMAN:GetTopScreen():AddScreenToTop("ScreenPlayerOptions"):StartTransitioningScreen("SM_GoToNextScreen")
 			end
 			-- Check if player is joined.
 			if Joined[self.pn] then 

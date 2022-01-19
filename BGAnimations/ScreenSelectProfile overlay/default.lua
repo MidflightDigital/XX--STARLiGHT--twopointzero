@@ -4,7 +4,7 @@ function GetLocalProfiles()
 		local profile=PROFILEMAN:GetLocalProfileFromIndex(p);
 		local ProfileCard = Def.ActorFrame{
 			Def.Sprite{
-				Texture=THEME:GetPathG("","ScreenSelectProfile/card.png"),
+				Texture="card.png",
 			};
 			Def.BitmapText{
 				Font="_avenirnext lt pro bold/25px",
@@ -31,7 +31,7 @@ local profnum = PROFILEMAN:GetNumLocalProfiles();
 function LoadCard(cColor,cColor2,Player,IsJoinFrame)
 	local t = Def.ActorFrame{
 		Def.Sprite{
-			Texture=THEME:GetPathG("","ScreenSelectProfile/BG01");
+			Texture="BG01";
 			InitCommand=function(s) s:zoomy(0) end,
 			OnCommand=function(s) s:sleep(0.3):linear(0.3):zoomy(1) end,
 			OffCommand=function(s) s:sleep(IsJoinFrame and 0 or 0.3):linear(0.1):zoomy(0) end,
@@ -41,10 +41,10 @@ function LoadCard(cColor,cColor2,Player,IsJoinFrame)
 			InitCommand=function(s) s:y(-292) end,
 			OnCommand=function(s) s:y(0):sleep(0.3):linear(0.3):y(-292) end,
 			OffCommand=function(s)
-				s:sleep(IsJoinFrame and 0 or 0.3):linear(0.1):y(0):sleep(0):diffusealpha(IsJoinFrame and 0 or 1)
+				s:sleep(IsJoinFrame and 0 or 0.3):linear(0.1):y(0):sleep(0):diffusealpha(0)
 			end,
 			Def.Sprite{
-				Texture=THEME:GetPathG("","ScreenSelectProfile/BGTOP_"..ToEnumShortString(Player));
+				Texture="BGTOP_"..ToEnumShortString(Player);
 				InitCommand=function(s) s:valign(1) end,
 			};
 		};
@@ -52,14 +52,14 @@ function LoadCard(cColor,cColor2,Player,IsJoinFrame)
 			Name="Bottom",
 			OnCommand=function(s) s:y(0):sleep(0.3):linear(0.3):y(286) end,
 			OffCommand=function(s)
-				s:sleep(IsJoinFrame and 0 or 0.3):linear(0.1):y(0):sleep(0):diffusealpha(IsJoinFrame and 0 or 1)
+				s:sleep(IsJoinFrame and 0 or 0.3):linear(0.1):y(0):sleep(0):diffusealpha(0)
 			end,
 			Def.Sprite{
-				Texture=THEME:GetPathG("","ScreenSelectProfile/BGBOTTOM"),
+				Texture="BGBOTTOM",
 				InitCommand=function(s) s:valign(0) end,
 			};
 			Def.Sprite{
-				Texture=THEME:GetPathG("","ScreenSelectProfile/start game"),
+				Texture="start game",
 				InitCommand=function(s) s:valign(0):diffusealpha(0) end,
 				OnCommand=function(s) s:sleep(0.8):diffusealpha(1) end,
 			};
@@ -76,7 +76,7 @@ function LoadPlayerStuff(Player)
 		Name = 'JoinFrame';
 		LoadCard(Color('Outline'),Color.Black,Player,true);
 		Def.Sprite{
-			Texture=THEME:GetPathG("","ScreenSelectProfile/ScreenSelectProfile Start"),
+			Texture="ScreenSelectProfile Start",
 			InitCommand=function(s) s:zoomy(0):diffuseshift():effectcolor1(Color.White):effectcolor2(color("#A5A6A5")) end,
 			OnCommand=function(s) s:zoomy(0):zoomx(0):sleep(0.5):linear(0.1):zoomx(1):zoomy(1) end,
 			OffCommand=function(s) s:linear(0.1):zoomy(0):diffusealpha(0) end,
@@ -92,9 +92,9 @@ function LoadPlayerStuff(Player)
 		InitCommand=function(s) s:y(120):hibernate(0.2) end,
 		OnCommand=function(s) s:zoom(0):rotationz(-360):decelerate(0.4):zoom(1):rotationz(0) end,
         OffCommand=function(s) s:decelerate(0.3):rotationz(-360):zoom(0) end,
-		Def.Sprite{Texture=THEME:GetPathB("","ScreenSelectMusic overlay/RadarHandler/GrooveRadar base"),};
+		Def.Sprite{Texture=THEME:GetPathG("","_shared/Radar/GrooveRadar base"),};
 		Def.Sprite{
-			Texture=THEME:GetPathB("","ScreenSelectMusic overlay/RadarHandler/sweep"),
+			Texture=THEME:GetPathG("","_shared/Radar/sweep"),
 			InitCommand = function(s) s:zoom(1.275):spin():effectmagnitude(0,0,100) end,
         	OnCommand = function(s) s:hibernate(0.4) end,
         	OffCommand=function(s) s:finishtweening():sleep(0.3):decelerate(0.3):rotationz(-360):zoom(0) end,
@@ -214,7 +214,7 @@ function LoadPlayerStuff(Player)
 					s:sleep(i/20):linear(0.1):diffusealpha(0):addx(-10)
 				end;
 				Def.Sprite{
-					Texture=THEME:GetPathB("ScreenSelectMusic","overlay/RadarHandler/RLabels"),
+					Texture=THEME:GetPathG("","_shared/Radar/RLabels"),
 					OnCommand=function(s) s:animate(0):setstate(i-1) end,
 				};
 			};
@@ -540,12 +540,12 @@ local t = Def.ActorFrame{
 		UpdateInternal3(self, PLAYER_1);
 		UpdateInternal3(self, PLAYER_2);
 	end;
-
 	children = {
 		Def.Sprite{
-			Texture=THEME:GetPathG("","ScreenSelectProfile/Cab outline");
+			Texture="Cab outline";
 			InitCommand=function(s) s:Center():diffusealpha(0) end,
 			OnCommand=function(s) s:sleep(0.2):diffusealpha(0.5):sleep(0.1):diffusealpha(0):sleep(0.12):diffusealpha(0.2):linear(0.2):diffusealpha(1) end,
+			OffCommand=function(s) s:diffusealpha(0):sleep(0.1):diffusealpha(0.5):sleep(0.1):diffusealpha(0):sleep(0.12):diffusealpha(1):linear(0.2):diffusealpha(0) end,
 		};
 		Def.ActorFrame{
 			Name="P1Frame";
@@ -567,6 +567,8 @@ local t = Def.ActorFrame{
 		LoadActor( THEME:GetPathS("Common","value") )..{
 			DirectionButtonMessageCommand=function(self) self:play() end;
 		};
+		loadfile(THEME:GetPathB("","_HudPanels/Header/default.lua"))("login");
+  		loadfile(THEME:GetPathB("","_HudPanels/Footer/default.lua"))("accessdata");
 	};
 }
 

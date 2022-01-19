@@ -28,8 +28,8 @@ t[#t+1] = Def.ActorFrame {
 		InitCommand=function(s) s:FullScreen():diffuse(Alpha(Color.Black,0)) end,
 		OnCommand=function(s) s:decelerate(0.4):diffusealpha(0.5) end,
 	};
-    loadfile(THEME:GetPathB("","_HudPanels/Header/default.lua"))();
-	loadfile(THEME:GetPathB("","_HudPanels/Footer/default.lua"))();
+    loadfile(THEME:GetPathB("","_HudPanels/Header/default.lua"))("login");
+	loadfile(THEME:GetPathB("","_HudPanels/Footer/default.lua"))("welcome");
 	Def.ActorFrame{
 		InitCommand=function(s) s:xy(_screen.cx-435,_screen.cy-10) end,
 		OnCommand=function(s) s:addx(-SCREEN_WIDTH):sleep(0.2):decelerate(0.2):addx(SCREEN_WIDTH) end,
