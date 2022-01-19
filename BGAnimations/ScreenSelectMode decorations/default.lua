@@ -29,6 +29,7 @@ t[#t+1] = Def.ActorFrame {
 		OnCommand=function(s) s:decelerate(0.4):diffusealpha(0.5) end,
 	};
     loadfile(THEME:GetPathB("","_HudPanels/Header/default.lua"))();
+	loadfile(THEME:GetPathB("","_HudPanels/Footer/default.lua"))();
 	Def.ActorFrame{
 		InitCommand=function(s) s:xy(_screen.cx-435,_screen.cy-10) end,
 		OnCommand=function(s) s:addx(-SCREEN_WIDTH):sleep(0.2):decelerate(0.2):addx(SCREEN_WIDTH) end,

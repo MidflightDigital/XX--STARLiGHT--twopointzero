@@ -3,6 +3,7 @@ local HeaderText = THEME:GetMetric(screen,"HeaderText");
 
 local yoffsetted = {
     "ScreenSelectMusic",
+	"OFSelectMusic",
     "ScreenEvaluationNormal",
     "ScreenEvaluationCourse"
 }
@@ -13,7 +14,7 @@ if HeaderText then
     text[#text+1] = Def.Sprite{
         Texture="text/"..HeaderText..".png",
         InitCommand=function(s)
-            if screen == yoffsetted[screen] then
+            if screen == "OFSelectMusic" then
                 s:y(-1)
             else
                 s:y(10)

@@ -1,3 +1,7 @@
+function Branch.FirstScreen()
+	return "ScreenMDSplash"
+end
+
 CustomBranch = {
     InitialScreen = function()
         return "ScreenTitle"
