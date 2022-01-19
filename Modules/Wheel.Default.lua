@@ -496,7 +496,7 @@ return function(Style)
 
 		Def.ActorFrame{
 			Name="GroupLabel",
-			InitCommand=function(s) s:xy(SCREEN_LEFT,_screen.cy+80):visible(true) end,
+			InitCommand=function(s) s:xy(SCREEN_LEFT,_screen.cy+80):visible(false) end,
 			Def.Sprite{
 				Name="GroupBacker",
 				Texture=THEME:GetPathG("","_SelectMusic/GLabel"),
@@ -504,7 +504,6 @@ return function(Style)
 				OnCommand=function(s) s:halign(0)
 					if type(GroupsAndSongs[CurSong]) ~= "string" then
 						s:diffuse(SongAttributes.GetGroupColor(GroupsAndSongs[CurSong][1]:GetGroupName()))
-						:visible(true)
 						:linear(0.15):cropright(0)
 					end
 				end,
@@ -517,7 +516,6 @@ return function(Style)
 					if type(GroupsAndSongs[CurSong]) ~= "string" then
 						s:strokecolor(ColorDarkTone(SongAttributes.GetGroupColor(GroupsAndSongs[CurSong][1]:GetGroupName())))
 						:settext("GROUP/"..SongAttributes.GetGroupName(GroupsAndSongs[CurSong][1]:GetGroupName()))
-						:visible(true)
 						:linear(0.15):cropright(0)
 					end
 				end,
