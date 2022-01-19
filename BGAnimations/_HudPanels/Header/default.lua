@@ -39,12 +39,12 @@ if HeaderText then
 end
 
 return Def.ActorFrame{
-    InitCommand=function(s) s:xy(_screen.cx,SCREEN_TOP-140):diffusealpha(0) end,
+    InitCommand=function(s) s:xy(_screen.cx,SCREEN_TOP-140):diffusealpha(0):zoom(0.7) end,
     OnCommand = function(s)
-		s:smooth(0.3):y(SCREEN_TOP+68):diffusealpha(1)
+		s:smooth(0.5):y(SCREEN_TOP+68):diffusealpha(1):zoom(1)
 	end,
 	OffCommand = function(s)
-		s:accelerate(0.3):y(SCREEN_TOP-140):diffusealpha(0)
+		s:accelerate(0.5):y(SCREEN_TOP-140):diffusealpha(0):zoom(0.7)
 	end,
 	loadfile(THEME:GetPathB("","_HudPanels/Header/header/default.lua"))()..{
 		InitCommand = function(s) s:valign(0) end,

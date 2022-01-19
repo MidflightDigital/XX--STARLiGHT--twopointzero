@@ -62,7 +62,6 @@ local XOffset = 5
 -- Move the wheel, We define the Offset using +1 or -1.
 -- We parse the Songs also so we can get the amount of songs.
 local function MoveSelection(self,offset,Songs)
-	self:GetChild("Select"):GetChild("WheelSound"):play()
 	-- Curent Song + Offset.
 	CurSong = CurSong + offset
 	
@@ -231,14 +230,16 @@ local function MoveSelection(self,offset,Songs)
     -- Check if offset is not 0.
 	if offset ~= 0 then
 		-- Stop all the music playing, Which is the Song Music
-		SOUND:StopMusic()
-
+		
 		-- Check if its a song.
 		if type(Songs[CurSong]) ~= "string" then
+			SOUND:StopMusic()
 			-- Play Current selected Song Music.
 			if Songs[CurSong][1]:GetMusicPath() then
-				SOUND:PlayMusicPart(Songs[CurSong][1]:GetMusicPath(),Songs[CurSong][1]:GetSampleStart(),Songs[CurSong][1]:GetSampleLength(),0,0,true)
+				SOUND:PlayMusicPart(Songs[CurSong][1]:GetMusicPath(),Songs[CurSong][1]:GetSampleStart(),Songs[CurSong][1]:GetSampleLength(),1,1.5,true)
 			end
+		else
+			SOUND:PlayMusicPart(THEME:GetPathS("","MenuMusic/common/Default (loop).ogg"),0,132,0,0,true)
 		end
 	end
 end
@@ -340,13 +341,16 @@ return function(Style)
         -- Play Music at start of screen,.
 		PlayCurrentSongCommand=function(self)
 			if type(GroupsAndSongs[CurSong]) ~= "string" and GroupsAndSongs[CurSong][1]:GetMusicPath() then
-				SOUND:PlayMusicPart(GroupsAndSongs[CurSong][1]:GetMusicPath(),GroupsAndSongs[CurSong][1]:GetSampleStart(),GroupsAndSongs[CurSong][1]:GetSampleLength(),0,0,true)
+				SOUND:PlayMusicPart(GroupsAndSongs[CurSong][1]:GetMusicPath(),GroupsAndSongs[CurSong][1]:GetSampleStart(),GroupsAndSongs[CurSong][1]:GetSampleLength(),1,1.5,true)
+			else
+				SOUND:PlayMusicPart(THEME:GetPathS("","MenuMusic/common/Default (loop).ogg"),0,132,0,0,true)
 			end
         end,
         
         -- Do stuff when a user presses left on Pad or Menu buttons.
         MenuLeftCommand=function(self) 
 			MoveSelection(self,-1,GroupsAndSongs)
+			self:GetChild("WheelSound"):play()
 			self:GetChild("Select"):GetChild("LeftCon"):stoptweening():x(-20):decelerate(0.5):x(0)
 			self:GetChild("Select"):GetChild("LeftCon"):GetChild("LeftArrow"):stoptweening():diffuse(color("#ff00ea")):sleep(0.5):diffuse(color("#00f0ff"))
 		end,
@@ -354,6 +358,7 @@ return function(Style)
 		-- Do stuff when a user presses Right on Pad or Menu buttons.
         MenuRightCommand=function(self) 
 			MoveSelection(self,1,GroupsAndSongs)
+			self:GetChild("WheelSound"):play()
 			self:GetChild("Select"):GetChild("RightCon"):stoptweening():x(20):decelerate(0.5):x(0)
 			self:GetChild("Select"):GetChild("RightCon"):GetChild("RightArrow"):stoptweening():diffuse(color("#ff00ea")):sleep(0.5):diffuse(color("#00f0ff"))
 		 end,
@@ -393,6 +398,7 @@ return function(Style)
 			
 				-- Check if we are on a group.
 				if type(GroupsAndSongs[CurSong]) == "string" then
+					self:GetChild("ExpandSound"):play()
 				
 					-- Check if we are on the same group thats currently open,
 					-- If not we set the curent group to our new selection.
@@ -625,10 +631,6 @@ return function(Style)
 			OnCommand=function(self)
 				self:xy(_screen.cx,_screen.cy+264)
 			end,
-			Def.Sound{
-				Name="WheelSound",
-				File=THEME:GetPathS("","MWChange/Default_MWC.ogg"),
-			},
 			Def.ActorFrame{
 				Name="LeftCon",
 				Def.ActorFrame{
@@ -672,6 +674,16 @@ return function(Style)
 					:strokecolor(Alpha(color("#00baff"),0.5))
 					:xy(_screen.cx,SCREEN_TOP+104)
 			end
+		},
+
+		Def.Sound{
+			Name="WheelSound",
+			File=THEME:GetPathS("","MWChange/Default_MWC.ogg"),
+		},
+
+		Def.Sound{
+			Name="ExpandSound",
+			File=THEME:GetPathS("","MusicWheel expand.ogg"),
 		},
     }
 end
