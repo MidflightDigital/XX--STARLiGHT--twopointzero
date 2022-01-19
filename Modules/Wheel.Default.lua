@@ -138,23 +138,22 @@ local function MoveSelection(self,offset,Songs)
             end
         end
 
+		-- We have a top banner and an under banner to make smooth transisions between songs.
+
 		-- Check if its a song.
 		if type(Songs[CurSong]) ~= "string" then
 			
 			-- Set Current Song and broadcast message for the radar.
 			GAMESTATE:SetCurrentSong(Songs[CurSong][1])
 
-			-- Set the Centered Banner.
-			self:GetChild("Banner"):visible(true):Load(Songs[CurSong][1]:GetJacketPath())
-
 			self:GetChild("GroupLabel"):linear(0.15):diffusealpha(1)
 			self:GetChild("GroupLabel"):GetChild("GroupBacker"):linear(0.15):cropright(0)
 			self:GetChild("GroupLabel"):GetChild("GroupText"):linear(0.15):cropright(0)
 			
-			self:GetChild("BannerInfo"):visible(true)
-			self:GetChild("BannerInfo"):GetChild("Title"):settext(ToUpper(Songs[CurSong][1]:GetDisplayMainTitle())):y(-6):diffuse(SongAttributes.GetMenuColor(Songs[CurSong][1]))
+			self:GetChild("JacketArea"):GetChild("SongInfo"):visible(true)
+			self:GetChild("JacketArea"):GetChild("SongInfo"):GetChild("Title"):settext(ToUpper(Songs[CurSong][1]:GetDisplayMainTitle())):y(-6):diffuse(SongAttributes.GetMenuColor(Songs[CurSong][1]))
 				:strokecolor(ColorDarkTone(SongAttributes.GetMenuColor(Songs[CurSong][1])))
-			self:GetChild("BannerInfo"):GetChild("Artist"):settext(ToUpper(Songs[CurSong][1]:GetDisplayArtist())):diffuse(SongAttributes.GetMenuColor(Songs[CurSong][1]))
+			self:GetChild("JacketArea"):GetChild("SongInfo"):GetChild("Artist"):settext(ToUpper(Songs[CurSong][1]:GetDisplayArtist())):diffuse(SongAttributes.GetMenuColor(Songs[CurSong][1]))
 				:strokecolor(ColorDarkTone(SongAttributes.GetMenuColor(Songs[CurSong][1])))
 
 			if Songs[CurSong][1]:IsDisplayBpmRandom() or Songs[CurSong][1]:IsDisplayBpmSecret() then
@@ -172,17 +171,20 @@ local function MoveSelection(self,offset,Songs)
 				end
 			end
 
+		-- It is a song, so we load the under banner.
+		self:GetChild("JacketArea"):GetChild("JacketUnderlay"):visible(1):Load(jk.GetSongGraphicPath(Songs[CurSong][1]))
 		-- Its a group.
 		else
+			-- It is not a song, Do an extra check to see if group has banner.
 			self:GetChild("LargeDiffP1"):visible(false)
 			-- Set banner.
 			if jk.GetGroupGraphicPath(Songs[CurSong],"Jacket","SortOrder_Group") ~= "" then
-				self:GetChild("Banner"):visible(true):Load(jk.GetGroupGraphicPath(Songs[CurSong],"Jacket","SortOrder_Group"))
+				self:GetChild("JacketArea"):GetChild("JacketUnderlay"):visible(true):Load(jk.GetGroupGraphicPath(Songs[CurSong],"Jacket","SortOrder_Group"))
 			end
-			self:GetChild("BannerInfo"):visible(true)
-			self:GetChild("BannerInfo"):GetChild("Title"):settext(SongAttributes.GetGroupName(Songs[CurSong])):y(6):diffuse(SongAttributes.GetGroupColor(Songs[CurSong]))
+			self:GetChild("JacketArea"):GetChild("SongInfo"):visible(true)
+			self:GetChild("JacketArea"):GetChild("SongInfo"):GetChild("Title"):settext(SongAttributes.GetGroupName(Songs[CurSong])):y(6):diffuse(SongAttributes.GetGroupColor(Songs[CurSong]))
 				:strokecolor(ColorDarkTone(SongAttributes.GetGroupColor(Songs[CurSong])))
-			self:GetChild("BannerInfo"):GetChild("Artist"):settext(""):diffuse(SongAttributes.GetGroupColor(Songs[CurSong]))
+			self:GetChild("JacketArea"):GetChild("SongInfo"):GetChild("Artist"):settext(""):diffuse(SongAttributes.GetGroupColor(Songs[CurSong]))
 			:strokecolor(ColorDarkTone(SongAttributes.GetGroupColor(Songs[CurSong])))
 
 			self:GetChild("GroupLabel"):linear(0.15):diffusealpha(0)
@@ -192,8 +194,10 @@ local function MoveSelection(self,offset,Songs)
 			self:GetChild("BPM"):visible(false)
 		end
 
-		-- Resize the Centered Banner  to be w(512/8)*5 h(160/8)*5
-		self:GetChild("Banner"):zoomto(378,378)
+		-- Now we resize the banner to the proper size we want.
+		self:GetChild("JacketArea"):GetChild("JacketUnderlay"):zoomto(378,378)
+		-- Resize the Centered Jacket to be 378.378
+		self:GetChild("JacketArea"):GetChild("Jacket"):diffusealpha(1):linear(.1):diffusealpha(0):sleep(0):queuecommand("Load"):diffusealpha(1)
     else
         -- For every part of the wheel do.
 		for i = 1,10 do	
@@ -240,10 +244,10 @@ local function MoveSelection(self,offset,Songs)
 	-- For every difficulty that we can display do.
 	for i = 1,6 do
 		-- Hide Player1 diff.
-		self:GetChild("Diffs"):GetChild("DiffName1P"..i):diffusealpha(0)
+		self:GetChild("Diffs"):GetChild("DiffName1P"..i):finishtweening():diffusealpha(0)
 		
 		-- Hide player2 diff.
-		self:GetChild("Diffs"):GetChild("DiffName2P"..i):diffusealpha(0)
+		self:GetChild("Diffs"):GetChild("DiffName2P"..i):finishtweening():diffusealpha(0)
 	end
 
 	-- Check if it's a song.
@@ -267,11 +271,11 @@ local function MoveSelection(self,offset,Songs)
 			if Joined[PLAYER_1] then
 				
 				-- Diffuse the background of the difficulty selector.
-				self:GetChild("Diffs"):GetChild("DiffName1P"..i):GetChild("DiffBlock"):diffuse(DiffColors[TF_WHEEL.DiffTab[Songs[CurSong][i+1]:GetDifficulty()]])
-				self:GetChild("Diffs"):GetChild("DiffName1P"..i):GetChild("Meter"):settext(Songs[CurSong][i+1]:GetMeter())
-				self:GetChild("LargeDiffP1"):GetChild("DiffName"):settext(DiffNames[TF_WHEEL.DiffTab[Songs[CurSong][DiffPos[PLAYER_1]+1]:GetDifficulty()]])
+				self:GetChild("Diffs"):GetChild("DiffName1P"..i):GetChild("DiffBlock"):finishtweening():diffuse(DiffColors[TF_WHEEL.DiffTab[Songs[CurSong][i+1]:GetDifficulty()]])
+				self:GetChild("Diffs"):GetChild("DiffName1P"..i):GetChild("Meter"):finishtweening():settext(Songs[CurSong][i+1]:GetMeter())
+				self:GetChild("LargeDiffP1"):GetChild("DiffName"):finishtweening():settext(DiffNames[TF_WHEEL.DiffTab[Songs[CurSong][DiffPos[PLAYER_1]+1]:GetDifficulty()]])
 					:diffuse(DiffColors[TF_WHEEL.DiffTab[Songs[CurSong][DiffPos[PLAYER_1]+1]:GetDifficulty()]])
-				self:GetChild("LargeDiffP1"):GetChild("Meter"):settext(Songs[CurSong][DiffPos[PLAYER_1]+1]:GetMeter())
+				self:GetChild("LargeDiffP1"):GetChild("Meter"):finishtweening():settext(Songs[CurSong][DiffPos[PLAYER_1]+1]:GetMeter())
 
 			end
 		
@@ -279,45 +283,45 @@ local function MoveSelection(self,offset,Songs)
 			if Joined[PLAYER_2] then
 
 				-- Diffuse the background of the difficulty selector.
-				self:GetChild("Diffs"):GetChild("DiffName2P"..i):GetChild("DiffBlock"):diffuse(DiffColors[TF_WHEEL.DiffTab[Songs[CurSong][i+1]:GetDifficulty()]])
-				self:GetChild("Diffs"):GetChild("DiffName1P"..i):GetChild("Meter"):settext(Songs[CurSong][i+1]:GetMeter())
+				self:GetChild("Diffs"):GetChild("DiffName2P"..i):GetChild("DiffBlock"):finishtweening():diffuse(DiffColors[TF_WHEEL.DiffTab[Songs[CurSong][i+1]:GetDifficulty()]])
+				self:GetChild("Diffs"):GetChild("DiffName1P"..i):GetChild("Meter"):finishtweening():settext(Songs[CurSong][i+1]:GetMeter())
 
 			end
 		
 			-- Extra check to diffuse the player difficulty selector on a 0 offset.
 			if offset == 0 then
-				self:GetChild("Diffs"):GetChild("DiffName1P"..i):diffusealpha(0)
-				self:GetChild("Diffs"):GetChild("DiffName2P"..i):diffusealpha(0)
+				self:GetChild("Diffs"):GetChild("DiffName1P"..i):finishtweening():diffusealpha(0)
+				self:GetChild("Diffs"):GetChild("DiffName2P"..i):finishtweening():diffusealpha(0)
 			end
 		
 			-- Check if P1 is active, if P1 is active, show the difficulty selector.
 			if Joined[PLAYER_1] then
-				self:GetChild("Diffs"):GetChild("DiffName1P"..i):diffusealpha(1)
+				self:GetChild("Diffs"):GetChild("DiffName1P"..i):finishtweening():diffusealpha(1)
 			end
 			
 			-- Check if P2 is active, if P2 is active, show the difficulty selector.
 			if Joined[PLAYER_2] then
-				self:GetChild("Diffs"):GetChild("DiffName2P"..i):diffusealpha(1)
+				self:GetChild("Diffs"):GetChild("DiffName2P"..i):finishtweening():diffusealpha(1)
 			end
 		
 			-- Check the diffuse position of P1, if its not active, hide it.
 			if DiffPos[PLAYER_1] ~= i then
-				self:GetChild("Diffs"):GetChild("DiffName1P"..i):decelerate(0.2):x(12)
+				self:GetChild("Diffs"):GetChild("DiffName1P"..i):finishtweening():decelerate(0.2):x(12)
 			end
 
 			-- Do effects on active position of player.
 			if DiffPos[PLAYER_1] == i then
-				self:GetChild("Diffs"):GetChild("DiffName1P"..i):decelerate(0.2):x(26)
+				self:GetChild("Diffs"):GetChild("DiffName1P"..i):finishtweening():decelerate(0.2):x(26)
 			end
 		
 			-- Check the diffuse position of P2, if its not active, hide it.
 			if DiffPos[PLAYER_2] ~= i then
-				self:GetChild("Diffs"):GetChild("DiffName2P"..i):decelerate(0.2):x(12)
+				self:GetChild("Diffs"):GetChild("DiffName2P"..i):finishtweening():decelerate(0.2):x(12)
 			end
 
 			-- Do effects on active position of player.
 			if DiffPos[PLAYER_2] == i then
-				self:GetChild("Diffs"):GetChild("DiffName2P"..i):decelerate(0.2):x(-26)
+				self:GetChild("Diffs"):GetChild("DiffName2P"..i):finishtweening():decelerate(0.2):x(-26)
 			end
 		end
 	end		
@@ -485,7 +489,7 @@ return function(Style)
 	
 			Def.BitmapText{
 				Name="Meter",
-				Font="_avenirnext lt pro bold 25px",
+				Font="_avenirnext lt pro bold/25px",
 				InitCommand=function(s) s:halign(0):diffuse(Color.Black):strokecolor(color("#dedede"))
 					:xy(-14,DiffSpacing*i)
 				end,
@@ -652,9 +656,9 @@ return function(Style)
 			end			
 		end,
 		
-		-- Change to ScreenGameplay.
+		-- Change to ScreenStageInformation.
 		StartSongCommand=function(self)
-			SCREENMAN:GetTopScreen():SetNextScreenName("ScreenGameplay"):StartTransitioningScreen("SM_GoToNextScreen")
+			SCREENMAN:GetTopScreen():SetNextScreenName("ScreenStageInformation"):StartTransitioningScreen("SM_GoToNextScreen")
 		end,
 		
 		Def.Sprite{
@@ -701,75 +705,98 @@ return function(Style)
 		},
 
 		Def.ActorFrame{
-			OnCommand=function(self)
-				self:xy(_screen.cx,_screen.cy-190)
+			Name="JacketArea",
+			InitCommand=function(self)
+				self:xy(_screen.cx,_screen.cy-150)
 			end,
+			OnCommand=function(s) s:zoomy(0):sleep(0.3):bounceend(0.175):zoomy(1) end,
 			Def.Sprite{
-				Texture=THEME:GetPathG("","_shared/_jacket back.png")
+				Texture=THEME:GetPathG("","_shared/_jacket back.png"),
+				InitCommand=function(s) s:y(-40) end,
 			},
-		},
-
-		-- Load the Global Centered Banner.
-		Def.Sprite{
-			Name="Banner",
-			Texture=THEME:GetPathG("","white.png"),
-			OnCommand=function(self)
-				-- Check if we are on song
-				if type(GroupsAndSongs[CurSong]) ~= "string" then
-					self:Load(jk.GetSongGraphicPath(GroupsAndSongs[CurSong][1]))
+			Def.Sprite{
+				Name="JacketUnderlay",
+				InitCommand=function(self)
+					self:zoomto(378,378):y(-40)
+				end
+			},
+			-- Load the Global Centered Jacket.
+			Def.Sprite{
+				Name="Jacket",
+				Texture=THEME:GetPathG("","white.png"),
+				OnCommand=function(self)
+					-- Check if we are on song
+					if type(GroupsAndSongs[CurSong]) ~= "string" then
+						self:Load(jk.GetSongGraphicPath(GroupsAndSongs[CurSong][1]))
+						
+					-- Not on song, Show group Jacket.
+					else
+						if jk.GetGroupGraphicPath(GroupsAndSongs[CurSong],"Jacket","SortOrder_Group") ~= "" then
+							self:Load(jk.GetGroupGraphicPath(GroupsAndSongs[CurSong],"Jacket","SortOrder_Group"))
+						else
+							self:visible(false)
+						end
+					end
 					
-				-- Not on song, Show group banner.
-				else
-					if jk.GetGroupGraphicPath(GroupsAndSongs[CurSong],"Jacket","SortOrder_Group") ~= "" then
-						self:Load(jk.GetGroupGraphicPath(GroupsAndSongs[CurSong],"Jacket","SortOrder_Group"))
-					else
-						self:visible(false)
-					end
-				end
-			
-				self:xy(_screen.cx,_screen.cy-190):zoomto(378,378)
-			end				
-		},
-
-		Def.ActorFrame{
-			Name="BannerInfo",
-			OnCommand=function(self)
-				self:xy(_screen.cx,_screen.cy+60)
-			end,
-			Def.Sprite{
-				Texture=THEME:GetPathG("","_shared/titlebox.png")
-			},
-			Def.BitmapText{
-				Name="Title",
-				Font="_avenirnext lt pro bold/20px",
-				OnCommand=function(self)
-					self:maxwidth(400)
+					self:zoomto(378,378):y(-40)
+				end	,
+				LoadCommand=function(self) 
 					-- Check if we are on song
 					if type(GroupsAndSongs[CurSong]) ~= "string" then
-						self:settext(ToUpper(GroupsAndSongs[CurSong][1]:GetDisplayMainTitle())):y(-6)
-						:diffuse(SongAttributes.GetMenuColor(GroupsAndSongs[CurSong][1]))
-						:strokecolor(ColorDarkTone(SongAttributes.GetMenuColor(GroupsAndSongs[CurSong][1])))
+						self:Load(jk.GetSongGraphicPath(GroupsAndSongs[CurSong][1]))
+						
+					-- Not on song, Show group Jacket.
 					else
-						self:settext(SongAttributes.GetGroupName(GroupsAndSongs[CurSong])):y(6)
-						:diffuse(SongAttributes.GetGroupColor(GroupsAndSongs[CurSong]))
-						:strokecolor(ColorDarkTone(SongAttributes.GetGroupColor(GroupsAndSongs[CurSong])))
+						if jk.GetGroupGraphicPath(GroupsAndSongs[CurSong],"Jacket","SortOrder_Group") ~= "" then
+							self:Load(jk.GetGroupGraphicPath(GroupsAndSongs[CurSong],"Jacket","SortOrder_Group"))
+						else
+							self:visible(false)
+						end
 					end
+					
+					self:zoomto(378,378):y(-40)
 				end
 			},
-			Def.BitmapText{
-				Name="Artist",
-				Font="_avenirnext lt pro bold/20px",
+			Def.ActorFrame{
+				Name="SongInfo",
 				OnCommand=function(self)
-					self:y(20)
-						:maxwidth(400)
-					-- Check if we are on song
-					if type(GroupsAndSongs[CurSong]) ~= "string" then
-						self:settext(ToUpper(GroupsAndSongs[CurSong][1]:GetDisplayArtist()))
-						:diffuse(SongAttributes.GetMenuColor(GroupsAndSongs[CurSong][1]))
-						:strokecolor(ColorDarkTone(SongAttributes.GetMenuColor(GroupsAndSongs[CurSong][1])))
+					self:y(208)
+				end,
+				Def.Sprite{
+					Texture=THEME:GetPathG("","_shared/titlebox.png")
+				},
+				Def.BitmapText{
+					Name="Title",
+					Font="_avenirnext lt pro bold/20px",
+					OnCommand=function(self)
+						self:maxwidth(400)
+						-- Check if we are on song
+						if type(GroupsAndSongs[CurSong]) ~= "string" then
+							self:settext(ToUpper(GroupsAndSongs[CurSong][1]:GetDisplayMainTitle())):y(-6)
+							:diffuse(SongAttributes.GetMenuColor(GroupsAndSongs[CurSong][1]))
+							:strokecolor(ColorDarkTone(SongAttributes.GetMenuColor(GroupsAndSongs[CurSong][1])))
+						else
+							self:settext(SongAttributes.GetGroupName(GroupsAndSongs[CurSong])):y(6)
+							:diffuse(SongAttributes.GetGroupColor(GroupsAndSongs[CurSong]))
+							:strokecolor(ColorDarkTone(SongAttributes.GetGroupColor(GroupsAndSongs[CurSong])))
+						end
 					end
-				end
-			}
+				},
+				Def.BitmapText{
+					Name="Artist",
+					Font="_avenirnext lt pro bold/20px",
+					OnCommand=function(self)
+						self:y(20)
+							:maxwidth(400)
+						-- Check if we are on song
+						if type(GroupsAndSongs[CurSong]) ~= "string" then
+							self:settext(ToUpper(GroupsAndSongs[CurSong][1]:GetDisplayArtist()))
+							:diffuse(SongAttributes.GetMenuColor(GroupsAndSongs[CurSong][1]))
+							:strokecolor(ColorDarkTone(SongAttributes.GetMenuColor(GroupsAndSongs[CurSong][1])))
+						end
+					end
+				}
+			},
 		},
 
 		Def.ActorFrame{

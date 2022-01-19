@@ -14,7 +14,7 @@ if HeaderText then
     text[#text+1] = Def.Sprite{
         Texture="text/"..HeaderText..".png",
         InitCommand=function(s)
-            if screen == "OFSelectMusic" then
+            if has_value(yoffsetted,screen) then
                 s:y(-1)
             else
                 s:y(10)

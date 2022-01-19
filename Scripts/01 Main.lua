@@ -23,6 +23,16 @@ if not LoadModule then
 	end
 end
 
+function has_value (tab, val)
+    for index, value in ipairs(tab) do
+        if value == val then
+            return true
+        end
+    end
+
+    return false
+end
+
 -- We hate using globals, So use 1 global table.
 TF_WHEEL = {}
 
@@ -144,4 +154,60 @@ function GetUpdateTimer(targetDelta)
         frameCounter = frameCounter - 1
         return false
     end
+end
+
+--This comes in handy in a number of places
+function GetOrCreateChild(tab, field, kind)
+    kind = kind or 'table'
+    local out
+    if not tab[field] then
+        if kind == 'table' then
+            out = {}
+        elseif kind == 'number' then
+            out = 0
+        elseif kind == 'boolean_df' or kind == 'boolean' then
+            out = false
+        elseif kind == 'boolean_dt' then
+            out = true
+        else
+            error("GetOrCreateChild: I don't know a default value for type "..kind)
+        end
+        tab[field] = out
+    else out = tab[field] end
+    return out
+end
+
+--returns the ReadBPM for a given song. This is the value that mmods treat
+--as the maximum song BPM.
+function CalculateReadBPM(song)
+    local read_bpm = 0
+    local mMod_high_cap = THEME:GetMetric("Player", "MModHighCap")
+    --an mmod high cap of 0 or less means there is none.
+    if mMod_high_cap <= 0 then
+        mMod_high_cap = math.huge
+    end
+
+    local disp_bpms = song:GetDisplayBpms()
+    if disp_bpms[1] == -1 then --secret display BPM. we have to find out what the real BPM should be
+        read_bpm = song:GetSongTiming():GetActualBPM()[2]
+    else
+        read_bpm = disp_bpms[2]
+    end
+
+    return math.min(read_bpm, mMod_high_cap)
+end
+
+--not really related but this seems like an OK place
+function PlayerStageStats:FullComboType()
+	if self:FullComboOfScore('TapNoteScore_W1') then
+		return 'TapNoteScore_W1'
+	elseif self:FullComboOfScore('TapNoteScore_W2') then
+		return 'TapNoteScore_W2'
+	elseif self:FullComboOfScore('TapNoteScore_W3') then
+		return 'TapNoteScore_W3'
+	elseif self:FullComboOfScore('TapNoteScore_W5') then
+		return 'TapNoteScore_W4'
+	else
+		return nil
+	end
 end

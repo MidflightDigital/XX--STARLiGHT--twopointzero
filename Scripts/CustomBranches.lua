@@ -2,6 +2,57 @@ function Branch.FirstScreen()
 	return "ScreenMDSplash"
 end
 
+function SelectMusicOrCourse()
+	if IsNetSMOnline() then
+		return "ScreenNetSelectMusic"
+	elseif GAMESTATE:IsCourseMode() then
+		return "ScreenSelectCourse"
+	else
+		return "OFSelectMusic"
+	end
+end
+
+function Branch.AfterGameplay()
+	if GAMESTATE:IsCourseMode() then
+		if GAMESTATE:GetPlayMode() == 'PlayMode_Nonstop' then
+			return "ScreenEvaluationNonstop"
+		else	-- oni and endless are shared
+			return "ScreenEvaluationOni"
+		end
+	elseif GAMESTATE:GetPlayMode() == 'PlayMode_Rave' then
+		return "ScreenEvaluationRave"
+	else
+		return "ScreenEvaluationNormal"
+	end
+end
+
+function Branch.AfterEvaluation()
+	--normal
+	if GAMESTATE:GetSmallestNumStagesLeftForAnyHumanPlayer() >= 1 then
+		return "ScreenProfileSave"
+	elseif GAMESTATE:GetCurrentStage() == "Stage_Extra1" then
+		if STATSMAN:GetCurStageStats():AllFailed() then
+			if GAMESTATE:IsCourseMode() then
+				return "ScreenProfileSaveSummary"
+			else
+				return "ScreenEvaluationSummary"
+			end;
+		else
+			return "ScreenProfileSave"
+		end;
+	elseif STATSMAN:GetCurStageStats():AllFailed() then
+		return "ScreenEvaluationSummary"
+	elseif GAMESTATE:IsCourseMode() then
+		return "ScreenProfileSaveSummary"
+	else
+		return "ScreenEvaluationSummary"
+	end
+end
+
+function Branch.AfterSummary()
+    return "ScreenProfileSaveSummary"
+end
+
 CustomBranch = {
     InitialScreen = function()
         return "ScreenTitle"
