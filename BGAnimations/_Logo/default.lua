@@ -17,4 +17,9 @@ return Def.ActorFrame{
             s:xy(-64,-32)
         end,
     };
+    Def.Sprite{
+        Texture="re.png",
+        InitCommand=function(s) s:diffusealpha(0):xy(563,164) end,
+        OnCommand=function(s) s:sleep(0.5):linear(0.5):diffusealpha(1) end,
+    }
 }

@@ -10,7 +10,7 @@ return Def.ActorFrame{
   };
   Def.Sprite{
     Texture=THEME:GetPathB("","_Logo/xxlogo.png"),
-    InitCommand=function(s) s:xy(_screen.cx+104,_screen.cy+16):blend(Blend.Add):diffusealpha(0) end,
+    InitCommand=function(s) s:xy(_screen.cx+118,_screen.cy+16):blend(Blend.Add):diffusealpha(0) end,
     OnCommand=function(s) s:sleep(0.45):diffusealpha(1):linear(1):diffusealpha(0):zoom(1.5):sleep(0):zoom(1):queuecommand("Anim") end,
     AnimCommand=function(s) s:diffusealpha(0):sleep(1):linear(0.75):diffusealpha(0.3):sleep(0.1):linear(0.4):diffusealpha(0):queuecommand("Anim") end,
   };

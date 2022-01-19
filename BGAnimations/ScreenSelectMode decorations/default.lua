@@ -18,7 +18,7 @@ t[#t+1] = Def.ActorFrame {
     };
     Def.Sprite{
         Texture=THEME:GetPathB("","_Logo/xxlogo.png"),
-        InitCommand=function(s) s:xy(_screen.cx+104,_screen.cy+16):blend(Blend.Add):diffusealpha(0):queuecommand("Anim") end,
+        InitCommand=function(s) s:xy(_screen.cx+118,_screen.cy+16):blend(Blend.Add):diffusealpha(0):queuecommand("Anim") end,
         AnimCommand=function(s) s:diffusealpha(0):sleep(1):linear(0.75):diffusealpha(0.3):sleep(0.1):linear(0.4):diffusealpha(0):queuecommand("Anim") end,
     };
     loadfile(THEME:GetPathB("","_Dancer/default.lua"))()..{

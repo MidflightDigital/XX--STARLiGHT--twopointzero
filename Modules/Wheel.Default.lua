@@ -23,21 +23,21 @@ end
 
 -- Difficulty Colours
 local DiffColors={
-	color("#88ffff"), -- Difficulty_Beginner
-	color("#ffc0cb"), -- Difficulty_Easy
-	color("#ff8888"), -- Difficulty_Medium
-	color("#88ff88"), -- Difficulty_Hard
-	color("#8888ff"), -- Difficulty_Challenge
+	color("#2ddaff"), -- Difficulty_Beginner
+	color("#ffae00"), -- Difficulty_Easy
+	color("#ff384f"), -- Difficulty_Medium
+	color("0,0.996,0,1"), -- Difficulty_Hard
+	color("#de52ec"), -- Difficulty_Challenge
 	color("#888888") -- Difficulty_Edit
 }
 
 -- Difficulty Names.
 local DiffNames={
-	"BEGIN", -- Difficulty_Beginner
-	"PARAPARA", -- Difficulty_Easy
-	"NORMAL", -- Difficulty_Medium
-	"HARD ", -- Difficulty_Hard
-	"EXPERT", -- Difficulty_Challenge
+	"BEGINNER", -- Difficulty_Beginner
+	"BASIC", -- Difficulty_Easy
+	"DIFFICULT", -- Difficulty_Medium
+	"EXPERT", -- Difficulty_Hard
+	"CHALLENGE", -- Difficulty_Challenge
 	"EDIT" -- Difficulty_Edit
 }
 
@@ -50,6 +50,9 @@ if not CurGroup then GurGroup = "" end
 -- The player joined.
 if not Joined then Joined = {} end
 
+-- Position on the difficulty select that shows up after we picked a song.
+local DiffPos = {[PLAYER_1] = 1,[PLAYER_2] = 1}
+
 -- The increase offset for when we move with postive.
 local IncOffset = 1
 
@@ -58,6 +61,8 @@ local DecOffset = 10
 
 -- The center offset of the wheel.
 local XOffset = 5
+
+local DiffSpacing = 46
 
 -- Move the wheel, We define the Offset using +1 or -1.
 -- We parse the Songs also so we can get the amount of songs.
@@ -108,11 +113,11 @@ local function MoveSelection(self,offset,Songs)
 			-- Here we define what the wheel does if it is outside the values.
 			-- So that when a part is at the bottom it will move to the top.
 			if (i == IncOffset and offset == -1) or (i == DecOffset and offset == 1) then
-
 				-- Move wheelpart instantly to new location.
                 self:GetChild("SongWheel"):GetChild("CD"..i):sleep(0):addx((offset*-280)*-10)
 
                 if type(Songs[pos]) ~= "string" then
+					self:GetChild("LargeDiffP1"):visible(true)
 					self:GetChild("SongWheel"):GetChild("CD"..i):GetChild("JacketOverlay"):visible(false)
                     if Songs[pos][1]:HasJacket() then 
 						self:GetChild("SongWheel"):GetChild("CD"..i):GetChild("JacketTexture"):Load(Songs[pos][1]:GetJacketPath()) 
@@ -135,6 +140,10 @@ local function MoveSelection(self,offset,Songs)
 
 		-- Check if its a song.
 		if type(Songs[CurSong]) ~= "string" then
+			
+			-- Set Current Song and broadcast message for the radar.
+			GAMESTATE:SetCurrentSong(Songs[CurSong][1])
+
 			-- Set the Centered Banner.
 			self:GetChild("Banner"):visible(true):Load(Songs[CurSong][1]:GetJacketPath())
 
@@ -164,7 +173,8 @@ local function MoveSelection(self,offset,Songs)
 			end
 
 		-- Its a group.
-		else	
+		else
+			self:GetChild("LargeDiffP1"):visible(false)
 			-- Set banner.
 			if jk.GetGroupGraphicPath(Songs[CurSong],"Jacket","SortOrder_Group") ~= "" then
 				self:GetChild("Banner"):visible(true):Load(jk.GetGroupGraphicPath(Songs[CurSong],"Jacket","SortOrder_Group"))
@@ -227,21 +237,139 @@ local function MoveSelection(self,offset,Songs)
         end
     end
 
+	-- For every difficulty that we can display do.
+	for i = 1,6 do
+		-- Hide Player1 diff.
+		self:GetChild("Diffs"):GetChild("DiffName1P"..i):diffusealpha(0)
+		
+		-- Hide player2 diff.
+		self:GetChild("Diffs"):GetChild("DiffName2P"..i):diffusealpha(0)
+	end
+
+	-- Check if it's a song.
+	if type(Songs[CurSong]) ~= "string" then
+
+		-- For every difficulty do.
+		for i = 1,#Songs[CurSong]-1 do
+
+			if i > 6 then break end
+
+			-- Keep within boundaries.
+			if DiffPos[PLAYER_1] > #Songs[CurSong]-1 then
+				DiffPos[PLAYER_1] = #Songs[CurSong]-1
+			end
+
+			if DiffPos[PLAYER_2] > #Songs[CurSong]-1 then
+				DiffPos[PLAYER_2] = #Songs[CurSong]-1
+			end
+
+			-- Check if P1 is active.
+			if Joined[PLAYER_1] then
+				
+				-- Diffuse the background of the difficulty selector.
+				self:GetChild("Diffs"):GetChild("DiffName1P"..i):GetChild("DiffBlock"):diffuse(DiffColors[TF_WHEEL.DiffTab[Songs[CurSong][i+1]:GetDifficulty()]])
+				self:GetChild("Diffs"):GetChild("DiffName1P"..i):GetChild("Meter"):settext(Songs[CurSong][i+1]:GetMeter())
+				self:GetChild("LargeDiffP1"):GetChild("DiffName"):settext(DiffNames[TF_WHEEL.DiffTab[Songs[CurSong][DiffPos[PLAYER_1]+1]:GetDifficulty()]])
+					:diffuse(DiffColors[TF_WHEEL.DiffTab[Songs[CurSong][DiffPos[PLAYER_1]+1]:GetDifficulty()]])
+				self:GetChild("LargeDiffP1"):GetChild("Meter"):settext(Songs[CurSong][DiffPos[PLAYER_1]+1]:GetMeter())
+
+			end
+		
+			-- Check if P2 is active.
+			if Joined[PLAYER_2] then
+
+				-- Diffuse the background of the difficulty selector.
+				self:GetChild("Diffs"):GetChild("DiffName2P"..i):GetChild("DiffBlock"):diffuse(DiffColors[TF_WHEEL.DiffTab[Songs[CurSong][i+1]:GetDifficulty()]])
+				self:GetChild("Diffs"):GetChild("DiffName1P"..i):GetChild("Meter"):settext(Songs[CurSong][i+1]:GetMeter())
+
+			end
+		
+			-- Extra check to diffuse the player difficulty selector on a 0 offset.
+			if offset == 0 then
+				self:GetChild("Diffs"):GetChild("DiffName1P"..i):diffusealpha(0)
+				self:GetChild("Diffs"):GetChild("DiffName2P"..i):diffusealpha(0)
+			end
+		
+			-- Check if P1 is active, if P1 is active, show the difficulty selector.
+			if Joined[PLAYER_1] then
+				self:GetChild("Diffs"):GetChild("DiffName1P"..i):diffusealpha(1)
+			end
+			
+			-- Check if P2 is active, if P2 is active, show the difficulty selector.
+			if Joined[PLAYER_2] then
+				self:GetChild("Diffs"):GetChild("DiffName2P"..i):diffusealpha(1)
+			end
+		
+			-- Check the diffuse position of P1, if its not active, hide it.
+			if DiffPos[PLAYER_1] ~= i then
+				self:GetChild("Diffs"):GetChild("DiffName1P"..i):decelerate(0.2):x(12)
+			end
+
+			-- Do effects on active position of player.
+			if DiffPos[PLAYER_1] == i then
+				self:GetChild("Diffs"):GetChild("DiffName1P"..i):decelerate(0.2):x(26)
+			end
+		
+			-- Check the diffuse position of P2, if its not active, hide it.
+			if DiffPos[PLAYER_2] ~= i then
+				self:GetChild("Diffs"):GetChild("DiffName2P"..i):decelerate(0.2):x(12)
+			end
+
+			-- Do effects on active position of player.
+			if DiffPos[PLAYER_2] == i then
+				self:GetChild("Diffs"):GetChild("DiffName2P"..i):decelerate(0.2):x(-26)
+			end
+		end
+	end		
+
+	local Difficulties = #Songs[CurSong]-1
+	if Difficulties > 6 then Difficulties = 6 end
+
     -- Check if offset is not 0.
 	if offset ~= 0 then
-		-- Stop all the music playing, Which is the Song Music
 		
 		-- Check if its a song.
 		if type(Songs[CurSong]) ~= "string" then
+
+			-- Stop all the music playing, Which is the Song Music
 			SOUND:StopMusic()
+
 			-- Play Current selected Song Music.
 			if Songs[CurSong][1]:GetMusicPath() then
 				SOUND:PlayMusicPart(Songs[CurSong][1]:GetMusicPath(),Songs[CurSong][1]:GetSampleStart(),Songs[CurSong][1]:GetSampleLength(),1,1.5,true)
 			end
 		else
+			-- Play our Common BGM.
 			SOUND:PlayMusicPart(THEME:GetPathS("","MenuMusic/common/Default (loop).ogg"),0,132,0,0,true)
 		end
 	end
+end
+
+-- Change the cursor of Player on the difficulty selector.
+local function MoveDifficulty(self,offset,Songs)
+
+	-- check if player is joined.
+	if Joined[self.pn] then
+
+		-- Move cursor.
+		DiffPos[self.pn] = DiffPos[self.pn] + offset
+		if offset ~= 0 then
+			if DiffPos[self.pn] < 1 or DiffPos[self.pn] >= #Songs[CurSong] then
+				self:GetChild("NoDiffSound"):play()
+			else
+				self:GetChild("DiffSound"):play()
+			end
+		end
+
+		-- Keep within boundaries.
+		if DiffPos[self.pn] < 1 then DiffPos[self.pn] = 1 end
+		if DiffPos[self.pn] > #Songs[CurSong]-1 then DiffPos[self.pn] = #Songs[CurSong]-1 end
+
+		GAMESTATE:SetCurrentSteps(self.pn,Songs[CurSong][DiffPos[self.pn]+1])
+	
+		-- Call the move selecton command to update the graphical location of cursor.
+		MoveSelection(self,0,Songs)
+	end 
 end
 
 -- This is the main function, Its the function that contains the wheel.
@@ -259,8 +387,6 @@ return function(Style)
 
     -- The main songwheel that contains all the songs.
     local SongWheel = Def.ActorFrame{Name="SongWheel"}
-
-	local DiffStars = Def.ActorFrame{Name="DiffStars"}
 
     for i = 1,10 do
 
@@ -322,8 +448,50 @@ return function(Style)
 			};
         }
 
-
     end
+
+	-- The difficulties.
+	local Diffs = Def.ActorFrame{Name="Diffs"}
+
+	-- For every difficulty do.
+	for i = 1,6 do
+		
+		-- Player 1 difficulty selector.
+		Diffs[#Diffs+1] = Def.ActorFrame{
+			Name="DiffName1P"..i,
+			InitCommand=function(s) s:x(SCREEN_LEFT+6):diffusealpha(0) end,
+			Def.Quad{
+				Name="DiffBlock",
+				InitCommand=function(s) s:setsize(5,36):xy(-4,DiffSpacing*i) end,
+			},
+	
+			Def.BitmapText{
+				Name="Meter",
+				Font="_avenirnext lt pro bold/25px",
+				InitCommand=function(s) s:halign(0):diffuse(Color.Black):strokecolor(color("#dedede"))
+					:xy(14,DiffSpacing*i)
+				end,
+			};
+		}
+		
+		-- Player 2 difficulty selector.
+		Diffs[#Diffs+1] = Def.ActorFrame{
+			Name="DiffName2P"..i,
+			InitCommand=function(s) s:x(SCREEN_RIGHT-6) end,
+			Def.Quad{
+				Name="DiffBlock",
+				InitCommand=function(s) s:setsize(5,36):xy(4,DiffSpacing*i) end,
+			},
+	
+			Def.BitmapText{
+				Name="Meter",
+				Font="_avenirnext lt pro bold 25px",
+				InitCommand=function(s) s:halign(0):diffuse(Color.Black):strokecolor(color("#dedede"))
+					:xy(-14,DiffSpacing*i)
+				end,
+			};
+		}
+	end
 
      -- Here we return the actual Music Wheel Actor.
     return Def.ActorFrame{
@@ -332,7 +500,9 @@ return function(Style)
 			-- It uses a Command function. So you can define all the Commands,
 			-- Like MenuLeft is MenuLeftCommand.
 			SCREENMAN:GetTopScreen():AddInputCallback(TF_WHEEL.Input(self))
-			
+
+			MoveSelection(self,0,GroupsAndSongs)
+
 			-- Sleep for 0.2 sec, And then load the current song music.
 			self:sleep(0.2):queuecommand("PlayCurrentSong")
 
@@ -350,6 +520,7 @@ return function(Style)
         -- Do stuff when a user presses left on Pad or Menu buttons.
         MenuLeftCommand=function(self) 
 			MoveSelection(self,-1,GroupsAndSongs)
+			MoveDifficulty(self,0,GroupsAndSongs)
 			self:GetChild("WheelSound"):play()
 			self:GetChild("Select"):GetChild("LeftCon"):stoptweening():x(-20):decelerate(0.5):x(0)
 			self:GetChild("Select"):GetChild("LeftCon"):GetChild("LeftArrow"):stoptweening():diffuse(color("#ff00ea")):sleep(0.5):diffuse(color("#00f0ff"))
@@ -358,16 +529,17 @@ return function(Style)
 		-- Do stuff when a user presses Right on Pad or Menu buttons.
         MenuRightCommand=function(self) 
 			MoveSelection(self,1,GroupsAndSongs)
+			MoveDifficulty(self,0,GroupsAndSongs)
 			self:GetChild("WheelSound"):play()
 			self:GetChild("Select"):GetChild("RightCon"):stoptweening():x(20):decelerate(0.5):x(0)
 			self:GetChild("Select"):GetChild("RightCon"):GetChild("RightArrow"):stoptweening():diffuse(color("#ff00ea")):sleep(0.5):diffuse(color("#00f0ff"))
 		 end,
 
 		-- Do stuff when a user presses the Down on Pad or Menu buttons.
-		MenuDownCommand=function(self) end,
+		MenuDownCommand=function(self) MoveDifficulty(self,1,GroupsAndSongs) end,
 		
 		-- Do stuff when a user presses the Down on Pad or Menu buttons.
-		MenuUpCommand=function(self) end,
+		MenuUpCommand=function(self) MoveDifficulty(self,-1,GroupsAndSongs) end,
 
         -- Do stuff when a user presses the Back on Pad or Menu buttons.
 		BackCommand=function(self) 
@@ -445,8 +617,8 @@ return function(Style)
 						PROFILEMAN:SaveProfile(PLAYER_2)
 					
 						-- Set the Current Steps to use.
-						GAMESTATE:SetCurrentSteps(PLAYER_1,GroupsAndSongs[CurSong][CurDiff])
-						GAMESTATE:SetCurrentSteps(PLAYER_2,GroupsAndSongs[CurSong][CurDiff])
+						GAMESTATE:SetCurrentSteps(PLAYER_1,GroupsAndSongs[CurSong][DiffPos[PLAYER_1]+1])
+						GAMESTATE:SetCurrentSteps(PLAYER_2,GroupsAndSongs[CurSong][DiffPos[PLAYER_2]+1])
 					else
 				
 						-- If we are single player, Use Single.
@@ -456,7 +628,7 @@ return function(Style)
 						PROFILEMAN:SaveProfile(self.pn)
 					
 						-- Set the Current Step to use.
-						GAMESTATE:SetCurrentSteps(self.pn,GroupsAndSongs[CurSong][CurDiff])
+						GAMESTATE:SetCurrentSteps(self.pn,GroupsAndSongs[CurSong][DiffPos[self.pn]+1])
 					end
 				
 					-- We want to go to player options when people doublepress, So we set the StartOptions to true,
@@ -600,6 +772,29 @@ return function(Style)
 			}
 		},
 
+		Def.ActorFrame{
+			Name="LargeDiffP1",
+			OnCommand=function(s) s:xy(_screen.cx-566,_screen.cy-200):zoom(0):sleep(0.3):bounceend(0.25):zoom(1) end,
+			OffCommand=function(s) s:sleep(0.5):bouncebegin(0.25):zoom(0) end,
+			Def.Sprite{
+				Texture=THEME:GetPathG("","_SelectMusic/Default/RadarBase.png"),
+				InitCommand=function(s) s:y(10):blend(Blend.Add):zoom(1.35):diffuse(ColorMidTone(PlayerColor(PLAYER_1))):diffusealpha(0.75) end,
+			};
+			create_ddr_groove_radar("radar",0,20,PLAYER_1,350,Alpha(PlayerColor(PLAYER_1),0.25))..{
+				Name="Radar",
+			};
+			Def.BitmapText{
+				Name="DiffName",
+				Font="_avenirnext lt pro bold/42px",
+				OnCommand=function(s) s:y(-180):shadowlengthy(5) end,
+			},
+			Def.BitmapText{
+				Name="Meter",
+				Font="ScreenSelectMusic difficulty",
+				OnCommand=function(s) s:y(20):shadowlengthy(5) end,
+			};
+		},
+
 		Def.BitmapText{
 			Name="BPM",
 			Font="_avenirnext lt pro bold/25px",
@@ -664,6 +859,10 @@ return function(Style)
 				}
 			},
 		};
+		
+		-- Load the difficulties selector.
+		Diffs..{OnCommand=function(self) self:y(_screen.cy-400) end},
+
 		loadfile(THEME:GetPathB("","_HudPanels/Header/default.lua"))();
 		loadfile(THEME:GetPathB("","_HudPanels/Help/default.lua"))();
 		Def.BitmapText{
@@ -674,6 +873,16 @@ return function(Style)
 					:strokecolor(Alpha(color("#00baff"),0.5))
 					:xy(_screen.cx,SCREEN_TOP+104)
 			end
+		},
+
+		Def.Sound{
+			Name="NoDiffSound",
+			File=THEME:GetPathS("","NoDiff.ogg"),
+		},
+
+		Def.Sound{
+			Name="DiffSound",
+			File=THEME:GetPathS("","ScreenSelectMusic difficulty harder.ogg"),
 		},
 
 		Def.Sound{
