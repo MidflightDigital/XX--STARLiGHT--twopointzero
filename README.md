@@ -1,38 +1,19 @@
 <h1 align="center">
   <br>
-  <img src="https://github.com/MidflightDigital/XX--STARLiGHT--twopointzero/blob/main/xxlogo.png?raw=true" alt="STARLiGHT Logo" width="600">
+  <img src="https://github.com/MidflightDigital/XX--STARLiGHT--twopointzero/blob/rewrite/xxlogo.png?raw=true" alt="STARLiGHT Logo" width="600">
   <br>
-  XX -STARLiGHT- twopointzero
+  XX -STARLiGHT- twopointzero:RE
   <br>
 </h1>
 
-<h4 align="center">Repository for the XX -STARLiGHT- twopointzero theme by Midflight Digital.</h4>
-<h1 align="center">
-  <img src="https://inori.s-ul.eu/CbXKGk7K.png" alt="Screenshots" width="600">
-</h1>
+<h4 align="center">This branch is dedicated to completely re-writing the code for XX STARLiGHT -twopointzero-</h4>
 
-## Where's the Download? ##
+## Branch Focus: ##
+The current release version of STARLiGHT -twopointzero-, while much improved from V1, still has many faults due to bad code practices and old techniques. Rather than potentially break the mainline, we've made a new branch to allow for the entire theme to be re-worked from the ground up without affecting the mainline version.
 
-* Click on the [Releases](https://github.com/MidflightDigital/XX--STARLiGHT--twopointzero/releases) options in the sidebar and download the latest dated release.
+The plan is to completely throw out almost all code and re-write it from scratch so everything is up-to-date. This includes replacing engine-generated elements as much as possible. No more engine wheel, etc. The main focus is to target performance while also adding QoL features as we see fit.
 
-## Installation Instructions ##
-
-### Theme Package: ###
-* Delete any previous installations of the theme before updating!
-* Open the XX -starlight- .zip
-* Extract the folders in the XX -starlight- folder into the root of your StepMania directory (Please note that the SNCharacters Folder must be placed in the Appearance Folder     when using Project Outfox)
-
-* Extract the "group.ini" and "jacket.png" files into your DDR XX song pack folder.
-
-### Hotfix: ###
-* Open the XX -starlight- hotfix .zip
-* Extract the contents of the XX -starlight- hotfix folder into your DDR XX -starlight- theme folder.
-* Overwrite all files.
-
-## Extras ##
-* Updated SNCharacters and DancerVideos can be downloaded from here: https://drive.google.com/drive/folders/1dUpl4qsrITAqAd3bDk-pcxpG7fmnu5Gc
-
-=========================================================================
+You are free to help us out by forking and submitting Pull Requests when you've re-implemented anything.
 
 # Copyright Info #
 
