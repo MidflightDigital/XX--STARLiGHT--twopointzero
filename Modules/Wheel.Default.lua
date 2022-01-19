@@ -139,6 +139,10 @@ local function MoveSelection(self,offset,Songs)
 			-- Set the Centered Banner.
 			self:GetChild("Banner"):visible(true):Load(Songs[CurSong][1]:GetJacketPath())
 
+			self:GetChild("GroupLabel"):linear(0.15):diffusealpha(1)
+			self:GetChild("GroupLabel"):GetChild("GroupBacker"):linear(0.15):cropright(0)
+			self:GetChild("GroupLabel"):GetChild("GroupText"):linear(0.15):cropright(0)
+			
 			self:GetChild("BannerInfo"):visible(true)
 			self:GetChild("BannerInfo"):GetChild("Title"):settext(ToUpper(Songs[CurSong][1]:GetDisplayMainTitle())):y(-6):diffuse(SongAttributes.GetMenuColor(Songs[CurSong][1]))
 				:strokecolor(ColorDarkTone(SongAttributes.GetMenuColor(Songs[CurSong][1])))
@@ -171,6 +175,10 @@ local function MoveSelection(self,offset,Songs)
 				:strokecolor(ColorDarkTone(SongAttributes.GetGroupColor(Songs[CurSong])))
 			self:GetChild("BannerInfo"):GetChild("Artist"):settext(""):diffuse(SongAttributes.GetGroupColor(Songs[CurSong]))
 			:strokecolor(ColorDarkTone(SongAttributes.GetGroupColor(Songs[CurSong])))
+
+			self:GetChild("GroupLabel"):linear(0.15):diffusealpha(0)
+			self:GetChild("GroupLabel"):GetChild("GroupBacker"):linear(0.15):cropright(1)
+			self:GetChild("GroupLabel"):GetChild("GroupText"):linear(0.15):cropright(1)
 
 			self:GetChild("BPM"):visible(false)
 		end
@@ -487,6 +495,36 @@ return function(Style)
 		},
 
 		Def.ActorFrame{
+			Name="GroupLabel",
+			InitCommand=function(s) s:xy(SCREEN_LEFT,_screen.cy+80):visible(true) end,
+			Def.Sprite{
+				Name="GroupBacker",
+				Texture=THEME:GetPathG("","_SelectMusic/GLabel"),
+				InitCommand=function(s) s:cropright(1) end,
+				OnCommand=function(s) s:halign(0)
+					if type(GroupsAndSongs[CurSong]) ~= "string" then
+						s:diffuse(SongAttributes.GetGroupColor(GroupsAndSongs[CurSong][1]:GetGroupName()))
+						:visible(true)
+						:linear(0.15):cropright(0)
+					end
+				end,
+			};
+			Def.BitmapText{
+				Name="GroupText",
+				Font="_avenirnext lt pro bold/20px",
+				InitCommand=function(s) s:cropright(1) end,
+				OnCommand=function(s) s:halign(0)
+					if type(GroupsAndSongs[CurSong]) ~= "string" then
+						s:strokecolor(ColorDarkTone(SongAttributes.GetGroupColor(GroupsAndSongs[CurSong][1]:GetGroupName())))
+						:settext("GROUP/"..SongAttributes.GetGroupName(GroupsAndSongs[CurSong][1]:GetGroupName()))
+						:visible(true)
+						:linear(0.15):cropright(0)
+					end
+				end,
+			};
+		},
+
+		Def.ActorFrame{
 			OnCommand=function(self)
 				self:xy(_screen.cx,_screen.cy-190)
 			end,
@@ -627,6 +665,7 @@ return function(Style)
 			},
 		};
 		loadfile(THEME:GetPathB("","_HudPanels/Header/default.lua"))();
+		loadfile(THEME:GetPathB("","_HudPanels/Help/default.lua"))();
 		Def.BitmapText{
 			Font="_stagetext",
 			Text=ToEnumShortString(GAMESTATE:GetCurrentStage()):upper().." STAGE",
