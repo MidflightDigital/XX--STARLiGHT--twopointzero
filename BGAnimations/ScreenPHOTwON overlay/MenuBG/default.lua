@@ -1,12 +1,9 @@
 local bgPref = ThemePrefs.Get("MenuBG");
 local curIndex = 1;
 local oldIndex = curIndex;
-local frames = {}
 
 
---The extra backgrounds are currently disabled as they need to be re-coded as they cause input lockups at the title and mode select screen due to the coding of the animations. -Inori
-if SN3Debug then
-  frames = {
+  local frames = {
     {"Default","DEFAULT"},
     {"OG","STARLiGHT 1.0"},
     {"OLD","STARLiGHT 2011"},
@@ -16,15 +13,7 @@ if SN3Debug then
     {"X2", "X2"},
     {"SN3","SuperNOVA 3"},
     {"NG2","NG2"},
-  };
-else
-  frames = {
-    {"Default","DEFAULT"},
-    {"OG","STARLiGHT 1.0"},
-    {"OLD","STARLiGHT 2011"},
-    {"SN1","SuperNOVA"},
-  };
-end
+};
 
 
 local function GetFrame(frames, key)

@@ -14,7 +14,7 @@ return Def.ActorFrame{
 		end,
 	};
 	Def.Sprite{
-		Texture="hills2 hl (stretch)",
+		Texture="hill2 hl (stretch)",
 		InitCommand=function(s) s:xy(_screen.cx,_screen.cy-338):zoom(1.5)
 			:customtexturerect(0,0,1,1):texcoordvelocity(0.2,0)
 		end,
