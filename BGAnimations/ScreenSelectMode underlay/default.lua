@@ -1,8 +1,7 @@
 return Def.ActorFrame{
   Def.Quad{
-    InitCommand=function(s) s:diffuse(color("0,0,0,1")):FullScreen() end,
+    InitCommand=function(s) s:diffuse(color("0,0,0,0.25")):FullScreen() end,
   };
-  loadfile(THEME:GetPathB("","ScreenWithMenuElements background"))();
   Def.ActorFrame{
     InitCommand = function(s) s:xy(_screen.cx-540,_screen.cy+30) end,
     Def.ActorFrame{

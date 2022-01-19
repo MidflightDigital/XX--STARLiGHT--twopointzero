@@ -5,10 +5,6 @@ return Def.ActorFrame{
   StorageDevicesChangedMessageCommand=function(self, params)
 		MemCardInsert()
 	end;
-  Def.Quad{
-    InitCommand=function(s) s:diffuse(color("0,0,0,1")):FullScreen() end,
-  };
-  LoadActor("../ScreenWithMenuElements background");
   Def.ActorFrame{
     InitCommand = function(s) s:xy(_screen.cx-540,_screen.cy+30) end,
     OnCommand=function(s) s:diffusealpha(0):linear(0.3):diffusealpha(1) end,
