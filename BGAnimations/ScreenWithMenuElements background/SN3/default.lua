@@ -84,11 +84,13 @@ t[#t+1] = Def.ActorFrame {
 		};
 		Def.Sprite{
 			Texture=THEME:GetPathB("ScreenWithMenuElements","background/SN3/left flash"),
+			InitCommand=function(s) s:zoom(2.25) end,
 			OnCommand=function(s) s:playcommand("Anim") end,
 			AnimCommand=cmd(finishtweening;diffusealpha,0;sleep,4;accelerate,0.2;diffusealpha,1;sleep,0.5;linear,1;diffusealpha,0;queuecommand,'Anim');
 		};
 		Def.Sprite{
 			Texture=THEME:GetPathB("ScreenWithMenuElements","background/SN3/right flash"),
+			InitCommand=function(s) s:zoom(2.25) end,
 			OnCommand=function(s) s:playcommand("Anim") end,
 			AnimCommand=cmd(finishtweening;diffusealpha,0;sleep,2;accelerate,0.2;diffusealpha,1;sleep,0.5;linear,1;diffusealpha,0;sleep,2;queuecommand,'Anim');
 		};
@@ -108,8 +110,7 @@ t[#t+1] = Def.ActorFrame {
 
 t[#t+1] = Def.ActorFrame{
 	InitCommand=function(self)
-		self:Center()
-		self:zoom(0.4)
+		self:Center():zoom(0.4):zbuffer(false):zwrite(false)
 	end;
 	Def.ActorFrame{
 		Def.ActorFrame{

@@ -1,7 +1,7 @@
 local t = LoadFallbackB();
 local jk = LoadModule "Jacket.lua"
 
-t[#t+1] = StandardDecorationFromFile("StageDisplay","StageDisplay");
+t[#t+1] = StandardDecorationFromFileOptional("StageDisplay","StageDisplay");
 
 local screen = Var("LoadingScreen")
 
