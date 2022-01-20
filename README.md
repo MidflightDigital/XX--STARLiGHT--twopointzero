@@ -6,10 +6,10 @@
   <br>
 </h1>
 
-<h4 align="center">This branch is dedicated to completely re-writing the code for XX STARLiGHT -twopointzero-</h4>
+<h4 align="center">This branch is dedicated to re-writing the code for XX STARLiGHT -twopointzero-</h4>
 
 ## Branch Focus: ##
-The current release version of STARLiGHT -twopointzero-, while much improved from V1, still has many faults due to bad code practices and old techniques. Rather than potentially break the mainline, we've made a new branch to allow for the entire theme to be re-worked from the ground up without affecting the mainline version.
+The current release version of STARLiGHT -twopointzero-, while much improved from V1, still has many faults due to bad code practices and old techniques. Rather than potentially break the mainline, we've made a new branch to allow for the majority of the theme to be re-worked from the ground up without affecting the mainline version.
 
 The plan is to completely throw out almost all code and re-write it from scratch so everything is up-to-date. This includes replacing engine-generated elements as much as possible. No more engine wheel, etc. The main focus is to target performance while also adding QoL features as we see fit.
 
