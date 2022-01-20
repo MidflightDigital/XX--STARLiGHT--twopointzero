@@ -8,20 +8,7 @@ local function InputHandler(event)
 	if event.DeviceInput.button == "DeviceButton_left mouse button" then
 		MESSAGEMAN:Broadcast("MouseLeftClick")
 	  end
-	  if MusicWheel ~= nil and getenv("OPList") == 0 then
-		if event.GameButton == "MenuLeft" and GAMESTATE:IsPlayerEnabled(player) then
-		  overlay:GetChild("MWChange"):play()
-		end
-		if event.GameButton == "MenuRight" and GAMESTATE:IsPlayerEnabled(player) then
-		  overlay:GetChild("MWChange"):play()
-		end
-	end
 end
-
-t[#t+1] = Def.Sound{
-	Name="MWChange",
-	File=THEME:GetPathS("","MWChange/Default_MWC"),
-};
 
 t[#t+1] = Def.Actor{
 	OnCommand=function(s)
