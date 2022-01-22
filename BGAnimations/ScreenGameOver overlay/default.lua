@@ -53,4 +53,8 @@ return Def.ActorFrame{
     File="go.ogg",
     OnCommand=function(s) s:play() end,
   };
+  Def.Quad{
+		InitCommand=function(s) s:FullScreen():diffuse(color("0,0,0,1")) end,
+		OnCommand=function(s) s:linear(0.4):diffusealpha(0) end,
+	};
 };

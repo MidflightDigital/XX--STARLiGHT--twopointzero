@@ -71,5 +71,9 @@ return Def.ActorFrame{
     InitCommand=function(s) s:xy(_screen.cx,_screen.cy+340):diffuseshift():effectcolor1(Color.White):effectcolor2(color("#B4FF01")) end,
     OffCommand=function(s) s:linear(0.1):diffusealpha(0) end,
   };
+  Def.Quad{
+    InitCommand=function(s) s:diffuse(color("0,0,0,1")):FullScreen() end,
+    OnCommand=function(s) s:linear(0.2):diffusealpha(0) end,
+  };
 }
 

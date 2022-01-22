@@ -73,7 +73,7 @@ return Def.ActorFrame {
 			ChangeCourseSongInMessageCommand=function(s) s:diffusealpha(0):sleep(0.4):linear(0.05):diffusealpha(1):sleep(2.5):linear(0.2):diffusealpha(0) end,
 		};
 		Def.Sprite{
-			Texture="ScreenStageInformation in/star",
+			Texture="ScreenStageInformation decorations/star",
 			ChangeCourseSongInMessageCommand=function(s) s:diffusealpha(0):sleep(0.4):linear(0.05):diffusealpha(1):linear(0.2):diffusealpha(0) end,
 		};
 		Def.Quad{
@@ -81,11 +81,11 @@ return Def.ActorFrame {
 			ChangeCourseSongInMessageCommand=function(s) s:diffusealpha(0):sleep(0.4):linear(0.05):diffusealpha(0.25):linear(0.2):diffusealpha(0) end,
 		};
 		Def.Sprite{
-			Texture="ScreenStageInformation in/arrow",
+			Texture="ScreenStageInformation decorations/arrow",
 			ChangeCourseSongInMessageCommand=function(s) s:x(1700):sleep(0.2):linear(0.4):x(-1700) end,
 		};
 		Def.Sprite{
-			Texture="ScreenStageInformation in/arrow",
+			Texture="ScreenStageInformation decorations/arrow",
 			InitCommand=function(s) s:zoomx(-1) end,
 			ChangeCourseSongInMessageCommand=function(s) s:x(-1700):sleep(0.2):linear(0.4):x(1700) end,
 		};

@@ -17,14 +17,15 @@ t[#t+1] = Def.ActorFrame {
 	end;
 	-- Door sound
 	LoadActor(GetMenuMusicPath "stage" ) .. {
-		StartTransitioningCommand=function(self)
+		OnCommand=function(self) self:sleep(0.25):queuecommand("Play") end,
+		PlayCommand=function(self)
 			self:play();
 		end;
 	};
 	LoadActor(THEME:GetPathS( "", "_Cheer" ) ) .. {
-		StartTransitioningCommand=function(self)
+		OnCommand=function(self)
 			if ThemePrefs.Get("MenuMusic") ~= "leeium" then
-				self:sleep(0.5):playcommand("Play")
+				self:sleep(0.2):queuecommand("Play")
 			end
 		end;
 		PlayCommand=function(s) s:play() end,

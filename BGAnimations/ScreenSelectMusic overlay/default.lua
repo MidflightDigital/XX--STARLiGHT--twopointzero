@@ -56,4 +56,14 @@ return Def.ActorFrame{
 			end
 		end
 	end,
+	Def.Sound{
+		File=THEME:GetPathS("","_swoosh out"),
+		OffCommand=function(s) s:sleep(1):queuecommand("Play") end,
+		PlayCommand=function(s) s:play() end,
+	};
+	OffCommand=function(s)
+		LoadFromProfilePrefs()
+		s:sleep(1):queuecommand("Dim")
+	end,
+	DimCommand=function(s) SOUND:DimMusic(0,math.huge) end,
 }

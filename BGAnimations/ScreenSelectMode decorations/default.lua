@@ -137,4 +137,9 @@ t[#t+1] = Def.ActorFrame {
 	OnCommand=function(s) s:sleep(0.3):decelerate(0.6):diffusealpha(0.5) end,
   };}
 
+t[#t+1] = Def.Quad{
+	InitCommand=function(s) s:FullScreen():diffuse(color("0,0,0,0")) end,
+	OffCommand=function(s) s:sleep(0.3):linear(0.2):diffusealpha(1) end,
+};
+
 return t
