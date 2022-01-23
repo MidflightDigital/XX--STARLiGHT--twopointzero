@@ -45,12 +45,16 @@ function GetErrorMessageTimeDefault(which)
 	return default_message_time[which]
 end
 
+local scr_ratio = THEME:GetMetric('Common','ScreenHeight')/480
+
 local log_args= {
 	Name= "ScriptError",
 	ReplaceLinesWhenHidden= true,
 	IgnoreIdentical= true,
 	Times= message_time,
 	Font= "Common Error",
+	TextZoom= 0.788,
+	LineHeight= 20,
 }
 
 return Def.LogDisplay(log_args)
