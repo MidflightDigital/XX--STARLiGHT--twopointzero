@@ -111,7 +111,7 @@ t[#t+1] = Def.ActorFrame {
 		Font="_avenirnext lt pro bold 25px";
 		Name="Text";
 		InitCommand=function(s) s:maxwidth(750):align(0,0):xy(SCREEN_LEFT+10,SCREEN_TOP+8):shadowlength(1):diffusealpha(0) end,
-		OnCommand=function(s) s:finishtweening():diffusealpha(1):zoom(1) end,
+		OnCommand=function(s) s:finishtweening():diffusealpha(1) end,
 		OffCommand=function(s) s:sleep(3):linear(0.5):diffusealpha(0) end,
 	};
 	SystemMessageMessageCommand = function(self, params)
