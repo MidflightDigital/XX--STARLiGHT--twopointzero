@@ -45,8 +45,6 @@ function GetErrorMessageTimeDefault(which)
 	return default_message_time[which]
 end
 
-local scr_ratio = THEME:GetMetric('Common','ScreenHeight')/480
-
 local log_args= {
 	Name= "ScriptError",
 	ReplaceLinesWhenHidden= true,
