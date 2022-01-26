@@ -65,8 +65,13 @@ local Jacket = {
                 local paths = {
                     "/Songs/"..text.."/"..type..".png",
                     "/Songs/"..text.."/"..type..".jpg",
+                    "/Songs/"..text.."/"..text..".png",
+                    "/Songs/"..text.."/"..text..".jpg",
                     "/AdditionalSongs/"..text.."/"..type..".png",
                     "/AdditionalSongs/"..text.."/"..type..".jpg",
+                    "/AdditionalSongs/"..text.."/"..text..".png",
+                    "/AdditionalSongs/"..text.."/"..text..".jpg",
+                    
                 }
                 for path in ivalues(paths) do
                     if FILEMAN:DoesFileExist(path) then
