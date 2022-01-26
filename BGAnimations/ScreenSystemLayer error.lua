@@ -51,6 +51,8 @@ local log_args= {
 	IgnoreIdentical= true,
 	Times= message_time,
 	Font= "Common Error",
+	TextZoom= 0.788,
+	LineHeight= 20,
 }
 
 return Def.LogDisplay(log_args)

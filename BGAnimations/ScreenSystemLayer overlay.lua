@@ -103,15 +103,15 @@ t[#t+1] = Def.ActorFrame {
 -- Text
 t[#t+1] = Def.ActorFrame {
 	Def.Quad {
-		InitCommand=function(s) s:zoomto(SCREEN_WIDTH,30):align(0,0):y(SCREEN_TOP):diffuse(color("0,0,0,0")) end,
+		InitCommand=function(s) s:zoomto(SCREEN_WIDTH,34):align(0,0):y(SCREEN_TOP):diffuse(color("0,0,0,0")) end,
 		OnCommand=function(s) s:finishtweening():diffusealpha(0.85) end,
 		OffCommand=function(s) s:sleep(3):linear(0.5):diffusealpha(0) end,
 	};
 	Def.BitmapText{
 		Font="_avenirnext lt pro bold 25px";
 		Name="Text";
-		InitCommand=function(s) s:maxwidth(750):align(0,0):xy(SCREEN_LEFT+10,SCREEN_TOP+10):shadowlength(1):diffusealpha(0) end,
-		OnCommand=function(s) s:finishtweening():diffusealpha(1):zoom(0.5) end,
+		InitCommand=function(s) s:maxwidth(750):align(0,0):xy(SCREEN_LEFT+10,SCREEN_TOP+8):shadowlength(1):diffusealpha(0) end,
+		OnCommand=function(s) s:finishtweening():diffusealpha(1) end,
 		OffCommand=function(s) s:sleep(3):linear(0.5):diffusealpha(0) end,
 	};
 	SystemMessageMessageCommand = function(self, params)
@@ -125,4 +125,4 @@ t[#t+1] = Def.ActorFrame {
 	HideSystemMessageMessageCommand = function(s) s:finishtweening() end,
 };
 
-return t;
+return t
