@@ -189,6 +189,7 @@ GetGroupName=function(group)
 			return name[1]
 		end
 	end
+    --gsub the group name to remove the sort number
     return string.gsub(group,"^%d%d? ?%- ?", "")
 end;
 
