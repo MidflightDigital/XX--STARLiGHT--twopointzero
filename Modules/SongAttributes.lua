@@ -189,9 +189,7 @@ GetGroupName=function(group)
 			return name[1]
 		end
 	end
-    --Need to complete the regex to remove the dash 
-    --but I'm too smooth brain to remember how -Inori
-    return string.gsub(group,"^[0-9]+%s","")
+    return string.gsub(group,"^%d%d? ?%- ?", "")
 end;
 
 GetGroupColor=function(group)
