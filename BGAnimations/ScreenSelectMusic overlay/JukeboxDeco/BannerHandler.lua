@@ -16,7 +16,6 @@ return Def.ActorFrame{
     end
   };
 	Def.Banner{
-    InitCommand=function(s) s:y(20) end,
     SetCommand=function(self,params)
       self:finishtweening()
       local song = GAMESTATE:GetCurrentSong();
@@ -34,7 +33,7 @@ return Def.ActorFrame{
       else
         self:Load(THEME:GetPathG("","Common fallback banner"));
       end;
-      self:zoomto(478,150)
+      self:scaletofit(-239,-75,239,75):y(20)
 		end;
   };
   Def.Sprite{

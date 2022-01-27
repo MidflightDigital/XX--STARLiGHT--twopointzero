@@ -11,33 +11,9 @@ local Jacket = Def.ActorFrame{
     SetCommand=function(s)
       local song = GAMESTATE:GetCurrentSong()
       if song then
-        s:Load(jk.GetSongGraphicPath(song)):scaletoclipped(240,240):play()
+        s:Load(jk.GetSongGraphicPath(song)):scaletofit(-120,-120,120,120)
       end
 		end;
-  };
-  Def.Sprite{
-    SetCommand=function(s,p)
-      local mw = SCREENMAN:GetTopScreen():GetChild("MusicWheel")
-      if not mw then return end
-      if not GAMESTATE:GetCurrentSong() then
-        if mw:GetSelectedType('WheelItemDataType_Section') then
-          if mw:GetSelectedSection() ~= "" then
-            s:Load(jacketset(s)):diffusealpha(1)
-          else
-            if mw:GetSelectedType('WheelItemDataType_Custom') then
-              if p.Label == CrsText then
-                s:Load(THEME:GetPathG("","_jackets/COURSE.png")):diffusealpha(1)
-              end
-            end
-          end
-        else
-          s:diffusealpha(0)
-        end
-      else
-        s:diffusealpha(0)
-      end
-      s:setsize(245,245)
-    end
   };
   Def.BitmapText{
     Font="_avenirnext lt pro bold 46px",
@@ -121,7 +97,7 @@ local songinfo = Def.ActorFrame{
 return Def.ActorFrame{
   CurrentSongChangedMessageCommand=function(s)
     if GAMESTATE:GetCurrentSong() then
-      s:finishtweening():queuecommand("Show"):queuecommand("Set")
+      s:finishtweening():queuecommand("Show"):playcommand("Set")
     else
       s:queuecommand("Hide")
     end

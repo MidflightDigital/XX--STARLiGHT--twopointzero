@@ -53,7 +53,7 @@ t[#t+1] = Def.ActorFrame{
             if GAMESTATE:IsCourseMode() then
                 self:Load(song:GetBannerPath()):zoomto(512,160)
             else
-                self:Load(jk.GetSongGraphicPath(song,"Jacket")):zoomto(378,378)
+                self:Load(jk.GetSongGraphicPath(song,"Jacket")):scaletofit(-189,-189,189,189)
             end
         end;
       end;

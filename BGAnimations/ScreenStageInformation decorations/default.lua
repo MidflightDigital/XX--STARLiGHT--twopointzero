@@ -46,12 +46,11 @@ t[#t+1] = Def.ActorFrame {
 		OnCommand=function(s) 
 			if GAMESTATE:IsCourseMode() then
 				local ent = GAMESTATE:GetCurrentTrail(GAMESTATE:GetMasterPlayerNumber()):GetTrailEntries()
-				s:Load(jk.GetSongGraphicPath(ent[1]:GetSong())):setsize(620,620)
+				s:Load(jk.GetSongGraphicPath(ent[1]:GetSong()))
 			else
 				s:Load(jk.GetSongGraphicPath(GAMESTATE:GetCurrentSong()))
-				s:setsize(620,620)
 			end
-			
+			s:scaletofit(-310,-310,310,310)
 		end,	
 	};
 	Def.Sprite {

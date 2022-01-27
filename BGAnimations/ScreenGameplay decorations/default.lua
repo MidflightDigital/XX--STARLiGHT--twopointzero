@@ -5,17 +5,6 @@ t[#t+1] = StatsEngine()
 
 local LoadingScreen = Var "LoadingScreen"
 
---BGVideo
-t[#t+1] = Def.ActorFrame {
-  loadfile(THEME:GetPathB("ScreenWithMenuElements","background"))()..{
-    InitCommand=function(s)
-      s:visible(true)
-    end,
-    OnCommand=function(s) s:linear(0.25):diffusealpha(0):queuecommand("Finish") end,
-    FinishCommand=function(s) s:finishtweening():visible(false) end,
-  };
-};
-
 t[#t+1] = loadfile(THEME:GetPathB("","_StageDoors"))()..{
   InitCommand=function(s)
     s:visible(true)
@@ -33,17 +22,18 @@ t[#t+1] = Def.ActorFrame {
   OnCommand=function(s) s:sleep(0.5):decelerate(0.2):zoom(2):diffusealpha(0) end,
   Def.Quad{
     InitCommand=function(s) s:diffuse(Color.Black)
-      s:setsize(620,620)	
+      s:setsize(628,628)	
     end,
   };
   Def.Sprite {
     InitCommand=function(self)
       if GAMESTATE:IsCourseMode() then
         local ent = GAMESTATE:GetCurrentTrail(GAMESTATE:GetMasterPlayerNumber()):GetTrailEntries()
-        self:Load(jk.GetSongGraphicPath(ent[1]:GetSong())):setsize(620,620)
+        self:Load(jk.GetSongGraphicPath(ent[1]:GetSong()))
       else
-        self:Load(jk.GetSongGraphicPath(GAMESTATE:GetCurrentSong())):setsize(620,620)	
+        self:Load(jk.GetSongGraphicPath(GAMESTATE:GetCurrentSong()))
       end
+      self:scaletofit(-310,-310,310,310)
     end;
   };
 };

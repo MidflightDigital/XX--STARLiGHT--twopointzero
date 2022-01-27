@@ -10,7 +10,7 @@ local t = Def.ActorFrame{
 	Def.Sprite {
 		SetMessageCommand=function(self,p)
 			self:Load(JM.GetGroupGraphicPath(p.Text,"Jacket",GAMESTATE:GetSortOrder()))
-			self:setsize(372,372)
+			self:scaletofit(-186,-186,186,186)
 		end;
 	};
 	LoadActor(THEME:GetPathG("","_jackets/glow.png"))..{

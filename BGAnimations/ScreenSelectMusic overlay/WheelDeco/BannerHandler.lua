@@ -12,8 +12,10 @@ return Def.ActorFrame{
     OffCommand=function(s) s:sleep(0.3):decelerate(0.5):addy(-800) end,
     CurrentSongChangedMessageCommand=function(s) s:finishtweening():queuecommand("Set") end,
     LoadActor(ex.."Jacket Backer");
+    Def.Quad{
+      InitCommand=function(s) s:diffuse(Color.Black):setsize(240,240):xy(-2,-4) end,
+    },
     Def.Banner{
-      InitCommand=function(s) s:xy(-2,-4) end,
       SetCommand=function(self,params)
         self:finishtweening()
         local song = GAMESTATE:GetCurrentSong();
@@ -31,11 +33,10 @@ return Def.ActorFrame{
         else
           self:Load( THEME:GetPathG("","MusicWheelItem fallback") );
         end;
-        self:zoomto(240,240);
+        self:scaletofit(-120,-120,120,120):xy(-2,-4)
           end;
     };
     Def.Sprite{
-      InitCommand=function(s) s:xy(-2,-4) end,
       SetCommand=function(self)
         local song = GAMESTATE:GetCurrentSong();
         local so = GAMESTATE:GetSortOrder();
@@ -50,7 +51,7 @@ return Def.ActorFrame{
         else
           self:visible(false)
         end;
-        self:zoomto(240,240);
+        self:scaletofit(-120,-120,120,120):xy(-2,-4)
       end;
     };
     LoadFont("_avenirnext lt pro bold 46px")..{

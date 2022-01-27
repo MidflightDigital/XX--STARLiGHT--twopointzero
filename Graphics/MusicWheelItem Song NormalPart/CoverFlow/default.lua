@@ -13,13 +13,18 @@ return Def.ActorFrame{
 			s:setsize(372,372)
 		end,
 	};]]
+	Def.Quad{
+		InitCommand=function(s)
+			s:diffuse(Alpha(Color.Black,0.5)):setsize(372,372)
+		end,
+	};
 	Def.Sprite{
 		SetMessageCommand=function(s, p)
 			local song = p.Song
 			if song then
 				s:Load(JM.GetSongGraphicPath(song,"Jacket"))
 			end
-			s:setsize(372,372)
+			s:scaletofit(-186,-186,186,186)
 		end,
 	};
 	Def.Sprite{

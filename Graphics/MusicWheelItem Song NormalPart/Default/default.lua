@@ -59,7 +59,10 @@ return Def.ActorFrame{
 		end
 	};
 	Def.Quad {
-		InitCommand = function(s) s:zoomto(234,234):diffuse(color("1,1,1,0.5")) end,
+		InitCommand = function(s) s:zoomto(234,234):diffuse(Alpha(Color.White,0.5)) end,
+	};
+	Def.Quad {
+		InitCommand = function(s) s:zoomto(230,230):diffuse(Alpha(Color.Black,0.75)) end,
 	};
 	Def.Sprite {
 		-- Load the banner
@@ -72,7 +75,7 @@ return Def.ActorFrame{
 				end
 				self:Load(jk.GetSongGraphicPath(song))
 			end
-			self:setsize(230,230)
+			self:scaletofit(-115,-115,115,115)
 		end,
 	};
 	Def.Sprite{

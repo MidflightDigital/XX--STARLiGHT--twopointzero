@@ -1,9 +1,13 @@
 local jk = LoadModule "Jacket.lua"
 return Def.ActorFrame{
+	Def.Quad{
+		InitCommand=function(s) s:diffuse(Alpha(Color.Black,0.4)):setsize(230,230) end,
+	};
 	Def.Sprite {
+		Name="Jacket",
 		SetMessageCommand=function(self,params)
 			self:Load(jk.GetGroupGraphicPath(params.Text,"Jacket",GAMESTATE:GetSortOrder()))
-			self:setsize(230,230)
+			self:scaletofit(-115,-115,115,115)
 		end;
 	};
 	LoadActor(THEME:GetPathG("","_jackets/glow.png"))..{

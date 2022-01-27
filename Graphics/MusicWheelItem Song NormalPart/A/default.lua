@@ -107,7 +107,7 @@ return Def.ActorFrame{
 					s:Load(jk.GetSongGraphicPath(song))
 				end
 			end
-			s:setsize(140,140):xy(2,-1)
+			s:scaletofit(-69,-69,69,69):xy(2,-1)
 		end
 	};
 	Def.ActorFrame{

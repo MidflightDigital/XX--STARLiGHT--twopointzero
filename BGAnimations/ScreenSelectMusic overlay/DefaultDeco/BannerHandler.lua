@@ -24,6 +24,7 @@ local Jacket = Def.ActorFrame{
 		end;
   };
   Def.Sprite{
+    Name="GroupJacket",
     SetCommand=function(self,params)
       local mw = SCREENMAN:GetTopScreen():GetChild("MusicWheel")
       if not mw then return end
@@ -41,7 +42,7 @@ local Jacket = Def.ActorFrame{
       else
         self:diffusealpha(0)
       end
-      self:zoomto(378,378);
+      self:scaletofit(-189,-189,189,189)
     end;
   },
   Def.Sprite{
