@@ -8,7 +8,7 @@ function ShowTwoPart(self)
 end;
 
 function PrevSteps2(self)
-	if ThemePrefs.Get("WheelType") == "Default" or ThemePrefs.Get("WheelType") == "CoverFlow" then
+	if ThemePrefs.Get("WheelType") ~= "A" then
 		return "MenuUp"
 	else
 		return
@@ -16,7 +16,7 @@ function PrevSteps2(self)
 end
 
 function NextSteps2(self)
-	if ThemePrefs.Get("WheelType") == "Default" or ThemePrefs.Get("WheelType") == "CoverFlow" then
+	if ThemePrefs.Get("WheelType") ~= "A" then
 		return "MenuDown"
 	else
 		return
