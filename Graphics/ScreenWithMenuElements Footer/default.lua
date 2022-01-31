@@ -3,12 +3,12 @@ local screen = Var "LoadingScreen"
 local screenName = THEME:GetMetric(screen,"FooterText");
 
 local out = Def.ActorFrame{
-  InitCommand=function(s) s:xy(_screen.cx,SCREEN_BOTTOM-68) end,
+  InitCommand=function(s) s:xy(_screen.cx,SCREEN_BOTTOM+140):diffusealpha(0):zoom(0.7)  end,
   OnCommand = function(s)
-		s:diffusealpha(0):addy(140):smooth(0.3):addy(-140):diffusealpha(1)
+		s:smooth(0.3):y(SCREEN_BOTTOM-68):diffusealpha(1):zoom(1)
 	end,
 	OffCommand = function(s)
-		s:accelerate(0.3):addy(140):diffusealpha(0)
+		s:accelerate(0.3):y(SCREEN_BOTTOM+140):diffusealpha(0):zoom(0.7)
 	end,
   LoadActor("base");
   LoadActor("side glow")..{
