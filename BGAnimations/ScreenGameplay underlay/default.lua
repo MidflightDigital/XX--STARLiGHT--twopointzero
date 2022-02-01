@@ -67,7 +67,6 @@ local pPrefs = ProfilePrefs.Read(profileID)
 
   local style=GAMESTATE:GetCurrentStyle(pn)
   local alf = pPrefs.filter
-  --local alf=getenv("ScreenFilter"..ToEnumShortString(pn)) or 0
   local NumColumns = GAMESTATE:GetCurrentStyle():ColumnsPerPlayer()
 
   local width=(style:GetWidth(pn)*(NumColumns/1.7))
