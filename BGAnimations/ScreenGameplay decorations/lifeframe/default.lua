@@ -50,9 +50,7 @@ return Def.ActorFrame{
 		Name="LifeFrame"..pn,
 		InitCommand=function(s) s:x(pn==PLAYER_1 and -10 or -4):rotationy(pn==PLAYER_2 and 180 or 0):visible(not GAMESTATE:IsDemonstration()) end,
 		BeginCommand=function(self)
-			if GAMESTATE:GetPlayerState(pn):GetPlayerOptions('ModsLevel_Current'):BatteryLives() ~= nil
-			or GAMESTATE:GetPlayMode() == 'PlayMode_Oni'
-			or GAMESTATE:IsAnExtraStage() then
+			if GAMESTATE:GetPlayerState(pn):GetPlayerOptions('ModsLevel_Current'):LifeSetting() == 'LifeType_Battery' then
 			  self:Load(THEME:GetPathB("ScreenGameplay","decorations/lifeframe/4live.png"))  
 			else
 				self:Load(THEME:GetPathB("ScreenGameplay","decorations/lifeframe/normal.png"))

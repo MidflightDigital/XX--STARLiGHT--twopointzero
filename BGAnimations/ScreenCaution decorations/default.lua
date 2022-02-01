@@ -1,7 +1,7 @@
-local caution = Def.ActorFrame{}
+local doors = Def.ActorFrame{}
 
 if ThemePrefs.Get("ShowHTP") == true and (PROFILEMAN:IsPersistentProfile(PLAYER_1) or PROFILEMAN:IsPersistentProfile(PLAYER_2)) then
-	caution[#caution+1] = loadfile(THEME:GetPathB("","_StageDoors"))()..{
+	doors[#doors+1] = loadfile(THEME:GetPathB("","_StageDoors"))()..{
 		OnCommand=function(s)
 			if PROFILEMAN:IsPersistentProfile(PLAYER_1) or PROFILEMAN:IsPersistentProfile(PLAYER_2) then
 				s:visible(false)
@@ -22,13 +22,7 @@ if ThemePrefs.Get("ShowHTP") == true and (PROFILEMAN:IsPersistentProfile(PLAYER_
 end
 
 return Def.ActorFrame{
-	--Yeah I know.
-	--[[OnCommand=function(s) s:sleep(0.1):queuecommand("Dim1") end,
-	Dim1Command=function(s) SOUND:DimMusic(0.75,math.huge) s:sleep(0.1):queuecommand("Dim2") end,
-	Dim2Command=function(s) SOUND:DimMusic(0.5,math.huge) s:sleep(0.1):queuecommand("Dim3") end,
-	Dim3Command=function(s) SOUND:DimMusic(0.25,math.huge) s:sleep(0.1):queuecommand("Dim4") end,
-	Dim4Command=function(s) SOUND:DimMusic(0,math.huge) end,]]
-	caution,
+	doors,
 	Def.ActorFrame{
 		InitCommand=function(s) s:Center() end,
 		OnCommand=function(s) s:diffusealpha(0):Center():zoomy(0):sleep(0.1):diffusealpha(1):linear(0.066):zoom(1) end,
