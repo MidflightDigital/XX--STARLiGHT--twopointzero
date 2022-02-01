@@ -23,7 +23,7 @@ local t = Def.ActorFrame {
 		end;
 	};
 	Def.BitmapText{
-		Font='_avenirnext lt pro bold 25px',
+		Font='_avenirnext lt pro bold/25px',
 		InitCommand=function(s) s:y(-8):maxwidth(320):diffuse(color("#00fff0")):strokecolor(Alpha(Color.Black,0.25)) end,
 		SetCommand=function(self,params)
 			self:stoptweening();

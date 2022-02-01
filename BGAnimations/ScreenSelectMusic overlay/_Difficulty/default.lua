@@ -42,7 +42,7 @@ local function DrawDiffListItem(diff)
       InitCommand=function(s) s:setsize(336,28):diffusealpha(0.8):draworder(0) end,
     };
     Def.BitmapText{
-      Font="_avenirnext lt pro bold 20px",
+      Font="_avenirnext lt pro bold/20px",
       Name="DiffLabel";
       InitCommand=function(self)
         self:halign(pn=='pnNumber_P2' and 1 or 0):draworder(99):diffuse(CustomDifficultyToColor(diff)):strokecolor(Color.Black)
@@ -51,7 +51,7 @@ local function DrawDiffListItem(diff)
       end;
     };
     Def.BitmapText{
-      Font="_avenirnext lt pro bold 25px",
+      Font="_avenirnext lt pro bold/25px",
       Name="Meter";
       InitCommand=function(s) s:draworder(99):strokecolor(Color.Black):x(pn==pn_2 and 20 or -20) end,
       SetCommand=function(self)
@@ -68,7 +68,7 @@ local function DrawDiffListItem(diff)
     };
 
     Def.BitmapText{
-      Font="_avenirnext lt pro bold 20px",
+      Font="_avenirnext lt pro bold/20px",
       Name="Score";
       InitCommand=function(s) s:draworder(5):x(pn==pn_2 and -69 or 69) end,
       SetCommand=function(self)

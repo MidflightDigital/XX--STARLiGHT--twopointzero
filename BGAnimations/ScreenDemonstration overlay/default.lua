@@ -35,7 +35,7 @@ return Def.ActorFrame{
 			};
 			-- Title
 			Def.BitmapText{
-				Font="_avenirnext lt pro bold 20px";
+				Font="_avenirnext lt pro bold/20px";
 				InitCommand=function(s) s:maxwidth(300):y(-8):playcommand("Update") end,
 				CurrentSongChangedMessageCommand=function(s) s:playcommand("Update") end,
 				UpdateCommand=function(self)
@@ -55,7 +55,7 @@ return Def.ActorFrame{
 			};
 			-- Artist
 			Def.BitmapText{
-				Font="_avenirnext lt pro bold 20px";
+				Font="_avenirnext lt pro bold/20px";
 				InitCommand=function(s) s:y(16):maxwidth(300):playcommand("Update") end,
 				CurrentSongChangedMessageCommand=function(s) s:playcommand("Update") end,
 				UpdateCommand=function(self)

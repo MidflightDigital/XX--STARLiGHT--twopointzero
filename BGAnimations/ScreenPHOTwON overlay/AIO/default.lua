@@ -103,7 +103,7 @@ local function MakeRow(frames, idx)
             InitCommand=function(s) s:y(-94) end,
             Def.Sprite{ Texture="../item.png"},
             Def.ButmapText{
-                Font="_avenirnext lt pro bold 20px",
+                Font="_avenirnext lt pro bold/20px",
                 OnCommand=function(s) s:zoom(0.8):queuecommand("Set") end,
                 SetCommand=function(s)
                     local DisplayName = GetFrame(frames, "name")

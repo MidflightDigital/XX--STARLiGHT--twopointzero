@@ -23,14 +23,14 @@ t[#t+1] = Def.ActorFrame{
 		end,
 	};
 	Def.BitmapText{
-		Font="_avenirnext lt pro bold 36px",
+		Font="_avenirnext lt pro bold/36px",
 		InitCommand=function(s) s:zoom(0.7):halign(1):x(14) end,
 		OnCommand=function(self)
 			self:settext("Calories from this song:");
 		end;
 	};
 	Def.BitmapText{
-		Font="_avenirnext lt pro bold 36px",
+		Font="_avenirnext lt pro bold/36px",
 		InitCommand=function(s) s:halign(1):x(274):zoom(0.8) end,
 		OnCommand=function(self)
 			local CaloriesMod = string.format("%04.2f",Calories)
@@ -41,14 +41,14 @@ t[#t+1] = Def.ActorFrame{
 t[#t+1] = Def.ActorFrame{
 	InitCommand=function(s) s:y(-52) end,
 	Def.BitmapText{
-		Font="_avenirnext lt pro bold 36px",
+		Font="_avenirnext lt pro bold/36px",
 		InitCommand=function(s) s:zoom(0.7):halign(1):x(14) end,
 		OnCommand=function(self)
 			self:settext("Calories today:");
 		end;
 	};
 	Def.BitmapText{
-		Font="_avenirnext lt pro bold 36px",
+		Font="_avenirnext lt pro bold/36px",
 		InitCommand=function(s) s:halign(1):x(274):zoom(0.8) end,
 		OnCommand=function(self)
 			local CaloriesMod = string.format("%04.2f",CaloriesToday)
@@ -72,7 +72,7 @@ t[#t+1] = Def.ActorFrame{
 		end,
 	};
 	Def.BitmapText{
-		Font="_avenirnext lt pro bold 46px";
+		Font="_avenirnext lt pro bold/46px";
 		InitCommand=function(s) s:y(-54):zoom(1.1) end,
 		OnCommand=function(s)
 			s:settext(string.format("%0.0f%%",FoodInfo[3]*100))
@@ -88,7 +88,7 @@ t[#t+1] = Def.ActorFrame{
 		InitCommand=function(s) s:y(-20) end,
 	};
 	Def.BitmapText{
-		Font="_avenirnext lt pro bold 20px",
+		Font="_avenirnext lt pro bold/20px",
 		InitCommand=function(s) s:xy(75,16):zoom(1.1):halign(1) end,
 		OnCommand=function(s)
 			s:settext(FoodInfo[2]..string.format(" %dkcal",FoodInfo[1][2]))

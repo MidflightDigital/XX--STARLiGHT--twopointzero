@@ -132,7 +132,7 @@ function LoadPlayerStuff(Player)
 		Name = "EffectFrame";
 	};
 	--�U���d��-----------------
-	t[#t+1] = LoadFont("_avenirnext lt pro bold 25px") .. {
+	t[#t+1] = LoadFont("_avenirnext lt pro bold/25px") .. {
 		Name = 'SelectedProfileText';
     InitCommand=function(self) self:xy(5,-164):zoom(0.9):diffuse(color("#b5b5b5")):diffusetopedge(color("#e5e5e5")):diffusealpha(0):maxwidth(400) end,
 	OnCommand=function(s) s:sleep(0.7):linear(0.2):diffusealpha(1) end,
@@ -142,7 +142,7 @@ function LoadPlayerStuff(Player)
 	};
 
 	t[#t+1] = Def.BitmapText{
-		Font="_avenirnext lt pro bold 25px",
+		Font="_avenirnext lt pro bold/25px",
 		Name = 'selectPlayerUID';
 		InitCommand=function(s) s:zoom(0.9):diffuse(color("#b5b5b5")):diffusetopedge(color("#e5e5e5")):diffusealpha(0):xy(5,-112) end,
     	OnCommand=function(self)

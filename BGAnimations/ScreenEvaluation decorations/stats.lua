@@ -63,7 +63,7 @@ t[#t+1] = Def.ActorFrame{
     Name="Combo Line";
     InitCommand=function(s) s:xy(-104,-100) end,
     Def.BitmapText{
-      Font="_avenirnext lt pro bold 36px";
+      Font="_avenirnext lt pro bold/36px";
       OnCommand=function(self)
         self:x(155)
         self:settextf(Combo):halign(1):strokecolor(Color.Black)
@@ -74,7 +74,7 @@ t[#t+1] = Def.ActorFrame{
     Name="Marvelous Line";
     InitCommand=function(s) s:xy(-104,-58) end,
     Def.BitmapText{
-      Font="_avenirnext lt pro bold 36px";
+      Font="_avenirnext lt pro bold/36px";
       OnCommand=function(self)
         self:x(155)
         self:settextf(Marvelous):halign(1):strokecolor(Color.Black)
@@ -85,7 +85,7 @@ t[#t+1] = Def.ActorFrame{
     Name="Perfect Line";
     InitCommand=function(s) s:xy(-104,-20) end,
     Def.BitmapText{
-      Font="_avenirnext lt pro bold 36px";
+      Font="_avenirnext lt pro bold/36px";
       OnCommand=function(self)
         self:x(155)
         self:settextf(Perfect):halign(1):strokecolor(Color.Black)
@@ -96,7 +96,7 @@ t[#t+1] = Def.ActorFrame{
     Name="Great Line";
     InitCommand=function(s) s:xy(-104,20) end,
     Def.BitmapText{
-      Font="_avenirnext lt pro bold 36px";
+      Font="_avenirnext lt pro bold/36px";
       OnCommand=function(self)
         self:x(155)
         self:settextf(Great):halign(1):strokecolor(Color.Black)
@@ -107,7 +107,7 @@ t[#t+1] = Def.ActorFrame{
     Name="Good Line";
     InitCommand=function(s) s:xy(-104,60) end,
     Def.BitmapText{
-      Font="_avenirnext lt pro bold 36px";
+      Font="_avenirnext lt pro bold/36px";
       OnCommand=function(self)
         self:x(155)
         self:settextf(Good):halign(1):strokecolor(Color.Black)
@@ -118,7 +118,7 @@ t[#t+1] = Def.ActorFrame{
     Name="Hold Line";
     InitCommand=function(s) s:xy(-104,100) end,
     Def.BitmapText{
-      Font="_avenirnext lt pro bold 36px";
+      Font="_avenirnext lt pro bold/36px";
       OnCommand=function(self)
         self:x(155)
         self:settextf(Ok):halign(1):strokecolor(Color.Black)
@@ -129,7 +129,7 @@ t[#t+1] = Def.ActorFrame{
     Name="Miss Line";
     InitCommand=function(s) s:xy(-104,140) end,
     Def.BitmapText{
-      Font="_avenirnext lt pro bold 36px";
+      Font="_avenirnext lt pro bold/36px";
       OnCommand=function(self)
         self:x(155)
         self:settextf(Miss):halign(1):strokecolor(Color.Black)
@@ -138,7 +138,7 @@ t[#t+1] = Def.ActorFrame{
   };
   Def.BitmapText{
     Name="EXScore";
-    Font="_avenirnext lt pro bold 36px";
+    Font="_avenirnext lt pro bold/36px";
     InitCommand=function(s) s:xy(260,-74) end,
     OnCommand=function(self)
       if ex_score then
@@ -151,7 +151,7 @@ t[#t+1] = Def.ActorFrame{
   };
   Def.BitmapText{
      Name="Fast Line";
-    Font="_avenirnext lt pro bold 36px";
+    Font="_avenirnext lt pro bold/36px";
     InitCommand=function(s) s:xy(260,36) end,
     OnCommand=function(self)
       local FastNum = getenv("numFast"..ToEnumShortString(pn))
@@ -159,7 +159,7 @@ t[#t+1] = Def.ActorFrame{
     end;
   };
   Def.BitmapText{
-    Font="_avenirnext lt pro bold 36px";
+    Font="_avenirnext lt pro bold/36px";
     Name="Slow Line";
     InitCommand=function(s) s:xy(260,138) end,
     OnCommand=function(self)

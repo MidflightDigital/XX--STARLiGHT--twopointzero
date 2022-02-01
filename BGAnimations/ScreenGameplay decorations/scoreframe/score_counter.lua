@@ -39,7 +39,7 @@ return Def.ActorFrame{
 		end
 	},
 	Def.BitmapText{
-		Font="_avenirnext lt pro bold 36px",
+		Font="_avenirnext lt pro bold/36px",
 		Text="EX",
 		InitCommand=function(s) s:visible(ex_score):xy(player==PLAYER_1 and 40 or -460,-2):halign(0):zoomy(0.9)
 			:diffuse(Color.Yellow)

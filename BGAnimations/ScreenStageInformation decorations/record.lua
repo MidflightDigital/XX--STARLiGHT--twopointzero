@@ -76,7 +76,7 @@ t[#t+1] = Def.ActorFrame{
     end;
   };
   Def.BitmapText{
-    Font="_avenirnext lt pro bold 42px";
+    Font="_avenirnext lt pro bold/42px";
     InitCommand=function(self)
       self:y(14)
       self:playcommand("Set")
@@ -109,7 +109,7 @@ t[#t+1] = Def.ActorFrame{
     end;
   };
   Def.BitmapText{
-    Font="_avenirnext lt pro bold 20px";
+    Font="_avenirnext lt pro bold/20px";
     Name="Difficulty Label";
     InitCommand=function(self)
       self:x(pn=='PlayerNumber_P2' and 200 or -200):y(-80):zoom(0.75)

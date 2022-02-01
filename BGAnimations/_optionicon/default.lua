@@ -42,7 +42,7 @@ return Def.ActorFrame {
 			Texture=short.."/non",
 		};
 		Def.BitmapText{
-			Font="_avenirnext lt pro bold 10px",
+			Font="_avenirnext lt pro bold/10px",
 			OnCommand=function(s,p)
 				local speed = nil
 				local mode = nil

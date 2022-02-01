@@ -1,5 +1,5 @@
 local function CreditsText()
-	local text = LoadFont("_avenirnext lt pro bold 20px") .. {
+	local text = LoadFont("_avenirnext lt pro bold/20px") .. {
 		InitCommand=function(s) s:xy(_screen.cx,SCREEN_BOTTOM-16):strokecolor(Color.Black):playcommand("Refresh") end,
 		RefreshCommand=function(self)
 		--Other coin modes
@@ -108,7 +108,7 @@ t[#t+1] = Def.ActorFrame {
 		OffCommand=function(s) s:sleep(3):linear(0.5):diffusealpha(0) end,
 	};
 	Def.BitmapText{
-		Font="_avenirnext lt pro bold 25px";
+		Font="_avenirnext lt pro bold/25px";
 		Name="Text";
 		InitCommand=function(s) s:maxwidth(750):align(0,0):xy(SCREEN_LEFT+10,SCREEN_TOP+8):shadowlength(1):diffusealpha(0) end,
 		OnCommand=function(s) s:finishtweening():diffusealpha(1) end,

@@ -248,18 +248,18 @@ local function DifficultyPanel()
                 };
             };
             Def.BitmapText{
-                Font="_avenirnext lt pro bold 25px",
+                Font="_avenirnext lt pro bold/25px",
                 Name="Text_meter";
                 InitCommand=function(s) s:x(-6):strokecolor(Alpha(Color.Black,0.5)) end,
             };
             Def.BitmapText{
-                Font="_avenirnext lt pro bold 20px",
+                Font="_avenirnext lt pro bold/20px",
                 Name="Text_difficulty",
                 InitCommand=function(s) s:x(-150):halign(0):strokecolor(Alpha(Color.Black,0.5)) end,
             };
             Def.BitmapText{
                 Name="Text_score",
-                Font="_avenirnext lt pro bold 20px",
+                Font="_avenirnext lt pro bold/20px",
                 InitCommand=function(s) s:x(120):halign(1):diffuse(Color.White):strokecolor(Color.Black) end,
             };
             Def.Sprite{
@@ -374,19 +374,19 @@ local function RivalsPanel(rival)
                 InitCommand=function(s) s:x(-140):setsize(20,20) end,
             };
             Def.BitmapText{
-                Font="_avenirnext lt pro bold 25px",
+                Font="_avenirnext lt pro bold/25px",
                 Name="Text_place";
                 Text=rival;
                 InitCommand=function(s) s:x(-140):strokecolor(Alpha(Color.Black,0.5)):zoom(0.7) end,
             };
             Def.BitmapText{
                 Name="Text_name",
-                Font="_avenirnext lt pro bold 20px",
+                Font="_avenirnext lt pro bold/20px",
                 InitCommand=function(s) s:x(-120):halign(0):diffuse(Color.White):strokecolor(Color.Black) end,
             };
             Def.BitmapText{
                 Name="Text_score",
-                Font="_avenirnext lt pro bold 20px",
+                Font="_avenirnext lt pro bold/20px",
                 InitCommand=function(s) s:x(120):halign(1):diffuse(Color.White):strokecolor(Color.Black) end,
             };
             Def.Sprite{
@@ -435,7 +435,7 @@ local function RadarPanel()
                 OnCommand=function(s) s:animate(0):setstate(i-1) end,
             };
             Def.BitmapText{
-                Font="_avenirnext lt pro bold 20px";
+                Font="_avenirnext lt pro bold/20px";
                 SetCommand=function(s)
                     local song = GAMESTATE:GetCurrentSong();
                     if song then

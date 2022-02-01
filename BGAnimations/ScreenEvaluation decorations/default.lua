@@ -74,7 +74,7 @@ t[#t+1] = Def.ActorFrame{
       Texture=THEME:GetPathG("","_shared/titlebox"),
     };
 	  Def.BitmapText{
-      Font="_avenirnext lt pro bold 25px",
+      Font="_avenirnext lt pro bold/25px",
 		  InitCommand = function(s) s:maxwidth(400):playcommand("Set") end,
       SetCommand = function(s)
         local SongOrCourse;
@@ -86,7 +86,7 @@ t[#t+1] = Def.ActorFrame{
       end;
 	  };
 	  Def.BitmapText{
-      Font="_avenirnext lt pro bold 25px",
+      Font="_avenirnext lt pro bold/25px",
 		  InitCommand = function(s) s:y(20):maxwidth(400):playcommand("Set") end,
       SetCommand = function(self)
         if not GAMESTATE:IsCourseMode() then
@@ -126,21 +126,21 @@ for _, pn in pairs(GAMESTATE:GetEnabledPlayers()) do
     OnCommand=function(s) s:zoom(0):sleep(0.3):bounceend(0.2):zoom(2) end,
     OffCommand=function(s) s:linear(0.2):zoom(0) end,
     Def.RollingNumbers{
-      Font="_avenirnext lt pro bold 46px",
+      Font="_avenirnext lt pro bold/46px",
       OnCommand=function(s)
         s:strokecolor(Color.Black):visible(not ex_score)
         :Load("RollingNumbersEvaluation"):targetnumber(Score)
       end,
     };
     Def.RollingNumbers{
-      Font="_avenirnext lt pro bold 46px",
+      Font="_avenirnext lt pro bold/46px",
       OnCommand=function(s)
         s:strokecolor(Color.Black):visible(ex_score)
         :Load("RollingNumbersEXScore"):targetnumber(EXScore)
       end,
     };
     Def.BitmapText{
-      Font="_avenirnext lt pro bold 25px";
+      Font="_avenirnext lt pro bold/25px";
       InitCommand=function(s) s:xy(120,26):strokecolor(Color.Black):halign(1):zoom(0.5) end,
       OnCommand=function(self)
         self:hibernate(0.6)
@@ -207,14 +207,14 @@ for _, pn in pairs(GAMESTATE:GetEnabledPlayers()) do
       OffCommand=function(s) s:linear(0.2):zoom(0) end,
       Def.Sprite{ Texture="info", InitCommand=function(s) s:diffuse(PlayerColor(pn)) end},
       Def.BitmapText{
-        Font="_avenirnext lt pro bold 42px";
+        Font="_avenirnext lt pro bold/42px";
         OnCommand=function(self)
           self:y(46)
           self:settext(SecondsToMMSS(seconds)):strokecolor(Color.Black)
         end;
       };
       Def.BitmapText{
-        Font="_avenirnext lt pro bold 36px";
+        Font="_avenirnext lt pro bold/36px";
         InitCommand=function(s) s:y(-40):zoom(1.8):diffuse(color("#FFFFFF")):diffusebottomedge(color("#7c7c7c")):strokecolor(color("0,0,0,1")) end,
         OnCommand=function(self)
           self:settext(FindText(pss))
@@ -241,14 +241,14 @@ for _, pn in pairs(GAMESTATE:GetEnabledPlayers()) do
       OnCommand=function(s) s:zoom(0):sleep(0.3):bounceend(0.2):zoom(1) end,
       OffCommand=function(s) s:linear(0.2):zoom(0) end,
       Def.BitmapText{
-        Font="_handel gothic itc std Bold 32px";
+        Font="_handel gothic itc std Bold/32px";
         OnCommand=function(self)
           self:y(-40)
           self:uppercase(true):settext(GAMESTATE:GetCurrentStyle():GetName()):strokecolor(Color.Black)
         end;
       };
       Def.BitmapText{
-        Font="_handel gothic itc std Bold 32px";
+        Font="_handel gothic itc std Bold/32px";
         OnCommand=function(self)
           local diff = GAMESTATE:GetCurrentSteps(pn):GetDifficulty();
           self:uppercase(true):settext(THEME:GetString("CustomDifficulty",ToEnumShortString(diff)))
@@ -256,7 +256,7 @@ for _, pn in pairs(GAMESTATE:GetEnabledPlayers()) do
         end;
       };
       Def.BitmapText{
-        Font="_handel gothic itc std Bold 32px";
+        Font="_handel gothic itc std Bold/32px";
         OnCommand=function(self)
           self:y(36)
           local meter = GAMESTATE:GetCurrentSteps(pn):GetMeter();
@@ -284,7 +284,7 @@ for _, pn in pairs(GAMESTATE:GetEnabledPlayers()) do
       end;
     };
     Def.BitmapText{
-      Font="_avenirnext lt pro bold 25px";
+      Font="_avenirnext lt pro bold/25px";
       InitCommand=function(self)
         self:xy(pn=="PlayerNumber_P2" and SCREEN_RIGHT-110 or SCREEN_LEFT+120,_screen.cy-314)
         self:settext(PROFILEMAN:GetProfile(pn):GetDisplayName())

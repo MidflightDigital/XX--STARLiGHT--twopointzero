@@ -18,7 +18,7 @@ return Def.ActorFrame{
     end,
     LoadActor("genre/GENRE_sort.png");
     Def.BitmapText{
-        Font="_avenirnext lt pro bold 46px",
+        Font="_avenirnext lt pro bold/46px",
         SetCommand=function(s,param)
             s:y(-20):maxwidth(300):zoom(1.5):diffusebottomedge(color("#d8d8d8")):diffusetopedge(color("#8c8c8c")):strokecolor(Color.Black)
             local mw = SCREENMAN:GetTopScreen():GetChild("MusicWheel")

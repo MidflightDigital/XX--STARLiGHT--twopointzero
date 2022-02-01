@@ -147,7 +147,7 @@ local function MakeRow(rownames, idx)
 				self:Load(THEME:GetPathB("","ScreenPlayerOptions underlay/OK.png"));
 			end;
 		};
-		LoadFont("_avenirnext lt pro bold 25px")..{
+		LoadFont("_avenirnext lt pro bold/25px")..{
 			Name="Row Name";
             Text="";
 			InitCommand=function(s) s:x(-260):uppercase(true):halign(0):zoom(0.9):strokecolor(color("0,0,0,0.25")) end,
@@ -194,7 +194,7 @@ local function MakeRow(rownames, idx)
 			[p"MenuLeft%MessageCommand"]=function(s) s:playcommand("Set") end,
 			[p"MenuRight%MessageCommand"]=function(s) s:playcommand("Set") end,
 		};
-		LoadFont("_avenirnext lt pro bold 25px")..{
+		LoadFont("_avenirnext lt pro bold/25px")..{
 			InitCommand=function(s) s:x(200):uppercase(true):zoom(0.9):maxwidth(150) end,
 			OnCommand=function(s) s:queuecommand("Set") end,
 			SetCommand=function(self)
@@ -331,7 +331,7 @@ local t = Def.ActorFrame{
 			Texture="exp.png",
 		};
 		Def.BitmapText{
-			Font="_avenirnext lt pro bold 25px",
+			Font="_avenirnext lt pro bold/25px",
 	    	InitCommand=function(s) s:y(-6):maxwidth(400):zoom(1.3) end,
 			BeginCommand=function(s) s:queuecommand("Set") end,
 	    	SetCommand=function(self)

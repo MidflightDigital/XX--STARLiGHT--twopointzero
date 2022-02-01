@@ -123,7 +123,7 @@ return Def.ActorFrame{
 			},
 		};
 		Def.BitmapText{
-			Font="_avenirnext lt pro bold 20px",
+			Font="_avenirnext lt pro bold/20px",
 			SetMessageCommand=function(s,p)
 				local song = p.Song
 				if song then

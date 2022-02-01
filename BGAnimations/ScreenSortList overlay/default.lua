@@ -134,7 +134,7 @@ local function MakeItem(sortorders, idx)
 		},
 		Def.BitmapText{
 			Name="SortText";
-			Font="_avenirnext lt pro bold 25px";
+			Font="_avenirnext lt pro bold/25px";
 			InitCommand=function(s)
 				local DisplayName = THEME:GetString("MusicWheel",sortorders.."Text")
 				if idx == 7 then

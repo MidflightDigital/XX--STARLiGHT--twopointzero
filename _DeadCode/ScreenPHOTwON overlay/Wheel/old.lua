@@ -102,14 +102,14 @@ local menu = Def.ActorFrame{
         end;
       };
       Def.BitmapText{
-        Font="_avenirnext lt pro bold 25px";
+        Font="_avenirnext lt pro bold/25px";
         Text="DEFAULT";
         BeginCommand=function(self)
           self:halign(0):maxwidth(192):diffuse(color("0,0,0,1"))
     		end;
       };
       Def.BitmapText{
-        Font="_avenirnext lt pro bold 25px";
+        Font="_avenirnext lt pro bold/25px";
         Text="Wheel Type";
         BeginCommand=function(self)
           self:halign(0):maxwidth(214):diffuse(color("0.7,0.7,0.7,1")):xy(-4,40)
@@ -156,7 +156,7 @@ local menu = Def.ActorFrame{
         end;
       };
       Def.BitmapText{
-        Font="_avenirnext lt pro bold 25px";
+        Font="_avenirnext lt pro bold/25px";
         Text="Grid";
         BeginCommand=function(self)
           self:halign(0):maxwidth(192):diffuse(color("0,0,0,1"))
@@ -164,7 +164,7 @@ local menu = Def.ActorFrame{
     		end;
       };
       Def.BitmapText{
-        Font="_avenirnext lt pro bold 25px";
+        Font="_avenirnext lt pro bold/25px";
         Text="Wheel Type";
         BeginCommand=function(self)
           self:halign(0):maxwidth(214):diffuse(color("0.7,0.7,0.7,1")):xy(-4,40)
@@ -212,7 +212,7 @@ local menu = Def.ActorFrame{
         end;
       };
       Def.BitmapText{
-        Font="_avenirnext lt pro bold 25px";
+        Font="_avenirnext lt pro bold/25px";
         Text="Banner";
         BeginCommand=function(self)
           self:halign(0):maxwidth(192):diffuse(color("0,0,0,1"))
@@ -220,7 +220,7 @@ local menu = Def.ActorFrame{
     		end;
       };
       Def.BitmapText{
-        Font="_avenirnext lt pro bold 25px";
+        Font="_avenirnext lt pro bold/25px";
         Text="Wheel Type";
         BeginCommand=function(self)
           self:halign(0):maxwidth(214):diffuse(color("0.7,0.7,0.7,1")):xy(-4,40)
@@ -268,7 +268,7 @@ local menu = Def.ActorFrame{
         end;
       };
       Def.BitmapText{
-        Font="_avenirnext lt pro bold 25px";
+        Font="_avenirnext lt pro bold/25px";
         Text="Jukebox";
         BeginCommand=function(self)
           self:halign(0):maxwidth(192):diffuse(color("0,0,0,1"))
@@ -276,7 +276,7 @@ local menu = Def.ActorFrame{
     		end;
       };
       Def.BitmapText{
-        Font="_avenirnext lt pro bold 25px";
+        Font="_avenirnext lt pro bold/25px";
         Text="Wheel Type";
         BeginCommand=function(self)
           self:halign(0):maxwidth(214):diffuse(color("0.7,0.7,0.7,1")):xy(-4,40)
@@ -324,7 +324,7 @@ local menu = Def.ActorFrame{
         end;
       };
       Def.BitmapText{
-        Font="_avenirnext lt pro bold 25px";
+        Font="_avenirnext lt pro bold/25px";
         Text="Wheel";
         BeginCommand=function(self)
           self:halign(0):maxwidth(192):diffuse(color("0,0,0,1"))
@@ -332,7 +332,7 @@ local menu = Def.ActorFrame{
     		end;
       };
       Def.BitmapText{
-        Font="_avenirnext lt pro bold 25px";
+        Font="_avenirnext lt pro bold/25px";
         Text="Wheel Type";
         BeginCommand=function(self)
           self:halign(0):maxwidth(214):diffuse(color("0.7,0.7,0.7,1")):xy(-4,40)

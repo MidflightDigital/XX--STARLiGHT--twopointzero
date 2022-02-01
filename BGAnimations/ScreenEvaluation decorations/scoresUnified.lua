@@ -8,7 +8,7 @@ local function RivalScore(pn,rival)
 		CurrentCourseChangedMessageCommand=function(s) s:playcommand("Set") end,
 		["CurrentSteps"..ToEnumShortString(pn).."ChangedMessageCommand"]=function(s) s:queuecommand("Set") end,
         ["CurrentTrail"..ToEnumShortString(pn).."ChangedMessageCommand"]=function(s) s:queuecommand("Set") end,
-		LoadFont("_avenirnext lt pro bold 36px")..{
+		LoadFont("_avenirnext lt pro bold/36px")..{
 			InitCommand=function(s) s:zoom(0.8):halign(0):x(-100):strokecolor(Color.Black) end,
 			OnCommand=function(self)
 				local SongOrCourse, StepsOrTrail;
@@ -50,7 +50,7 @@ local function RivalScore(pn,rival)
 				end;
 			end;
 		};
-		LoadFont("_avenirnext lt pro bold 36px")..{
+		LoadFont("_avenirnext lt pro bold/36px")..{
 			InitCommand=function(s) s:x(260):halign(1):zoom(0.8) end,
 			BeginCommand=function(s) s:playcommand("Set") end,
 			SetCommand=function(self)

@@ -229,7 +229,7 @@ XXCredits= {
 		if type(text) == "string" or not text then
 			actor_to_insert= Def.ActorFrame{
 				Def.BitmapText{
-					Font= "_avenirnext lt pro bold 46px",
+					Font= "_avenirnext lt pro bold/46px",
 					Text = text or "";
 					OnCommand = command or lineOn;
 				}
@@ -237,7 +237,7 @@ XXCredits= {
 		elseif type(text) == "table" then
 			actor_to_insert= Def.ActorFrame{
 				Def.BitmapText{
-					Name= "name", Font= "_avenirnext lt pro bold 46px",
+					Name= "name", Font= "_avenirnext lt pro bold/46px",
 					Text = text.name or "",
 					InitCommand = command or lineOn,
 				},

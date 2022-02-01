@@ -40,7 +40,7 @@ local function MakeRow(rownames, idx)
 			GainFocusCommand=cmd(diffusealpha,0.8);
 			LoseFocusCommand=cmd(diffusealpha,0);
 		};
-		LoadFont("_avenirnext lt pro bold 25px")..{
+		LoadFont("_avenirnext lt pro bold/25px")..{
 			Name="Row Name";
 			InitCommand=cmd(x,-260;uppercase,true;halign,0;zoom,1;strokecolor,color("0,0,0,0.25"));
 			OnCommand=cmd(queuecommand,"Set");

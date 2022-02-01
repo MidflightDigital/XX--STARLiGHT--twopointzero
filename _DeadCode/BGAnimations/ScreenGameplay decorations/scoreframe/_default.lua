@@ -111,7 +111,7 @@ t[#t+1]=Def.ActorFrame{
 					};
 					self:x(pn==PLAYER_2 and diffP2X[steps] or diffP1X[steps])
 				end;
-				LoadFont("_avenirnext lt pro bold 20px")..{
+				LoadFont("_avenirnext lt pro bold/20px")..{
 					Name="Difficulty Label";
 					SetCommand=function(s)
 						s:halign(1)
@@ -120,7 +120,7 @@ t[#t+1]=Def.ActorFrame{
 					end;
 					CurrentSongChangedMessageCommand=cmd(queuecommand,"Set");
 				};
-				LoadFont("_avenirnext lt pro bold 20px")..{
+				LoadFont("_avenirnext lt pro bold/20px")..{
 					Name = "Difficulty Meter";
 					InitCommand=function(self)
 						self:x(16)
@@ -132,7 +132,7 @@ t[#t+1]=Def.ActorFrame{
 					CurrentSongChangedMessageCommand=cmd(queuecommand,"Set");
 				};
 			};
-			LoadFont("_avenirnext lt pro bold 20px")..{
+			LoadFont("_avenirnext lt pro bold/20px")..{
 				Name = "Profile Name";
 				InitCommand=function(self)
 					self:x(pn==PLAYER_2 and -170 or 360)

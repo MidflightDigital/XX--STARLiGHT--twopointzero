@@ -65,7 +65,7 @@ function LoadPlayerStuff(Player)
 			self:diffusealpha(0)
 		end;
 	};
-	t[#t+1] = LoadFont("_avenirnext lt pro bold 25px") .. {
+	t[#t+1] = LoadFont("_avenirnext lt pro bold/25px") .. {
 		Name = 'SelectedProfileText';
     InitCommand=function(self)
       self:xy(-220,-15):halign(0):zoom(1.1):diffuse(color("#b5b5b5")):diffusetopedge(color("#e5e5e5")):diffusealpha(0):maxwidth(400)
@@ -74,7 +74,7 @@ function LoadPlayerStuff(Player)
     OffCommand=function(s) s:diffusealpha(0) end,
 	};
 
-	t[#t+1] = LoadFont("_avenirnext lt pro bold 25px") .. {
+	t[#t+1] = LoadFont("_avenirnext lt pro bold/25px") .. {
 		Name = 'selectPlayerUID';
 		InitCommand=function(s) s:zoom(0.8):halign(0):diffuse(color("#b5b5b5")):diffusetopedge(color("#e5e5e5"))
 			:diffusealpha(0):xy(-220,18)

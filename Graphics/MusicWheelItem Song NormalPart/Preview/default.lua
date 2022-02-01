@@ -2,7 +2,7 @@ local jk = ...
 
 local SongAttributes = LoadModule "SongAttributes.lua"
 local TB = Def.BitmapText{
-	Font="_avenirnext lt pro bold 36px";
+	Font="_avenirnext lt pro bold/36px";
     InitCommand=function(s) s:strokecolor(color("0,0,0,0.3"))
     end,
 };

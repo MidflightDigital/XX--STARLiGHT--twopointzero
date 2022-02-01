@@ -37,7 +37,7 @@ return Def.ActorFrame{
             InitCommand=function(s) s:valign(1):rotationz(180) end,
         };
         Def.BitmapText{
-            Font="_avenir next demi bold 20px",
+            Font="_avenir next demi bold/20px",
             Text="Current Version: "..ProductFamily()..ProductVersion().." ("..tonumber(VersionDate())..")",
             InitCommand=function(s) s:halign(0):xy(-330,30):maxwidth(720):zoom(1.2) end,
         }

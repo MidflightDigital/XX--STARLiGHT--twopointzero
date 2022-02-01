@@ -69,7 +69,7 @@ for pn in EnabledPlayers() do
 		};
 		create_ddr_groove_radar("radar",0,20,pn,350,Alpha(PlayerColor(pn),0.25));
 		Def.BitmapText{
-			Font="_avenirnext lt pro bold 42px",
+			Font="_avenirnext lt pro bold/42px",
 			InitCommand=function(s) s:shadowlengthy(5):y(-180) end,
 			SetCommand=function(s)
 				if GAMESTATE:GetCurrentSong() then
@@ -83,7 +83,7 @@ for pn in EnabledPlayers() do
 			end,
 		};
 		Def.BitmapText{
-			Font="_avenirnext lt pro bold 46px",
+			Font="_avenirnext lt pro bold/46px",
 			InitCommand=function(s) s:y(200):strokecolor(Color.Black) end,
 			SetCommand=function(s)
 				local song = GAMESTATE:GetCurrentSong()
@@ -206,7 +206,7 @@ for pn in EnabledPlayers() do
 				end,
 			},
 			Def.BitmapText{
-				Font="_avenirnext lt pro bold 25px",
+				Font="_avenirnext lt pro bold/25px",
 				InitCommand=function(s) s:x(pn==PLAYER_1 and 14 or -14):diffuse(Color.Black):strokecolor(color("#dedede")):halign(pn==PLAYER_1 and 0 or 1) end,
 				SetCommand=function(s)
 					local song = GAMESTATE:GetCurrentSong()
@@ -383,7 +383,7 @@ return Def.ActorFrame{
 			OffCommand=function(s) s:sleep(0.3):linear(0.15):cropright(1) end,
 		};
 		Def.BitmapText{
-			Font="_avenirnext lt pro bold 20px",
+			Font="_avenirnext lt pro bold/20px",
 			InitCommand=function(s) s:halign(0):x(10):maxwidth(290) end,
 			SetCommand=function(s)
 				local mw = SCREENMAN:GetTopScreen():GetChild("MusicWheel")

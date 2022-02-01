@@ -38,7 +38,7 @@ return Def.ActorFrame{
 	--only ActorFrames and classes based on ActorFrame have update functions, which we need
 	Name="SNBPMDisplayHost",
 	Def.BitmapText{
-		Font="_avenirnext lt pro bold 25px",
+		Font="_avenirnext lt pro bold/25px",
 		Name="BPMDisplay",
 		InitCommand=function(s) s:aux(0):align(0.5,0):zoom(0.65):vertspacing(-5):xy(-10,-14):settext "000"; return gmcmd(s, "SetNoBpmCommand") end,
 		CurrentSongChangedMessageCommand = function(s, _)

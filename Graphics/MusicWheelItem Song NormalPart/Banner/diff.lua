@@ -14,7 +14,7 @@ local function DrawDiffListItem(diff)
         };
         Def.ActorFrame{
             Def.BitmapText{
-                Font="_avenirnext lt pro bold 36px",
+                Font="_avenirnext lt pro bold/36px",
                 InitCommand=function(s) s:zoom(0.8):halign(0) end,
                 SetCommand=function(s,p)
                     local song = p.Song;

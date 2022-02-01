@@ -38,7 +38,7 @@ if not GAMESTATE:IsCourseMode() then
         };
         Def.BitmapText{
             Name="Title";
-            Font="_avenirnext lt pro bold 20px";
+            Font="_avenirnext lt pro bold/20px";
             SetCommand=function(s)
                 s:strokecolor(Alpha(Color.Black,0.5))
                 if GAMESTATE:GetCurrentSong() then
@@ -54,7 +54,7 @@ if not GAMESTATE:IsCourseMode() then
             end;
         };
         Def.BitmapText{
-            Font="_avenirnext lt pro bold 20px";
+            Font="_avenirnext lt pro bold/20px";
             SetCommand=function(s)
                 s:strokecolor(Alpha(Color.Black,0.5))
                 local song = GAMESTATE:GetCurrentSong()

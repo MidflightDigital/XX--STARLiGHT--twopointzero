@@ -29,7 +29,7 @@ for i,v in ipairs(GR) do
             OnCommand=function(s) s:animate(0):setstate(i-1) end,
         };
         Def.BitmapText{
-            Font="_avenirnext lt pro bold 20px";
+            Font="_avenirnext lt pro bold/20px";
             InitCommand=function(s)
                 if GAMESTATE:GetNumPlayersEnabled() == 2 and ThemePrefs.Get("WheelType") == "CoverFlow" then
                     s:x(pn==PLAYER_1 and -20 or 20):diffuse(PlayerColor(pn))

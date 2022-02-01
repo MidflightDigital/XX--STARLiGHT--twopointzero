@@ -52,7 +52,7 @@ for _, pn in pairs(GAMESTATE:GetEnabledPlayers()) do
       end;
     };
     Def.BitmapText{
-      Font="_avenirnext lt pro bold 25px";
+      Font="_avenirnext lt pro bold/25px";
       InitCommand=function(self)
         self:x(pn=="PlayerNumber_P2" and SCREEN_RIGHT-110 or SCREEN_LEFT+120)
         self:y(_screen.cy-304)
@@ -127,7 +127,7 @@ for i = StageCheck(), mStages do
 		};
 
 		-- Title
-		LoadFont("_avenirnext lt pro bold 42px")..{
+		LoadFont("_avenirnext lt pro bold/42px")..{
 			InitCommand=function(s) s:maxwidth(400) end,
 			BeginCommand=function(self)
 				local sssong = ssStats:GetPlayedSongs()[1];
@@ -298,7 +298,7 @@ for _, pn in pairs(GAMESTATE:GetEnabledPlayers()) do
 		};
 
 		-- stage
-		LoadFont("_avenirnext lt pro bold 25px")..{
+		LoadFont("_avenirnext lt pro bold/25px")..{
 			InitCommand=function(s) s:maxwidth(190):zoom(1.2) end,
 			BeginCommand=function(self)
 				if PROFILEMAN:IsPersistentProfile(PLAYER_1) or PROFILEMAN:IsPersistentProfile(PLAYER_2) then
@@ -334,7 +334,7 @@ for _, pn in pairs(GAMESTATE:GetEnabledPlayers()) do
 
 		-- Score
 		Def.RollingNumbers {
-			File=THEME:GetPathF("","_avenirnext lt pro bold 36px");
+			File=THEME:GetPathF("","_avenirnext lt pro bold/36px");
 			InitCommand=function(s) s:zoom(0.9):Load("RollingNumbersScore"):diffusealpha(0):diffuse(color("#ffffff")):strokecolor(color("#000000")) end,
 			BeginCommand=function(self)
 				local song = sStats:GetPlayedSongs()[1];

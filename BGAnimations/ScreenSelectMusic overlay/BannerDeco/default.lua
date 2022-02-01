@@ -13,7 +13,7 @@ for pn in EnabledPlayers() do
       OffCommand=function(s) s:sleep(0.3):decelerate(0.3):rotationz(-360):zoom(0) end,
     };
     Def.BitmapText{
-			Font="_avenirnext lt pro bold 42px",
+			Font="_avenirnext lt pro bold/42px",
       InitCommand=function(s) s:shadowlengthy(5):y(-170):zoom(0) end,
       OnCommand=function(s) s:sleep(0.3):bounceend(0.25):zoom(0.75) end,
 		  OffCommand=function(s) s:sleep(0.5):bouncebegin(0.25):zoom(0) end,
@@ -113,7 +113,7 @@ return Def.ActorFrame{
       InitCommand=function(s) s:valign(1):y(0) end,
     };
     Def.BitmapText{
-      Font="_avenirnext lt pro bold 25px",
+      Font="_avenirnext lt pro bold/25px",
       Text="&MENULEFT;&MENURIGHT; TO SELECT DIFFICULTY  &MENUUP;&MENUDOWN; TO CANCEL  &START; TO CONFIRM",
       InitCommand=function(s) s:y(-70):strokecolor(Color.Black) end,
     };
@@ -138,7 +138,7 @@ return Def.ActorFrame{
       end,
     };
     Def.BitmapText{
-      Font="_avenir next demi bold 20px";
+      Font="_avenir next demi bold/20px";
       InitCommand=function(s) s:maxwidth(480):strokecolor(Alpha(Color.Black,0.5)):y(-44):valign(0) end,
       SetCommand=function(s)
         local song = GAMESTATE:GetCurrentSong()

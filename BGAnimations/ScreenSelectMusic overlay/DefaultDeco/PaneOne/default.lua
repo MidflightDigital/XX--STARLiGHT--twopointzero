@@ -68,7 +68,7 @@ t[#t+1] = Def.ActorFrame{
         end;
       end;
     };
-    LoadFont("_avenirnext lt pro bold 25px")..{
+    LoadFont("_avenirnext lt pro bold/25px")..{
       Name="Score";
       InitCommand=function(s) s:y(35) end,
       BeginCommand=function(s) s:playcommand("Set") end,
@@ -176,7 +176,7 @@ end;
 t[#t+1] = Def.ActorFrame{
   InitCommand=function(s) s:xy(0,-60) end,
   Def.BitmapText{
-    Font="_avenirnext lt pro bold 25px";
+    Font="_avenirnext lt pro bold/25px";
     InitCommand=function(s) s:zoom(0.6) end,
     BeginCommand=function(s) s:queuecommand("Set") end,
     SetCommand=function(self)
@@ -203,7 +203,7 @@ t[#t+1] = Def.ActorFrame{
   ["CurrentTrail"..ToEnumShortString(pn).."ChangedMessageCommand"]=function(s) s:queuecommand("Set") end,
   CurrentCourseChangedMessageCommand=function(s) s:queuecommand("Set") end,
   Def.RollingNumbers{
-    File = THEME:GetPathF("","_avenirnext lt pro bold 20px");
+    File = THEME:GetPathF("","_avenirnext lt pro bold/20px");
     InitCommand=function(s) s:halign(1):y(-50):zoom(0.75) end,
     BeginCommand=function(s) s:queuecommand("Set") end,
     SetCommand=function(self)
@@ -220,7 +220,7 @@ t[#t+1] = Def.ActorFrame{
     end;
   };
   Def.RollingNumbers{
-    File = THEME:GetPathF("","_avenirnext lt pro bold 20px");
+    File = THEME:GetPathF("","_avenirnext lt pro bold/20px");
     InitCommand=function(s) s:halign(1):y(-35):zoom(0.75) end,
     BeginCommand=function(s) s:queuecommand("Set") end,
     SetCommand=function(self)
@@ -237,7 +237,7 @@ t[#t+1] = Def.ActorFrame{
     end;
   };
   Def.RollingNumbers{
-    File = THEME:GetPathF("","_avenirnext lt pro bold 20px");
+    File = THEME:GetPathF("","_avenirnext lt pro bold/20px");
     InitCommand=function(s) s:halign(1):y(-18):zoom(0.75) end,
     BeginCommand=function(s) s:queuecommand("Set") end,
     SetCommand=function(self)
@@ -254,7 +254,7 @@ t[#t+1] = Def.ActorFrame{
     end;
   };
   Def.RollingNumbers{
-    File = THEME:GetPathF("","_avenirnext lt pro bold 20px");
+    File = THEME:GetPathF("","_avenirnext lt pro bold/20px");
     InitCommand=function(s) s:halign(1):zoom(0.75) end,
     BeginCommand=function(s) s:queuecommand("Set") end,
     SetCommand=function(self)
@@ -271,7 +271,7 @@ t[#t+1] = Def.ActorFrame{
     end;
   };
   Def.RollingNumbers{
-    File = THEME:GetPathF("","_avenirnext lt pro bold 20px");
+    File = THEME:GetPathF("","_avenirnext lt pro bold/20px");
     InitCommand=function(s) s:halign(1):y(16):zoom(0.75) end,
     BeginCommand=function(s) s:queuecommand("Set") end,
     SetCommand=function(self)
@@ -288,7 +288,7 @@ t[#t+1] = Def.ActorFrame{
     end;
   };
   Def.RollingNumbers{
-    File = THEME:GetPathF("","_avenirnext lt pro bold 20px");
+    File = THEME:GetPathF("","_avenirnext lt pro bold/20px");
     InitCommand=function(s) s:halign(1):y(32):zoom(0.75) end,
     BeginCommand=function(s) s:queuecommand("Set") end,
     SetCommand=function(self)
@@ -305,7 +305,7 @@ t[#t+1] = Def.ActorFrame{
     end;
   };
   Def.RollingNumbers{
-    File = THEME:GetPathF("","_avenirnext lt pro bold 20px");
+    File = THEME:GetPathF("","_avenirnext lt pro bold/20px");
     InitCommand=function(s) s:halign(1):y(48):zoom(0.75) end,
     BeginCommand=function(s) s:queuecommand("Set") end,
     SetCommand=function(self)

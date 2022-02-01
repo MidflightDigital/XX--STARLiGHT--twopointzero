@@ -60,7 +60,7 @@ local function genScrollerFrame(player)
 				Texture=THEME:GetString("CustomDifficulty",ToEnumShortString(diff));
 			};
 			Def.BitmapText{
-				Font="_avenirnext lt pro bold 46px",
+				Font="_avenirnext lt pro bold/46px",
 				Text=steps:GetMeter();
 				InitCommand=function(s)
 					s:y(-15):diffuse(CustomDifficultyTwoPartToColor(diff))
@@ -183,7 +183,7 @@ for _,pn in pairs(GAMESTATE:GetEnabledPlayers()) do
 			RemoveCommand=function(s) s:decelerate(1):addx(pn==PLAYER_1 and SCREEN_WIDTH*2 or -SCREEN_WIDTH*2) end,
 		};
 		Def.BitmapText{
-			Font="_avenirnext lt pro bold 25px",
+			Font="_avenirnext lt pro bold/25px",
 			Text="Please wait...",
 			InitCommand=function(s) s:diffusealpha(0):y(60):strokecolor(Color.Black):sleep(0.4) end,
 			AnimCommand=function(s) s:finishtweening():cropright(0.2):linear(0.5):cropright(0):queuecommand("Anim") end,

@@ -37,27 +37,27 @@ local t = Def.ActorFrame {
 		Name="ComboFrame";
 		Def.BitmapText{
 			Name="NumberW1";
-			Font="combo marv",
+			Font="Combo/combo marv",
 			OnCommand = THEME:GetMetric("Combo", "NumberOnCommand");
 		};
 		Def.BitmapText{
 			Name="NumberW2";
-			Font="combo perf",
+			Font="Combo/combo perf",
 			OnCommand = THEME:GetMetric("Combo", "NumberOnCommand");
 		};
 		Def.BitmapText{
 			Name="NumberW3";
-			Font="combo great",
+			Font="Combo/combo great",
 			OnCommand = THEME:GetMetric("Combo", "NumberOnCommand");
 		};
 		Def.BitmapText{
 			Name="NumberW4";
-			Font="combo good",
+			Font="Combo/combo good",
 			OnCommand = THEME:GetMetric("Combo", "NumberOnCommand");
 		};
 		Def.BitmapText{
 			Name="NumberNormal";
-			Font="combo normal",
+			Font="Combo/combo normal",
 			OnCommand = THEME:GetMetric("Combo", "NumberOnCommand");
 		};
 		Def.Sprite{

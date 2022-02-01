@@ -36,7 +36,7 @@ function genLetterBox()
 						end
 					end
 				};
-				LoadFont("_avenirnext lt pro bold 42px")..{
+				LoadFont("_avenirnext lt pro bold/42px")..{
 					InitCommand=function(s)
 						if character == "Enter" or character == "←" then
 							s:diffuse(Color.White):zoom(0.8):addx(-2)
@@ -191,7 +191,7 @@ local t = Def.ActorFrame{
 				end
 			end;
 		};
-		LoadFont("_avenirnext lt pro bold 36px")..{
+		LoadFont("_avenirnext lt pro bold/36px")..{
 			InitCommand=function(s) s:xy(-250,-190):halign(0):zoom(0.9):strokecolor(Color.Black) end,
 			Text="Register a DANCER NAME.\nEnter the name you want to use."
 		};

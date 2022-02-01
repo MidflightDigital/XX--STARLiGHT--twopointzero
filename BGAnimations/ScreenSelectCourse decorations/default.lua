@@ -105,7 +105,7 @@ t[#t+1] = Def.ActorFrame{
 	InitCommand=function(s) s:xy(_screen.cx-250,_screen.cy-400):diffusealpha(0):draworder(99) end,
 	Def.Sprite{Texture="course title.png"},
 	Def.BitmapText{
-		Font="_avenirnext lt pro bold 36px";
+		Font="_avenirnext lt pro bold/36px";
 		InitCommand = function(s) s:halign(0):xy(-350,-26):maxwidth(600):diffuse(Color.Black):uppercase(true) end,
 		SetCommand = function(self)
 			local course = GAMESTATE:GetCurrentCourse()
@@ -115,7 +115,7 @@ t[#t+1] = Def.ActorFrame{
 		ChangedLanguageDisplayMessageCommand = function(s) s:queuecommand("Set") end,
 	};
 	Def.BitmapText{
-		Font="_avenirnext lt pro bold 25px";
+		Font="_avenirnext lt pro bold/25px";
 		InitCommand = function(s) s:xy(320,54):maxwidth(120):zoom(0.65):align(0.5,0) end,
 		SetCommand = function(self)
 			local curTrail = GAMESTATE:GetCurrentTrail(GAMESTATE:GetMasterPlayerNumber())

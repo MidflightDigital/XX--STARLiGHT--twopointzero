@@ -75,7 +75,7 @@ return Def.ActorFrame{
             Def.ActorFrame{
                 Name="Title",
                 Def.BitmapText{
-                    Font="_avenirnext lt pro bold 20px",
+                    Font="_avenirnext lt pro bold/20px",
                     Text="TITLE:",
                     InitCommand=function(s) s:halign(0):xy(-258.75,-52):skewx(-0.2) end,
                     SetCommand=function(s) s:finishtweening():zoomy(0):zoomx(1.625):decelerate(0.33):zoom(1.5) end,
@@ -93,7 +93,7 @@ return Def.ActorFrame{
             Def.ActorFrame{
                 Name="Artist",
                 Def.BitmapText{
-                    Font="_avenirnext lt pro bold 20px",
+                    Font="_avenirnext lt pro bold/20px",
                     Text="ARTIST:",
                     InitCommand=function(s) s:halign(0):xy(-258.75,-18):skewx(-0.2) end,
                     SetCommand=function(s) s:finishtweening():zoomy(0):zoomx(1.525):decelerate(0.33):zoom(1.4) end,
@@ -111,7 +111,7 @@ return Def.ActorFrame{
             Def.ActorFrame{
                 Name="BPM",
                 Def.BitmapText{
-                    Font="_avenirnext lt pro bold 20px",
+                    Font="_avenirnext lt pro bold/20px",
                     Text="BPM:",
                     InitCommand=function(s) s:halign(0):xy(-258.75,16):skewx(-0.2) end,
                     SetCommand=function(s) s:finishtweening():zoomy(0):zoomx(1.525):decelerate(0.33):zoom(1.4) end,

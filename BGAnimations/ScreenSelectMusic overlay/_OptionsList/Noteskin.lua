@@ -23,7 +23,7 @@ if highlightedNoteSkin ~= "EXIT" then
     end
 else
     t[#t+1] = Def.BitmapText{
-        Font="_avenirnext lt pro bold 20px",
+        Font="_avenirnext lt pro bold/20px",
         Text="EXIT"
     };
 end

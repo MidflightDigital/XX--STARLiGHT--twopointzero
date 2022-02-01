@@ -8,7 +8,7 @@ local function DrawDiffListItem(diff)
       s:x(Difficulty:Reverse()[diff] * xspacing)
     end,
     Def.BitmapText{
-      Font="_avenir next demi bold 20px",
+      Font="_avenir next demi bold/20px",
       Name="DiffLabel";
       InitCommand=function(self)
         self:y(-15):zoomx(0.6):zoomy(0.7)
@@ -33,7 +33,7 @@ local function DrawDiffListItem(diff)
       end
     };
     Def.BitmapText{
-      Font="_avenirnext lt pro bold 36px",
+      Font="_avenirnext lt pro bold/36px",
       Name="Meter";
       InitCommand=function(s) s:y(15) end,
       SetCommand=function(self)

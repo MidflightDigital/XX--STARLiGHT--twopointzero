@@ -9,7 +9,7 @@ local function DrawDiffListItem(diff)
         CurrentSongChangedMessageCommand=function(s) s:queuecommand('Set') end,
         Def.BitmapText{
             Name="Foot",
-            Font="_avenir next demi bold 20px",
+            Font="_avenir next demi bold/20px",
             Text=THEME:GetString("CustomDifficulty",ToEnumShortString(diff)),
             InitCommand=function(s) s:xy(-4,24):halign(0):maxwidth(100):zoomx(0.6):zoomy(0.7) end,
             SetCommand=function(s,p)
@@ -27,7 +27,7 @@ local function DrawDiffListItem(diff)
         };
         Def.ActorFrame{
             Def.BitmapText{
-                Font="_avenirnext lt pro bold 36px",
+                Font="_avenirnext lt pro bold/36px",
                 InitCommand=function(s) s:zoom(0.8):halign(0) end,
                 SetCommand=function(s,p)
                     local song = p.Song;

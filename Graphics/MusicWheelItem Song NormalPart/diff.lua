@@ -30,7 +30,7 @@ return Def.ActorFrame{
 	};
 	Def.BitmapText{
 		InitCommand=function(s) s:draworder(2); end;
-		Font="_avenirnext lt pro bold 25px";
+		Font="_avenirnext lt pro bold/25px";
 		DiffChangeCommand=function(self)
 			local cur_song = self:GetParent().CurSong;
 			local steps = StepsUtil.SameDiffSteps(cur_song, pn);

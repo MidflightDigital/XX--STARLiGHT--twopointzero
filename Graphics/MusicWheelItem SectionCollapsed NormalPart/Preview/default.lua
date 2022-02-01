@@ -29,7 +29,7 @@ local t = Def.ActorFrame{
 			self:setsize(372,372)
 		end;
 	};
-	LoadFont("_avenirnext lt pro bold 20px")..{
+	LoadFont("_avenirnext lt pro bold/20px")..{
 		InitCommand=function(s) s:diffusealpha(0.9):y(-172):strokecolor(color("0,0,0,0.5")):zoom(0.8) end,
 		SetMessageCommand=function(self,params)
 			local group = params.Text;
@@ -45,7 +45,7 @@ local t = Def.ActorFrame{
 			end;
 		end;
 	};
-	LoadFont("_avenirnext lt pro bold 20px")..{
+	LoadFont("_avenirnext lt pro bold/20px")..{
 		InitCommand=function(s) s:diffusealpha(0.9):y(172):zoom(0.8) end,
 		SetMessageCommand=function(self,params)
 			local group = params.Text;
@@ -61,7 +61,7 @@ local t = Def.ActorFrame{
 			end;
 		end;
 	};
-	LoadFont("_avenirnext lt pro bold 46px")..{
+	LoadFont("_avenirnext lt pro bold/46px")..{
 		InitCommand=function(s) s:y(-20):zoom(1.2):diffusealpha(1):maxwidth(200):diffusebottomedge(color("#d8d8d8")):diffusetopedge(color("#8c8c8c")):strokecolor(Color.Black) end,
 		SetMessageCommand=function(self,params)
 			local group = params.Text;

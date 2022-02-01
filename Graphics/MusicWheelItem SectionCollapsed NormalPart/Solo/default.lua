@@ -19,7 +19,7 @@ local jk = LoadModule "Jacket.lua"
 local SongAttributes = LoadModule "SongAttributes.lua"
 
 local TB = Def.BitmapText{
-	Font="_avenirnext lt pro bold 36px";
+	Font="_avenirnext lt pro bold/36px";
     InitCommand=function(s) s:halign(0):maxwidth(350):strokecolor(color("0,0,0,0.3")) end,
 };
 

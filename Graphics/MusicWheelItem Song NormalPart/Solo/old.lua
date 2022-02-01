@@ -3,7 +3,7 @@ local jk = ...
 
 local SongAttributes = LoadModule "SongAttributes.lua"
 local TB = Def.BitmapText{
-	Font="_avenirnext lt pro bold 25px";
+	Font="_avenirnext lt pro bold/25px";
     InitCommand=function(s) s:halign(0):maxwidth(400):strokecolor(color("0,0,0,0.3"))
     end,
 };
@@ -80,7 +80,7 @@ t[#t+1] = Def.ActorFrame{
             end,
         };
         Def.BitmapText{
-            Font="_avenirnext lt pro bold 20px",
+            Font="_avenirnext lt pro bold/20px",
             SetMessageCommand=function(s,p)
                 local song = p.Song
             if song then

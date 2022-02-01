@@ -1,7 +1,7 @@
 local SongAttributes = LoadModule "SongAttributes.lua"
 
 local TB = Def.BitmapText{
-	Font="_avenirnext lt pro bold 25px";
+	Font="_avenirnext lt pro bold/25px";
 	InitCommand=function(s) s:halign(0):maxwidth(400):strokecolor(color("0,0,0,0.5")) end,
 };
 
@@ -10,7 +10,7 @@ return Def.ActorFrame{
 		Texture="backing",
 	};
 	Def.BitmapText{
-		Font="_avenirnext lt pro bold 25px";
+		Font="_avenirnext lt pro bold/25px";
 		InitCommand=function(s) s:halign(0):x(-400):maxwidth(400):strokecolor(color("0,0,0,0.5")) end,
 		ChangedLanguageDisplayMessageCommand=function(s) s:queuecommand("Set") end,
 		SetMessageCommand=function(self, param)
@@ -26,7 +26,7 @@ return Def.ActorFrame{
 		end;
 	};
 	Def.BitmapText{
-		Font="_avenirnext lt pro bold 25px";
+		Font="_avenirnext lt pro bold/25px";
 		InitCommand=function(s) s:halign(0):xy(-420,-32):uppercase(true):zoomy(0.7):zoomx(1.2):diffuse(Color.Red) end,
 		SetMessageCommand=function(s,params)
 			local song = params.Song

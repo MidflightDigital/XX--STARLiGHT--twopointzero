@@ -203,7 +203,7 @@ local function DrawDifListItem(diff, pn)
           end;
           Def.BitmapText{
             Name="DiffLabel";
-            Font="_avenirnext lt pro bold 20px";
+            Font="_avenirnext lt pro bold/20px";
             InitCommand=function(s)
                 s:diffuse(CustomDifficultyToColor(diff)):strokecolor(Color.Black):x(-20)
                 s:settext(THEME:GetString("CustomDifficulty",ToEnumShortString(diff)))
@@ -211,7 +211,7 @@ local function DrawDifListItem(diff, pn)
         };
         Def.BitmapText{
             Name="DiffLabel";
-            Font="_avenirnext lt pro bold 25px";
+            Font="_avenirnext lt pro bold/25px";
             InitCommand=function(s)
                 s:x(65):strokecolor(Color.Black)
             end,
@@ -235,7 +235,7 @@ local function DrawDifListItem(diff, pn)
       Item[#Item+1] = Def.ActorFrame{
         Def.BitmapText{
           Name="Score";
-          Font="_avenirnext lt pro bold 20px";
+          Font="_avenirnext lt pro bold/20px";
           InitCommand=function(s) s:x(pn==PLAYER_2 and 260 or -260) end,
           SetCommand=function(self)
               self:settext("")

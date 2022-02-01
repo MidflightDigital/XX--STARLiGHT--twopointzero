@@ -66,7 +66,7 @@ for i=1,#fixedChar do
             InitCommand=function(s) s:zoom(1.5) end,
         };
         Def.BitmapText{
-            Font="_avenirnext lt pro bold 20px",
+            Font="_avenirnext lt pro bold/20px",
             Text=CurrentCharacter,
             InitCommand=function(s) s:zoom(1.5) end,
         }
@@ -90,7 +90,7 @@ for i=1,#NumMini do
             InitCommand=function(s) s:zoom(1.5) end,
         };
         Def.BitmapText{
-            Font="_avenirnext lt pro bold 20px",
+            Font="_avenirnext lt pro bold/20px",
             InitCommand=function(s) s:zoom(1.5)
                 if CurrentMini ~= "EXIT" then
                     s:settext(CurrentMini.."%")
@@ -110,7 +110,7 @@ for i=1,#NumRate do
             InitCommand=function(s) s:zoom(1.5) end,
         };
         Def.BitmapText{
-            Font="_avenirnext lt pro bold 20px",
+            Font="_avenirnext lt pro bold/20px",
             InitCommand=function(s) s:zoom(1.5)
                 if CurrentRate ~= "EXIT" then
                     s:settext(CurrentRate.."%")
@@ -284,7 +284,7 @@ if THEME:GetMetric("ScreenSelectMusic","UseOptionsList") then
 		        OffCommand=function(s) s:diffusealpha(1):sleep(0.05):diffusealpha(0):sleep(0.05):diffusealpha(1):sleep(0.05):diffusealpha(0):sleep(0.05):diffusealpha(1):sleep(0.05):diffusealpha(0):sleep(0.05) end,
 		        Def.Sprite{ Texture="exp.png", };
                 Def.BitmapText{
-                    Font="_avenirnext lt pro bold 25px",
+                    Font="_avenirnext lt pro bold/25px",
                     InitCommand=function(s) s:wrapwidthpixels(420) end,
                     OptionsListOpenedMessageCommand=function(s,p)
                         s:stoptweening()
@@ -410,7 +410,7 @@ if THEME:GetMetric("ScreenSelectMusic","UseOptionsList") then
                     end,
                 };
                 Def.BitmapText{
-                    Font="_avenirnext lt pro bold 36px",
+                    Font="_avenirnext lt pro bold/36px",
                     InitCommand=function(s) s:y(180):maxwidth(500):strokecolor(Color.Black) end,
                     OnCommand=function(self)
                         self:settext("Select\n"..ResolveCharacterName(pn).."\nas your dancer.")
@@ -471,7 +471,7 @@ if THEME:GetMetric("ScreenSelectMusic","UseOptionsList") then
                 };
             };
             Def.BitmapText{
-                Font="_avenirnext lt pro bold 25px",
+                Font="_avenirnext lt pro bold/25px",
                 InitCommand=function(s) s:y(-300) end,
                 OptionsListOpenedMessageCommand=function(s,p)
                     s:queuecommand("UpdateText")
@@ -557,7 +557,7 @@ if THEME:GetMetric("ScreenSelectMusic","UseOptionsList") then
                     end;
                 end;
                 Def.BitmapText{
-                    Font="_avenirnext lt pro bold 36px",
+                    Font="_avenirnext lt pro bold/36px",
                     InitCommand=function(s) s:y(180):maxwidth(500):strokecolor(Color.Black) end,
                     OnCommand=function(self)
                         if CurrentMiniVal(pn) ~= nil then
@@ -636,7 +636,7 @@ if THEME:GetMetric("ScreenSelectMusic","UseOptionsList") then
                     end;
                 end;
                 Def.BitmapText{
-                    Font="_avenirnext lt pro bold 36px",
+                    Font="_avenirnext lt pro bold/36px",
                     InitCommand=function(s) s:y(180):maxwidth(500):strokecolor(Color.Black) end,
                     OnCommand=function(self)
                         if CurrentNoteSkin(pn) ~= nil then
@@ -711,7 +711,7 @@ if THEME:GetMetric("ScreenSelectMusic","UseOptionsList") then
                     end;
                 end;
                 Def.BitmapText{
-                    Font="_avenirnext lt pro bold 36px",
+                    Font="_avenirnext lt pro bold/36px",
                     InitCommand=function(s) s:y(180):maxwidth(500):strokecolor(Color.Black) end,
                     OnCommand=function(self)
                         if CurrentRateVal(pn) ~= nil then

@@ -60,7 +60,7 @@ return Def.ActorFrame{
       InitCommand=function(s) s:setsize(478,30):diffuserightedge(color("1,1,1,0")):diffuseleftedge(color("1,1,1,0")) end,
     },
     Def.BitmapText{
-      Font="_avenirnext lt pro bold 20px",
+      Font="_avenirnext lt pro bold/20px",
       InitCommand=function(s) s:maxwidth(400) end,
       SetCommand=function(s)
         local song = GAMESTATE:GetCurrentSong();
@@ -78,7 +78,7 @@ return Def.ActorFrame{
       end,
     },
     Def.BitmapText{
-    Font="_avenirnext lt pro bold 46px",
+    Font="_avenirnext lt pro bold/46px",
       InitCommand=function(s) s:diffusealpha(1):maxwidth(200):diffusebottomedge(color("#d8d8d8")):diffusetopedge(color("#8c8c8c")):strokecolor(Color.Black) end,
       SetMessageCommand=function(self,params)
         local mw = SCREENMAN:GetTopScreen():GetChild("MusicWheel")

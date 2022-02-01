@@ -69,13 +69,13 @@ local function DrawDifListItem(diff)
       InitCommand=function(s) s:diffuse(Color.Black) end,
     };
     Def.BitmapText{
-      Font="_avenirnext lt pro bold 25px",
+      Font="_avenirnext lt pro bold/25px",
       Name="DiffLabel";
       Text=THEME:GetString("CustomDifficulty",ToEnumShortString(diff)),
       InitCommand=function(s) s:halign(player==PLAYER_1 and 0 or 1):diffuse(CustomDifficultyToColor(diff)):x(player == PLAYER_1 and -120 or 120) end,
     };
     Def.BitmapText{
-      Font="_avenirnext lt pro bold 25px",
+      Font="_avenirnext lt pro bold/25px",
       Name="Meter";
       InitCommand=function(s) s:draworder(99):x(player == PLAYER_1 and 100 or -100):diffuse(Color.White):strokecolor(Color.Black) end,
       SetCommand=function(self)

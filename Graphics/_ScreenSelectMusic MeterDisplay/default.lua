@@ -71,7 +71,7 @@ end)
 
 --[[METER NUMBER]]
 local meter = Def.BitmapText{
-    Font="_avenirnext lt pro bold 25px";
+    Font="_avenirnext lt pro bold/25px";
     InitCommand=function(self) self:x(tickPos-100):zoom(1.1):diffuse{0.5,0.5,0.5,1} end
 }
 DDRDiffList.MessageHandlers(meter, function(self, _, XMode)

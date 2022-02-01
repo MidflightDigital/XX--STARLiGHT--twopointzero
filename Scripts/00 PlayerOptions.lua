@@ -653,13 +653,13 @@ function OptionRowScreenFilter()
 		Choices = { "0%", "20%", "40%", "60%", "80%", "100%"},
 		LoadSelections = function(self, list, pn)
 			local pName = ToEnumShortString(pn)
-			local filterValue = getenv("ScreenFilter"..pName)
-
+			local profileID = GetProfileIDForPlayer(pn)
+			local pPrefs = ProfilePrefs.Read(profileID)
+			local filterValue = pPrefs.filter
 			if filterValue ~= nil then
 				local val = alphaToChoice[filterValue] or 1
 				list[val] = true
 			else
-				setenv("ScreenFilter"..pName,0)
 				list[1] = true
 			end
 		end,
@@ -669,7 +669,10 @@ function OptionRowScreenFilter()
 			for i=1,#list do
 				if not found then
 					if list[i] == true then
-						setenv("ScreenFilter"..pName,choiceToAlpha[i])
+						local profileID = GetProfileIDForPlayer(pn)
+						local pPrefs = ProfilePrefs.Read(profileID)
+						pPrefs.filter = choiceToAlpha[i]
+						ProfilePrefs.Save(profileID)
 						found = true
 					end
 				end

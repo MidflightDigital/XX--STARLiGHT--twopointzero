@@ -114,7 +114,7 @@ t[#t+1] = Def.ActorFrame{
 					self:x(pn==PLAYER_2 and diffP2X[steps] or diffP1X[steps])
 				end;
 				Def.BitmapText{
-					Font="_avenirnext lt pro bold 20px",
+					Font="_avenirnext lt pro bold/20px",
 					Name="Diff Label",
 					SetCommand=function(s)
 						s:halign(1)
@@ -124,7 +124,7 @@ t[#t+1] = Def.ActorFrame{
 					CurrentSongChangedMessageCommand=function(s) s:queuecommand("Set") end,
 				};
 				Def.BitmapText{
-					Font="_avenirnext lt pro bold 20px",
+					Font="_avenirnext lt pro bold/20px",
 					Name = "Difficulty Meter";
 					InitCommand=function(self)
 						self:x(16)
@@ -144,7 +144,7 @@ t[#t+1] = Def.ActorFrame{
 				CurrentSongChangedMessageCommand=function(s) s:queuecommand("Set") end,
 				Def.BitmapText{
 					InitCommand=function(s) s:visible(pPrefs.scorelabel == "Profile") end,
-					Font="_avenirnext lt pro bold 20px",
+					Font="_avenirnext lt pro bold/20px",
 					Name = "Profile Name";
 					SetCommand=function(s)
 						s:maxwidth(150);

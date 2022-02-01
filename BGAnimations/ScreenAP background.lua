@@ -41,7 +41,7 @@ local t = Def.ActorFrame{
 		InitCommand=function(s) s:xy(_screen.cx,SCREEN_BOTTOM-200):zoom(0.4):diffusealpha(0) end,
 		OnCommand=function(s) s:sleep(1):linear(0.6):diffusealpha(0.05) end,
 	};
-	LoadFont("_avenirnext lt pro bold 36px")..{
+	LoadFont("_avenirnext lt pro bold/36px")..{
 		Text=base64decode(THEME:GetString("ap","m"));
 		InitCommand=function(s) s:Center():wrapwidthpixels(SCREEN_WIDTH/1.5):diffusealpha(0) end,
 		OnCommand=function(s) s:sleep(0.5):decelerate(1):diffusealpha(0.9) end,

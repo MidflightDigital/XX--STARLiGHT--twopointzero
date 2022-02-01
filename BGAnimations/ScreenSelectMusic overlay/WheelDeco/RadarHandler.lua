@@ -32,7 +32,7 @@ for i,v in ipairs(GR) do
             OnCommand=function(s) s:animate(0):setstate(i-1) end,
         };
         Def.BitmapText{
-            Font="_avenirnext lt pro bold 20px";
+            Font="_avenirnext lt pro bold/20px";
             SetCommand=function(s)
                 local song = GAMESTATE:GetCurrentSong();
                     if song then

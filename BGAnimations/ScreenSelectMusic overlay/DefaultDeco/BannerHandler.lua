@@ -106,7 +106,7 @@ local SongInfo = Def.ActorFrame{
   };
   Def.BitmapText{
     Name="Title",
-    Font="_avenirnext lt pro bold 20px",
+    Font="_avenirnext lt pro bold/20px",
     InitCommand=function(s) s:maxwidth(400) end,
     SetCommand=function(s)
       s:finishtweening():diffusealpha(0):x(-20):decelerate(0.25):x(0):diffusealpha(1)
@@ -129,7 +129,7 @@ local SongInfo = Def.ActorFrame{
     end,
   };
   Def.BitmapText{
-    Font="_avenirnext lt pro bold 20px",
+    Font="_avenirnext lt pro bold/20px",
     InitCommand=function(s) s:y(20):maxwidth(400) end,
     SetCommand=function(s)
       s:finishtweening():diffusealpha(0):x(20):decelerate(0.25):x(0):diffusealpha(1)

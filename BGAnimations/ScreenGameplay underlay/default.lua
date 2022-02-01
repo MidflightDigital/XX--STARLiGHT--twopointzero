@@ -62,8 +62,12 @@ for _, pn in ipairs(GAMESTATE:GetEnabledPlayers()) do
   end
 end;
 
+local profileID = GetProfileIDForPlayer(pn)
+local pPrefs = ProfilePrefs.Read(profileID)
+
   local style=GAMESTATE:GetCurrentStyle(pn)
-  local alf=getenv("ScreenFilter"..ToEnumShortString(pn)) or 0
+  local alf = pPrefs.filter
+  --local alf=getenv("ScreenFilter"..ToEnumShortString(pn)) or 0
   local NumColumns = GAMESTATE:GetCurrentStyle():ColumnsPerPlayer()
 
   local width=(style:GetWidth(pn)*(NumColumns/1.7))
@@ -136,19 +140,18 @@ end;
         if param.PlayerNumber == pn then
           s:linear(0.1)
           if param.HealthState == "HealthState_Danger" then
-            s:diffuse(color("#ff1b00"))
+            s:diffuse(color("#ff1b00")):diffusealpha(0.75)
           elseif param.HealthState == "HealthState_Dead" then
             if GAMESTATE:GetPlayerState(pn):GetPlayerOptions('ModsLevel_Current'):FailSetting() == 'FailType_Immediate' then
               s:diffusealpha(0)
             else
-              s:diffuse(filter_color)
+              s:diffuse(filter_color):diffusealpha(alf/100)
             end
           elseif param.HealthState == "HealthState_Alive" then
-            s:diffuse(filter_color)
+            s:diffuse(filter_color):diffusealpha(alf/100)
           else
             s:diffusealpha(0)
           end
-          s:diffusealpha(alf/100)
         end
       end,
     };
@@ -167,8 +170,6 @@ end;
     };
   };
 
-  local profileID = GetProfileIDForPlayer(pn)
-  local pPrefs = ProfilePrefs.Read(profileID)
   local StepsOrTrail
   if GAMESTATE:IsCourseMode() then
     StepsOrTrail = GAMESTATE:GetCurrentTrail(pn):GetTrailEntry(GAMESTATE:GetCurrentStageIndex()):GetSteps():GetTimingData()

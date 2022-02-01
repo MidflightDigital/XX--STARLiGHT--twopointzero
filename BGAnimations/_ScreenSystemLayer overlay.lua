@@ -1,5 +1,5 @@
 local function CreditsText()
-	local text = LoadFont("_avenirnext lt pro bold 20px") .. {
+	local text = LoadFont("_avenirnext lt pro bold/20px") .. {
 		InitCommand=function(s) s:xy(_screen.cx,SCREEN_BOTTOM-16):zoom(1):strokecolor(color("0,0,0,1")):playcommand("Refresh") end,
 		RefreshCommand=function(self)
 		--Other coin modes

@@ -100,7 +100,7 @@ t[#t+1] = Def.ActorFrame{
   --Group Name
   InitCommand=function(s) s:xy(SCREEN_LEFT+480,_screen.cy+110) end,
   Def.BitmapText{
-    Font="_avenir next demi bold 20px",
+    Font="_avenir next demi bold/20px",
     InitCommand=function(s) s:maxwidth(400):wrapwidthpixels(2^24):diffusealpha(0.5) end,
     CurrentSongChangedMessageCommand=function(s)
       local mw = SCREENMAN:GetTopScreen():GetChild("MusicWheel")

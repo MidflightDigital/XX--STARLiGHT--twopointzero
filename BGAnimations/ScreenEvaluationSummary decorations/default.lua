@@ -36,7 +36,7 @@ for i = StageCheck(), mStages do
 			};
 			Def.BitmapText{
 				Name="Title",
-				Font="_avenirnext lt pro bold 42px",
+				Font="_avenirnext lt pro bold/42px",
 				BeginCommand=function(s)
 					s:x(26):settext(sssong:GetDisplayFullTitle()):maxwidth(400)
 				end,
@@ -109,7 +109,7 @@ for i = StageCheck(), mStages do
 			};
 			Def.BitmapText{
 				Name="Stage",
-				Font="_avenirnext lt pro bold 36px",
+				Font="_avenirnext lt pro bold/36px",
 				InitCommand=function(s)
 					s:xy(pn==PLAYER_1 and 36 or -36,-20):maxwidth(190):zoomy(0.8):zoomx(0.92):halign(pn==PLAYER_1 and 1 or 0)
 				end,
@@ -123,7 +123,7 @@ for i = StageCheck(), mStages do
 				end
 			};
 			Def.RollingNumbers{
-				File=THEME:GetPathF("","_avenirnext lt pro bold 36px"),
+				File=THEME:GetPathF("","_avenirnext lt pro bold/36px"),
 				InitCommand=function(s) s:zoom(0.9):Load("RollingNumbersScore"):xy(pn==PLAYER_1 and 36 or -36,20)
 					:strokecolor(Color.Black):halign(pn==PLAYER_1 and 1 or 0)
 				end,
@@ -174,7 +174,7 @@ for _, pn in pairs(GAMESTATE:GetEnabledPlayers()) do
       	end;
     };
     Def.BitmapText{
-      Font="_avenirnext lt pro bold 25px";
+      Font="_avenirnext lt pro bold/25px";
       InitCommand=function(s)
         s:xy(pn=="PlayerNumber_P2" and SCREEN_RIGHT-110 or SCREEN_LEFT+120,_screen.cy-304)
         s:settext(PROFILEMAN:GetProfile(pn):GetDisplayName())

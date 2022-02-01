@@ -68,7 +68,7 @@ local function MakeRow(frames, idx)
         Texture="../item.png",
       };
       Def.BitmapText{
-        Font="_avenirnext lt pro bold 20px";
+        Font="_avenirnext lt pro bold/20px";
         OnCommand=function(s) s:zoom(0.8):queuecommand("Set") end,
         ShowCommand=function(s) s:playcommand("Set") end,
         SetCommand=function(self)
@@ -147,7 +147,7 @@ local t = Def.ActorFrame{
       InitCommand=function(s) s:y(-340) end,
     };
     Def.BitmapText{
-      Font="_handel gothic itc std Bold 24px";
+      Font="_handel gothic itc std Bold/24px";
       Text="WHEEL TYPE";
       InitCommand=function(s) s:y(-338):zoom(1.1) end,
     };

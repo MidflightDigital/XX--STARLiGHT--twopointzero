@@ -41,7 +41,7 @@ return Def.ActorFrame{
 		end;
 	};
 	Def.BitmapText{
-		Font="_avenirnext lt pro bold 10px",
+		Font="_avenirnext lt pro bold/10px",
 		InitCommand=function(s) s:diffusealpha(0.9):y(-107) end,
 		SetMessageCommand=function(self,params)
 			local group = params.Text;
@@ -56,7 +56,7 @@ return Def.ActorFrame{
 		end;
 	};
 	Def.BitmapText{
-		Font="_avenirnext lt pro bold 10px",
+		Font="_avenirnext lt pro bold/10px",
 		InitCommand=function(s) s:diffusealpha(0.9):y(107) end,
 		SetMessageCommand=function(self,params)
 			local group = params.Text;
@@ -71,7 +71,7 @@ return Def.ActorFrame{
 		end;
 	};
 	Def.BitmapText{
-	Font="_avenirnext lt pro bold 46px",
+	Font="_avenirnext lt pro bold/46px",
 		InitCommand=function(s) s:y(-20):diffusealpha(1):maxwidth(200):diffusebottomedge(color("#d8d8d8")):diffusetopedge(color("#8c8c8c")):strokecolor(Color.Black) end,
 		SetMessageCommand=function(self,params)
 			local group = params.Text;

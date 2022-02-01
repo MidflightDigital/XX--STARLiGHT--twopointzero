@@ -102,7 +102,7 @@ t[#t+1] = Def.ActorFrame{
 	InitCommand=function(s) s:xy(_screen.cx-336,_screen.cy+148) end,
 	Def.Sprite{Texture=THEME:GetPathG("","_shared/titlebox")},
 	Def.BitmapText{
-		Font="_avenirnext lt pro bold 25px";
+		Font="_avenirnext lt pro bold/25px";
 		InitCommand = function(s) s:y(4):maxwidth(480) end,
 		SetCommand = function(self)
 			local course = GAMESTATE:GetCurrentCourse()

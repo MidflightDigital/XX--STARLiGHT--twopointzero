@@ -7,7 +7,7 @@ t[#t+1] = Def.ActorFrame{
 	InitCommand=function(s) s:x(20) end,
 	--Title/Subtitle
 	Def.BitmapText{
-		Font="_avenirnext lt pro bold 25px";
+		Font="_avenirnext lt pro bold/25px";
 		InitCommand=function(s) s:halign(0):x(-420):maxwidth(400) end,
 		SetMessageCommand=function(self, param)
 			local Song = param.Song;
@@ -23,7 +23,7 @@ t[#t+1] = Def.ActorFrame{
 	};
 	--Artist
 	Def.BitmapText{
-		Font="_avenirnext lt pro bold 25px";
+		Font="_avenirnext lt pro bold/25px";
 		InitCommand=function(s) s:halign(0):xy(-400,12):maxwidth(300/0.6):zoom(1.2) end,
 		CurrentSongChangedMessageCommand=function(s) s:queuecommand("Set") end,
 		CurrentCourseChangedMessageCommand=function(s) s:queuecommand("Set") end,
@@ -39,7 +39,7 @@ t[#t+1] = Def.ActorFrame{
 		end;
 	};
 	Def.BitmapText{
-		Font="_avenirnext lt pro bold 25px";
+		Font="_avenirnext lt pro bold/25px";
 		InitCommand=function(s) s:halign(0):xy(-420,-30):uppercase(true):zoomy(0.7):zoomx(1.2):diffuse(Color.Red) end,
 		SetMessageCommand=function(s,params)
 			local song = params.Song

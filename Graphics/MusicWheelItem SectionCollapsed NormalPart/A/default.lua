@@ -25,7 +25,7 @@ return Def.ActorFrame {
 		end;
 	};
 	Def.BitmapText{
-		Font='_avenirnext lt pro bold 25px',
+		Font='_avenirnext lt pro bold/25px',
 		InitCommand=function(s) s:y(-8):maxwidth(320) end,
 		SetCommand=function(self,params)
 			self:stoptweening();

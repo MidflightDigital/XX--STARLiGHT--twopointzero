@@ -25,7 +25,7 @@ t[#t+1] = Def.ActorFrame{
     Def.ActorFrame{
         InitCommand=function(s) s:y(250) end,
         LoadActor(THEME:GetPathB("","ScreenSelectMusic overlay/2014Deco/titlebox"));
-        LoadFont("_avenirnext lt pro bold 20px") .. {
+        LoadFont("_avenirnext lt pro bold/20px") .. {
             InitCommand = function(s) s:y(-8):maxwidth(400):maxheight(20):playcommand("Set") end,
             SetCommand = function(self)
                 local song = GAMESTATE:GetCurrentSong()
@@ -36,7 +36,7 @@ t[#t+1] = Def.ActorFrame{
                 end
             end,
         };
-        LoadFont("_avenirnext lt pro bold 20px") .. {
+        LoadFont("_avenirnext lt pro bold/20px") .. {
             InitCommand = function(s) s:y(20):maxwidth(400):maxheight(20):playcommand("Set") end,
             SetCommand = function(self)
                 local song = GAMESTATE:GetCurrentSong()
@@ -53,7 +53,7 @@ t[#t+1] = Def.ActorFrame{
 t[#t+1] = Def.ActorFrame{
     InitCommand=function(s) s:Center() end,
     Def.BitmapText{
-        Font="_avenirnext lt pro bold 20px";
+        Font="_avenirnext lt pro bold/20px";
         InitCommand=function(s)
             local steps = GAMESTATE:GetCurrentSteps(PLAYER_1)
             if steps then

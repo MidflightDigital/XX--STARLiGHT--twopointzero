@@ -119,7 +119,7 @@ t[#t+1] = Def.ActorFrame {
 			InitCommand=function(s) s:diffuseramp():effectcolor1(color("1,1,1,0.5")):effectcolor2(color("1,1,1,1")):effectperiod(1.5) end,
 		};
 		Def.BitmapText{
-			Font="_avenirnext lt pro bold 36px";
+			Font="_avenirnext lt pro bold/36px";
 			Text="";
 			InitCommand=function(self) self:hibernate(0.4):zoom(0.7):maxwidth(570):wrapwidthpixels(570):vertspacing(2) end;
 			TitleSelectionMessageCommand=function(self, params) self:settext(THEME:GetString("ScreenTitleMenu","Description"..params.Choice)) end;

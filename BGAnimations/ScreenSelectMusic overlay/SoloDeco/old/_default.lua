@@ -85,7 +85,7 @@ for pn in EnabledPlayers() do
             OffCommand=function(s) s:queuecommand("Hide") end,	
         };
 		Def.BitmapText{
-			Font="_avenirnext lt pro bold 42px",
+			Font="_avenirnext lt pro bold/42px",
 			InitCommand=function(s) s:shadowlengthy(5):y(-180) end,
 			SetCommand=function(s)
 				if GAMESTATE:GetCurrentSong() then
@@ -159,7 +159,7 @@ for pn in EnabledPlayers() do
 				InitCommand=function(s) s:setsize(5,36):diffuse(CustomDifficultyToColor(ToEnumShortString(diff))):x(pn==PLAYER_1 and 4 or -4) end,
 			},
 			Def.BitmapText{
-				Font="_avenirnext lt pro bold 25px",
+				Font="_avenirnext lt pro bold/25px",
 				InitCommand=function(s) s:x(pn==PLAYER_1 and 14 or -14):diffuse(Color.Black):strokecolor(color("#dedede")):halign(pn==PLAYER_1 and 0 or 1) end,
 				SetCommand=function(s)
 					local song = GAMESTATE:GetCurrentSong()
@@ -250,7 +250,7 @@ return Def.ActorFrame{
             InitCommand=function(s) s:align(0,0):xy(SCREEN_LEFT+16,SCREEN_TOP+16):zoom(IsUsingWideScreen() and 1 or 0.8) end,
         };
         Def.BitmapText{
-            Font="_avenirnext lt pro bold 46px",
+            Font="_avenirnext lt pro bold/46px",
             Name="Stage";
             InitCommand=function(s) s:align(0,0):xy(SCREEN_LEFT+30,SCREEN_TOP+100):diffusecolor(color("#e6ffff")) end,
             Text=THEME:GetString("Stage",ToEnumShortString(GAMESTATE:GetCurrentStage())).." STAGE",
@@ -266,7 +266,7 @@ return Def.ActorFrame{
             InitCommand=function(s) s:halign(1) end,
         };
         Def.BitmapText{
-            Font="_avenirnext lt pro bold 25px",
+            Font="_avenirnext lt pro bold/25px",
             InitCommand=function(s) s:halign(0):xy(-350,-26):maxwidth(300):zoom(1.1) end,
             SetCommand=function(s)
                 local song = GAMESTATE:GetCurrentSong()
@@ -288,7 +288,7 @@ return Def.ActorFrame{
             end,
         };
         Def.BitmapText{
-            Font="_avenirnext lt pro bold 25px",
+            Font="_avenirnext lt pro bold/25px",
             InitCommand=function(s) s:halign(0):xy(-350,6):maxwidth(300):zoom(1.1) end,
             SetCommand=function(s)
                 local song = GAMESTATE:GetCurrentSong()
@@ -349,7 +349,7 @@ return Def.ActorFrame{
                     s:zoomto(378,378);
                 end;
             };
-            LoadFont("_avenirnext lt pro bold 46px")..{
+            LoadFont("_avenirnext lt pro bold/46px")..{
                 InitCommand=function(s) s:y(-20):zoom(1.5):diffusealpha(1):maxwidth(200):diffusebottomedge(color("#d8d8d8")):diffusetopedge(color("#8c8c8c")):strokecolor(Color.Black) end,
                 SetMessageCommand=function(self,params)
                   local mw = SCREENMAN:GetTopScreen():GetChild("MusicWheel")

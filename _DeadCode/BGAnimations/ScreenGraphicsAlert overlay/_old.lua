@@ -1,5 +1,5 @@
 local TextBox=Def.BitmapText{
-    Font="_avenirnext lt pro bold 42px",
+    Font="_avenirnext lt pro bold/42px",
     InitCommand=function(s) s:wrapwidthpixels(SCREEN_WIDTH/1.5):strokecolor(Color.Black) end,
 };
 

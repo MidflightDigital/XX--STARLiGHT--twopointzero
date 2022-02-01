@@ -7,14 +7,14 @@ function GetLocalProfiles()
 				Texture=THEME:GetPathG("","ScreenSelectProfile/card.png"),
 			};
 			Def.BitmapText{
-				Font="_avenirnext lt pro bold 25px",
+				Font="_avenirnext lt pro bold/25px",
 				Text=profile:GetDisplayName(),
 				InitCommand=function(s) s:xy(-220,-15):halign(0):diffuse(color("#b5b5b5")):diffusetopedge(color("#e5e5e5"))
 					:maxwidth(400):zoom(1.1)
 				end,
 			};
 			Def.BitmapText{
-				Font="_avenirnext lt pro bold 25px",
+				Font="_avenirnext lt pro bold/25px",
 				Text=string.upper(string.sub(profile:GetGUID(),1,4).."-"..string.sub(profile:GetGUID(),5,8)),
 				InitCommand=function(s) s:xy(-220,18):halign(0):zoom(0.8):diffuse(color("#b5b5b5")):diffusetopedge(color("#e5e5e5"))
 					:maxwidth(400)
@@ -100,7 +100,7 @@ function LoadPlayerStuff(Player)
         	OffCommand=function(s) s:finishtweening():sleep(0.3):decelerate(0.3):rotationz(-360):zoom(0) end,
 		};
 	};
-	t[#t+1] = LoadFont("_avenirnext lt pro bold 25px") .. {
+	t[#t+1] = LoadFont("_avenirnext lt pro bold/25px") .. {
 		Name = 'SelectedProfileText';
     	InitCommand=function(self) self:y(120):diffusealpha(0):maxwidth(400):strokecolor(Alpha(Color.Black,0.5)) end,
 		OnCommand=function(s) s:sleep(0.7):linear(0.2):diffusealpha(0.75) end,

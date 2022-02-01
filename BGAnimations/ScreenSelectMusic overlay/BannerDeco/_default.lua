@@ -58,7 +58,7 @@ for _,pn in pairs(GAMESTATE:GetEnabledPlayers()) do
 end
 
 local Textbox = Def.BitmapText{
-  Font="_avenirnext lt pro bold 25px";
+  Font="_avenirnext lt pro bold/25px";
   InitCommand=function(s) s:maxwidth(480):strokecolor(Color.Black) end,
 };
 
