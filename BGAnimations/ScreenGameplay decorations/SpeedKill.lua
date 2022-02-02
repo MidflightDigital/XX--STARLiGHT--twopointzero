@@ -61,9 +61,11 @@ return Def.Actor{
         local speedmod_increment, top_cap
         if cur_mmod or cur_cmod then
             speedmod_increment = 50
+            bottom_cap = 100
             top_cap = 800
         else
             speedmod_increment = 0.25
+            bottom_cap = 0.25
             top_cap = 8
         end
 
@@ -72,7 +74,11 @@ return Def.Actor{
         new_speedmod = math.floor(new_speedmod / speedmod_increment + 0.5) * speedmod_increment
 
         if not increasing_speed then
-            speedmod_increment = -speedmod_increment
+            if new_speedmod ~= bottom_cap then
+                speedmod_increment = -speedmod_increment
+            else
+                speedmod_increment = 0
+            end
         end
 
         new_speedmod = math.max(speedmod_increment, new_speedmod + speedmod_increment)

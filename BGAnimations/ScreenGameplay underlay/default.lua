@@ -146,7 +146,7 @@ local pPrefs = ProfilePrefs.Read(profileID)
             else
               s:diffuse(filter_color):diffusealpha(alf/100)
             end
-          elseif param.HealthState == "HealthState_Alive" then
+          elseif param.HealthState == "HealthState_Alive" or param.HealthState == 'HealthState_Hot' then
             s:diffuse(filter_color):diffusealpha(alf/100)
           else
             s:diffusealpha(0)
