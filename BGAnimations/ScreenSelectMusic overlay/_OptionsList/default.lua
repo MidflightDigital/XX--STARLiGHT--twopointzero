@@ -74,13 +74,7 @@ for i=1,#fixedChar do
 end
 for i=1,#fixedNS do
     local CurrentSkin = fixedNS[i];
-    _NSKIN[i] = Def.ActorFrame{
-        OnCommand=function(s)
-            highlightedNoteSkin = CurrentSkin;
-            s:RemoveAllChildren()
-            s:AddChildFromPath(THEME:GetPathB("ScreenSelectMusic","overlay/_OptionsList/Noteskin.lua"))
-        end
-    };
+    _NSKIN[i] = LoadModule("NoteskinObjLoad.lua",CurrentSkin)
 end;
 for i=1,#NumMini do
     local CurrentMini = NumMini[i];
