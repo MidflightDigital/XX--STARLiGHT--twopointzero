@@ -478,7 +478,7 @@ local t = Def.ActorFrame{
 						GAMESTATE:InsertCoin(-1)
 					end
 					SCREENMAN:GetTopScreen():SetProfileIndex(p.PlayerNumber, -1);
-					MESSAGEMAN:Broadcast("StartButton");
+					s:queuecommand("UpdateInternal2")
 				end
 			else
 				ready[p.PlayerNumber] = true

@@ -8,7 +8,7 @@ if NoteskinToUse ~= "EXIT" then
 	nbox = NOTESKIN:LoadActorForNoteSkin( GameDirections[curgame] , "Tap Note", NoteskinToUse or "default" )
 else
 	nbox = Def.BitmapText{
-		Font="_avenirnext lt pro bold 20px",
+		Font="_avenirnext lt pro bold/20px",
 		Text="EXIT"
 	}
 end
