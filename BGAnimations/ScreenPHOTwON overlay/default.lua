@@ -47,7 +47,9 @@ local t = Def.ActorFrame{
 								self:AddChildFromPath(THEME:GetPathB("ScreenPHOTwON","overlay/AIO/default.lua"))]]
 						    elseif curIndex == 4 then
 						    	curState = "MenuState_Gameplay";
-						    	SCREENMAN:AddNewScreenToTop("ScreenOptionsTheme","SM_GoToNextScreen")
+								SCREENMAN:GetTopScreen():SetNextScreenName("ScreenPHOTwON")
+						    	SCREENMAN:AddNewScreenToTop("ScreenSTARLiGHTOptions","SM_GoToNextScreen")
+
             			    elseif curIndex == 5 then
 						    	  SCREENMAN:GetTopScreen():SetNextScreenName(Branch.FirstScreen()):StartTransitioningScreen("SM_GoToNextScreen")
 						    	  SOUND:StopMusic()

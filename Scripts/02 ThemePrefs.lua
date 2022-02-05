@@ -22,7 +22,7 @@ local Prefs =
 		Choices = {"Off", "On"},
 		Values = { false, true}
 	},
-	FlashyCombo =
+	CutIns =
 	{
 		Default = true,
 		Choices = { "Off", "On" },
@@ -86,6 +86,12 @@ local Prefs =
 	{
 		Default = false,
 		Choices = {"No","Yes"},
+		Values = {false,true}
+	},
+	ComboPerRow = 
+	{
+		Default = true,
+		Choices = {"One Note","Multiple Notes"},
 		Values = {false,true}
 	}
 };
