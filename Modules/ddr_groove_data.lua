@@ -8,7 +8,7 @@ elseif StarlightCache[name] then
 	env[name] = StarlightCache[name]
 	return StarlightCache[name]
 end
-local results = dofile(THEME:GetAbsolutePath("Other/ddr_groove_data.lua"))
+local results = dofile(THEME:GetCurrentThemeDirectory().."Other/ddr_groove_data.lua")
 StarlightCache[name] = results[st]
 env[name] = results[st]
 return results[st]

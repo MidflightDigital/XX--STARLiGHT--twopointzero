@@ -93,4 +93,46 @@ do
 			or error("GetMenuMusicPath: no menu music defined for selection"..selection, 2)
 		return relative and file or THEME:GetPathS("", file)
 	end
+
+	--[[This doesn't work right
+	local musicfb = {
+		common = {
+			["Default"] = "MenuMusic/Default/common (loop).ogg"
+		},
+		profile = {
+			["Default"] = "MenuMusic/Default/profile (loop).ogg"
+		},
+		results = {
+			["Default"] = "MenuMusic/Default/results (loop).ogg"
+		},
+		music = {
+			["Default"] = "MenuMusic/Default/common (loop).ogg"
+		},
+		stage = {
+			["Default"] = "_Door.ogg"
+		},
+		title = {
+			["Default"] = "Title_In.ogg"
+		},
+		options = {
+			["Default"] = "MenuMusic/Default/options (loop).ogg"
+		},
+
+	}
+	function GetMenuMusicPath(type, relative)
+		local paths = {
+			THEME:GetCurrentThemeDirectory().."/Sounds/MenuMusic/"..ThemePrefs.Get("MenuMusic").."/"..type.." (loop).ogg",
+			THEME:GetCurrentThemeDirectory().."/Sounds/MenuMusic/"..ThemePrefs.Get("MenuMusic").."/"..type.." .ogg",
+			THEME:GetCurrentThemeDirectory().."/Sounds/MenuMusic/"..ThemePrefs.Get("MenuMusic").."/"..type..".ogg",
+		}
+		for path in ivalues(paths) do
+			if FILEMAN:DoesFileExist(path) then
+				return path
+			elseif FILEMAN:DoesFileExist(THEME:GetCurrentThemeDirectory().."/Sounds/MenuMusic/"..ThemePrefs.Get("MenuMusic").."/common (loop).ogg") and 
+			(type ~= "title" or type ~= "stage") then
+				return THEME:GetCurrentThemeDirectory().."/Sounds/MenuMusic/"..ThemePrefs.Get("MenuMusic").."/common (loop).ogg"
+			end
+		end
+		return THEME:GetPathS("",musicfb[type]["Default"])
+	end]]
 end

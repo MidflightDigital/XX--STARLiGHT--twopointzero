@@ -57,7 +57,7 @@ local Jacket = {
         elseif string.find(so,"Meter") then
             return THEME:GetPathG("",sog.."/EasyMeter/"..group_name[text]..".png")
         else
-            local internalPath = THEME:GetAbsolutePath("Graphics/"..sog.."/"..so.."/"..text..".png", true)
+            local internalPath = THEME:GetCurrentThemeDirectory().."Graphics/"..sog.."/"..so.."/"..text..".png"
             if FILEMAN:DoesFileExist(internalPath) then
                 return internalPath
             end

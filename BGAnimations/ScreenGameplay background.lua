@@ -29,7 +29,7 @@ local background = Def.ActorFrame{
 }
 
 
-local bgScripts = dofile(THEME:GetAbsolutePath("BGAnimations/BGScripts/default.lua"))
+local bgScripts = dofile(THEME:GetCurrentThemeDirectory().."BGAnimations/BGScripts/default.lua")
 if bgScripts.worked then
     return Def.ActorFrame{
         background,
