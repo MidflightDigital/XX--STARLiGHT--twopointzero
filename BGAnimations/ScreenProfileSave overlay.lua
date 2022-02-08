@@ -29,6 +29,9 @@ local x = Def.ActorFrame{
 	};
 };
 
+local ProfilePrefs = LoadModule "ProfilePrefs.lua"
+local MyGrooveRadar = LoadModule "MyGrooveRadar.lua"
+
 local stype = GAMESTATE:GetCurrentStyle():GetStyleType()
 local styleName = ((stype == 'StyleType_OnePlayerTwoSides') or (stype == 'StyleType_TwoPlayersSharedSides'))
 		and 'double'

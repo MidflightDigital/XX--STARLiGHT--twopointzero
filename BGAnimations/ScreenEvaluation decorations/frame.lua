@@ -12,6 +12,8 @@ local pn  = ({...})[1]
 local controller = ({...})[2]
 local paneState = ({...})[3]
 local tabCount = 3
+
+local ProfilePrefs = LoadModule "ProfilePrefs.lua"
 local profileID = GetProfileIDForPlayer(pn)
 local pPrefs = ProfilePrefs.Read(profileID)
 

@@ -27,6 +27,8 @@ function GetLocalProfiles()
 end
 
 local profnum = PROFILEMAN:GetNumLocalProfiles();
+local ProfilePrefs = LoadModule "ProfilePrefs.lua"
+local MyGrooveRadar = LoadModule "MyGrooveRadar.lua"
 
 function LoadCard(cColor,cColor2,Player,IsJoinFrame)
 	local t = Def.ActorFrame{

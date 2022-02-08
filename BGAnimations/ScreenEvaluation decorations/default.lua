@@ -98,6 +98,8 @@ t[#t+1] = Def.ActorFrame{
   };
 };
 
+local ProfilePrefs = LoadModule "ProfilePrefs.lua"
+
 for _, pn in pairs(GAMESTATE:GetEnabledPlayers()) do
   local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
   local Score = pss:GetScore()

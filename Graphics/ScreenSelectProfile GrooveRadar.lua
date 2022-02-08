@@ -4,6 +4,8 @@ tt[1],tt[2],tt[3],tt[4],tt[5],tt[6],tt[7] = ...
 local player = tt[6]
 local style = tt[7]
 
+local MyGrooveRadar = LoadModule "MyGrooveRadar.lua"
+
 local function radarSet(self)
 
 

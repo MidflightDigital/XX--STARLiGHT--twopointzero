@@ -5,6 +5,8 @@ local xPosPlayer = {
     P2 = SCREEN_RIGHT-280
 }
 
+local ProfilePrefs = LoadModule "ProfilePrefs.lua"
+
 for _, pn in pairs(GAMESTATE:GetEnabledPlayers()) do
 
 t[#t+1] = Def.ActorFrame{

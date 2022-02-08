@@ -50,6 +50,8 @@ v1.1
 * Cleaned up code some, I think.
 ]]
 
+local ProfilePrefs = LoadModule "ProfilePrefs.lua"
+
 local ProfileSpeedMods = {}
 
 -- Returns a new, empty mod table: a table with three members x, C, and m,

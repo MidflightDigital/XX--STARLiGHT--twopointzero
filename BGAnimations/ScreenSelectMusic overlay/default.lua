@@ -4,6 +4,7 @@ if not GAMESTATE:IsCourseMode() then
 end;
 
 local jk = LoadModule"Jacket.lua"
+local ProfilePrefs = LoadModule "ProfilePrefs.lua"
 
 --Custom Music Preview breaks so much crap, let's just not. -Inori
 function play_sample_music(self)
@@ -62,7 +63,7 @@ return Def.ActorFrame{
 		PlayCommand=function(s) s:play() end,
 	};
 	OffCommand=function(s)
-		LoadFromProfilePrefs()
+		ProfilePrefs.LoadFromProfilePrefs()
 		s:sleep(1):queuecommand("Dim")
 	end,
 	DimCommand=function(s) SOUND:DimMusic(0,math.huge) end,
