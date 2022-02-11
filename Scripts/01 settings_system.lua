@@ -260,8 +260,6 @@ local setting_mt= {
 		end
 }}
 
-return {
-    create_setting=function(name, file, default, match_depth, exceptions, use_global_as_default)
-        return setmetatable({}, setting_mt):init(name, file, default, match_depth, exceptions, use_global_as_default)
-    end
-}
+function create_setting(name, file, default, match_depth, exceptions, use_global_as_default)
+	return setmetatable({}, setting_mt):init(name, file, default, match_depth, exceptions, use_global_as_default)
+end

@@ -42,10 +42,9 @@ local entryToPrefixMap = {
 	["towelpos"] = "TowelPos"
 }
 
-local sSystem = LoadModule"settings_system.lua"
 local gameSeed = nil
 local machinePrefs = DeepCopy(defaultPrefs)
-local profilePrefsSetting = sSystem.create_setting('ProfilePrefs','ProfilePrefs.lua',
+local profilePrefsSetting = create_setting('ProfilePrefs','ProfilePrefs.lua',
 	defaultPrefs, 1, {})
 
 local function Read(profileID)
