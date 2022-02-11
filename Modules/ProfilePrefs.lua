@@ -44,7 +44,7 @@ local entryToPrefixMap = {
 
 local gameSeed = nil
 local machinePrefs = DeepCopy(defaultPrefs)
-local profilePrefsSetting = create_setting('ProfilePrefs','ProfilePrefs.lua',
+profilePrefsSetting = create_setting('ProfilePrefs','ProfilePrefs.lua',
 	defaultPrefs, 1, {})
 
 local function Read(profileID)
