@@ -1,8 +1,9 @@
 --[[
 01 MyGrooveRadar.lua
 ]]
+local sSystem = LoadModule"settings_system.lua"
 --Load the setting we need for this.
-local mgrData = create_setting('MyGrooveRadar','MyGrooveRadar.lua',{
+local mgrData = sSystem.create_setting('MyGrooveRadar','MyGrooveRadar.lua',{
     single={chaos=0,air=0,freeze=0,voltage=0,stream=0},
     double={chaos=0,air=0,freeze=0,voltage=0,stream=0}
 }, 2, {})
