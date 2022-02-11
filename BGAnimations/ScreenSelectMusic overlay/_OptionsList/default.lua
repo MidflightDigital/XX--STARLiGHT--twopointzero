@@ -5,6 +5,7 @@ local function format_bpm(bpm)
 end
 
 local currentIndex;
+local ProfilePrefs = LoadModule "ProfilePrefs.lua"
 
 
 local t= Def.ActorFrame{
@@ -27,6 +28,7 @@ local t= Def.ActorFrame{
     Def.Sound{
         File=THEME:GetPathS("","Codebox/o-close"),
         OptionsListClosedMessageCommand=function(s) s:play()
+            ProfilePrefs.SaveAll()
             setenv("OPList",0)
             if getenv("DList") == 1 and not ShowTwoPart() then
                 SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_MenuTimer")
