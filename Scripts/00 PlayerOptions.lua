@@ -49,9 +49,6 @@ v1.2
 v1.1
 * Cleaned up code some, I think.
 ]]
-
-local ProfilePrefs = LoadModule "ProfilePrefs.lua"
-
 local ProfileSpeedMods = {}
 
 -- Returns a new, empty mod table: a table with three members x, C, and m,
@@ -646,6 +643,7 @@ function OptionRowScreenFilter()
 	--to work around float precision issues
 	local choiceToAlpha = {0, 20, 40, 60, 80, 100}
 	local alphaToChoice = {[0]=1, [20]=2, [40]=3, [60]=4, [80]=5, [100]=6}
+	local ProfilePrefs = LoadModule"ProfilePrefs.lua"
 	local t = {
 		Name="Filter",
 		LayoutType = "ShowAllInRow",
@@ -695,6 +693,7 @@ local GetModsAndPlayerOptions = function(player)
 end
 
 function OptionRowGuideLine()
+	local ProfilePrefs = LoadModule"ProfilePrefs.lua"
 	local t = {
 		Name="GuideLine",
 		LayoutType = "ShowAllInRow",
@@ -730,6 +729,7 @@ function OptionRowGuideLine()
 end
 
 function OptionRowBias()
+	local ProfilePrefs = LoadModule"ProfilePrefs.lua"
 	local t = {
 		Name="Bias",
 		LayoutType = "ShowAllInRow",
@@ -765,6 +765,7 @@ function OptionRowBias()
 end
 
 function OptionRowEX()
+	local ProfilePrefs = LoadModule"ProfilePrefs.lua"
 	local t = {
 		Name="EX",
 		LayoutType = "ShowAllInRow",
@@ -801,6 +802,7 @@ function OptionRowEX()
 end
 
 function OptionRowScoreLab()
+	local ProfilePrefs = LoadModule"ProfilePrefs.lua"
 	local t = {
 		Name="ScoreLabel",
 		LayoutType = "ShowAllInRow",
