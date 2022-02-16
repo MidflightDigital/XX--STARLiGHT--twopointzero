@@ -66,14 +66,71 @@ local function genScrollerFrame(player)
 					s:y(-15):diffuse(CustomDifficultyTwoPartToColor(diff))
 				end,
 			};
+			Def.BitmapText{
+				Font="CFBPMDisplay",
+				Text=steps:GetAuthorCredit(),
+				InitCommand=function(s)
+					s:y(-40):diffuse(CustomDifficultyTwoPartToColor(diff)):maxwidth(200):zoom(0.65)
+				end,
+			};
 			Def.Sprite{
 				Texture="cursor";
 				Name="Highlight";
-				InitCommand=function(s) s:visible(i==selection[player]):diffuseramp():effectcolor1(color("1,1,1,0")):effectcolor2(color("1,1,1,1")):effectperiod(0.5) end,
+				InitCommand=function(s) s:visible(i==selection[player]):diffuseramp():effectcolor1(color("1,1,1,0")):effectcolor2(color("1,1,1,1")):effectclock("beatnooffset") end,
 				["OK"..player.."MessageCommand"]=function(s)
 					s:stopeffect()
 				end,
 			};
+			Def.Sprite{
+				Texture="lamp",
+				InitCommand=function(s) s:queuecommand("Set"):visible(false) end,
+				SetCommand=function(s)
+					local profile;
+					local st = GAMESTATE:GetCurrentStyle():GetStepsType()
+					local steps = song:GetOneSteps(st,diff)
+
+					if PROFILEMAN:IsPersistentProfile(player) then
+						profile = PROFILEMAN:GetProfile(player)
+					else
+						profile = PROFILEMAN:GetMachineProfile()
+					end
+
+					local scorelist = profile:GetHighScoreList(song,steps)
+					local scores = scorelist:GetHighScores()
+					local topscore;
+
+					if scores[1] then
+						topscore = scores[1];
+						assert(topscore);
+                		local misses = topscore:GetTapNoteScore("TapNoteScore_Miss")+topscore:GetTapNoteScore("TapNoteScore_CheckpointMiss")
+                		local boos = topscore:GetTapNoteScore("TapNoteScore_W5")
+                		local goods = topscore:GetTapNoteScore("TapNoteScore_W4")
+                		local greats = topscore:GetTapNoteScore("TapNoteScore_W3")
+                		local perfects = topscore:GetTapNoteScore("TapNoteScore_W2")
+                		local marvelous = topscore:GetTapNoteScore("TapNoteScore_W1")
+						if (misses+boos) == 0 and scores[1]:GetScore() > 0 and (marvelous+perfects)>0 then
+							if (greats+perfects) == 0 then
+								s:diffuse(FullComboEffectColor["JudgmentLine_W1"]):glowblink():effectperiod(0.20)
+							elseif greats == 0 then
+								s:diffuse(GameColor.Judgment["JudgmentLine_W2"]):glowshift();
+							elseif (misses+boos+goods) == 0 then
+								s:diffuse(GameColor.Judgment["JudgmentLine_W3"]):stopeffect();
+							elseif (misses+boos) == 0 then
+								s:diffuse(GameColor.Judgment["JudgmentLine_W4"]):stopeffect();
+							end;
+							s:visible(true)
+						else
+							if topscore:GetGrade() ~= 'Grade_Failed' then
+								s:visible(true):diffuse(color("#f70b9e"))
+							else
+								s:visible(true):diffuse(color("#555452"))
+							end
+						end
+					else
+						s:visible(false)
+					end
+				end
+			}
 		};
 	end;
 	return f;

@@ -55,42 +55,36 @@ local Jacket = Def.ActorFrame{
 }
 
 local songinfo = Def.ActorFrame{
+  SetCommand=function(s)
+    local song = GAMESTATE:GetCurrentSong()
+    local mw = SCREENMAN:GetTopScreen():GetChild("MusicWheel")
+    local so = GAMESTATE:GetSortOrder()
+    if not mw then return end
+    local title = s:GetChild("Title")
+    local artist = s:GetChild("Artist")
+
+    if song then
+      title:visible(true):settext(song:GetDisplayFullTitle())
+      artist:visible(true):settext(song:GetDisplayArtist())
+    elseif mw:GetSelectedType('WheelItemDataType_Section') then
+      if mw:GetSelectedSection() ~= "" then
+        title:visible(true):settext(SongAttributes.GetGroupName(mw:GetSelectedSection()))
+        artist:settext(""):visible(false)
+      else
+        title:settext(""):visible(false)
+        artist:settext(""):visible(false)
+      end
+    end
+  end,
   Def.BitmapText{
     Font="_avenirnext lt pro bold/36px",
     Name="Title",
     InitCommand=function(s) s:halign(0):maxwidth(540):y(-34):diffuse(Color.Black) end,
-    SetCommand=function(s)
-      local song = GAMESTATE:GetCurrentSong()
-      local mw = SCREENMAN:GetTopScreen():GetChild("MusicWheel")
-      if not mw then return end
-      if song then
-        if song:GetDisplaySubTitle() == "" then
-          s:settext(song:GetDisplayMainTitle())
-        else
-          s:settext(song:GetDisplayFullTitle())
-        end
-      elseif mw:GetSelectedType('WheelItemDataType_Section') then
-        local group = mw:GetSelectedSection()
-        if group then
-          s:settext(GAMESTATE:GetSortOrder('SortOrder_Group') and SongAttributes.GetGroupName(group) or "")
-        end
-      else
-        s:settext("")
-      end
-    end
   };
   Def.BitmapText{
     Font="_avenirnext lt pro bold/36px",
     Name="Artist",
     InitCommand=function(s) s:halign(0):maxwidth(500):zoomx(0.78):zoomy(0.65) end,
-    SetCommand=function(s)
-      local song = GAMESTATE:GetCurrentSong()
-      if song then
-        s:settext(song:GetDisplayArtist())
-      else
-        s:settext("")
-      end
-    end
   }
 }
 

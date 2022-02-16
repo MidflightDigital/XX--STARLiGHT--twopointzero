@@ -127,9 +127,9 @@ return Def.ActorFrame{
 			SetMessageCommand=function(s,p)
 				local song = p.Song
 				if song then
-					s:settext(song:GetDisplayMainTitle()):diffuse(SongAttributes.GetMenuColor(song))
+					s:settext(song:GetDisplayMainTitle()):diffuse(SongAttributes.GetMenuColor(song)):strokecolor(ColorDarkTone(SongAttributes.GetMenuColor(song)))
 				end
-				s:maxwidth(200)
+				s:basezoom(0.7):maxwidth(200)
 			end,
 		}
 	};
@@ -143,27 +143,75 @@ return Def.ActorFrame{
 		OffCommand=function(s) s:stopeffect():sleep(0.2):diffusealpha(0) end,
 		Def.Sprite{
 			Texture="HL.png",
-			InitCommand=function(s) s:diffuseramp():effectcolor1(color("1,1,1,0.2"))
-				:effectcolor2(color("1,1,1,1")):effectclock('beatnooffset')
+			SetMessageCommand=function(s,p)
+				local song = p.Song
+				if song then
+					if song:IsDisplayBpmRandom() or song:IsDisplayBpmSecret() then
+						s:diffuseramp():effectcolor1(color("1,1,1,0.2"))
+						:effectcolor2(color("1,1,1,1")):effectclock('music'):effectperiod(0.5)
+					else
+						s:diffuseramp():effectcolor1(color("1,1,1,0.2"))
+						:effectcolor2(color("1,1,1,1")):effectclock('beatnooffset')
+					end
+				end
 			end,
 		};
 		Def.ActorFrame{
 			Name="Cursor",
-			InitCommand=function(s) s:diffuseramp():effectcolor1(color("1,1,1,0"))
-				:effectcolor2(color("1,1,1,1")):effectclock('beatnooffset')
+			SetMessageCommand=function(s,p)
+				local song = p.Song
+				if song then
+					if song:IsDisplayBpmRandom() or song:IsDisplayBpmSecret() then
+						s:diffuseramp():effectcolor1(color("1,1,1,0"))
+						:effectcolor2(color("1,1,1,1")):effectclock('music'):effectperiod(0.5)
+					else
+						s:diffuseramp():effectcolor1(color("1,1,1,0"))
+						:effectcolor2(color("1,1,1,1")):effectclock('beatnooffset')
+					end
+				end
 			end,
 			Def.Sprite{
 				Texture="cursor",
 				InitCommand=function(s) s:thump(1):effectmagnitude(1.1,1,0):effectclock('beatnooffset') end,
+				SetMessageCommand=function(s,p)
+					local song = p.Song
+					if song then
+						if song:IsDisplayBpmRandom() or song:IsDisplayBpmSecret() then
+							s:thump(1):effectmagnitude(1.1,1,0):effectclock('music'):effectperiod(0.5)
+						else
+							s:thump(1):effectmagnitude(1.1,1,0):effectclock('beatnooffset')
+						end
+					end
+				end,
 			};
 		};
 		Def.Sprite{
 			Texture=THEME:GetPathG("","_shared/arrows/arrowb"),
-			InitCommand=function(s) s:x(-140):bounce():effectmagnitude(6,0,0):effectclock('beatnooffset') end,
+			InitCommand=function(s) s:x(-140) end,
+			SetMessageCommand=function(s,p)
+				local song = p.Song
+				if song then
+					if song:IsDisplayBpmRandom() or song:IsDisplayBpmSecret() then
+						s:bounce():effectmagnitude(6,0,0):effectclock('music'):effectperiod(0.7)
+					else
+						s:bounce():effectmagnitude(6,0,0):effectclock('beatnooffset')
+					end
+				end
+			end,
 		};
 		Def.Sprite{
 			Texture=THEME:GetPathG("","_shared/arrows/arrowb"),
-			InitCommand=function(s) s:x(140):rotationy(180):bounce():effectmagnitude(-6,0,0):effectclock('beatnooffset') end,
+			InitCommand=function(s) s:x(140):rotationy(180) end,
+			SetMessageCommand=function(s,p)
+				local song = p.Song
+				if song then
+					if song:IsDisplayBpmRandom() or song:IsDisplayBpmSecret() then
+						s:bounce():effectmagnitude(-6,0,0):effectclock('music'):effectperiod(0.7)
+					else
+						s:bounce():effectmagnitude(-6,0,0):effectclock('beatnooffset')
+					end
+				end
+			end,
 		};
 	};
 	Def.Sprite{
