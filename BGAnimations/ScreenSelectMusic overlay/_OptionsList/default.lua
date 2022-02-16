@@ -253,7 +253,7 @@ if THEME:GetMetric("ScreenSelectMusic","UseOptionsList") then
                     };
                     Def.Sprite{
                         Texture="color",
-                        InitCommand=function(s) s:y(12):diffuse(color("#75daff")) end,
+                        InitCommand=function(s) s:y(12):diffuse(PlayerColor(pn)) end,
                     };
                 }
             };
@@ -336,7 +336,7 @@ if THEME:GetMetric("ScreenSelectMusic","UseOptionsList") then
                         if params.Player == pn then
                             currentOpList=params.Menu
                             if params.Menu == "AdvMenu" then
-                                optionsListActor:stoptweening():y(SCREEN_CENTER_Y-220) --Reset the positioning
+                                optionsListActor:stoptweening():y(SCREEN_CENTER_Y-200) --Reset the positioning
                             else
                                 optionsListActor:stoptweening():y(SCREEN_CENTER_Y-140) --Reset the positioning
                             end

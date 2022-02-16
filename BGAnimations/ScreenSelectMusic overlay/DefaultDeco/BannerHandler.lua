@@ -75,74 +75,63 @@ local Jacket = Def.ActorFrame{
 
 local SongInfo = Def.ActorFrame{
   InitCommand=function(s) s:y(208) end,
+  SetCommand=function(s)
+    local song = GAMESTATE:GetCurrentSong()
+    local mw = SCREENMAN:GetTopScreen():GetChild("MusicWheel")
+    local so = GAMESTATE:GetSortOrder()
+    if not mw then return end
+    local title = s:GetChild("TextBanner"):GetChild("Title")
+    local artist = s:GetChild("TextBanner"):GetChild("Artist")
+    local banner = s:GetChild("Banner")
+
+    title:finishtweening():diffusealpha(0):x(-20):decelerate(0.25):x(0):diffusealpha(1)
+    artist:finishtweening():diffusealpha(0):x(20):decelerate(0.25):x(0):diffusealpha(1)
+    banner:finishtweening()
+
+    if song then
+      banner:Load(jk.GetSongGraphicPath(song,"Banner"))
+      title:visible(true):settext(song:GetDisplayFullTitle()):diffuse(SongAttributes.GetMenuColor(song)):y(-6):strokecolor(ColorDarkTone(SongAttributes.GetMenuColor(song)))
+      artist:visible(true):settext(song:GetDisplayArtist()):diffuse(SongAttributes.GetMenuColor(song)):strokecolor(ColorDarkTone(SongAttributes.GetMenuColor(song)))
+    elseif mw:GetSelectedType('WheelItemDataType_Section') then
+      if mw:GetSelectedSection() == "" then
+        banner:Load(THEME:GetPathG("","_banners/Random"))
+      end
+      if mw:GetSelectedSection() ~= "" then
+        title:visible(true):settext(SongAttributes.GetGroupName(mw:GetSelectedSection())):y(6):diffuse(SongAttributes.GetGroupColor(mw:GetSelectedSection())):strokecolor(ColorDarkTone(SongAttributes.GetGroupColor(mw:GetSelectedSection())))
+        artist:settext(""):visible(false)
+        banner:Load(jk.GetGroupGraphicPath(mw:GetSelectedSection(),"Banner",so))
+      else
+        title:settext(""):visible(false)
+        artist:settext(""):visible(false)
+        banner:Load(THEME:GetPathG("","Common fallback banner"));
+      end
+    end
+    banner:scaletofit(-205,-75,205,75):y(20)
+  end,
   Def.Sprite{
     Texture=THEME:GetPathG("","_shared/mask_titlebox"),
     InitCommand=function(s) s:MaskSource() end,
   };
   Def.Sprite{
+    Name="Banner",
     InitCommand=function(s) s:MaskDest():ztestmode('ZTestMode_WriteOnFail'):blend(Blend.Add):diffusealpha(0.5) end,
-    SetCommand=function(self)
-      self:finishtweening()
-      local song = GAMESTATE:GetCurrentSong();
-      local so = GAMESTATE:GetSortOrder();
-      local mw = SCREENMAN:GetTopScreen():GetChild("MusicWheel")
-      if not mw then return end
-      if song then
-        self:Load(jk.GetSongGraphicPath(song,"Banner"))
-      elseif mw:GetSelectedType('WheelItemDataType_Section') then
-        if mw:GetSelectedSection() == "" then
-          self:Load(THEME:GetPathG("","_banners/Random"))
-        else
-          self:Load(jk.GetGroupGraphicPath(mw:GetSelectedSection(),"Banner",so))
-        end
-      else
-        self:Load(THEME:GetPathG("","Common fallback banner"));
-      end;
-      self:scaletofit(-205,-75,205,75):y(20)
-		end;
   };
   Def.Sprite{
     Texture=THEME:GetPathG("","_shared/titlebox"),
   };
-  Def.BitmapText{
-    Name="Title",
-    Font="_avenirnext lt pro bold/20px",
-    InitCommand=function(s) s:maxwidth(400) end,
-    SetCommand=function(s)
-      s:finishtweening():diffusealpha(0):x(-20):decelerate(0.25):x(0):diffusealpha(1)
-      local song = GAMESTATE:GetCurrentSong()
-      local mw = SCREENMAN:GetTopScreen():GetChild("MusicWheel")
-      if not mw then return end
-      if song then
-        s:settext(song:GetDisplayFullTitle())
-        :diffuse(SongAttributes.GetMenuColor(song)):y(-6)
-        :strokecolor(ColorDarkTone(SongAttributes.GetMenuColor(song)))
-      elseif mw:GetSelectedType('WheelItemDataType_Section') then
-        if mw:GetSelectedSection() ~= "" then
-          s:settext(SongAttributes.GetGroupName(mw:GetSelectedSection())):y(6)
-          s:diffuse(SongAttributes.GetGroupColor(mw:GetSelectedSection()))
-          :strokecolor(ColorDarkTone(SongAttributes.GetGroupColor(mw:GetSelectedSection())))
-        else
-          s:settext("")
-        end
-      end
-    end,
-  };
-  Def.BitmapText{
-    Font="_avenirnext lt pro bold/20px",
-    InitCommand=function(s) s:y(20):maxwidth(400) end,
-    SetCommand=function(s)
-      s:finishtweening():diffusealpha(0):x(20):decelerate(0.25):x(0):diffusealpha(1)
-      local song = GAMESTATE:GetCurrentSong()
-      if song then
-        s:settext(song:GetDisplayArtist())
-        :diffuse(SongAttributes.GetMenuColor(song))
-        :strokecolor(ColorDarkTone(SongAttributes.GetMenuColor(song)))
-      else
-        s:settext("")
-      end
-    end
-  };
+  Def.ActorFrame{
+    Name="TextBanner",
+    Def.BitmapText{
+      Name="Title",
+      Font="_avenirnext lt pro bold/20px",
+      InitCommand=function(s) s:maxwidth(400) end,
+    };
+    Def.BitmapText{
+      Name="Artist",
+      Font="_avenirnext lt pro bold/20px",
+      InitCommand=function(s) s:y(20):maxwidth(400) end,
+    };
+  },
 --[[Def.Sprite{
     Texture=THEME:GetPathG("","_shared/midglow_titlebox"),
     InitCommand=function(s) s:blend(Blend.Add) end,

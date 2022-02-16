@@ -109,7 +109,19 @@ t[#t+1] = Def.ActorFrame{
     Def.Sprite{Texture="eqbase.png";};
     Def.Quad{
       InitCommand=function(s) s:zoomto(1104,224):MaskSource(true) end,
-      BeginCommand = function(s) s:bounce():effectclock("beatnooffset"):effectmagnitude(0,224,0) end,
+      CurrentSongChangedMessageCommand = function(s)
+        s:finishtweening()
+        local song = GAMESTATE:GetCurrentSong()
+        if song then
+          if song:IsDisplayBpmRandom() or song:IsDisplayBpmSecret() then
+            s:bounce():effectmagnitude(0,224,0):effectperiod(0.5):effectclock("music")
+          else
+            s:bounce():effectmagnitude(0,224,0):effectclock("beatnooffset")
+          end
+        else
+          s:bounce():effectmagnitude(0,224,0):effectperiod(1):effectclock("music")
+        end
+      end,
       OffCommand=function(s) s:finishtweening() end,
     };
     Def.Sprite{

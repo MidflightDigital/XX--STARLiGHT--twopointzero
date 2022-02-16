@@ -8,8 +8,19 @@ for i=1,2 do
 		OnCommand=function(s)
 			s:diffusealpha(0):addx(i==1 and -100 or 100)
 			:sleep(0.6):decelerate(0.3):addx(i==1 and 100 or -100):diffusealpha(1)
-			s:bounce():effectclock("beat"):effectperiod(1):effectmagnitude(i==2 and -10 or 10,0,0):effectoffset(0.2)
 		end,
+		CurrentSongChangedMessageCommand=function(s)
+            local song = GAMESTATE:GetCurrentSong()
+            if song then
+                if song:IsDisplayBpmRandom() or song:IsDisplayBpmSecret() then
+                    s:bounce():effectmagnitude(i==2 and -10 or 10,0,0):effectperiod(0.5):effectclock("music")
+                else
+                    s:bounce():effectmagnitude(i==2 and -10 or 10,0,0):effectoffset(0.2):effectclock("beatnooffset")
+                end
+            else
+                s:bounce():effectmagnitude(i==2 and -10 or 10,0,0):effectperiod(1):effectclock("music")
+            end
+        end,
 		OffCommand=function(s) s:sleep(0.2):accelerate(0.2):addx(i==1 and -100 or 100):diffusealpha(0) end,
 		StartSelectingStepsMessageCommand=function(s)
 			s:accelerate(0.3):addx(i==1 and -100 or 100):diffusealpha(0)

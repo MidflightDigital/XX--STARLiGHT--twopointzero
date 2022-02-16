@@ -7,7 +7,7 @@ local jk = LoadModule"Jacket.lua"
 local ProfilePrefs = LoadModule "ProfilePrefs.lua"
 
 --Custom Music Preview breaks so much crap, let's just not. -Inori
-function play_sample_music(self)
+local function play_sample_music(self)
     if GAMESTATE:IsCourseMode() then return end
     local song = GAMESTATE:GetCurrentSong()
 
@@ -39,12 +39,12 @@ return Def.ActorFrame{
 		File=THEME:GetPathS("","MWChange/Default_MWC.ogg"),
 		IsAction=true,
 	};
-	Def.Actor{
+	--[[Def.Actor{
 		CurrentSongChangedMessageCommand=function(self)
 			self:finishtweening():sleep(0.1):queuecommand("PlayMusicPreview")
 		end;
 		PlayMusicPreviewCommand=function(subself) play_sample_music() end,
-	};
+	};]]
 	CodeMessageCommand=function(s,p)
 		if p.PlayerNumber == PLAYER_1 then
 			if p.Name == "OpenOL" then
