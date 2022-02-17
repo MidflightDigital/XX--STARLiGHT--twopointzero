@@ -13,6 +13,7 @@ local oldIndex = curIndex;
     {"X2", "X2"},
     {"SN3","SuperNOVA 3"},
     {"NG2","NG2"},
+    {"Retrowave","Retrowave"},
 };
 
 
