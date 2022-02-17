@@ -129,6 +129,23 @@ return Def.ActorFrame{
     CurrentSongChangedMessageCommand = function(s) s:queuecommand("Set") end,
     CurrentCourseChangedMessageCommand = function(s) s:queuecommand("Set") end,
     ChangedLanguageDisplayMessageCommand = function(s) s:queuecommand("Set") end,
+    SetCommand=function(s)
+      local song = GAMESTATE:GetCurrentSong()
+      local mw = SCREENMAN:GetTopScreen():GetChild("MusicWheel")
+      if not mw then return end
+      if song then
+        s:GetChild("Title"):visible(true):settext(song:GetDisplayFullTitle())
+        :diffuse(SongAttributes.GetMenuColor(song)):strokecolor(ColorDarkTone(SongAttributes.GetMenuColor(song)))
+        s:GetChild("Artist"):visible(true):settext(song:GetDisplayArtist()):diffuse(SongAttributes.GetMenuColor(song)):strokecolor(ColorDarkTone(SongAttributes.GetMenuColor(song)))
+      elseif mw:GetSelectedType('WheelItemDataType_Section') then
+        s:GetChild("Title"):visible(true):settext(SongAttributes.GetGroupName(mw:GetSelectedSection()))
+        :diffuse(SongAttributes.GetGroupColor(mw:GetSelectedSection())):strokecolor(ColorDarkTone(SongAttributes.GetGroupColor(mw:GetSelectedSection())))
+        s:GetChild("Artist"):visible(false):settext("")
+      else
+        s:GetChild("Title"):visible(true):settext("")
+        s:GetChild("Artist"):visible(false):settext("")
+      end
+    end,
     Def.Sprite{
       Texture="songbox.png",
       InitCommand=function(s)
@@ -138,21 +155,14 @@ return Def.ActorFrame{
       end,
     };
     Def.BitmapText{
+      Name="Title",
       Font="_avenir next demi bold/20px";
-      InitCommand=function(s) s:maxwidth(480):strokecolor(Alpha(Color.Black,0.5)):y(-44):valign(0) end,
-      SetCommand=function(s)
-        local song = GAMESTATE:GetCurrentSong()
-        local mw = SCREENMAN:GetTopScreen():GetChild("MusicWheel")
-        if not mw then return end
-        if song then
-          s:settext(song:GetDisplayFullTitle().."\n"..song:GetDisplayArtist())
-        elseif mw:GetSelectedType('WheelItemDataType_Section') then
-          local group = mw:GetSelectedSection()
-          if group then
-            s:settext(GAMESTATE:GetSortOrder('SortOrder_Group') and SongAttributes.GetGroupName(group) or "")
-          end
-        end
-      end
+      InitCommand=function(s) s:maxwidth(480):strokecolor(Alpha(Color.Black,0.5)):y(-35) end,
+    };
+    Def.BitmapText{
+      Name="Artist",
+      Font="_avenir next demi bold/20px";
+      InitCommand=function(s) s:maxwidth(480):y(-10):strokecolor(Alpha(Color.Black,0.5)) end,
     };
     loadfile(THEME:GetPathB("ScreenSelectMusic","overlay/DefaultDeco/BPM"))(0.5)..{
       InitCommand=function(s) s:y(18) end,

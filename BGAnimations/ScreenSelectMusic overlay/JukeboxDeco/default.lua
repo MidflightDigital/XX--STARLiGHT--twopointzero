@@ -65,7 +65,7 @@ for pn in ivalues( GAMESTATE:GetHumanPlayers() ) do
 		LoadActor(THEME:GetPathB("ScreenSelectMusic","overlay/RadarHandler"),pn);
 		Def.BitmapText{
 			Font="CFBPMDisplay",
-			InitCommand=function(s) s:zoom(0.7):diffuse(color("#dff0ff")):strokecolor(color("#00baff")):maxwidth(200) end,
+			InitCommand=function(s) s:zoom(0.7):diffuse(color("#dff0ff")):strokecolor(color("#00baff")):maxwidth(200):y(60) end,
 			OffCommand=function(s) s:sleep(0.3):decelerate(0.3):diffusealpha(0) end,
 			CurrentSongChangedMessageCommand=function(s) s:queuecommand("Set") end,
 			SetCommand=function(s)
@@ -87,7 +87,7 @@ for pn in ivalues( GAMESTATE:GetHumanPlayers() ) do
 	}
 	t[#t+1] = LoadActor(THEME:GetPathB("ScreenSelectMusic","overlay/_ShockArrow/default.lua"),pn)..{
 		InitCommand=function(s)
-			s:xy(pn==PLAYER_1 and SCREEN_LEFT+250 or SCREEN_RIGHT-250,_screen.cy+100):zoom(0.4)
+			s:xy(pn==PLAYER_1 and SCREEN_LEFT+370 or SCREEN_RIGHT-370,_screen.cy+15):zoom(0.3)
 		end,
 		SetCommand=function(s)
 			local song = GAMESTATE:GetCurrentSong()

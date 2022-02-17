@@ -15,11 +15,11 @@ return Def.ActorFrame{
       InitCommand=function(s) s:zoom(1.25):xy(_screen.cx,SCREEN_TOP+130) end,
     };
     Def.Sprite{
-      Texture="wheelunder",
+      Texture="../Default/wheelunder",
       InitCommand=function(s) 
         s:xy(_screen.cx,_screen.cy-210)
         if GAMESTATE:IsAnExtraStage() then
-          s:Load(THEME:GetPathB("ScreenSelectMusic","underlay/Banner/extra_wheelunder"))
+          s:Load(THEME:GetPathB("ScreenSelectMusic","underlay/Default/extra_wheelunder"))
         end
       end,
       OnCommand=function(s) s:zoomtoheight(310):zoomtowidth(0):linear(0.2):zoomtowidth(SCREEN_WIDTH) end,

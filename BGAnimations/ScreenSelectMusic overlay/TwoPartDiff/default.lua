@@ -130,6 +130,28 @@ local function genScrollerFrame(player)
 						s:visible(false)
 					end
 				end
+			},
+			Def.Sprite{
+				Texture="../_ShockArrow/ShockArrowText",
+				InitCommand=function(s) s:y(10):visible(false):zoom(0.3):glowblink():effectcolor1(color("1,1,1,0.6")):effectcolor2(color("1,1,1,0")):effectperiod(0.15):queuecommand("Set") end,
+				SetCommand=function(s)
+					local song = GAMESTATE:GetCurrentSong()
+					local st = GAMESTATE:GetCurrentStyle():GetStepsType()
+					if song then
+						local steps = song:GetOneSteps(st,diff)
+						if steps then
+							if steps:GetRadarValues(player):GetValue('RadarCategory_Mines') >= 1 then
+								s:visible(true)
+							else
+								s:visible(false)
+							end
+						else
+							s:visible(false)
+						end
+					else
+						s:visible(false)
+					end
+				end,
 			}
 		};
 	end;
