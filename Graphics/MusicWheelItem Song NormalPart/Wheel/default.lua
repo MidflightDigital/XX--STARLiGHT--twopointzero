@@ -1,29 +1,27 @@
 local SongAttributes = LoadModule "SongAttributes.lua"
 
-local TB = Def.BitmapText{
-	Font="_avenirnext lt pro bold/25px";
-	InitCommand=function(s) s:halign(0):maxwidth(400):strokecolor(color("0,0,0,0.5")) end,
-};
-
 return Def.ActorFrame{
+	ChangedLanguageDisplayMessageCommand=function(s) s:queuecommand("Set") end,
+	SetMessageCommand=function(s,p)
+		local song = p.Song
+		if song then
+			s:GetChild("Title"):settext(song:GetDisplayFullTitle()):diffuse(SongAttributes.GetMenuColor(song)):strokecolor(ColorDarkTone(SongAttributes.GetMenuColor(song)))
+			s:GetChild("Artist"):settext(song:GetDisplayArtist()):diffuse(SongAttributes.GetMenuColor(song)):strokecolor(ColorDarkTone(SongAttributes.GetMenuColor(song)))
+		end
+	end,
+
 	Def.Sprite{
 		Texture="backing",
 	};
 	Def.BitmapText{
+		Name="Title",
 		Font="_avenirnext lt pro bold/25px";
-		InitCommand=function(s) s:halign(0):x(-400):maxwidth(400):strokecolor(color("0,0,0,0.5")) end,
-		ChangedLanguageDisplayMessageCommand=function(s) s:queuecommand("Set") end,
-		SetMessageCommand=function(self, param)
-			local Song = param.Song;
-			local Course = param.Course;
-			if Song then
-				self:zoom(1.2)
-				:settext(Song:GetDisplayFullTitle().."\n "..Song:GetDisplayArtist()):vertspacing(-4)
-				:diffuse(SongAttributes.GetMenuColor(Song))
-			elseif Course then
-				self:settext(Course:GetDisplayFullTitle());
-			end
-		end;
+		InitCommand=function(s) s:halign(0):xy(-420,-14):maxwidth(400):zoom(1.1) end,
+	};
+	Def.BitmapText{
+		Name="Artist",
+		Font="_avenirnext lt pro bold/25px";
+		InitCommand=function(s) s:halign(0):xy(-420,14):maxwidth(400):zoom(0.95) end,
 	};
 	Def.BitmapText{
 		Font="_avenirnext lt pro bold/25px";

@@ -1,6 +1,6 @@
 return Def.ActorFrame{
     Def.Sprite{
-        Texture="MusicWheelWheelUnder.png"),
+        Texture="MusicWheelWheelUnder.png",
       InitCommand=function(s) s:halign(1):xy(SCREEN_RIGHT,_screen.cy):diffusealpha(0.5)
         if GAMESTATE:IsAnExtraStage() then
           s:diffuse(color("#f900fe"))
