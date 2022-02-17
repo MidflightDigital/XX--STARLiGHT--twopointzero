@@ -5,7 +5,7 @@ local NumPlayers = GAMESTATE:GetNumPlayersEnabled()
 local NumSides = GAMESTATE:GetNumSidesJoined()
 local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
 local st = GAMESTATE:GetCurrentStyle():GetStepsType()
-local modre = GAMESTATE:PlayerIsUsingModifier(pn,'reverse')
+local modre = GAMESTATE:GetPlayerState(pn):GetPlayerOptions('ModsLevel_Current'):Reverse()
 
 local List = {
 	"Tohoku EVOLVED",
@@ -64,6 +64,10 @@ local t = Def.ActorFrame{
 
 local NumColumns = GAMESTATE:GetCurrentStyle():ColumnsPerPlayer()
 local NFWidth = GAMESTATE:GetCurrentStyle():GetWidth(pn)*(NumColumns/1.8)
+local xpos = 1.6
+if st == "StepsType_Dance_Double" then
+	xpos = 3.5
+end
 for i=1,NumColumns do
 	local ColumnInfo = GAMESTATE:GetCurrentStyle():GetColumnInfo(pn,i)
 	t[#t+1] = Def.ActorFrame{
@@ -83,7 +87,7 @@ for i=1,NumColumns do
 		Def.Sprite{
 			Texture="Star",
 			InitCommand=function(s) s:blend(Blend.Add)
-				s:x((NFWidth/1.6)-(i*tonumber(THEME:GetMetric("ArrowEffects","ArrowSpacing")*2.25)))
+				s:x((NFWidth/xpos)-(i*tonumber(THEME:GetMetric("ArrowEffects","ArrowSpacing")*2.25)))
 			end,
 			OffCommand=function(s)
 				if IsFullCombo() then
@@ -95,7 +99,7 @@ for i=1,NumColumns do
 		Def.Sprite{
 			Texture="SStar",
 			InitCommand=function(s) s:zoom(0):blend(Blend.Add)
-				s:x((NFWidth/1.6)-(i*tonumber(THEME:GetMetric("ArrowEffects","ArrowSpacing")*2.25)))
+				s:x((NFWidth/xpos)-(i*tonumber(THEME:GetMetric("ArrowEffects","ArrowSpacing")*2.25)))
 			end,
 			OffCommand=function(s)
 				if IsFullCombo() then
