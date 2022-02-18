@@ -5,7 +5,7 @@ local Handle = RageFileUtil.CreateRageFile();
 local pass = Handle:Open(THEME:GetCurrentThemeDirectory().."NowPlaying.txt", 2);
 local song = GAMESTATE:GetCurrentSong():GetDisplayMainTitle();
 local art = GAMESTATE:GetCurrentSong():GetDisplayArtist();
-local diff = GAMESTATE:GetCurrentSteps(PLAYER_1)
+local diff = GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber())
 local diffname = diff:GetDifficulty()
 local meter = diff:GetMeter()
 if pass then
