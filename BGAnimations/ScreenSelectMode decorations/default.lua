@@ -1,4 +1,20 @@
-local t = LoadFallbackB()
+local t = Def.ActorFrame{
+	loadfile(THEME:GetPathB("","_Logo/default.lua"))()..{
+        InitCommand=function(s) s:Center() end,
+    };
+    Def.Sprite{
+        Texture=THEME:GetPathB("","_Logo/xxlogo.png"),
+        InitCommand=function(s) s:xy(_screen.cx+104,_screen.cy+16):blend(Blend.Add):diffusealpha(0):queuecommand("Anim") end,
+        AnimCommand=function(s) s:diffusealpha(0):sleep(1):linear(0.75):diffusealpha(0.3):sleep(0.1):linear(0.4):diffusealpha(0):queuecommand("Anim") end,
+    };
+    loadfile(THEME:GetPathB("","_Dancer/default.lua"))()..{
+        InitCommand = function(s) s:xy(_screen.cx-540,_screen.cy+30) end,
+    };
+	Def.Quad{
+		InitCommand=function(s) s:FullScreen():diffuse(Alpha(Color.Black,0)) end,
+		OnCommand=function(s) s:decelerate(0.4):diffusealpha(0.3) end,
+	};
+}
 
 t[#t+1] = Def.ActorFrame{
 	InitCommand = function(s) s:draworder(100):xy(_screen.cx,SCREEN_TOP+68) end,

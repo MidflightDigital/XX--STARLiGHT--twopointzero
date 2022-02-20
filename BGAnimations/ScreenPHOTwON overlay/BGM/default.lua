@@ -55,13 +55,14 @@ local function MakeRow(frames, idx)
       };
       Def.BitmapText{
         Font="_avenirnext lt pro bold/20px";
-        OnCommand=function(s) s:zoom(0.8):queuecommand("Set") end,
+        OnCommand=function(s) s:zoom(0.8):playcommand("Set") end,
         SetCommand=function(self)
           local DisplayName = GetFrame(frames, "name")
           local bgPref = ThemePrefs.Get("MenuMusic");
           self:settext(DisplayName);
           if bgPref == GetFrame(frames, "file") then
             self:diffuse(Color.Green)
+            setenv("SetBGM",DisplayName)
           else
             self:diffuse(Color.White)
           end;
@@ -78,7 +79,9 @@ end;
 
 local t = Def.ActorFrame{
   Name="BGMMenu";
-  InitCommand=function(s) s:xy(_screen.cx+2,_screen.cy+SCREEN_HEIGHT) end,
+  InitCommand=function(s)
+    s:xy(_screen.cx+2,_screen.cy+SCREEN_HEIGHT)
+  end,
   MenuStateChangedMessageCommand=function(self,param)
 		if param.NewState == "MenuState_BGM" then
 			self:playcommand("ShowBGM")
@@ -99,6 +102,7 @@ local t = Def.ActorFrame{
       if param.MenuState == "MenuState_BGM" then
         if param.Input == "Start" then
           ThemePrefs.Set("MenuMusic",frames[curIndex][1]);
+          setenv("SetBGM",frames[curIndex][2])
           MESSAGEMAN:Broadcast("MenuStateChanged",{NewState = "MenuState_Main"});
         elseif param.Input == "Back" then
           MESSAGEMAN:Broadcast("MenuStateChanged",{NewState = "MenuState_Main"});

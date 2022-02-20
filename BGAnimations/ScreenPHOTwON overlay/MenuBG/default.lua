@@ -12,8 +12,9 @@ local oldIndex = curIndex;
     {"X1", "X"},
     {"X2", "X2"},
     {"SN3","SuperNOVA 3"},
-    {"NG2","NG2"},
+    {"NG2","Next Generation 2"},
     {"Retrowave","Retrowave"},
+
 };
 
 
@@ -58,7 +59,7 @@ local function MakeRow(frames, idx)
       };
       Def.BitmapText{
         Font="_avenirnext lt pro bold/20px";
-        OnCommand=function(s) s:zoom(0.8):queuecommand("Set") end,
+        OnCommand=function(s) s:zoom(0.8):playcommand("Set") end,
         ShowCommand=function(s) s:playcommand("Set") end,
         SetCommand=function(self)
           local DisplayName = GetFrame(frames, "name")
@@ -66,6 +67,7 @@ local function MakeRow(frames, idx)
           self:settext(DisplayName);
           if bgPref == GetFrame(frames, "file") then
             self:diffuse(Color.Green)
+            setenv("SetMenuBG",DisplayName)
           else
             self:diffuse(Color.White)
           end;
@@ -99,26 +101,38 @@ local t = Def.ActorFrame{
       if param.MenuState == "MenuState_MenuBG" then
         if param.Input == "Start" then
           ThemePrefs.Set("MenuBG",frames[curIndex][1]);
+          setenv("SetMenuBG",frames[curIndex][2])
           MESSAGEMAN:Broadcast("MenuStateChanged",{NewState = "MenuState_Main"});
         elseif param.Input == "Back" then
           MESSAGEMAN:Broadcast("MenuStateChanged",{NewState = "MenuState_Main"});
           SOUND:PlayOnce(THEME:GetPathS("","_PHOTwON back.ogg"))
-        elseif param.Input == "Up" or param.Input == "Left" then
+        elseif param.Input == "Up" then
+          if curIndex - 3 <= 0 then
+            curIndex = 1
+          else
+            curIndex = curIndex - 3
+          end
+        elseif param.Input == "Left" then
           if curIndex == 1 then
   					curIndex = 1
   				else
   					curIndex = curIndex - 1
-            MESSAGEMAN:Broadcast("ChangeRow")
   				end
-  			elseif param.Input == "Down" or param.Input == "Right" then
+  			elseif param.Input == "Right" then
   				if curIndex < #RowList then
   					curIndex = curIndex + 1
-            MESSAGEMAN:Broadcast("ChangeRow")
   				elseif curIndex <= 2 then
   					curIndex = 2
   				end
+        elseif param.Input == "Down" then
+          if curIndex + 3 > #RowList then
+            curIndex = #RowList
+          else
+            curIndex = curIndex + 3
+          end
         end;
       end;
+      MESSAGEMAN:Broadcast("ChangeRow")
       MESSAGEMAN:Broadcast("MoveScroller",{ Player = param.PlayerNumber, Input = param.Input});
     end;
   };

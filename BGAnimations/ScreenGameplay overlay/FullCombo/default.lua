@@ -73,7 +73,7 @@ for i=1,NumColumns do
 	t[#t+1] = Def.ActorFrame{
 		InitCommand=function(s)
 			s:diffusealpha(0)
-			if modre then
+			if modre == 1 then
 				s:y(_screen.cy+(THEME:GetMetric("Player","ReceptorArrowsYReverse")+190))
 			else
 				s:y(_screen.cy+(THEME:GetMetric("Player","ReceptorArrowsYStandard")-190))

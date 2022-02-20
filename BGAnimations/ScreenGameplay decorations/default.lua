@@ -145,7 +145,7 @@ for _,pn in pairs(GAMESTATE:GetEnabledPlayers()) do
 	t[#t+1] = loadfile(THEME:GetPathB("","_optionicon"))(pn) .. {
 		InitCommand=function(s) s:player(pn):zoomx(1.8):zoomy(1.8):x(pn==PLAYER_1 and SCREEN_LEFT+200 or SCREEN_RIGHT-200):draworder(1) end,
 		OnCommand=function(self)
-			if GAMESTATE:GetPlayerState(pn):GetPlayerOptions('ModsLevel_Current'):Reverse() then
+			if GAMESTATE:GetPlayerState(pn):GetPlayerOptions('ModsLevel_Current'):Reverse() == 1 then
 				self:y(IsUsingWideScreen() and SCREEN_TOP+172 or SCREEN_TOP+142);
 			else
 				self:y(IsUsingWideScreen() and SCREEN_BOTTOM-145 or SCREEN_BOTTOM-130);

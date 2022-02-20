@@ -136,7 +136,7 @@ return Def.ActorFrame {
 	Def.Sprite {
 		InitCommand=function(self)
 			self:x(0);
-			if GAMESTATE:PlayerIsUsingModifier(pn,'reverse') then
+			if GAMESTATE:GetPlayerState(pn):GetPlayerOptions('ModsLevel_Current'):Reverse() == 1 then
 				self:Load(THEME:GetPathB("","_optionicon/"..short.."/scroll_reverse"));
 			end;
 		end;

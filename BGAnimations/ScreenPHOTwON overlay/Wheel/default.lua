@@ -69,7 +69,7 @@ local function MakeRow(frames, idx)
       };
       Def.BitmapText{
         Font="_avenirnext lt pro bold/20px";
-        OnCommand=function(s) s:zoom(0.8):queuecommand("Set") end,
+        OnCommand=function(s) s:zoom(0.8):playcommand("Set") end,
         ShowCommand=function(s) s:playcommand("Set") end,
         SetCommand=function(self)
           local DisplayName = GetFrame(frames, "name")
@@ -77,6 +77,7 @@ local function MakeRow(frames, idx)
           self:settext(DisplayName);
           if bgPref == GetFrame(frames, "file") then
             self:diffuse(Color.Green)
+            setenv("SetWheel",DisplayName)
           else
             self:diffuse(Color.White)
           end;
@@ -110,6 +111,7 @@ local t = Def.ActorFrame{
       if param.MenuState == "MenuState_Wheel" then
         if param.Input == "Start" then
           ThemePrefs.Set("WheelType",frames[curIndex][1]);
+          setenv("SetWheel",frames[curIndex][2])
           MESSAGEMAN:Broadcast("MenuStateChanged",{NewState = "MenuState_Main"});
         elseif param.Input == "Back" then
           MESSAGEMAN:Broadcast("MenuStateChanged",{NewState = "MenuState_Main"});

@@ -74,20 +74,20 @@ t[#t+1] = Def.ActorFrame{
 	};
 	Def.ActorFrame{
 		InitCommand=function(s)
-			s:x(GAMESTATE:GetPlayerState(pn):GetPlayerOptions('ModsLevel_Current'):Reverse()and 0 or (pn==PLAYER_2 and 21 or 0))
-			s:y(GAMESTATE:GetPlayerState(pn):GetPlayerOptions('ModsLevel_Current'):Reverse() and (IsUsingWideScreen() and SCREEN_TOP+134 or SCREEN_TOP+111) or (IsUsingWideScreen() and yval-50 or yval-40))
+			s:x(GAMESTATE:GetPlayerState(pn):GetPlayerOptions('ModsLevel_Current'):Reverse() == 1 and 0 or (pn==PLAYER_2 and 21 or 0))
+			s:y(GAMESTATE:GetPlayerState(pn):GetPlayerOptions('ModsLevel_Current'):Reverse() == 1 and (IsUsingWideScreen() and SCREEN_TOP+134 or SCREEN_TOP+111) or (IsUsingWideScreen() and yval-50 or yval-40))
 			s:zoom(IsUsingWideScreen() and 1 or 0.8)
 		end,
 		Def.Sprite{
 			Texture=ex.."diffframe",
 			InitCommand=function(self)
-				self:rotationx(GAMESTATE:GetPlayerState(pn):GetPlayerOptions('ModsLevel_Current'):Reverse() and 180 or 0)
+				self:rotationx(GAMESTATE:GetPlayerState(pn):GetPlayerOptions('ModsLevel_Current'):Reverse() == 1 and 180 or 0)
 				self:halign(pn==PLAYER_2 and 1 or 0)
 			end;
 		};
 		Def.ActorFrame{
 			InitCommand=function(s)
-				s:y(GAMESTATE:GetPlayerState(pn):GetPlayerOptions('ModsLevel_Current'):Reverse() and -4 or 6)
+				s:y(GAMESTATE:GetPlayerState(pn):GetPlayerOptions('ModsLevel_Current'):Reverse() == 1 and -4 or 6)
 			end,
 			Def.ActorFrame{
 				InitCommand=function(self)

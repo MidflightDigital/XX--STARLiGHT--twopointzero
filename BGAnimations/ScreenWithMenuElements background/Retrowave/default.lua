@@ -1,5 +1,6 @@
 return Def.ActorFrame{
     InitCommand=function(s) s:fov(90):Center() end,
+    OffCommand=function(s) s:finishtweening() end,
     Def.Sprite{
         Texture=THEME:GetPathB("ScreenWithMenuElements","background/Default/background.mp4"),
         InitCommand=function(s) s:setsize(SCREEN_WIDTH*2,SCREEN_HEIGHT):y(-300):diffuse(color("#cd22aa")):diffusetopedge(color("#bba500")) end,
@@ -9,24 +10,28 @@ return Def.ActorFrame{
     },
     Def.Quad{
         InitCommand=function(s) s:setsize(SCREEN_WIDTH,SCREEN_HEIGHT):valign(0):ztestmode('ZTestMode_WriteOnFail'):MaskDest()
-            :diffuse(color("#0b0c31")):diffusebottomedge(color("#761959")):diffusealpha(0.8) end,
+            :diffuse(color("#0b0c31")):diffusebottomedge(color("#761959")) end,
     },
-    
-    Def.Sprite{
-        Texture=THEME:GetPathB("ScreenWithMenuElements","background/SN2/line"),
-        InitCommand=function(s)
-            s:ztestmode('ZTestMode_WriteOnFail'):MaskDest()
-            :zoomto(SCREEN_WIDTH*1.5,SCREEN_HEIGHT*1.5):rotationx(-82):customtexturerect(0,0,SCREEN_WIDTH*1.5/48,SCREEN_HEIGHT*1.5/96)
-            :texcoordvelocity(0.7,0):effectperiod(4):blend(Blend.Add):diffuse(color("0.5,0.2,0.7,1"))
-        end,
-    },
-    Def.Sprite{
-        Texture=THEME:GetPathB("ScreenWithMenuElements","background/SN2/line"),
-        InitCommand=function(s)
-            s:ztestmode('ZTestMode_WriteOnFail'):MaskDest()
-            :zoomto(SCREEN_WIDTH*1.5,SCREEN_HEIGHT*1.5):rotationx(-82):customtexturerect(0,0,SCREEN_WIDTH*1.5/48,SCREEN_HEIGHT*1.5/96):xy(1,-1)
-            :texcoordvelocity(0.7,0):effectperiod(4):blend(Blend.Add):diffusealpha(0.1)
-        end,
+    Def.ActorFrame{
+        InitCommand=function(s) s:queuecommand("Anim") end,
+        AnimCommand=function(s) s:sleep(8):diffusealpha(0.7):xy(2,-2):sleep(0.05):diffusealpha(0.9):xy(0,0):sleep(0.05):diffusealpha(0.4):xy(-2,2):sleep(0.05):diffusealpha(1):xy(0,0):sleep(5)
+            :sleep(0.05):diffusealpha(0.7):xy(2,2):sleep(0.05):diffusealpha(0.3):xy(-2,-2):sleep(0.05):diffusealpha(1):xy(0,0):queuecommand("Anim") end,
+        Def.Sprite{
+            Texture=THEME:GetPathB("ScreenWithMenuElements","background/SN2/line"),
+            InitCommand=function(s)
+                s:ztestmode('ZTestMode_WriteOnFail'):MaskDest()
+                :zoomto(SCREEN_WIDTH*1.5,SCREEN_HEIGHT*1.5):rotationx(-82):customtexturerect(0,0,SCREEN_WIDTH*1.5/48,SCREEN_HEIGHT*1.5/96)
+                :texcoordvelocity(0.7,0):effectperiod(4):blend(Blend.Add):diffuse(color("0.5,0.2,0.7,1"))
+            end,
+        },
+        Def.Sprite{
+            Texture=THEME:GetPathB("ScreenWithMenuElements","background/SN2/line"),
+            InitCommand=function(s)
+                s:ztestmode('ZTestMode_WriteOnFail'):MaskDest()
+                :zoomto(SCREEN_WIDTH*1.5,SCREEN_HEIGHT*1.5):rotationx(-82):customtexturerect(0,0,SCREEN_WIDTH*1.5/48,SCREEN_HEIGHT*1.5/96):xy(1,-1)
+                :texcoordvelocity(0.7,0):effectperiod(4):blend(Blend.Add):diffusealpha(0.1)
+            end,
+        },
     },
     Def.ActorFrame{
         InitCommand=function(s)

@@ -167,6 +167,37 @@ for i,v in pairs(MainTilePlacements) do
             Def.Sprite{
                 Texture="MenuItems/"..v[3]..".png";
             };
+			Def.ActorFrame{
+				InitCommand=function(s) s:y(50) end,
+				Def.Sprite{
+					Texture="MenuItems/SelBox.png",
+					InitCommand=function(s) 
+						if v[3] ~= "Gameplay" and v[3] ~= "Back" then
+							s:visible(true)
+						else
+							s:visible(false)
+						end
+						s:diffusealpha(0.7)
+					end,
+				},
+				Def.BitmapText{
+					Name="Selected Pref",
+					Font="_avenirnext lt pro bold/25px",
+					FinishedEditingCommand=function(s) s:queuecommand("Set") end,
+					OnCommand=function(s) s:diffuse(Color.Green):queuecommand("Set") end,
+					SetCommand=function(s)
+						if v[3] == "MenuBG" then
+							s:settext(getenv("SetMenuBG"))
+						elseif v[3] == "BGM" then
+							s:settext(getenv("SetBGM"))
+						elseif v[3] == "Wheel" then
+							s:settext(getenv("SetWheel"))
+						else
+							s:settext("")
+						end
+					end,
+				}
+			},
         };
     };
 end
