@@ -6,12 +6,28 @@ if not GAMESTATE:IsCourseMode() then
 	local song = GAMESTATE:GetCurrentSong():GetDisplayMainTitle();
 	local art = GAMESTATE:GetCurrentSong():GetDisplayArtist();
 	local diff = GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber())
+	local diff2
 	local diffname = diff:GetDifficulty()
+	local diffname2;
 	local meter = diff:GetMeter()
-	if pass then
-		Handle:Write(art.." - "..song.." - "..THEME:GetString("CustomDifficulty",ToEnumShortString(diffname)).." "..meter);
-		Handle:Flush();
-	end;
+	local meter2;
+	if GAMESTATE:GetNumPlayersEnabled() == 2 then
+		diff = GAMESTATE:GetCurrentSteps(PLAYER_1)
+		diff2 = GAMESTATE:GetCurrentSteps(PLAYER_2)
+		diffname = diff:GetDifficulty()
+		diffname2 = diff2:GetDifficulty()
+		meter = diff:GetMeter()
+		meter2 = diff2:GetMeter()
+		if pass then
+			Handle:Write(art.." - "..song.." - "..THEME:GetString("CustomDifficulty",ToEnumShortString(diffname)).." "..meter.." | "..THEME:GetString("CustomDifficulty",ToEnumShortString(diffname2)).." "..meter2);
+			Handle:Flush();
+		end;
+	else
+		if pass then
+			Handle:Write(art.." - "..song.." - "..THEME:GetString("CustomDifficulty",ToEnumShortString(diffname)).." "..meter);
+			Handle:Flush();
+		end;
+	end
 	Handle:Close();
 	
 end;
