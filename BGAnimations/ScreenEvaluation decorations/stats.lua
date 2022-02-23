@@ -50,9 +50,6 @@ local function FindText(pss)
 end
 
 local Score = pss:GetScore()
-if ThemePrefs.Get("ConvertScoresAndGrades") == true then
-  Score = SN2Scoring.GetSN2ScoreFromHighScore(GAMESTATE:GetCurrentSteps(pn), pss:GetScore())
-end
 local EXScore = SN2Scoring.ComputeEXScoreFromData(SN2Scoring.GetCurrentScoreData(pss));
 
 t[#t+1] = Def.ActorFrame{

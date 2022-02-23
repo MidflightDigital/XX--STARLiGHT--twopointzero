@@ -33,14 +33,15 @@ if not GAMESTATE:IsCourseMode() then
 end;
 
 local t = Def.ActorFrame {
-	LoadActor(THEME:GetPathB("","EX.png"))..{
+	Def.Sprite{
+		Texture=THEME:GetPathB("","EX.png"),
 		InitCommand=function(s) s:visible(GAMESTATE:IsAnExtraStage()):Center() end,
 		OnCommand=function(s) s:sleep(0.2):linear(0.1):diffusealpha(0) end,
 	};
-	LoadActor(THEME:GetPathB("","_StageDoors"))..{
-		OnCommand=function(s) s:finishtweening():queuecommand("AnOn") end,
+	loadfile(THEME:GetPathB("","_StageDoors"))()..{
+		OnCommand=function(s) s:playcommand("AnOn") end,
 	};
-	LoadActor("SoundStage");
+	loadfile(THEME:GetPathB("ScreenStageInformation","decorations/SoundStage.lua")(),
 };
 t[#t+1] = Def.ActorFrame {
 	InitCommand=function(self)

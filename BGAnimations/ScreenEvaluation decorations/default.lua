@@ -103,9 +103,6 @@ local ProfilePrefs = LoadModule "ProfilePrefs.lua"
 for _, pn in pairs(GAMESTATE:GetEnabledPlayers()) do
   local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
   local Score = pss:GetScore()
-  if ThemePrefs.Get("ConvertScoresAndGrades") == true then
-    Score = SN2Scoring.GetSN2ScoreFromHighScore(GAMESTATE:GetCurrentSteps(pn), pss:GetScore())
-  end
 
   local EXScore = SN2Scoring.ComputeEXScoreFromData(SN2Scoring.GetCurrentScoreData(pss));
   local seconds = pss:GetSurvivalSeconds()

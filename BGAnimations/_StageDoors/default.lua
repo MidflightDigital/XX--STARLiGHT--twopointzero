@@ -14,7 +14,7 @@ local List = {
 return Def.ActorFrame{
   --Top
   Def.ActorFrame{
-    InitCommand=function(s) s:CenterX():y(SCREEN_TOP):valign(0) end,
+    InitCommand=function(s) s:CenterX():y(SCREEN_TOP-500):valign(0) end,
     AnOnCommand=function(s) s:y(SCREEN_TOP-500):sleep(0.2):decelerate(0.2):y(SCREEN_TOP) end,
     AnOffCommand=function(s) s:y(SCREEN_TOP):decelerate(0.2):y(SCREEN_TOP-500) end,
     Def.Sprite{
@@ -72,7 +72,7 @@ return Def.ActorFrame{
 
   --Bottom
   Def.ActorFrame{
-    InitCommand=function(s) s:CenterX():y(SCREEN_BOTTOM):valign(1) end,
+    InitCommand=function(s) s:CenterX():y(SCREEN_BOTTOM+500):valign(1) end,
     AnOnCommand=function(s) s:y(SCREEN_BOTTOM+500):sleep(0.2):decelerate(0.2):y(SCREEN_BOTTOM) end,
     AnOffCommand=function(s) s:y(SCREEN_BOTTOM):decelerate(0.2):y(SCREEN_BOTTOM+500) end,
     Def.Sprite{
