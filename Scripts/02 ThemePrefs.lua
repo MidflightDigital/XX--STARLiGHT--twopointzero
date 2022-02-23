@@ -93,10 +93,40 @@ local Prefs =
 		Default = true,
 		Choices = {"One Note","Multiple Notes"},
 		Values = {false,true}
+	},
+	OLOrPO = 
+	{
+		Default = "Options List",
+		Choices = {"Options List","Player Options"},
+		Values = {"Options List", "Player Options"}
 	}
 };
 
 ThemePrefs.InitAll(Prefs)
+
+function OptionsListOrPlayerOptions()
+	if ThemePrefs.Get("OLOrPO") == "Options List" then
+		return true
+	else
+		return false
+	end
+end
+
+function SMUsePO()
+	if ThemePrefs.Get("OLOrPO") == "Player Options" then
+		return true
+	else
+		return false
+	end
+end
+
+function SMUseOL()
+	if ThemePrefs.Get("OLOrPO") == "Options List" then
+		return true
+	else
+		return false
+	end
+end
 
 function ComboUnderField()
 	return ThemePrefs.Get("ComboUnderField")

@@ -41,7 +41,7 @@ local t = Def.ActorFrame {
 	loadfile(THEME:GetPathB("","_StageDoors"))()..{
 		OnCommand=function(s) s:playcommand("AnOn") end,
 	};
-	loadfile(THEME:GetPathB("ScreenStageInformation","decorations/SoundStage.lua")(),
+	loadfile(THEME:GetPathB("ScreenStageInformation","decorations/SoundStage.lua"))(),
 };
 t[#t+1] = Def.ActorFrame {
 	InitCommand=function(self)

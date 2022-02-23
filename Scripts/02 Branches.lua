@@ -83,10 +83,6 @@ Branch.BackOutOfPlayerOptions = function()
 	return SelectMusicOrCourse()
 end;
 
-Branch.PlayerOptions = function()
-	return "ScreenStageInformation"
-end;
-
 function Branch.TitleMenu()
 	local coinMode = GAMESTATE:GetCoinMode()
 	if coinMode == 'CoinMode_Home' then
