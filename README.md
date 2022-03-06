@@ -1,3 +1,6 @@
+<h1 align="center"> Please note that Enciso's DanceStage project is not, and likely never will be officially supported by the MidflightDigital Team or myself (Inori). Any pull requests, issues, or questions pertaining to it will be closed or ignored with no comment. DanceStages is a completely separate project and we have zero sway on how it works and if it works with XX STARLiGHT -twopointzero-.
+</h1>
+
 <h1 align="center">
   <br>
   <img src="https://github.com/MidflightDigital/XX--STARLiGHT--twopointzero/blob/main/xxlogo.png?raw=true" alt="STARLiGHT Logo" width="600">
