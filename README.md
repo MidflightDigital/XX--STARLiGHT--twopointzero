@@ -1,8 +1,3 @@
-<h1 align="center"> Please note that Enciso's DanceStage project is not, and likely never will be officially supported by the MidflightDigital Team or myself (Inori). Any pull requests, issues, or questions pertaining to it will be closed or ignored with no comment. DanceStages is a completely separate project. -twopointzero- is an ongoing project that will be updated and changed as time goes on.
-
-Any changes made to the theme that break DanceStages support is not us purposefully breaking support. Code changes, files are updated. As DanceStages requires that it be patched into the theme, support will only continue as long as someone updates the patch alongside STARLiGHT's changes.
-</h1>
-
 <h1 align="center">
   <br>
   <img src="https://github.com/MidflightDigital/XX--STARLiGHT--twopointzero/blob/main/xxlogo.png?raw=true" alt="STARLiGHT Logo" width="600">
@@ -19,6 +14,12 @@ Any changes made to the theme that break DanceStages support is not us purposefu
 ## Where's the Download? ##
 
 * Click on the [Releases](https://github.com/MidflightDigital/XX--STARLiGHT--twopointzero/releases) options in the sidebar and download the latest dated release.
+
+---
+<h1 align="center"> Please note that Enciso's DanceStage project is not, and likely never will be officially supported by the MidflightDigital Team or myself (Inori). Any pull requests, issues, or questions pertaining to it will be closed or ignored with no comment. DanceStages is a completely separate project. -twopointzero- is an ongoing project that will be updated and changed as time goes on.
+
+Any changes made to the theme that break DanceStages support is not us purposefully breaking support. Code changes, files are updated. As DanceStages requires that it be patched into the theme, support will only continue as long as someone updates the patch alongside STARLiGHT's changes.
+</h1>
 
 ## Installation Instructions ##
 
