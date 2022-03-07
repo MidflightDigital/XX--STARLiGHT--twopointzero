@@ -924,3 +924,33 @@ function MusicRate()
 	};
 	return t
 end
+
+function LuaNoteSkins()
+	local t = {
+		Name="LuaNoteSkins",
+		LayoutType="ShowOneInRow",
+		SelectType="SelectOne",
+		Choices = NOTESKIN:GetNoteSkinNames(),
+		Values = NOTESKIN:GetNoteSkinNames(),
+		LoadSelections=function(self,list, pn)
+			local CurNoteSkin = GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred"):NoteSkin()
+			for i,v2 in ipairs(self.Choices) do
+				if string.lower(tostring(v2)) == string.lower(tostring(CurNoteSkin)) then
+					list[i] = true return
+				end
+			end
+			list[1] = true
+		end,
+		SaveSelections = function(self,list,pn)
+			for i,v2 in ipairs(self.Choices) do
+				if list[i] then
+					GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred"):NoteSkin(v2)
+				end
+			end
+		end,
+		NotifyOfSelection=function(self,pn,choice)
+			MESSAGEMAN:Broadcast("LuaNoteSkinsChange", {pn=pn,choice=choice,choicename=self.Values[choice]})
+		end
+	};
+	return t
+end

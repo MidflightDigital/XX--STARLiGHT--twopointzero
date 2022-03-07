@@ -3,20 +3,33 @@ local curIndex = 1;
 local oldIndex = curIndex;
 
 
-  local frames = {
-    {"Default","DEFAULT"},
-    {"OG","STARLiGHT 1.0"},
-    {"OLD","STARLiGHT 2011"},
-    {"SN1","SuperNOVA"},
-    {"SN2", "SuperNOVA2"},
-    {"X1", "X"},
-    {"X2", "X2"},
-    {"SN3","SuperNOVA 3"},
-    {"NG2","Next Generation 2"},
-    {"Retrowave","Retrowave"},
-
+local frames = {
+  {"Default","DEFAULT"},
+  {"OG","STARLiGHT 1.0"},
+  {"OLD","STARLiGHT 2011"},
+  {"SN1","SuperNOVA"},
+  {"SN2", "SuperNOVA2"},
+  {"X1", "X"},
+  {"X2", "X2"},
+  {"SN3","SuperNOVA 3"},
+  {"NG2","Next Generation 2"},
+  {"Retrowave","Retrowave"},
 };
 
+return Def.ActorFrame{
+  Def.Sprite{
+    InitCommand=function(self)
+      self:FullScreen()
+      --[[This will automatically center and stretch the image
+      to the confines of the StepMania window.
+      If you want to specify the size of the image, use this instead. Remove the previous line and the dashes at the beginning of the next line.]]
+      --self:xy(_screen.cx,_screen.cx):setsize(width,height)
+      --[[This will center the image and set the size to what you set
+      as width and height. STARLiGHT renders natively at 1920x1080
+      so please adjust accordingly.]]
+    end
+  },
+},
 
 local function GetFrame(frames, key)
   for i,v in ipairs(frames) do
