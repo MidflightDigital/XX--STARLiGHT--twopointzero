@@ -16,21 +16,6 @@ local frames = {
   {"Retrowave","Retrowave"},
 };
 
-return Def.ActorFrame{
-  Def.Sprite{
-    InitCommand=function(self)
-      self:FullScreen()
-      --[[This will automatically center and stretch the image
-      to the confines of the StepMania window.
-      If you want to specify the size of the image, use this instead. Remove the previous line and the dashes at the beginning of the next line.]]
-      --self:xy(_screen.cx,_screen.cx):setsize(width,height)
-      --[[This will center the image and set the size to what you set
-      as width and height. STARLiGHT renders natively at 1920x1080
-      so please adjust accordingly.]]
-    end
-  },
-},
-
 local function GetFrame(frames, key)
   for i,v in ipairs(frames) do
     if key == "file" then
