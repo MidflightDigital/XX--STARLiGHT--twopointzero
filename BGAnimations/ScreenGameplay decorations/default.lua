@@ -120,7 +120,6 @@ for _,pn in pairs(GAMESTATE:GetEnabledPlayers()) do
 	};
 end
 
-
 for _, pn in pairs(GAMESTATE:GetEnabledPlayers()) do
   t[#t+1] = Def.ActorFrame{
     InitCommand=function(s) s:y(_screen.cy-346):draworder(-1)
@@ -173,11 +172,13 @@ for _, pn in pairs(GAMESTATE:GetEnabledPlayers()) do
         local compare = currentscore - topscore;--compares your performance to your high score
         if (topscore > 0) then --if you have a high score
           if(compare>0) then --if you want to only see the deduction instead of comparing to your high score, change the variable compare to rpm
-          self:settext(compare):diffuse(color("#0a7cfc")):strokecolor(Color.Black)--blue, feel free to change it to whatever you want
-          else
+          self:settext("+" .. compare):diffuse(color("#0a7cfc")):strokecolor(Color.Black)--blue, feel free to change it to whatever you want
+          elseif(compare==0) then --if you are tied with your high score
+          self:settext("+" .. compare):diffuse(color("#ffffff")):strokecolor(Color.Black)--white, you can change this            
+          else --if you are doing worse than your high score
           self:settext(compare):diffuse(color("#ed0972")):strokecolor(Color.Black)--hot pink, you can change this too
           end;
-        else--if you don't have a high score, this will only show the deduction
+        else --if you don't have a high score, this will only show the deduction
           self:settext(rpm):diffuse(color("#ed0972")):strokecolor(Color.Black)--hot pink, you can change this too
         end;
       end;
