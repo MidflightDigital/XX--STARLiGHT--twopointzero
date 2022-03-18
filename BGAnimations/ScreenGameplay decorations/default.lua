@@ -1,8 +1,42 @@
 local t = Def.ActorFrame{};
+local jk = LoadModule "Jacket.lua"
 
 t[#t+1] = StatsEngine()
 
 local LoadingScreen = Var "LoadingScreen"
+
+t[#t+1] = loadfile(THEME:GetPathB("","_StageDoors"))()..{
+  InitCommand=function(s)
+    s:visible(true)
+  end,
+  OnCommand=function(s)
+    s:queuecommand("AnOff"):sleep(0.25):queuecommand("Finish")
+  end,
+  FinishCommand=function(s) s:finishtweening():visible(false) end,
+};
+--Jacket--
+t[#t+1] = Def.ActorFrame {
+  InitCommand=function(s)
+    s:Center():diffusealpha(1):zoom(1)
+  end,
+  OnCommand=function(s) s:sleep(0.5):decelerate(0.2):zoom(2):diffusealpha(0) end,
+  Def.Quad{
+    InitCommand=function(s) s:diffuse(Color.Black)
+      s:setsize(628,628)  
+    end,
+  };
+  Def.Sprite {
+    InitCommand=function(self)
+      if GAMESTATE:IsCourseMode() then
+        local ent = GAMESTATE:GetCurrentTrail(GAMESTATE:GetMasterPlayerNumber()):GetTrailEntries()
+        self:Load(jk.GetSongGraphicPath(ent[1]:GetSong()))
+      else
+        self:Load(jk.GetSongGraphicPath(GAMESTATE:GetCurrentSong()))
+      end
+      self:scaletofit(-310,-310,310,310)
+    end;
+  };
+};
 
 t[#t+1] = Def.Actor{
     AfterStatsEngineMessageCommand = function(_,params)
@@ -87,8 +121,8 @@ t[#t+1] = Def.ActorFrame{
         end
       end,
       OnCommand=function(s)
-				s:diffuseshift():effectcolor1(color("1,1,1,1")):effectcolor2(color("1,1,1,0.75")):effectclock('beatnooffset')
-			end
+        s:diffuseshift():effectcolor1(color("1,1,1,1")):effectcolor2(color("1,1,1,0.75")):effectclock('beatnooffset')
+      end
     };
     Def.Sprite{
         Name="StageFrame",
@@ -106,19 +140,20 @@ if not GAMESTATE:IsDemonstration() then
 t[#t+1] = StandardDecorationFromFile("StageDisplay","StageDisplay")
 end
 for _,pn in pairs(GAMESTATE:GetEnabledPlayers()) do
-	t[#t+1] = loadfile(THEME:GetPathB("ScreenGameplay","decorations/lifeframe"))(pn);
+  t[#t+1] = loadfile(THEME:GetPathB("ScreenGameplay","decorations/lifeframe"))(pn);
 --options--
-	t[#t+1] = loadfile(THEME:GetPathB("","_optionicon"))(pn) .. {
-		InitCommand=function(s) s:player(pn):zoomx(1.8):zoomy(1.8):x(pn==PLAYER_1 and SCREEN_LEFT+200 or SCREEN_RIGHT-200):draworder(1) end,
-		OnCommand=function(self)
-			if GAMESTATE:PlayerIsUsingModifier(pn,'reverse') then
-				self:y(IsUsingWideScreen() and SCREEN_TOP+172 or SCREEN_TOP+142);
-			else
-				self:y(IsUsingWideScreen() and SCREEN_BOTTOM-145 or SCREEN_BOTTOM-130);
-			end;
-		end;
-	};
+  t[#t+1] = loadfile(THEME:GetPathB("","_optionicon"))(pn) .. {
+    InitCommand=function(s) s:player(pn):zoomx(1.8):zoomy(1.8):x(pn==PLAYER_1 and SCREEN_LEFT+200 or SCREEN_RIGHT-200):draworder(1) end,
+    OnCommand=function(self)
+      if GAMESTATE:GetPlayerState(pn):GetPlayerOptions('ModsLevel_Current'):Reverse() == 1 then
+        self:y(IsUsingWideScreen() and SCREEN_TOP+172 or SCREEN_TOP+142);
+      else
+        self:y(IsUsingWideScreen() and SCREEN_BOTTOM-145 or SCREEN_BOTTOM-130);
+      end;
+    end;
+  };
 end
+
 
 for _, pn in pairs(GAMESTATE:GetEnabledPlayers()) do
   t[#t+1] = Def.ActorFrame{
@@ -172,19 +207,18 @@ for _, pn in pairs(GAMESTATE:GetEnabledPlayers()) do
         local compare = currentscore - topscore;--compares your performance to your high score
         if (topscore > 0) then --if you have a high score
           if(compare>0) then --if you want to only see the deduction instead of comparing to your high score, change the variable compare to rpm
-          self:settext("+" .. compare):diffuse(color("#0a7cfc")):strokecolor(Color.Black)--blue, feel free to change it to whatever you want
-          elseif(compare==0) then --if you are tied with your high score
-          self:settext("+" .. compare):diffuse(color("#ffffff")):strokecolor(Color.Black)--white, you can change this            
-          else --if you are doing worse than your high score
-          self:settext(compare):diffuse(color("#ed0972")):strokecolor(Color.Black)--hot pink, you can change this too
+          self:settext('+'):settext(compare):diffuse(color("#0a7cfc")):strokecolor(Color.Black)--blue, feel free to change it to whatever you want
+          else
+          self:settext('+'):settext(compare):diffuse(color("#ed0972")):strokecolor(Color.Black)--hot pink, you can change this too
           end;
-        else --if you don't have a high score, this will only show the deduction
+        else--if you don't have a high score, this will only show the deduction
           self:settext(rpm):diffuse(color("#ed0972")):strokecolor(Color.Black)--hot pink, you can change this too
         end;
       end;
     };
   };
 end;
+
 
 t[#t+1] = StandardDecorationFromFileOptional("Help","Help");
 t[#t+1] = Def.Sound{
