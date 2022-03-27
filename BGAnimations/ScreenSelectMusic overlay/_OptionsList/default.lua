@@ -76,7 +76,7 @@ for i=1,#fixedChar do
 end
 for i=1,#fixedNS do
     local CurrentSkin = fixedNS[i];
-    _NSKIN[i] = LoadModule("NoteskinObjLoad.lua",CurrentSkin)
+    _NSKIN[i] = LoadModule("NoteskinObjLoad.lua",{NoteSkin = CurrentSkin, Player = GAMESTATE:GetMasterPlayerNumber()})
 end;
 for i=1,#NumMini do
     local CurrentMini = NumMini[i];
