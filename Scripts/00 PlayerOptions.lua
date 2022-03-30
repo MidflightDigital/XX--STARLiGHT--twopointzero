@@ -954,3 +954,61 @@ function LuaNoteSkins()
 	};
 	return t
 end
+
+function StepsListing()
+    local Steplist = function()
+        return GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentCourse():GetAllTrails() or GAMESTATE:GetCurrentSong():GetStepsByStepsType( GAMESTATE:GetCurrentStyle():GetStepsType() )
+    end
+    local conv = {{},{}}
+    local fixeddifflist = {
+        Difficulty_Beginner = 1,
+        Difficulty_Easy = 2,
+        Difficulty_Medium = 3,
+        Difficulty_Hard = 4,
+        Difficulty_Challenge = 5,
+        Difficulty_Edit = 6,
+    }
+    for v in ivalues(Steplist()) do
+        if v:GetDifficulty() and v:GetStepsType() == GAMESTATE:GetCurrentStyle():GetStepsType() then
+            conv[1][#conv[1]+1] = v
+            conv[2][#conv[2]+1] = ("%s %i"):format(THEME:GetString("CustomDifficulty",ToEnumShortString(v:GetDifficulty())), v:GetMeter())
+        end
+    end
+	local t = {
+		Name="Steps",
+		LayoutType = "ShowAllInRow",
+		SelectType = "SelectOne",
+		ExportOnChange = true,
+		Choices = conv[2],
+        LoadSelections = function(s, list, pn)
+            local CM = GAMESTATE:IsCourseMode()
+            local StepsOrCourse = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(pn) or GAMESTATE:GetCurrentSteps(pn)
+            for i,v in ipairs(Steplist()) do
+                if v == StepsOrCourse then
+                    list[i] = true
+                    MESSAGEMAN:Broadcast("DifficultyIconChanged",{Player=pn,Difficulty=fixeddifflist[StepsOrCourse:GetDifficulty()]-1})
+                end
+            end
+        end,
+        NotifyOfSelection= function(s, pn, choice)
+            local CM = GAMESTATE:IsCourseMode()
+            MESSAGEMAN:Broadcast("DifficultyIconChanged",{
+                Player=pn,
+                Difficulty=fixeddifflist[conv[1][choice]:GetDifficulty()]-1
+            })
+        end,
+        SaveSelections = function(s, list, pn)
+            for i,v in ipairs(Steplist()) do
+                if list[i] then
+                    if GAMESTATE:IsCourseMode() then
+                        GAMESTATE:SetCurrentTrail(pn,conv[1][i])
+                    else
+                        GAMESTATE:SetCurrentSteps(pn,conv[1][i])
+                    end
+                end
+            end
+		end
+	}
+	setmetatable(t, t)
+	return t
+end
