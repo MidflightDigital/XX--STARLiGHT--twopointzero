@@ -1,11 +1,13 @@
-local NoteskinToUse = ...
+local Args = ...
+local Player = Args.Player
+local NoteskinToUse = Args.NoteSkin
 local curgame = GAMESTATE:GetCurrentGame():GetName()
 
 local GameDirections = { ["dance"] = "Down", ["pump"] = "UpLeft" }
 
 local nbox
 if NoteskinToUse ~= "EXIT" then
-	nbox = NOTESKIN:LoadActorForNoteSkin( GameDirections[curgame] , "Tap Note", NoteskinToUse or "default" )
+	nbox = NOTESKIN:LoadActorForNoteSkin( GameDirections[curgame] , "Tap Note", NoteskinToUse or "default", nil, nil, nil, Player )
 else
 	nbox = Def.BitmapText{
 		Font="_avenirnext lt pro bold/20px",
