@@ -61,7 +61,7 @@ local function PlayerText( pn )
 			UpdateTextCommand=function(s)
 				local pname = PROFILEMAN:GetProfile(pn):GetDisplayName()
 				local Dir = ""
-				if ProductID() == "StepMania 5.3" then
+				if ProductID() == "StepMania 5.3" or ProductID() == "OutFox" then
 					Dir = FILEMAN:GetDirListing("/Appearance/Themes/STARLiGHT/Other/Names/")
 				else
 					Dir = FILEMAN:GetDirListing("/Themes/STARLiGHT/Other/Names/")
@@ -80,7 +80,7 @@ local function PlayerText( pn )
 			UpdateTextCommand=function(s)
 				local pname = PROFILEMAN:GetProfile(pn):GetDisplayName()
 				local Dir = ""
-				if ProductID() == "StepMania 5.3" then
+				if ProductID() == "StepMania 5.3" or ProductID() == "OutFox" then
 					Dir = FILEMAN:GetDirListing("/Appearance/Themes/STARLiGHT/Other/Names/")
 				else
 					Dir = FILEMAN:GetDirListing("/Themes/STARLiGHT/Other/Names/")
@@ -88,7 +88,7 @@ local function PlayerText( pn )
 				local image = ""
 				for _,v in ipairs(Dir) do
 					if string.match(v,"(%w+)") == pname then
-						if ProductID() == "StepMania 5.3" then
+						if ProductID() == "StepMania 5.3" or ProductID() == "OutFox" then
 							image = "/Appearance/Themes/STARLiGHT/Other/Names/"..v
 						else
 							image = "/Themes/STARLiGHT/Other/Names/"..v

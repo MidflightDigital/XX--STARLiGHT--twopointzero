@@ -71,9 +71,4 @@ return Def.ActorFrame{
         Texture=THEME:GetPathB("","ScreenMDSplash background/MIDFLIGHT DIGITAL 2021.mp4"),
         InitCommand=function(s) s:Center():setsize(1920,1080) end,
     };
-    Def.Sound{
-        File="Midflight Digital Jingle3",
-        OnCommand=function(s) s:sleep(0.5):queuecommand("Play") end,
-        PlayCommand=function(s) s:play() end,
-    };
 };
