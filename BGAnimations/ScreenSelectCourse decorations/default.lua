@@ -48,7 +48,7 @@ t[#t+1] = Def.Actor{
 }
 
 t[#t+1] = Def.Sprite{
-	Texture=THEME:GetPathB("","ScreenSelectMusic underlay/ADeco"),
+	Texture=THEME:GetPathB("","ScreenSelectMusic underlay/A/ADeco"),
 	InitCommand=function(s) s:halign(0):xy(SCREEN_LEFT,_screen.cy):blend(Blend.Add):diffusealpha(1) end,
 	OnCommand=function(s) s:diffusealpha(0):linear(0.2):diffusealpha(0.75) end,
 	OffCommand=function(s) s:linear(0.2):diffusealpha(0) end,
