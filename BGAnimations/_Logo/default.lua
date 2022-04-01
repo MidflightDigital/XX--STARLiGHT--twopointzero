@@ -1,6 +1,6 @@
 local main = "main.png"
 
-if MonthOfYear() == 4 and DayOfMonth() == 1 then
+if MonthOfYear() == 3 and DayOfMonth() == 1 then
   main = "itg_main.png"
 end
 
