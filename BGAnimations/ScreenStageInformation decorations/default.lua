@@ -1,16 +1,17 @@
-local jk = LoadModule"Jacket.lua"
+local jk = LoadModule 'Jacket.lua'
 
 if not GAMESTATE:IsCourseMode() then
-	local Handle = RageFileUtil.CreateRageFile();
-	local pass = Handle:Open(THEME:GetCurrentThemeDirectory().."NowPlaying.txt", 2);
-	local song = GAMESTATE:GetCurrentSong():GetDisplayMainTitle();
-	local art = GAMESTATE:GetCurrentSong():GetDisplayArtist();
+	local Handle = RageFileUtil.CreateRageFile()
+	local pass = Handle:Open(THEME:GetCurrentThemeDirectory() .. 'NowPlaying.txt', 2)
+	local song = GAMESTATE:GetCurrentSong():GetDisplayMainTitle()
+	local art = GAMESTATE:GetCurrentSong():GetDisplayArtist()
 	local diff = GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber())
 	local diff2
 	local diffname = diff:GetDifficulty()
-	local diffname2;
+	local diffname2
 	local meter = diff:GetMeter()
-	local meter2;
+	local meter2
+	
 	if GAMESTATE:GetNumPlayersEnabled() == 2 then
 		diff = GAMESTATE:GetCurrentSteps(PLAYER_1)
 		diff2 = GAMESTATE:GetCurrentSteps(PLAYER_2)
@@ -18,52 +19,78 @@ if not GAMESTATE:IsCourseMode() then
 		diffname2 = diff2:GetDifficulty()
 		meter = diff:GetMeter()
 		meter2 = diff2:GetMeter()
+		
 		if pass then
-			Handle:Write(art.." - "..song.." - "..THEME:GetString("CustomDifficulty",ToEnumShortString(diffname)).." "..meter.." | "..THEME:GetString("CustomDifficulty",ToEnumShortString(diffname2)).." "..meter2);
-			Handle:Flush();
+			Handle:Write(art..' - '..song..' - '..THEME:GetString('CustomDifficulty',ToEnumShortString(diffname))..' '..meter..' | '..THEME:GetString('CustomDifficulty',ToEnumShortString(diffname2))..' '..meter2)
+			Handle:Flush()
 		end;
 	else
 		if pass then
-			Handle:Write(art.." - "..song.." - "..THEME:GetString("CustomDifficulty",ToEnumShortString(diffname)).." "..meter);
-			Handle:Flush();
-		end;
+			Handle:Write(art..' - '..song..' - '..THEME:GetString('CustomDifficulty',ToEnumShortString(diffname))..' '..meter)
+			Handle:Flush()
+		end
 	end
-	Handle:Close();
-	
-end;
+	Handle:Close()
+end
 
 local t = Def.ActorFrame {
-	Def.Sprite{
-		Texture=THEME:GetPathB("","EX.png"),
+	Def.Sprite {
+		Texture=THEME:GetPathB('', 'EX.png'),
 		InitCommand=function(s) s:visible(GAMESTATE:IsAnExtraStage()):Center() end,
 		OnCommand=function(s) s:sleep(0.2):linear(0.1):diffusealpha(0) end,
-	};
-	loadfile(THEME:GetPathB("","_StageDoors"))()..{
-		OnCommand=function(s) s:playcommand("AnOn") end,
-	};
-	loadfile(THEME:GetPathB("ScreenStageInformation","decorations/SoundStage.lua"))(),
+	},
+	loadfile(THEME:GetPathB('', '_StageDoors'))() .. {
+		OnCommand=function(s) s:playcommand('AnOn') end,
+	},
+	Def.Actor {
+		OnCommand=function(s)
+			s:sleep(1.75):queuecommand('Play')
+		end,
+		PlayCommand=function(s)
+			local curStage = GAMESTATE:IsCourseMode() and 1 or GAMESTATE:GetCurrentStageIndex()+1
+			local maxStages = PREFSMAN:GetPreference('SongsPerPlay')
+			local stageName = 'event'
+			
+			if not GAMESTATE:IsEventMode() or GAMESTATE:IsCourseMode() then
+				-- we're using custom stage system here so...
+				if curStage == maxStages then
+					stageName = 'final'
+				elseif curStage == maxStages+1 then
+					stageName = 'extra1'
+				elseif curStage == maxStages+2 then
+					stageName = 'extra2'
+				else
+					stageName = curStage
+				end
+			end
+			
+			SOUND:PlayAnnouncer('stage ' .. stageName)
+		end,
+	}
 };
+
 t[#t+1] = Def.ActorFrame {
 	InitCommand=function(self)
-		self:y(SCREEN_CENTER_Y);
-	end;
+		self:y(SCREEN_CENTER_Y)
+	end,
 	-- Door sound
 	Def.Sound{
-		File=GetMenuMusicPath "stage",
-		OnCommand=function(self) self:sleep(0.25):queuecommand("Play") end,
+		File=GetMenuMusicPath 'stage',
+		OnCommand=function(self) self:sleep(0.5):queuecommand('Play') end,
 		PlayCommand=function(self)
 			self:play();
 		end;
-	};
-	Def.Sound{
-		File=THEME:GetPathS( "", "_Cheer" ),
+	},
+	Def.Actor {
 		OnCommand=function(self)
-			if ThemePrefs.Get("MenuMusic") ~= "leeium" then
-				self:sleep(0.2):queuecommand("Play")
+			if ThemePrefs.Get('MenuMusic') ~= 'leeium' then
+				self:sleep(0.2):queuecommand('Play')
 			end
 		end;
-		PlayCommand=function(s) s:play() end,
-	};
+		PlayCommand=function(s)
+			SOUND:PlayOnce(THEME:GetPathS('', '_Cheer'))
+		end,
+	},
 };
 --song jacket--
 t[#t+1] = Def.ActorFrame {
@@ -71,46 +98,97 @@ t[#t+1] = Def.ActorFrame {
 	OnCommand=function(s)
 		if GAMESTATE:IsCourseMode() then
 			local ent = GAMESTATE:GetCurrentTrail(GAMESTATE:GetMasterPlayerNumber()):GetTrailEntries()
-			s:GetChild("Actual Jacket"):Load(jk.GetSongGraphicPath(ent[1]:GetSong()))
-			s:GetChild("Blend Jacket"):Load(jk.GetSongGraphicPath(ent[1]:GetSong()))
+			s:GetChild('Actual Jacket'):Load(jk.GetSongGraphicPath(ent[1]:GetSong()))
+			s:GetChild('Blend Jacket'):Load(jk.GetSongGraphicPath(ent[1]:GetSong()))
 		else
-			s:GetChild("Actual Jacket"):Load(jk.GetSongGraphicPath(GAMESTATE:GetCurrentSong()))
-			s:GetChild("Blend Jacket"):Load(jk.GetSongGraphicPath(GAMESTATE:GetCurrentSong()))
+			s:GetChild('Actual Jacket'):Load(jk.GetSongGraphicPath(GAMESTATE:GetCurrentSong()))
+			s:GetChild('Blend Jacket'):Load(jk.GetSongGraphicPath(GAMESTATE:GetCurrentSong()))
 		end
-		s:GetChild("Actual Jacket"):scaletofit(-310,-310,310,310)
-		s:GetChild("Blend Jacket"):scaletofit(-310,-310,310,310)
-		s:sleep(2.5):linear(0.2):diffusealpha(1):zoom(0.9):linear(0.1):zoom(1):sleep(3)
+		s:GetChild('Actual Jacket'):scaletofit(-310,-310,310,310)
+		s:GetChild('Blend Jacket'):scaletofit(-310,-310,310,310)
+		s:sleep(1):linear(0.2):diffusealpha(1):zoom(0.9):linear(0.1):zoom(1)
 	end,
 	Def.Quad{
 		InitCommand=function(s) s:diffuse(Color.Black)
 			s:setsize(628,628)
 		end,
-	};
-	Def.Sprite {
-		Name="Actual Jacket",
 	},
 	Def.Sprite {
-		Name="Blend Jacket",
+		Name='Actual Jacket',
+	},
+	Def.Sprite {
+		Name='Blend Jacket',
 		InitCommand=function(s) 
 			s:blend(Blend.Add):diffusealpha(0)
 		end,
 		OnCommand=function(s)
-			s:sleep(2.7):diffusealpha(0.75):linear(0.5):zoom(4):diffusealpha(0)
+			s:sleep(1.2):diffusealpha(0.75):linear(0.5):zoom(4):diffusealpha(0)
 		end,
-	};
+	},
 };
-t[#t+1] = LoadActor("StageDisplay");
+
+t[#t+1] = Def.ActorFrame {
+	InitCommand=function(s) s:Center() end,
+	
+	Def.Sprite {
+		InitCommand=function(s) s:diffusealpha(0) end,
+		OnCommand=function(s) s:playcommand('Set'):sleep(1.8):linear(0.05):diffusealpha(1):sleep(2.95):linear(0.2):diffusealpha(0) end,
+		SetCommand=function(s)
+			if getenv('FixStage') == 1 then
+				s:Load(THEME:GetPathG('', '_stages/' .. THEME:GetString('CustStageSt',CustStageCheck())..'.png') );
+			else
+				local curStage = 0
+				local maxStages = PREFSMAN:GetPreference('SongsPerPlay')
+				local stageName = 'stage event'
+				
+				if GAMESTATE:IsCourseMode() then
+					curStage = GAMESTATE:GetLoadingCourseSongIndex()+2
+					maxStages = GAMESTATE:GetCurrentCourse():GetEstimatedNumStages()
+				else
+					curStage = GAMESTATE:GetCurrentStageIndex()+1
+				end
+				
+				if not GAMESTATE:IsEventMode() or GAMESTATE:IsCourseMode() then
+					if curStage == maxStages then
+						stageName = 'final'
+					else
+						stageName = FormatNumberAndSuffix(curStage)
+					end
+				end
+				
+				if FILEMAN:DoesFileExist(THEME:GetPathG('', '_stages/' .. stageName ..'.png')) then
+					s:Load(THEME:GetPathG('', '_stages/' .. stageName ..'.png') )
+				end
+			end
+		end,
+	},
+	LoadActor('star') .. {
+		InitCommand=function(s) s:diffusealpha(0) end,
+		OnCommand=function(s) s:sleep(1.8):linear(0.05):diffusealpha(1):linear(0.2):diffusealpha(0) end,
+	},
+	Def.Quad{
+		InitCommand=function(s) s:setsize(SCREEN_WIDTH,SCREEN_HEIGHT):diffusealpha(0):blend(Blend.Add) end,
+		OnCommand=function(s) s:sleep(1.8):linear(0.05):diffusealpha(0.25):linear(0.2):diffusealpha(0) end,
+	},
+	LoadActor('arrow') .. {
+		OnCommand=function(s) s:x(1700):sleep(1.6):linear(0.4):x(-1700) end,
+	},
+	LoadActor('arrow') .. {
+		InitCommand=function(s) s:zoomx(-1) end,
+		OnCommand=function(s) s:x(-1700):sleep(1.6):linear(0.4):x(1700) end,
+	},
+};
 
 for _, pn in pairs(GAMESTATE:GetEnabledPlayers()) do
 	if not GAMESTATE:IsCourseMode() then
-		t[#t+1] = LoadActor("record", pn)
+		t[#t+1] = LoadActor('record', pn);
 	end
 	t[#t+1] = Def.Actor{
 		OnCommand=function(self)
-			if GAMESTATE:GetPlayMode() == "PlayMode_Oni" or GAMESTATE:IsExtraStage() then
-				GAMESTATE:ApplyPreferredModifiers(pn,"4 lives,battery,failimmediate")
+			if GAMESTATE:GetPlayMode() == 'PlayMode_Oni' or GAMESTATE:IsExtraStage() then
+				GAMESTATE:ApplyPreferredModifiers(pn, '4 lives,battery,failimmediate')
 			elseif GAMESTATE:IsExtraStage2() then
-				GAMESTATE:ApplyPreferredModifiers(pn,"1 lives,battery,failimmediate")
+				GAMESTATE:ApplyPreferredModifiers(pn, '1 lives,battery,failimmediate')
 			end
 		end;
 	};

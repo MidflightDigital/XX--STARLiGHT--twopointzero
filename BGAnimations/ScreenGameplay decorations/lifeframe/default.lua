@@ -20,7 +20,7 @@ end
 return Def.ActorFrame{
     Name="LifeFrame",
 	InitCommand=function(s)
-		s:xy(base_x(),GAMESTATE:IsDemonstration() and SCREEN_TOP+40 or SCREEN_TOP+69):draworder(99):zoom(IsUsingWideScreen() and 1 or 0.8)
+		s:xy(base_x(),GAMESTATE:IsDemonstration() and SCREEN_TOP+40 or SCREEN_TOP+69):zoom(IsUsingWideScreen() and 1 or 0.8)
 	end,
 	Def.Sprite{
 		Texture="stream/normal",
