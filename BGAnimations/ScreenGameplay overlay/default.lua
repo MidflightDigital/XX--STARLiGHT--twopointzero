@@ -12,6 +12,7 @@ for _, pn in ipairs(GAMESTATE:GetEnabledPlayers()) do
 			end,
 		};
 		Def.Sprite{
+			Condition=GAMESTATE:GetNumPlayersEnabled() == 2,
 			Texture="GO"..ToEnumShortString(pn);
 			InitCommand=function(s) s:visible(false) end,
 			BobCommand=function(s) s:bob():effectmagnitude(0,10,0):effectperiod(1) end,

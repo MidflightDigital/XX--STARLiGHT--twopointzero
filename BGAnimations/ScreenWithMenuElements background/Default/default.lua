@@ -60,7 +60,7 @@ end
 
 local t = Def.ActorFrame{
 	LoadActor("background")..{
-		InitCommand=function(s) s:Center():setsize(IsUsingWideScreen() and SCREEN_WIDTH or 1920,SCREEN_HEIGHT) end,
+		OnCommand=function(s) s:Center():setsize(IsUsingWideScreen() and SCREEN_WIDTH or 1920,SCREEN_HEIGHT) end,
 	};
 };
 
