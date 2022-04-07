@@ -2,6 +2,7 @@ local t = Def.ActorFrame {};
 local style = GAMESTATE:GetCurrentStyle():GetStyleType()
 local st = GAMESTATE:GetCurrentStyle():GetStepsType();
 local show_cutins = GAMESTATE:GetCurrentSong() and (not GAMESTATE:GetCurrentSong():HasBGChanges()) or true;
+local show_danger = PREFSMAN:GetPreference("ShowDanger")
 
 local filter_color= color("0,0,0,0")
 local screen = Var"LoadingScreen"
@@ -69,7 +70,8 @@ for _, pn in ipairs(GAMESTATE:GetEnabledPlayers()) do
 	for i=1,2 do
 		DS[#DS+1] = Def.ActorFrame {
 			InitCommand=function(s)
-				s:x(i==1 and ((-width/2)-10) or ((width/2)+10))
+				s:x(i==1 and ((-width/2)-10) or ((width/2)+10)):visible(false)
+				if show_danger then s:visible(true) end
 			end,
 			Def.Sprite {
 				Texture="rope",
@@ -148,7 +150,7 @@ for _, pn in ipairs(GAMESTATE:GetEnabledPlayers()) do
 			HealthStateChangedMessageCommand= function(s, param)
 				if param.PlayerNumber == pn then
 					s:linear(0.1)
-					if param.HealthState == "HealthState_Danger" then
+					if param.HealthState == "HealthState_Danger" and show_danger then
 						s:diffuse(color("#ff1b00")):diffusealpha(0.75)
 					elseif param.HealthState == "HealthState_Dead" then
 						if GAMESTATE:GetPlayerState(pn):GetPlayerOptions('ModsLevel_Current'):FailSetting() == 'FailType_Immediate' then
