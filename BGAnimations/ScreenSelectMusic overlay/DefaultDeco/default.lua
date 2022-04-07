@@ -301,11 +301,12 @@ for pn in EnabledPlayers() do
 				topscore = SN2Scoring.GetSN2ScoreFromHighScore(steps, scores[1])
 			  end;
 	  
-			  local topgrade;
+			  local tier
 			  if scores[1] then
-				topgrade = scores[1]:GetGrade();
-				local tier = SN2Grading.ScoreToGrade(topscore, diff)
-				assert(topgrade);
+				local tier = scores[1]:GetGrade();
+				if ThemePrefs.Get("ConvertScoresAndGrades") == true then
+					tier = SN2Grading.ScoreToGrade(topscore, diff)
+				end
 				if scores[1]:GetScore()>1  then
 				  self:LoadBackground(THEME:GetPathB("ScreenEvaluation decorations/grade/GradeDisplayEval",ToEnumShortString(tier)));
 				  self:diffusealpha(1):zoom(0.2)
