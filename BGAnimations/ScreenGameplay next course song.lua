@@ -1,20 +1,21 @@
 local function BeginShutterDelay()
 	local song = GAMESTATE:GetCurrentTrail(GAMESTATE:GetMasterPlayerNumber()):GetTrailEntry(GAMESTATE:GetLoadingCourseSongIndex()-1):GetSong()
-	
-	local lastBeat = song:GetLastBeat()
 	local td = song:GetTimingData()
-	local lastBeat = round(td:GetBeatFromElapsedTime(GetSong():GetStepsSeconds(),3))
-	local bpm = round(td:GetBPMAtBeat(lastBeat),3)
+	local bpm = round(td:GetBPMAtBeat(song:GetLastBeat()),3)
 	local m = 1
 	
-	if bpm < 60 then
+	if bpm >= 60 and bpm < 120 then
+		m = 0.75
+	elseif bpm < 60 then
 		m = 0.5
-	elseif bpm >= 240 then
-		m = 2
-	elseif bpm >= 480 then
-		m = 4
-	elseif bpm >= 960 then
-		m = 8
+	else
+		--- 240 bpm and above
+		for i=1, 3 do
+			if bpm >= 240*(3-(i-1)) then
+				m = 2*(3-(i-1))
+				break
+			end
+		end
 	end
 	
 	local timeSigs = split('=', td:GetTimeSignatures()[1])
