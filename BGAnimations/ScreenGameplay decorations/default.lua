@@ -68,7 +68,9 @@ t[#t+1] = Def.ActorFrame {
 		end,
 		-- CancelCommand doesn't seem to work, so...
 		CancelMessageCommand=function()
-			ANNOUNCER:SetCurrentAnnouncer(lastAnnouncer)
+			if lastAnnouncer then
+				ANNOUNCER:SetCurrentAnnouncer(lastAnnouncer)
+			end
 		end,
 	},
 	Def.Actor {
