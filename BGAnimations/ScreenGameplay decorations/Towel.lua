@@ -155,13 +155,16 @@ local function AppearancePlusMain(pn)
     end
     
 	local MyValue = ReadOrCreateAppearancePlusValueForPlayer(PlayerUID,MyValue);
+
+	-- Since we handle applying appearance modifiers, let's reset all engine ones here so that none are stuck enabled.
+	GAMESTATE:ApplyPreferredModifiers(player,'No Hidden, No Sudden, No Stealth');
 	
 	if MyValue == "Hidden" then
-		GAMESTATE:AddPreferredModifiers(player,'Hidden');
+		GAMESTATE:ApplyPreferredModifiers(player,'Hidden');
 	elseif MyValue == "Sudden" then	
-		GAMESTATE:AddPreferredModifiers(player,'Sudden');
+		GAMESTATE:ApplyPreferredModifiers(player,'Sudden');
 	elseif MyValue == "Stealth" then
-		GAMESTATE:AddPreferredModifiers(player,'Stealth');
+		GAMESTATE:ApplyPreferredModifiers(player,'Stealth');
 	elseif MyValue == "Hidden+" then
 		
 		if GAMESTATE:GetCurrentStyle():GetStepsType()=="StepsType_Dance_Single" then
