@@ -42,117 +42,170 @@ local function scale_ddr_radar_to_sm(value)
 	-- 200 seems to limit the output to 1 and just giving the output without dividing it causes
 	-- for the correct table value but we end up with decimals for the generated radar numbers if
 	-- we multiply them by 100. So we divide by 100 so we get integers after the fact. This affects
-	-- the actual radar size though. See line 135 for the reason.
+	-- the actual radar size though.
 	return value/100
 end
 
+local r = Enum.Reverse(Difficulty)
+local customDiff = { 'beginner', 'basic', 'difficult', 'expert', 'challenge', 'edit' }
+
 function lookup_ddr_radar_values(song, steps, pn)
-	local title= ""
-	-- GetMainTitle added in 5.0.10 to bypass the ShowNativeLanguage pref.
-	-- That preference interferes with looking up a song, because it makes
-	-- GetDisplayMainTitle return the transliterated title instead of the
-	-- TITLE field. -Kyz
-	if song.GetMainTitle then
-		title= song:GetMainTitle()
-	else
-		local old_show_native= PREFSMAN:GetPreference("ShowNativeLanguage")
-		PREFSMAN:SetPreference("ShowNativeLanguage", true)
-		title= song:GetDisplayMainTitle()
-		PREFSMAN:SetPreference("ShowNativeLanguage", old_show_native)
-	end
-	local radars= {}
-	local steps_radar= steps:GetRadarValues(pn)
+	local radars = {}
+	local steps_radar = steps:GetRadarValues(pn)
+	
 	for category, index in pairs(radar_category_to_index) do
 		-- Cap radar values at 1 because stepmania doesn't have a cap anymore.
-		if ThemePrefs.Get("RadarLimit") == true then
+		if ThemePrefs.Get("RadarLimit") then
 			radars[index]= math.min(steps_radar:GetValue(category), 3)
 		else
-			radars[index]= steps_radar:GetValue(category)
+			radars[index]= round(steps_radar:GetValue(category), 6)
 		end
 	end
-	local radars_for_type= LoadModule("ddr_groove_data.lua",steps:GetStepsType())
-	if not radars_for_type then
-		return radars, false
-	end
-	local radars_for_song= radars_for_type[title]
-	if not radars_for_song then
-		return radars, false
-	end
-	local radars_for_difficulty= radars_for_song[ToEnumShortString(steps:GetDifficulty())]
-	if not radars_for_difficulty then
-		return radars, false
-	end
-	for index, value in ipairs(radars_for_difficulty) do
-		if value ~= -1 then
-			radars[index]= scale_ddr_radar_to_sm(value)
+	
+	if DDR_groove_radar_values then
+		local radars_for_group = DDR_groove_radar_values[song:GetGroupName()]
+		
+		if radars_for_group then
+			local songName = Basename(song:GetSongDir())
+			local radars_for_song = radars_for_group[songName]
+			
+			if radars_for_song then
+				local style = split('_', steps:GetStepsType())
+				local diff = steps:GetDifficulty()
+				local st = string.lower(style[3]) .. "-" .. customDiff[r[diff]+1]
+				local radars_for_steps= radars_for_song[st]
+				
+				if radars_for_steps then
+					radars = { 0, 0, 0, 0, 0 }
+					
+					for index, value in ipairs(radars_for_steps) do
+						if value ~= -1 then
+							radars[index] = round(scale_ddr_radar_to_sm(value), 3)
+						end
+					end
+					
+					return radars, true
+				end
+			end
 		end
 	end
-	return radars, true
+	
+	return radars, false
 end
 
-function self_play_set(self, param) self:playcommand("Set", param) end
+local function RadarItems(pn, size, center_color, category_colors, tween_type, tween_time)
+	local cat_colors = category_colors
+	local t = Def.ActorFrame {};
 
-function create_ddr_groove_radar(actor_name, x, y, pn, size, center_color, category_colors, tween_type, tween_time)
-	size= size or 50
-	center_color= center_color or {1, 1, 1, 1}
-	category_colors= category_colors or {}
-	for i= 1, num_categories do
-		if not category_colors[i] then
-			category_colors[i]= ColorLightTone(PlayerColor(pn))
-		end
-	end
-	tween_type= tween_type or "linear"
-	tween_time= tween_time or .25
-	local currently_displayed_steps= false
-	return Def.ActorFrame{
-		Name= actor_name, InitCommand= function(self)
-			self:xy(x, y)
-		end,
-		Def.ActorMultiVertex{
-			Name= "radar", InitCommand= function(self)
-				self:SetDrawState{Mode="DrawMode_Fan"}
+	for i=1, 2 do	---	1(border), 2(interior)
+		t[#t+1] = Def.ActorMultiVertex {
+			Name= "radar",
+			InitCommand= function(self)
+				self:SetDrawState{ Mode="DrawMode_Fan" };
 			end,
-			SongChangedMessageCommand= self_play_set,
-			["CurrentSteps"..ToEnumShortString(pn).."ChangedMessageCommand"]= self_play_set,
-			SetCommand= function(self)
-				local player_steps= GAMESTATE:GetCurrentSteps(pn)
-				if not player_steps then
+			CurrentSongChangedMessageCommand=function(self)
+				self:playcommand('Set')
+			end;
+			["CurrentSteps" .. pname(pn) .. "ChangedMessageCommand"]=function(self)
+				self:playcommand( 'Set' )
+			end,
+			SetCommand= function(self, param)				
+				local player_steps = GAMESTATE:GetCurrentSteps(pn)
+				local curr_song = GAMESTATE:GetCurrentSong()
+				
+				if not player_steps or not curr_song then
 					self:stoptweening()[tween_type](self, tween_time):zoom(0)
 					return
 				end
-				currently_displayed_steps= player_steps
-				local curr_song= GAMESTATE:GetCurrentSong()
-				if not curr_song then
-					self:stoptweening()[tween_type](self, tween_time):zoom(0)
-					return
-				end
+				
 				self:stoptweening()[tween_type](self, tween_time):zoom(1)
+				
 				local radars, succeeded= lookup_ddr_radar_values(curr_song, player_steps, pn)
+				
+				if i==1 then
+					for j=1, 5 do
+						radars[j] = radars[j]+0.015
+					end
+				end
+				
 				if not succeeded and show_failed_lookup_message then
 					self:GetParent():GetChild("failed_lookup"):visible(true)
 				else
 					self:GetParent():GetChild("failed_lookup"):visible(false)
 				end
+				
 				local verts= {{{0, 0, 0}, center_color}}
+				
 				for cat_index, value in ipairs(radars) do
-					local angle= stream_angle + ((cat_index-1) * angle_per_category)
-					-- we halve the values as the fix for radar numbers results in a radar twice as large as
-					-- before.
-					local vert_x= math.cos(angle) * size * value/2
-					local vert_y= math.sin(angle) * size * value/2
-					verts[#verts+1]= {{vert_x, vert_y, 0}, category_colors[cat_index]}
+					local angle = stream_angle + ((cat_index-1) * angle_per_category)
+					local vert_x = math.cos(angle) * size * value/2
+					local vert_y = math.sin(angle) * size * value/2
+					
+					if i==1 then
+						category_colors = {color("0,0,0,0.8"), color("0,0,0,0.8"), color("0,0,0,0.8"), color("0,0,0,0.8"), color("0,0,0,0.8")}
+					else
+						category_colors = cat_colors
+					end
+					
+					verts[#verts+1] = {{vert_x, vert_y, 0}, category_colors[cat_index]}
 				end
 				-- Add an extra vert on the end so that DrawMode_Fan will draw all the
 				-- way around.
-				verts[#verts+1]= verts[2]
+				verts[#verts+1] = verts[2]
 				self:SetVertices(verts)
 			end,
-		},
-		Def.BitmapText{
-			Name= "failed_lookup", Font= "Common Normal", Text= "Not Found",
-			InitCommand= function(self)
-				self:visible(false):diffuse{.8, .8, .8, .8}
-			end
-		},
+		}
+	end
+	
+	for j=1, 5 do
+		t[#t+1] = Def.Quad {
+			InitCommand=function(s) s:valign(1):setsize(2,size):rotationz(-72*(j-1)):zoomy(0):diffuse(Alpha(Color.Black,0.3)) end,
+			CurrentSongChangedMessageCommand=function(self)
+				self:playcommand('Set')
+			end;
+			["CurrentSteps" .. pname(pn) .. "ChangedMessageCommand"]=function(self)
+				self:playcommand('Set')
+			end;
+			SetCommand=function(self,params)
+				local song = GAMESTATE:GetCurrentSong()
+				local player_steps = GAMESTATE:GetCurrentSteps(pn)
+				
+				if song and player_steps then
+					local radars = lookup_ddr_radar_values(song, player_steps, pn)
+					self:stoptweening()[tween_type](self, tween_time):zoomy(radars[j]/2)
+				else
+					self:stoptweening()[tween_type](self, tween_time):zoomy(0)
+				end
+			end;
+		}
+	end
+	
+	t[#t+1] = Def.BitmapText { Font="Common Normal" } .. {
+		Name="failed_lookup",
+		Text= "Not Found",
+		InitCommand=function(s) s:visible(false):diffuse(color('0.8,0.8,0.8,0.8')) end,
+	}
+	
+	return t
+end
+	
+function create_ddr_groove_radar(actor_name, x, y, pn, size, center_color, category_colors, tween_type, tween_time)
+	size = size or 50
+	center_color = center_color or {1, 1, 1, 1}
+	category_colors = category_colors or {}
+	tween_type = tween_type or "linear"
+	tween_time = tween_time or .1
+	
+	for i = 1, num_categories do
+		if not category_colors[i] then
+			category_colors[i] = ColorLightTone(PlayerColor(pn))
+		end
+	end
+	
+	return Def.ActorFrame {
+		Name = actor_name,
+		InitCommand=function(s) s:xy(x,y) end,
+		
+		children = RadarItems(pn, size, center_color, category_colors, tween_type, tween_time)
 	}
 end
