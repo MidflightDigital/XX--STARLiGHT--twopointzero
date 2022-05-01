@@ -24,11 +24,7 @@ t[#t+1] = Def.ActorFrame{
     },
     Def.Sound{
         File=THEME:GetPathS("","_siren"),
-        OnCommand=function(self)
-            --if GAMESTATE:HasEarnedExtraStage() then
-                self:play()
-            --end;
-        end;
+        OnCommand=function(s) s:play() end,
     };
 };
 for i=1,2 do

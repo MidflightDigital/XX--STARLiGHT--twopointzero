@@ -18,14 +18,11 @@ local List = {
 	"COVID"
 };
 
-if GAMESTATE:HasEarnedExtraStage() == false and not has_value(List,GAMESTATE:GetCurrentSong():GetDisplayMainTitle()) then
-    t[#t+1] = Def.Sound{
-      File=GetMenuMusicPath "results",
-        OnCommand=function(self)
-            self:play()
-        end;
-    }
-end;
+t[#t+1] = Def.Sound{
+	Condition=not GetExtraStage() and not has_value(List,GAMESTATE:GetCurrentSong():GetDisplayMainTitle()),
+	File=GetMenuMusicPath "results",
+	OnCommand=function(s) s:play() end,
+};
 
 --BannerArea
 t[#t+1] = Def.ActorFrame{
@@ -91,7 +88,7 @@ t[#t+1] = Def.ActorFrame{
       SetCommand = function(self)
         if not GAMESTATE:IsCourseMode() then
 			    local song = GAMESTATE:GetCurrentSong()
-          self:settext(song and song:GetDisplayArtist() or "")
+          self:settext(song:GetDisplayArtist() ~= "Unknown artist" and song:GetDisplayArtist() or "")
         end
 		  end,
 	  };
@@ -289,8 +286,13 @@ for _, pn in pairs(GAMESTATE:GetEnabledPlayers()) do
     Def.BitmapText{
       Font="_avenirnext lt pro bold/25px";
       InitCommand=function(self)
-        self:xy(pn=="PlayerNumber_P2" and SCREEN_RIGHT-110 or SCREEN_LEFT+120,_screen.cy-314)
-        self:settext(PROFILEMAN:GetProfile(pn):GetDisplayName())
+		local name = PROFILEMAN:GetProfile(pn):GetDisplayName()
+		
+		if name == '' then
+			name = pn=="PlayerNumber_P2" and "PLAYER 2" or "PLAYER 1"
+		end
+        self:xy(pn=="PlayerNumber_P2" and SCREEN_RIGHT-134 or SCREEN_LEFT+134,_screen.cy-310)
+        self:settext(name)
       end;
     }
   }
@@ -342,7 +344,7 @@ else --If multiplayer
 
 end;
   
-if GAMESTATE:HasEarnedExtraStage() then
+if GetExtraStage() then
   t[#t+1] = loadfile(THEME:GetPathB("ScreenEvaluation","decorations/EXOverlay"))();
   --Outro Movie
   t[#t+1] = Def.ActorFrame{

@@ -36,7 +36,7 @@ end
 local t = Def.ActorFrame {
 	Def.Sprite {
 		Texture=THEME:GetPathB('', 'EX.png'),
-		InitCommand=function(s) s:visible(GAMESTATE:IsAnExtraStage()):Center() end,
+		InitCommand=function(s) s:visible(IsAnExtraStage()):Center() end,
 		OnCommand=function(s) s:sleep(0.2):linear(0.1):diffusealpha(0) end,
 	},
 	loadfile(THEME:GetPathB('', '_StageDoors'))() .. {
@@ -47,17 +47,15 @@ local t = Def.ActorFrame {
 			s:sleep(1.75):queuecommand('Play')
 		end,
 		PlayCommand=function(s)
-			local curStage = GAMESTATE:IsCourseMode() and 1 or GAMESTATE:GetCurrentStageIndex()+1
-			local maxStages = PREFSMAN:GetPreference('SongsPerPlay')
+			local curStage = GAMESTATE:GetCurrentStageIndex()+1
 			local stageName = 'event'
 			
-			if not GAMESTATE:IsEventMode() or GAMESTATE:IsCourseMode() then
-				-- we're using custom stage system here so...
-				if curStage == maxStages then
+			if not GAMESTATE:IsEventMode() then
+				if IsFinalStage() then
 					stageName = 'final'
-				elseif curStage == maxStages+1 then
+				elseif IsExtraStage1() then
 					stageName = 'extra1'
-				elseif curStage == maxStages+2 then
+				elseif IsExtraStage2() then
 					stageName = 'extra2'
 				else
 					stageName = curStage
@@ -137,23 +135,10 @@ t[#t+1] = Def.ActorFrame {
 			if getenv('FixStage') == 1 then
 				s:Load(THEME:GetPathG('', '_stages/' .. THEME:GetString('CustStageSt',CustStageCheck())..'.png') );
 			else
-				local curStage = 0
-				local maxStages = PREFSMAN:GetPreference('SongsPerPlay')
-				local stageName = 'stage event'
-				
 				if GAMESTATE:IsCourseMode() then
-					curStage = GAMESTATE:GetLoadingCourseSongIndex()+2
-					maxStages = GAMESTATE:GetCurrentCourse():GetEstimatedNumStages()
+					stageName = '1st'
 				else
-					curStage = GAMESTATE:GetCurrentStageIndex()+1
-				end
-				
-				if not GAMESTATE:IsEventMode() or GAMESTATE:IsCourseMode() then
-					if curStage == maxStages then
-						stageName = 'final'
-					else
-						stageName = FormatNumberAndSuffix(curStage)
-					end
+					stageName = ToEnumShortString(GetCurrentStage())
 				end
 				
 				if FILEMAN:DoesFileExist(THEME:GetPathG('', '_stages/' .. stageName ..'.png')) then
@@ -183,15 +168,6 @@ for _, pn in pairs(GAMESTATE:GetEnabledPlayers()) do
 	if not GAMESTATE:IsCourseMode() then
 		t[#t+1] = LoadActor('record', pn);
 	end
-	t[#t+1] = Def.Actor{
-		OnCommand=function(self)
-			if GAMESTATE:GetPlayMode() == 'PlayMode_Oni' or GAMESTATE:IsExtraStage() then
-				GAMESTATE:ApplyPreferredModifiers(pn, '4 lives,battery,failimmediate')
-			elseif GAMESTATE:IsExtraStage2() then
-				GAMESTATE:ApplyPreferredModifiers(pn, '1 lives,battery,failimmediate')
-			end
-		end;
-	};
 end
 
 return t

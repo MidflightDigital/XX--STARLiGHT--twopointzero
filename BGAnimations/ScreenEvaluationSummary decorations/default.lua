@@ -114,7 +114,24 @@ for i = StageCheck(), mStages do
 					s:xy(pn==PLAYER_1 and 36 or -36,-20):maxwidth(190):zoomy(0.8):zoomx(0.92):halign(pn==PLAYER_1 and 1 or 0)
 				end,
 				BeginCommand=function(s)
-					local pStage = ssStats:GetStage()
+					local maxStages = PREFSMAN:GetPreference('SongsPerPlay')
+					local totalStageCost = 0
+					local pss = STATSMAN:GetAccumPlayedStageStats()
+					local playedSongs = pss:GetPlayedSongs()
+ 					local pStage = ssStats:GetStage()
+					
+					for j=1, mStages-(i-1) do
+						totalStageCost = totalStageCost + playedSongs[j]:GetStageCost()
+					end
+					
+					if totalStageCost == maxStages then
+						pStage = 'Stage_Final'
+					elseif totalStageCost == maxStages+1 then
+						pStage = 'Stage_Extra1'
+					elseif totalStageCost == maxStages+2 then
+						pStage = 'Stage_Extra2'
+					end
+					
 					if getenv("FixStage") == 1 then
 						s:settextf("%s STAGE",THEME:GetString("StageFix",StageToLocalizedString(pStage)))
 					else
@@ -176,8 +193,14 @@ for _, pn in pairs(GAMESTATE:GetEnabledPlayers()) do
     Def.BitmapText{
       Font="_avenirnext lt pro bold/25px";
       InitCommand=function(s)
-        s:xy(pn=="PlayerNumber_P2" and SCREEN_RIGHT-110 or SCREEN_LEFT+120,_screen.cy-304)
-        s:settext(PROFILEMAN:GetProfile(pn):GetDisplayName())
+		local name = PROFILEMAN:GetProfile(pn):GetDisplayName()
+		
+		if name == "" then
+			name = pn==PLAYER_1 and "PLAYER 1" or "PLAYER 2"
+		end
+		
+        s:xy(pn==PLAYER_2 and SCREEN_RIGHT-134 or SCREEN_LEFT+134,_screen.cy-300)
+        s:settext(name)
       end;
     }
   }

@@ -200,7 +200,33 @@ function SN2Grading.GetSN2GradeFromHighScore(steps, highScore)
     return SN2Grading.ScoreToGrade(score), score
 end
 
+function GetTotalItems(radars)
+	local total = radars:GetValue('RadarCategory_TapsAndHolds')
+	total = total + radars:GetValue('RadarCategory_Mines') 
+	total = total + radars:GetValue('RadarCategory_Holds') 
+	total = total + radars:GetValue('RadarCategory_Rolls')
+	return math.max(1,total)
+end
 
+function GetResultScore(rv, pss)
+	local totalItems = GetTotalItems(rv)
+	local stepScore = round(1000000/totalItems,3)
+	local score = 0
+	local s = {}
+	
+	s[#s+1] = pss:GetTapNoteScores('TapNoteScore_W1')*stepScore
+	s[#s+1] = pss:GetTapNoteScores('TapNoteScore_W2')*(stepScore-10)
+	s[#s+1] = pss:GetTapNoteScores('TapNoteScore_W3')*((stepScore*0.6)-10)
+	s[#s+1] = pss:GetTapNoteScores('TapNoteScore_W4')*((stepScore*0.2)-10)
+	s[#s+1] = pss:GetHoldNoteScores('HoldNoteScore_Held')*stepScore
+	s[#s+1] = pss:GetTapNoteScores('TapNoteScore_AvoidMine')*stepScore
+	
+	for i,v in ipairs(s) do
+		score = score + v
+	end
+	
+	return round(score,-1)
+end
 
 -- (c) 2015-2020 tertu marybig, Inorizushi
 -- All rights reserved.

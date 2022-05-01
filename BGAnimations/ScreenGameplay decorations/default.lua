@@ -176,7 +176,7 @@ t[#t+1] = Def.ActorFrame{
       Texture="stageframe/light_normal",
       InitCommand=function(s)
         s:xy(_screen.cx,SCREEN_TOP+16):visible(not GAMESTATE:IsDemonstration())
-        if GAMESTATE:IsAnExtraStage() then
+        if IsAnExtraStage() then
             s:Load(THEME:GetPathB("ScreenGameplay","decorations/stageframe/light_extra"))
         end
       end,
@@ -189,7 +189,7 @@ t[#t+1] = Def.ActorFrame{
         Texture="stageframe/normal",
         InitCommand=function(s)
             s:xy(_screen.cx,SCREEN_TOP+52):visible(not GAMESTATE:IsDemonstration())
-            if GAMESTATE:IsAnExtraStage() then
+            if IsAnExtraStage() then
                 s:Load(THEME:GetPathB("ScreenGameplay","decorations/stageframe/extra"))
             end
         end,
@@ -218,26 +218,19 @@ t[#t+1] = LoadFont('_stagegameplay') .. {
 	Name='StageDisplay',
 	InitCommand=function(s) s:xy(SCREEN_CENTER_X,76):maxwidth(140):zoom(1.2) end,
 	CurrentSongChangedMessageCommand=function(s)
-		local curStage = GAMESTATE:GetCurrentStageIndex()+1
-		local maxStages = PREFSMAN:GetPreference('SongsPerPlay')
-		local text = ''
-		
-		if GAMESTATE:IsCourseMode() then
-			curStage = GAMESTATE:GetCourseSongIndex()+1
-			maxStages = GAMESTATE:GetCurrentCourse():GetEstimatedNumStages()
-		end
+		local text = 'EVENT'
 		
 		if LoadingScreen == 'ScreenGameplayHowTo' then
 			text = 'HOW TO PLAY'
 		elseif not GAMESTATE:IsEventMode() or GAMESTATE:IsCourseMode() then
-			if curStage == maxStages then
+			if IsFinalStage() then
 				text = 'FINAL'
-			elseif curStage == maxStages+1 then
+			elseif IsExtraStage1() then
 				text = 'EXTRA'
-			elseif curStage == maxStages+2 then
+			elseif IsExtraStage2() then
 				text = 'ENCORE EXTRA'
 			else
-				text = FormatNumberAndSuffix(curStage)
+				text = ToEnumShortString(GetCurrentStage())
 			end
 		end
 		

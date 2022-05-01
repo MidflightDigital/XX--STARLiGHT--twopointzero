@@ -65,7 +65,7 @@ local songinfo = Def.ActorFrame{
 
     if song then
       title:visible(true):settext(song:GetDisplayFullTitle())
-      artist:visible(true):settext(song:GetDisplayArtist())
+      artist:visible(true):settext(song:GetDisplayArtist() ~= "Unknown artist" and song:GetDisplayArtist() or '')
     elseif mw:GetSelectedType('WheelItemDataType_Section') then
       if mw:GetSelectedSection() ~= "" then
         title:visible(true):settext(SongAttributes.GetGroupName(mw:GetSelectedSection()))
