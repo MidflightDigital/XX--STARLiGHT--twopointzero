@@ -116,33 +116,54 @@ local t = Def.ActorFrame{
 				if params.PlayerNumber ~= player then return end
 				if getenv("SDDRNJoined"..player) == 1 then
 					if params.Name == "Left" or params.Name == "Left2" then
-						if SELECTION_X > 1 then
+						if SELECTION_X == 1 and SELECTION_Y == 1 then
+							SELECTION_X = 9
+							SELECTION_Y = 5
+						elseif SELECTION_X > 1 then
 							SELECTION_X = SELECTION_X -1
-							SOUND:PlayOnce(THEME:GetPathS("ScreenOptions","change"), true)
 						elseif SELECTION_Y > 1 then
 							SELECTION_Y = SELECTION_Y-1
 							SELECTION_X = #CHARACTER_MAP[SELECTION_Y]
-							SOUND:PlayOnce(THEME:GetPathS("ScreenOptions","change"), true)
 						end
+						SOUND:PlayOnce(THEME:GetPathS("ScreenOptions","change"), true)
 					elseif params.Name == "Right" or params.Name == "Right2" then
-						if SELECTION_X < #CHARACTER_MAP[SELECTION_Y] then
+						if SELECTION_X == 9 and SELECTION_Y == 5 then
+							SELECTION_X = 1
+							SELECTION_Y = 1
+						elseif SELECTION_X < #CHARACTER_MAP[SELECTION_Y] then
 							SELECTION_X = SELECTION_X + 1;
-							SOUND:PlayOnce(THEME:GetPathS("ScreenOptions","change"), true)
 						elseif SELECTION_Y < #CHARACTER_MAP then
 							SELECTION_X = 1
 							SELECTION_Y = SELECTION_Y+1
-							SOUND:PlayOnce(THEME:GetPathS("ScreenOptions","change"), true)
 						end
+						SOUND:PlayOnce(THEME:GetPathS("ScreenOptions","change"), true)
 					elseif params.Name == "Up" or params.Name == "Up2" then
-						if SELECTION_Y > 1  and SELECTION_X < #CHARACTER_MAP[SELECTION_Y-1]+1 then
+						if SELECTION_Y == 1 then
+							SELECTION_Y = 5
+							if SELECTION_X == 10 then
+								SELECTION_X = 9
+							end
+						elseif SELECTION_Y == 4 and (SELECTION_X >= 7 and SELECTION_X <= #CHARACTER_MAP[SELECTION_Y]) then
+							SELECTION_Y = 2
+						elseif SELECTION_Y > 1  and SELECTION_X < #CHARACTER_MAP[SELECTION_Y-1]+1 then
 							SELECTION_Y = SELECTION_Y - 1;
-							SOUND:PlayOnce(THEME:GetPathS("ScreenOptions","change"), true)
 						end
+						SOUND:PlayOnce(THEME:GetPathS("ScreenOptions","change"), true)
 					elseif params.Name == "Down" or params.Name == "Down2" then
-						if SELECTION_Y < #CHARACTER_MAP and SELECTION_X < #CHARACTER_MAP[SELECTION_Y+1]+1 then
+						if SELECTION_Y == 4 and SELECTION_X == 10 then
+							SELECTION_Y = 5
+							SELECTION_X = 9
+						elseif SELECTION_Y == 5 then
+							SELECTION_Y = 1
+							if SELECTION_X == 9 then
+								SELECTION_X = 10
+							end
+						elseif SELECTION_Y == 2 and (SELECTION_X >= 7 and SELECTION_X <= #CHARACTER_MAP[SELECTION_Y]) then
+							SELECTION_Y = 4
+						elseif SELECTION_Y < #CHARACTER_MAP and SELECTION_X < #CHARACTER_MAP[SELECTION_Y+1]+1 then
 							SELECTION_Y = SELECTION_Y + 1
-							SOUND:PlayOnce(THEME:GetPathS("ScreenOptions","change"), true)
 						end
+						SOUND:PlayOnce(THEME:GetPathS("ScreenOptions","change"), true)
 					elseif params.Name == "Start" then
 						local selection = CHARACTER_MAP[SELECTION_Y][SELECTION_X]
 						if selection == "Enter" then

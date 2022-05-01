@@ -71,7 +71,7 @@ function SelectMusicOrCourse()
 	elseif GAMESTATE:IsCourseMode() then
 		return "ScreenSelectCourse"
 	else
-		if GAMESTATE:IsAnExtraStage() then
+		if GetExtraStage() then
 			return "ScreenSelectMusicExtra"
 		else
 			return "ScreenSelectMusic"
@@ -95,7 +95,6 @@ end;
 function AfterSelectStyle()
 	if IsNetConnected() then
 		ReportStyle()
-		GAMESTATE:ApplyGameCommand("playmode,regular")
 	end
 	if IsNetSMOnline() then
 		return SMOnlineScreen()
@@ -130,26 +129,85 @@ Branch.AfterGameplay = function()
 	end
 end
 
+--- custom Extra Stage system. "AllowExtraStage" setting should be OFF in the game settings
+--- for this to work
+function GetExtraStage()
+	if GAMESTATE:IsCourseMode() or GAMESTATE:IsEventMode() then return false end
+	
+	if not STATSMAN:GetCurStageStats():AllFailed() then
+		local maxStages = PREFSMAN:GetPreference("SongsPerPlay")
+		
+		if (GetCurTotalStageCost() == maxStages) and GetTotalAccumulatedStars() >= 9 then
+			return true
+			
+			--- unblock these codes if you want to enable Encore Extra 
+		--[[elseif GetCurTotalStageCost() == maxStages+1 then
+			for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
+				local st = STATSMAN:GetCurStageStats()
+				local pss = st:GetPlayerStageStats(pn)
+				local steps = pss:GetPlayedSteps()
+				score = GetResultScore(steps[1]:GetRadarValues(pn), pss)
+				
+				if steps[1]:GetMeter() >= 13 and score >= 950000 then
+					return true
+				end
+			end--]]
+		end
+	end
+	
+	return false
+end
+
 Branch.AfterEvaluation = function()
-	--normal
-	if GAMESTATE:GetSmallestNumStagesLeftForAnyHumanPlayer() >= 1 then
-		return "ScreenProfileSave"
-	elseif GAMESTATE:GetCurrentStage() == "Stage_Extra1" then
-		if STATSMAN:GetCurStageStats():AllFailed() then
-			if GAMESTATE:IsCourseMode() then
-				return "ScreenProfileSaveSummary"
+	if GetExtraStage() then
+		for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
+			local po = GAMESTATE:GetPlayerState(pn):GetPlayerOptionsArray("ModsLevel_Preferred")
+			
+			if IsExtraStage1() then
+				if not table.search(po, '4Lives') and not table.search(po, '1Lives') then
+					GAMESTATE:ApplyPreferredModifiers(pn, '4 lives,battery,failimmediate')
+				end
 			else
-				return "ScreenEvaluationSummary"
-			end;
-		else
-			return "ScreenProfileSave"
-		end;
-	elseif STATSMAN:GetCurStageStats():AllFailed() then
-		return "ScreenEvaluationSummary"
+				GAMESTATE:ApplyPreferredModifiers(pn, '1 lives,battery,failimmediate')
+			end
+			
+			GAMESTATE:AddStageToPlayer(pn)
+		end
+	end
+	
+	if (GAMESTATE:GetSmallestNumStagesLeftForAnyHumanPlayer() >= 1)
+		or (GetCurTotalStageCost() < PREFSMAN:GetPreference("SongsPerPlay")) then
+		return "ScreenProfileSave"
 	elseif GAMESTATE:IsCourseMode() then
 		return "ScreenProfileSaveSummary"
 	else
 		return "ScreenEvaluationSummary"
+	end
+end
+
+Branch.AfterProfileSave = function()
+	if not GAMESTATE:IsEventMode() and STATSMAN:GetCurStageStats():AllFailed() then
+		for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
+			local po = GAMESTATE:GetPlayerState(pn):GetPlayerOptionsArray("ModsLevel_Preferred")
+			
+			if table.search(po,'1Lives') or table.search(po,'4Lives') then
+				local rem = PREFSMAN:GetPreference("SongsPerPlay")-GetCurTotalStageCost()
+				
+				for i=1, rem do
+					GAMESTATE:AddStageToPlayer(pn)
+				end
+			end
+		end
+		
+		if GAMESTATE:GetSmallestNumStagesLeftForAnyHumanPlayer() > 0 then
+			return SelectMusicOrCourse()
+		else
+			return "ScreenEvaluationSummary"
+		end
+	elseif GAMESTATE:GetSmallestNumStagesLeftForAnyHumanPlayer() == 0 then
+		return GameOverOrContinue()
+	else
+		return SelectMusicOrCourse()
 	end
 end
 

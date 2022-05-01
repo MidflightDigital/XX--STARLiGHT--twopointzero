@@ -305,12 +305,22 @@ if THEME:GetMetric("ScreenSelectMusic","UseOptionsList") then
                                 s:settext("Exit.");
                             end;
                         else
+							local sel = p.Selection
+							
                             if currentOpList ~= "Exit" then
-                                if THEME:GetMetric("ScreenOptionsMaster",currentOpList.."Explanation") then
-                                    local itemName = THEME:GetMetric("ScreenOptionsMaster",currentOpList.."Explanation")
-                                    s:settext(THEME:GetString("OptionListItemExplanations",currentOpList..tostring(p.Selection)))
-                                else s:settext("")
+								if currentOpList == "Gauge" then
+									if IsExtraStage1() then
+										sel = (p.Selection == 1) and 2 or 1
+									elseif IsExtraStage2() then
+										sel = 2
+									end
                                 end
+								
+								if THEME:GetMetric("ScreenOptionsMaster",currentOpList.."Explanation") then
+									s:settext(THEME:GetString("OptionListItemExplanations",currentOpList..tostring(sel)))
+								else
+									s:settext("")
+								end
                             end
                             if currentOpList == "Mini" or currentOpList == "Characters" or currentOpList == "NoteSkins" or currentOpList == "MusicRate" then
                                 s:settext(THEME:GetString("OptionExplanations",currentOpList))

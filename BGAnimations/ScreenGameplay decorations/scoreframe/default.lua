@@ -5,7 +5,7 @@ local xPosPlayer = {
 
 local ex = ""
 
-if GAMESTATE:IsAnExtraStage() then
+if IsAnExtraStage() then
 	ex = "ex_"
 end
 

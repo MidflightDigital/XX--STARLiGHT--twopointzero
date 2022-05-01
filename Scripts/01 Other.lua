@@ -51,37 +51,38 @@ function SetupCredits()
     return "ScreenCreditsXX"
 end
 
-function SetupHowToPlay(self)
-    local st = GAMESTATE:GetCurrentStyle():GetStepsType()
+function SetupHowToPlay()
     if PROFILEMAN:IsPersistentProfile(PLAYER_1) or PROFILEMAN:IsPersistentProfile(PLAYER_2) then
         setenv("HTP",false)
         return "ScreenSelectMusic"
     else
-        if ThemePrefs.Get("ShowHTP") == true and st ~= 'StepsType_Dance_Double' then
+		local st = GAMESTATE:GetCurrentStyle():GetStepsType()
+        if ThemePrefs.Get("ShowHTP") and st ~= 'StepsType_Dance_Double' then
             local song = SONGMAN:FindSong("Lesson by DJ")
             if song then
                 setenv("HTP",true)
-                GAMESTATE:SetCurrentSong(song);
-                local steps = song:GetOneSteps(st, 0);
+                GAMESTATE:SetCurrentSong(song)
+                local steps = song:GetOneSteps(st, 0)
                 GAMESTATE:SetCurrentPlayMode('PlayMode_Regular')
-                GAMESTATE:SetCurrentSteps('PlayerNumber_P1',steps);
-                GAMESTATE:SetCurrentSteps('PlayerNumber_P2',steps);
+                GAMESTATE:SetCurrentSteps('PlayerNumber_P1',steps)
+                GAMESTATE:SetCurrentSteps('PlayerNumber_P2',steps)
                 local can, reason = GAMESTATE:CanSafelyEnterGameplay()
                 if can then
                     GAMESTATE:SetTemporaryEventMode(true)
                     setenv("FixStage",1)
-                    return "ScreenGameplayHowTo";
+                    return "ScreenGameplayHowTo"
                 else
-                    return "ScreenSelectMusic";
+                    return "ScreenSelectMusic"
                 end
             else
                 return "ScreenSelectMusic"
-            end;
+            end
         else
             return "ScreenSelectMusic"
         end
     end
-end;
+	return "ScreenSelectMusic"
+end
 
 function CustStageCheck()
     if not GAMESTATE:IsAnExtraStage() then
@@ -150,7 +151,11 @@ function TextBannerAfterSet(self,param)
 		local TitleText = Title:GetText()
 		Title:settext(JoinStringsWithSpace(TitleText, SubtitleText))
 	end
-
+	
+	if Artist:GetText() == "Unknown artist" then
+		Artist:settext("")
+	end
+	
 	Title:maxwidth(460)
 	Title:y(-14)
 
@@ -281,11 +286,11 @@ end
 function values(t)
 	local key = nil
 	return function()  
-		local value;
-		key, value = next(t, key);
-		return value;
-	end;
-end;
+		local value
+		key, value = next(t, key)
+		return value
+	end
+end
 
 function EnabledPlayers()
 	return values(GAMESTATE:GetEnabledPlayers())
@@ -355,4 +360,123 @@ function GetThumbnailPath(song)
 			return dir[i]
 		end
 	end
+end
+
+function GetCurTotalStageCost()
+	local totalStageCost = 0
+	local screen = Var 'LoadingScreen'
+	
+	if not GAMESTATE:IsCourseMode() then
+		local stageStats = STATSMAN:GetAccumPlayedStageStats()
+		local songs = stageStats:GetPlayedSongs()
+			
+		for i=1, #songs do
+			totalStageCost = totalStageCost + songs[i]:GetStageCost()
+		end
+	else
+		totalStageCost = GAMESTATE:GetLoadingCourseSongIndex()+1
+	end
+	
+	return totalStageCost
+end
+
+function GetCurrentStage()
+	local screen = Var 'LoadingScreen'
+	local stageNumber = GAMESTATE:IsCourseMode() and GAMESTATE:GetLoadingCourseSongIndex()+1 or GAMESTATE:GetCurrentStageIndex()+1
+	
+	if screen == 'ScreenEvaluationNormal' then
+		stageNumber = stageNumber-1
+	end
+	
+	local curStage = 'Stage_' .. FormatNumberAndSuffix(stageNumber)
+	local maxStages = PREFSMAN:GetPreference("SongsPerPlay")
+	
+	if GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(GAMESTATE:GetMasterPlayerNumber()) then
+		maxStages = #GAMESTATE:GetCurrentTrail(GAMESTATE:GetMasterPlayerNumber()):GetTrailEntries()
+	end
+	
+	if not GAMESTATE:IsEventMode() or GAMESTATE:IsCourseMode() then
+		local tsc = GetCurTotalStageCost()
+		
+		if screen ~= 'ScreenEvaluationNormal' and not GAMESTATE:IsCourseMode() then
+			local song = GAMESTATE:GetCurrentSong()
+			
+			if song then
+				tsc = tsc + GAMESTATE:GetCurrentSong():GetStageCost()
+			else
+				tsc = tsc + 1
+			end
+		end
+		
+		if tsc == maxStages then
+			curStage = 'Stage_Final'
+		elseif tsc == maxStages+1 then
+			curStage = 'Stage_Extra1'
+		elseif tsc == maxStages+2 then
+			curStage = 'Stage_Extra2'
+		end
+	else
+		curStage = 'Stage_Event'
+	end
+	
+	return curStage
+end
+
+function GetTotalAccumulatedStars()
+	local apss = STATSMAN:GetAccumPlayedStageStats()
+	local songs = apss:GetPlayedSongs()
+	local s = {}
+	
+	for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
+		local steps = GAMESTATE:GetCurrentSteps(pn)
+		
+		for i=1, #songs do
+			local st = STATSMAN:GetPlayedStageStats(i)
+			local pss = st:GetPlayerStageStats(pn)
+			local steps = pss:GetPlayedSteps()
+			local score = GetResultScore(steps[1]:GetRadarValues(pn),pss)
+			local n = 0
+			
+			if score < 890000 then
+				n = n+1
+			elseif score < 990000 then
+				n = n+2
+			elseif score <= 1000000 then
+				n = n+3
+			end
+			
+			if (pss:GetTapNoteScores('TapNoteScore_W5')+pss:GetTapNoteScores('TapNoteScore_Miss')==0) and score < 990000 then
+				n = n+1
+			end
+			
+			s[#s+1] = n * songs[i]:GetStageCost()
+		end
+	end
+	
+	local numStars = 0
+	for i,v in ipairs(s) do
+		numStars = numStars + v
+	end
+	
+	return numStars
+end
+
+function IsFinalStage()
+	return GetCurrentStage() == 'Stage_Final'
+end
+
+function IsExtraStage1()
+	return GetCurrentStage() == 'Stage_Extra1'
+end
+
+function IsExtraStage2()
+	return GetCurrentStage() == 'Stage_Extra2'
+end
+
+function IsAnExtraStage()
+	if string.match(GetCurrentStage(), 'Extra') then
+		return true
+	end
+	
+	return false
 end

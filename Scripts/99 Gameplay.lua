@@ -120,8 +120,17 @@ function SongMeasureSec()
 end
 
 function BeginOutDelay()
-	local td = GetSong():GetTimingData()
-	local bpm = round(td:GetBPMAtBeat(GetSong():GetLastBeat()),3)
+	local song = GetSong()
+	
+	if GAMESTATE:IsCourseMode() then
+		local numCourseSongs = #GAMESTATE:GetCurrentTrail(GAMESTATE:GetMasterPlayerNumber()):GetTrailEntries()
+		local j = (GAMESTATE:GetLoadingCourseSongIndex() == numCourseSongs-1) and 0 or 1
+		
+		song = GAMESTATE:GetCurrentTrail(GAMESTATE:GetMasterPlayerNumber()):GetTrailEntry(GAMESTATE:GetLoadingCourseSongIndex()-j):GetSong()
+	end
+	
+	local td = song:GetTimingData()
+	local bpm = round(td:GetBPMAtBeat(song:GetLastBeat()),3)
 	local m = 1
 	
 	if bpm >= 60 and bpm < 120 then
@@ -145,6 +154,9 @@ function BeginOutDelay()
 	
 	if STATSMAN:GetCurStageStats():AllFailed() then
 		dif = 0
+	elseif GAMESTATE:IsCourseMode() and (GAMESTATE:GetSongBeat() < song:GetLastBeat()-2) then
+		--- yes, not zero
+		dif = 0.001
 	end
 	
 	return dif

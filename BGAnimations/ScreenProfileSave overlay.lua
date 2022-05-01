@@ -4,7 +4,7 @@ local x = Def.ActorFrame{
 		BeginCommand=function(s)
 			if SCREENMAN:GetTopScreen():GetPrevScreenName() == "ScreenEvaluationSummary" then
 				s:diffusealpha(1)
-			elseif GAMESTATE:IsAnExtraStage() and SCREENMAN:GetTopScreen():GetNextScreenName() == "ScreenSelectMusicExtra" then
+			elseif GetExtraStage() and SCREENMAN:GetTopScreen():GetNextScreenName() == "ScreenSelectMusicExtra" then
 				s:diffusealpha(1)
 			end
 		end
@@ -13,7 +13,7 @@ local x = Def.ActorFrame{
 		Texture=THEME:GetPathB("","EX.png"),
 		InitCommand=function(s) s:Center():visible(false) end,
 		BeginCommand=function(s)
-			if GAMESTATE:IsAnExtraStage() and SCREENMAN:GetTopScreen():GetNextScreenName() == "ScreenSelectMusicExtra" then
+			if GetExtraStage() and SCREENMAN:GetTopScreen():GetNextScreenName() == "ScreenSelectMusicExtra" then
 				s:visible(true)
 			end
 		end
@@ -22,7 +22,7 @@ local x = Def.ActorFrame{
 		Texture=THEME:GetPathB("ScreenEvaluation","decorations/movie.mp4"),
 		InitCommand=function(s) s:Center():visible(false):pause() end,
 		BeginCommand=function(s)
-			if GAMESTATE:IsAnExtraStage() and SCREENMAN:GetTopScreen():GetNextScreenName() == "ScreenSelectMusicExtra" then
+			if GetExtraStage() and SCREENMAN:GetTopScreen():GetNextScreenName() == "ScreenSelectMusicExtra" then
 				s:visible(true):play()
 			end
 		end

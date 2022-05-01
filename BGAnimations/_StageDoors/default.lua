@@ -1,9 +1,8 @@
 local screen = Var 'LoadingScreen'
 local pf = ''
 local out = ''
-local maxStages = PREFSMAN:GetPreference('SongsPerPlay')
 
-if GAMESTATE:GetCurrentStageIndex()+1 > maxStages then
+if IsAnExtraStage() then
 	pf = 'ex '
 end
 

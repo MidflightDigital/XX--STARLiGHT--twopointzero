@@ -12,7 +12,7 @@ for _, pn in ipairs(GAMESTATE:GetEnabledPlayers()) do
 			end,
 		};
 		Def.Sprite{
-			Condition=GAMESTATE:GetNumPlayersEnabled() == 2,
+			Condition=GAMESTATE:GetNumPlayersEnabled() == 2 and GAMESTATE:PlayerIsUsingModifier(pn,'battery'),
 			Texture="GO"..ToEnumShortString(pn);
 			InitCommand=function(s) s:visible(false) end,
 			BobCommand=function(s) s:bob():effectmagnitude(0,10,0):effectperiod(1) end,
@@ -35,7 +35,13 @@ for _, pn in ipairs(GAMESTATE:GetEnabledPlayers()) do
 						self:visible(true):rotationz(360):linear(0.2):rotationz(0):queuecommand("Bob")
 					end
 				end
-			end
+			end,
+			NextCourseSongDelayMessageCommand=function(s)
+				s:sleep(BeginOutDelay()):linear(0.2):diffusealpha(0)
+			end,
+			OffCommand=function(s)
+				s:sleep(BeginOutDelay()):linear(0.2):diffusealpha(0)
+			end,
 		};
 	};
 	t[#t+1] = Def.Sound{
