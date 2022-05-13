@@ -121,6 +121,7 @@ end
 
 function BeginOutDelay()
 	local song = GetSong()
+	local dif = 0
 	
 	if GAMESTATE:IsCourseMode() then
 		local numCourseSongs = #GAMESTATE:GetCurrentTrail(GAMESTATE:GetMasterPlayerNumber()):GetTrailEntries()
@@ -150,7 +151,7 @@ function BeginOutDelay()
 	local timeSigs = split('=', td:GetTimeSignatures()[1])
 	local n = timeSigs[2]
 	local d = timeSigs[3]
-	local dif = 60/bpm*8*m*n/d
+	dif = 60/bpm*8*m*n/d
 	
 	if STATSMAN:GetCurStageStats():AllFailed() then
 		dif = 0

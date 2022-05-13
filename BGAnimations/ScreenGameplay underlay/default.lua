@@ -106,6 +106,7 @@ for _, pn in ipairs(GAMESTATE:GetEnabledPlayers()) do
 		OffCommand=function(s) s:playcommand('FilterOff') end,
 		FilterOffCommand=function(s)
 			local song
+			local dif = 0
 			
 			if GAMESTATE:IsCourseMode() then
 				song = GAMESTATE:GetCurrentTrail(GAMESTATE:GetMasterPlayerNumber()):GetTrailEntry(GAMESTATE:GetLoadingCourseSongIndex()-1):GetSong()
@@ -113,28 +114,30 @@ for _, pn in ipairs(GAMESTATE:GetEnabledPlayers()) do
 				song = GAMESTATE:GetCurrentSong()
 			end
 			
-			local td = song:GetTimingData()
-			local bpm = round(td:GetBPMAtBeat(song:GetLastBeat()),3)
-			local m = 1
-			
-			if bpm >= 60 and bpm < 120 then
-				m = 0.75
-			elseif bpm < 60 then
-				m = 0.5
-			else
-				--- 240 bpm and above
-				for i=1, 3 do
-					if bpm >= 240*(3-(i-1)) then
-						m = 2*(3-(i-1))
-						break
+			if song then
+				local td = song:GetTimingData()
+				local bpm = round(td:GetBPMAtBeat(song:GetLastBeat()),3)
+				local m = 1
+				
+				if bpm >= 60 and bpm < 120 then
+					m = 0.75
+				elseif bpm < 60 then
+					m = 0.5
+				else
+					--- 240 bpm and above
+					for i=1, 3 do
+						if bpm >= 240*(3-(i-1)) then
+							m = 2*(3-(i-1))
+							break
+						end
 					end
 				end
+				
+				local timeSigs = split('=', td:GetTimeSignatures()[1])
+				local n = timeSigs[2]
+				local d = timeSigs[3]
+				dif = 60/bpm*4*m*n/d
 			end
-			
-			local timeSigs = split('=', td:GetTimeSignatures()[1])
-			local n = timeSigs[2]
-			local d = timeSigs[3]
-			local dif = 60/bpm*4*m*n/d
 			
 			s:sleep(dif):linear(0.2):diffusealpha(0)
 		end,

@@ -1,6 +1,6 @@
-local t = Def.ActorFrame{};
+local t = LoadFallbackB();
 
-CustStage = 1;
+CustStage = 1
 
 for i=1,2 do
   t[#t+1] = Def.ActorFrame{
@@ -35,27 +35,27 @@ for i=1,2 do
         local masterPlayer = GAMESTATE:GetMasterPlayerNumber()
         if i == 1 then
           if GetP1 == true and GAMESTATE:GetNumPlayersEnabled() == 1 then
-            s:Load(THEME:GetPathB("","ScreenSelectStyle overlay/P1here"));
+            s:Load(THEME:GetPathB("","ScreenSelectStyle decorations/P1here"));
           elseif GetP1 == false and GAMESTATE:PlayersCanJoin() and GAMESTATE:GetMasterPlayerNumber() == PLAYER_2 then
-            s:Load(THEME:GetPathB("","ScreenSelectStyle overlay/P1CanJoin"));
+            s:Load(THEME:GetPathB("","ScreenSelectStyle decorations/P1CanJoin"));
           elseif GetP1 == false and GAMESTATE:GetMasterPlayerNumber() == PLAYER_2  then
             if GAMESTATE:GetCoins() ~= GAMESTATE:GetCoinsNeededToJoin() and GAMESTATE:IsEventMode() == false then
-              s:Load(THEME:GetPathB("","ScreenSelectStyle overlay/credit"));
+              s:Load(THEME:GetPathB("","ScreenSelectStyle decorations/credit"));
             end;
           else
-            s:Load(THEME:GetPathB("","ScreenSelectStyle overlay/P1here"));
+            s:Load(THEME:GetPathB("","ScreenSelectStyle decorations/P1here"));
           end;
         elseif i == 2 then
           if GetP2 == true and GAMESTATE:GetNumPlayersEnabled() == 1 then
-            s:Load(THEME:GetPathB("","ScreenSelectStyle overlay/P2here"));
+            s:Load(THEME:GetPathB("","ScreenSelectStyle decorations/P2here"));
           elseif GetP2 == false and GAMESTATE:GetMasterPlayerNumber() == PLAYER_1  then
             if GAMESTATE:GetCoins() ~= GAMESTATE:GetCoinsNeededToJoin()  and GAMESTATE:IsEventMode() == false then
-              s:Load(THEME:GetPathB("","ScreenSelectStyle overlay/credit"));
+              s:Load(THEME:GetPathB("","ScreenSelectStyle decorations/credit"));
             else
-              s:Load(THEME:GetPathB("","ScreenSelectStyle overlay/P2CanJoin"));
+              s:Load(THEME:GetPathB("","ScreenSelectStyle decorations/P2CanJoin"));
             end;
           else
-            s:Load(THEME:GetPathB("","ScreenSelectStyle overlay/P2here"));
+            s:Load(THEME:GetPathB("","ScreenSelectStyle decorations/P2here"));
           end
         end
       end,
@@ -106,9 +106,6 @@ end
 };]]
 
 t[#t+1] = Def.ActorFrame{
-  OnCommand=function(s)
-		SOUND:DimMusic(1,math.huge)
-	end,
   Def.Quad{
 		InitCommand=function(s) s:FullScreen():diffuse(Alpha(Color.Black,0)) end,
 		OnCommand=function(s)

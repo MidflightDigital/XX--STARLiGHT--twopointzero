@@ -234,9 +234,9 @@ t[#t+1] = Def.ActorFrame{
             assert(topgrade);
             if scores[1]:GetScore()>1  then
               if topgrade == 'Grade_Failed' then
-                self:Load(THEME:GetPathB("","ScreenEvaluation decorations/grade/GradeDisplayEval Failed"));
+                self:Load(THEME:GetPathB("","ScreenEvaluationNormal decorations/grade/GradeDisplayEval Failed"));
               else
-                self:Load(THEME:GetPathB("ScreenEvaluation decorations/grade/GradeDisplayEval",ToEnumShortString(tier)));
+                self:Load(THEME:GetPathB("ScreenEvaluationNormal decorations/grade/GradeDisplayEval",ToEnumShortString(tier)));
               end;
               self:diffusealpha(1);
             else

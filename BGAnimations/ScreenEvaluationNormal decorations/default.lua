@@ -1,9 +1,44 @@
-local t = LoadFallbackB();
+local dim_vol = 1
 local jk = LoadModule "Jacket.lua"
+local screen = Var("LoadingScreen")
+
+local t = LoadFallbackB();
 
 t[#t+1] = StandardDecorationFromFileOptional("StageDisplay","StageDisplay");
 
-local screen = Var("LoadingScreen")
+t[#t+1] = Def.Actor {
+    OffCommand=function(s)
+		if GAMESTATE:IsCourseMode() then
+			s:playcommand('FadeOut')
+		end
+	end,
+	FadeOutCommand=function(s)
+		if dim_vol ~= 0 then
+			SOUND:DimMusic(1-(1-dim_vol), math.huge)
+			dim_vol = round(dim_vol - 0.001,3)
+			s:sleep(0.001):queuecommand('Play')
+		end
+	end,
+};
+
+t[#t+1] = Def.Sound {
+	File=THEME:GetPathS('_result', 'in'),
+	OnCommand=function(s) s:play() end,
+};
+
+t[#t+1] = Def.Sound {
+	File=THEME:GetPathS('_result', 'score'),
+	OnCommand=function(s)
+		local st = STATSMAN:GetCurStageStats()
+		local pss_p1 = st:GetPlayerStageStats(PLAYER_1)
+		local pss_p2 = st:GetPlayerStageStats(PLAYER_2)
+		
+		if pss_p1:GetScore() > 0 or pss_p2:GetScore() > 0 then
+			s:sleep(0.2):queuecommand("Play")
+		end
+	end,
+	PlayCommand=function(s) s:play() end,
+};
 
 t[#t+1] = Def.Actor{
     OnCommand=function(s)
@@ -18,11 +53,25 @@ local List = {
 	"COVID"
 };
 
-t[#t+1] = Def.Sound{
+--[[local dim_vol = 1
+
+t[#t+1] = Def.Sound {
 	Condition=not GetExtraStage() and not has_value(List,GAMESTATE:GetCurrentSong():GetDisplayMainTitle()),
 	File=GetMenuMusicPath "results",
 	OnCommand=function(s) s:play() end,
-};
+	OffCommand=function(s)
+		if THEME:GetMetric('ScreenEvaluation', 'NextScreen') ~= 'ScreenEvaluationSummary' then
+			s:sleep(0.2):queuecommand('Play')
+		end
+	end,
+	PlayCommand=function(s)
+		if dim_vol ~= 0 then
+			s:get():volume(1-(1-dim_vol))
+			dim_vol = round(dim_vol - 0.001,3)
+			s:sleep(0.001):queuecommand('Play')
+		end
+	end
+};--]]
 
 --BannerArea
 t[#t+1] = Def.ActorFrame{
@@ -112,7 +161,7 @@ for _, pn in pairs(GAMESTATE:GetEnabledPlayers()) do
     return string.format("%02d STAGE",pss:GetSongsPassed())
   end
 
-  t[#t+1] = loadfile(THEME:GetPathB("ScreenEvaluation","decorations/grade"))(pn)
+  t[#t+1] = loadfile(THEME:GetPathB("ScreenEvaluationNormal","decorations/grade"))(pn)
 
   t[#t+1] = Def.ActorFrame{
     Name="Scores",
@@ -311,13 +360,13 @@ if #GAMESTATE:GetEnabledPlayers() == 1 then
   EvalPane1 = pPrefs.evalpane1
   EvalPane2 = pPrefs.evalpane2
 	--P1 Frame
-	t[#t+1] = loadfile(THEME:GetPathB("ScreenEvaluation","decorations/frame"))(GAMESTATE:GetMasterPlayerNumber(),PLAYER_1,EvalPane1)..{
+	t[#t+1] = loadfile(THEME:GetPathB("ScreenEvaluationNormal","decorations/frame"))(GAMESTATE:GetMasterPlayerNumber(),PLAYER_1,EvalPane1)..{
     InitCommand=function(s)
       s:xy(IsUsingWideScreen() and _screen.cx-500 or _screen.cx-360,_screen.cy+250)
     end,
 	};
 	--P2 Frame
-	t[#t+1] = loadfile(THEME:GetPathB("ScreenEvaluation","decorations/frame"))(GAMESTATE:GetMasterPlayerNumber(),PLAYER_2,EvalPane2)..{
+	t[#t+1] = loadfile(THEME:GetPathB("ScreenEvaluationNormal","decorations/frame"))(GAMESTATE:GetMasterPlayerNumber(),PLAYER_2,EvalPane2)..{
 		InitCommand=function(s)
       s:xy(IsUsingWideScreen() and _screen.cx+500 or _screen.cx+360,_screen.cy+250)
     end,
@@ -327,7 +376,7 @@ else --If multiplayer
   local pPrefs1 = ProfilePrefs.Read(profileID1)
   local EvalPane1P = pPrefs1.evalpane1
 	--P1 Frame
-	t[#t+1] = loadfile(THEME:GetPathB("ScreenEvaluation","decorations/frame"))(PLAYER_1,PLAYER_1,EvalPane1P)..{
+	t[#t+1] = loadfile(THEME:GetPathB("ScreenEvaluationNormal","decorations/frame"))(PLAYER_1,PLAYER_1,EvalPane1P)..{
 		InitCommand=function(s)
       s:xy(IsUsingWideScreen() and _screen.cx-500 or _screen.cx-360,_screen.cy+250)
     end,
@@ -336,7 +385,7 @@ else --If multiplayer
   local pPrefs2 = ProfilePrefs.Read(profileID2)
   local EvalPane2P = pPrefs2.evalpane1
 	--P2 Frame
-	t[#t+1] = loadfile(THEME:GetPathB("ScreenEvaluation","decorations/frame"))(PLAYER_2,PLAYER_2,EvalPane2P)..{
+	t[#t+1] = loadfile(THEME:GetPathB("ScreenEvaluationNormal","decorations/frame"))(PLAYER_2,PLAYER_2,EvalPane2P)..{
 		InitCommand=function(s)
       s:xy(IsUsingWideScreen() and _screen.cx+500 or _screen.cx+360,_screen.cy+250)
     end,
@@ -345,7 +394,7 @@ else --If multiplayer
 end;
   
 if GetExtraStage() then
-  t[#t+1] = loadfile(THEME:GetPathB("ScreenEvaluation","decorations/EXOverlay"))();
+  t[#t+1] = loadfile(THEME:GetPathB("ScreenEvaluationNormal","decorations/EXOverlay"))();
   --Outro Movie
   t[#t+1] = Def.ActorFrame{
     Def.Quad{
