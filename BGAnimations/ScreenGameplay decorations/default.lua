@@ -355,19 +355,32 @@ t[#t+1] = Def.ActorFrame {
 	end,
 	
 	Def.Sprite {
-		Condition=IsAnExtraStage() or get_UI_video_path(),
-		Texture=IsAnExtraStage() and THEME:GetPathB('ScreenSelectMusicExtra', 'background/EXMovie.mp4') or get_UI_video_path(),
+		Condition=IsAnExtraStage(),
+		Texture=THEME:GetPathB('ScreenSelectMusicExtra', 'background/EXMovie.mp4'),
 		BeginCommand=function(s)
 			s:Center():zoom(round(THEME:GetMetric('Common','ScreenHeight')/s:GetHeight()),3)
 		end,
-		AnOnCommand=function(s) s:play():diffusealpha(0):linear(0.8):diffusealpha(1) end,
 		AnOffCommand=function(s) s:play():diffusealpha(1):linear(0.4):diffusealpha(0):queuecommand('Pause') end,
+		PauseCommand=function(s) s:pause() end,
+	},
+	Def.Sprite {
+		Condition=get_UI_video_path(),
+		Texture=get_UI_video_path(),
+		BeginCommand=function(s)
+			s:diffusealpha(0):pause():Center():zoom(round(THEME:GetMetric('Common','ScreenHeight')/s:GetHeight()),3)
+		end,
+		AnOnCommand=function(s) s:play():diffusealpha(0):linear(0.8):diffusealpha(1) end,
+		AnOffCommand=function(s)
+			if not IsAnExtraStage() then
+				s:play():diffusealpha(1):linear(0.4):diffusealpha(0):queuecommand('Pause')
+			end
+		end,
 		PauseCommand=function(s) s:pause() end,
 		SetFailCommand=function(s) s:diffuse(color("1,0.2,0.2,0")):playcommand('AnOn'):sleep(outDelay-1.4):linear(0.4):diffusecolor(color('1,1,1,1')) end,
 		SetOffCommand=function(s) s:play():linear(0.4):diffusealpha(1) end,
 	},
 	loadfile(THEME:GetPathB('ScreenWithMenuElements', 'background/default.lua'))() .. {
-		Condition=not IsAnExtraStage() and not get_UI_video_path(),
+		Condition=not get_UI_video_path(),
 		InitCommand=function(s) s:SetSize(SCREEN_WIDTH,SCREEN_HEIGHT) end,
 		AnOnCommand=function(s) s:linear(0.8):diffusealpha(1) end,
 		AnOffCommand=function(s) s:linear(0.4):diffusealpha(0) end,
