@@ -116,17 +116,7 @@ function AfterCaution()
 end
 
 Branch.AfterGameplay = function()
-	if GAMESTATE:IsCourseMode() then
-		if GAMESTATE:GetPlayMode() == 'PlayMode_Nonstop' then
-			return "ScreenEvaluationNonstop"
-		else	-- oni and endless are shared
-			return "ScreenEvaluationOni"
-		end
-	elseif GAMESTATE:GetPlayMode() == 'PlayMode_Rave' then
-		return "ScreenEvaluationRave"
-	else
-		return "ScreenEvaluationNormal"
-	end
+	return "ScreenEvaluationNormal"
 end
 
 --- custom Extra Stage system. "AllowExtraStage" setting should be OFF in the game settings
@@ -175,11 +165,11 @@ Branch.AfterEvaluation = function()
 		end
 	end
 	
-	if (GAMESTATE:GetSmallestNumStagesLeftForAnyHumanPlayer() >= 1)
+	if GAMESTATE:IsCourseMode() then
+		return "ScreenDataSaveSummary"
+	elseif (GAMESTATE:GetSmallestNumStagesLeftForAnyHumanPlayer() >= 1)
 		or (GetCurTotalStageCost() < PREFSMAN:GetPreference("SongsPerPlay")) then
 		return "ScreenProfileSave"
-	elseif GAMESTATE:IsCourseMode() then
-		return "ScreenProfileSaveSummary"
 	else
 		return "ScreenEvaluationSummary"
 	end
@@ -208,23 +198,5 @@ Branch.AfterProfileSave = function()
 		return GameOverOrContinue()
 	else
 		return SelectMusicOrCourse()
-	end
-end
-
-Branch.AfterSummary = "ScreenProfileSaveSummary"
-
-Branch.AfterSaveSummary = function()
-	if PROFILEMAN:GetNumLocalProfiles() >= 1 then
-		return "ScreenDataSaveSummary"
-	else
-		return "ScreenGameOver"
-	end
-end
-
-Branch.AfterDataSaveSummary = function()
-	if GAMESTATE:AnyPlayerHasRankingFeats() then
-		return "ScreenDataSaveSummaryEnd"
-	else
-		return "ScreenDataSaveSummaryEnd"
 	end
 end

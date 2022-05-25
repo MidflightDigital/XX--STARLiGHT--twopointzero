@@ -100,7 +100,7 @@ t[#t+1] = Def.Sprite{
 		InitCommand=function(s) s:zoom(1):xy(-75,75) end,
 		OnCommand=function(self)
 			self:Load(
-				THEME:GetPathB("ScreenEvaluation",
+				THEME:GetPathB("ScreenEvaluationNormal",
 				string.format("decorations/kcalP1/%s.png",
 				FoodInfo[1][1])
 			));

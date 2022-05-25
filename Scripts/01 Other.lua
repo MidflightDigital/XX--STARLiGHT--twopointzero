@@ -445,7 +445,7 @@ function GetTotalAccumulatedStars()
 				n = n+3
 			end
 			
-			if (pss:GetTapNoteScores('TapNoteScore_W5')+pss:GetTapNoteScores('TapNoteScore_Miss')==0) and score < 990000 then
+			if (pss:GetTapNoteScores('TapNoteScore_W5')+pss:GetTapNoteScores('TapNoteScore_Miss')+pss:GetHoldNoteScores('HoldNoteScore_LetGo')==0) and score < 990000 then
 				n = n+1
 			end
 			

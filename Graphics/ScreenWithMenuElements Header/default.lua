@@ -18,8 +18,8 @@ if screenName then
 	table.insert(out,LoadActor("text/"..screenName..".png")..{
 		InitCommand=function(s)
 			s:diffusealpha(0)
-			if screen == "ScreenSelectMusic" or screen == "ScreenEvaluationNormal" or screen == "ScreenEvaluationCourse" then
-				s:y(-1)
+			if screen == "ScreenEvaluationNormal" and not GAMESTATE:IsCourseMode() then
+				s:y(-3)
 			else
 				s:y(10)
 			end

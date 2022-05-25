@@ -87,10 +87,10 @@ local t = Def.ActorFrame{
 				end;
 			end;
         end;
-        loadfile(THEME:GetPathB("ScreenEvaluation","decorations/stats"))(pn);
+        loadfile(THEME:GetPathB("ScreenEvaluationNormal","decorations/stats"))(pn);
     };
     --3rd pane, rankings
-	loadfile(THEME:GetPathB("ScreenEvaluation","decorations/scoresUnified"))(pn)..{
+	loadfile(THEME:GetPathB("ScreenEvaluationNormal","decorations/scoresUnified"))(pn)..{
 		InitCommand=function(s) 
 			s:diffusealpha(0):draworder(3):y(18)
 			if paneState == 1 then
@@ -110,7 +110,7 @@ local t = Def.ActorFrame{
 		end;
     };
     --4th pane, calories
-	loadfile(THEME:GetPathB("ScreenEvaluation","decorations/kcalP1"))(pn)..{
+	loadfile(THEME:GetPathB("ScreenEvaluationNormal","decorations/kcalP1"))(pn)..{
 		InitCommand=function(s)
 			s:diffusealpha(0)
 			if paneState == 2 then

@@ -4,28 +4,17 @@ local x = Def.ActorFrame{
 		BeginCommand=function(s)
 			if SCREENMAN:GetTopScreen():GetPrevScreenName() == "ScreenEvaluationSummary" then
 				s:diffusealpha(1)
-			elseif GetExtraStage() and SCREENMAN:GetTopScreen():GetNextScreenName() == "ScreenSelectMusicExtra" then
-				s:diffusealpha(1)
 			end
 		end
 	};
-	Def.Sprite{
-		Texture=THEME:GetPathB("","EX.png"),
-		InitCommand=function(s) s:Center():visible(false) end,
-		BeginCommand=function(s)
-			if GetExtraStage() and SCREENMAN:GetTopScreen():GetNextScreenName() == "ScreenSelectMusicExtra" then
-				s:visible(true)
+	Def.Sprite {
+		InitCommand=function(s) s:Center():diffusealpha(0) end,
+		OnCommand=function(s)
+			if SCREENMAN:GetTopScreen():GetNextScreenName() == "ScreenSelectMusicExtra" then
+				s:Load(THEME:GetPathB("ScreenEvaluationNormal","decorations/movie.mp4")):queuecommand('Play')
 			end
-		end
-	};
-	Def.Sprite{
-		Texture=THEME:GetPathB("ScreenEvaluation","decorations/movie.mp4"),
-		InitCommand=function(s) s:Center():visible(false):pause() end,
-		BeginCommand=function(s)
-			if GetExtraStage() and SCREENMAN:GetTopScreen():GetNextScreenName() == "ScreenSelectMusicExtra" then
-				s:visible(true):play()
-			end
-		end
+		end,
+		PlayCommand=function(s) s:play():diffusealpha(1):linear(0.5):diffusealpha(0) end,
 	};
 };
 
@@ -55,13 +44,28 @@ end
 MyGrooveRadar.SaveAllRadarData()
 ProfilePrefs.SaveAll()
 
+local dim_vol = 1
+
 x[#x+1] = Def.Actor {
 	BeginCommand=function(self)
-		if SCREENMAN:GetTopScreen():HaveProfileToSave() then self:sleep(1); end;
-		self:queuecommand("Load");
+		if SCREENMAN:GetTopScreen():HaveProfileToSave() then self:sleep(1) end
+		self:queuecommand("Load")
 	end;
-	LoadCommand=function() SCREENMAN:GetTopScreen():Continue(); end;
+	LoadCommand=function() SCREENMAN:GetTopScreen():Continue() end,
+	OffCommand=function(s)
+		local screen = SCREENMAN:GetTopScreen()
+		
+		if string.match("ScreenSelectMusic", screen:GetNextScreenName()) then
+			s:queuecommand('Play')
+		end
+	end,
+	PlayCommand=function(s)
+		if dim_vol ~= 0 then
+			SOUND:DimMusic(1-(1-dim_vol), math.huge)
+			dim_vol = round(dim_vol - 0.001,3)
+			s:sleep(0.001):queuecommand('Play')
+		end
+	end
 };
 
-
-return x;
+return x

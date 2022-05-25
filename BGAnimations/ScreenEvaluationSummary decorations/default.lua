@@ -9,6 +9,26 @@ end
 
 local yspacing = 105
 
+t[#t+1] = Def.Sound {
+	File=THEME:GetPathS('_result', 'in'),
+	OnCommand=function(s) s:play() end,
+};
+
+local dim_vol = 1
+
+t[#t+1] = Def.Actor {
+	OffCommand=function(s)
+		s:queuecommand('Play')
+	end,
+	PlayCommand=function(s)
+		if dim_vol ~= 0 then
+			SOUND:DimMusic(1-(1-dim_vol), math.huge)
+			dim_vol = round(dim_vol - 0.001,3)
+			s:sleep(0.001):queuecommand('Play')
+		end
+	end
+};
+
 local mStages = STATSMAN:GetStagesPlayed()
 for i = StageCheck(), mStages do
 	local ssStats;
@@ -101,7 +121,7 @@ for i = StageCheck(), mStages do
 						tier = pss:GetGrade()
 					end
 					local Grade = pss:GetFailed() and 'Grade_Failed' or tier
-					s:Load(THEME:GetPathB("ScreenEvaluation decorations/grade/GradeDisplayEval",ToEnumShortString(Grade)))
+					s:Load(THEME:GetPathB("ScreenEvaluationNormal decorations/grade/GradeDisplayEval",ToEnumShortString(Grade)))
 					s:x(pss:FullComboType() and (pn==PLAYER_1 and 154 or -154) or (pn==PLAYER_1 and 174 or -174))
 					s:zoomx(0.25)
 				end,
@@ -185,7 +205,7 @@ for _, pn in pairs(GAMESTATE:GetEnabledPlayers()) do
       s:linear(0.2):addx(pn=="PlayerNumber_P2" and 300 or -300)
     end;
     Def.Sprite{
-		Texture=THEME:GetPathB("ScreenEvaluation","decorations/player"),
+		Texture=THEME:GetPathB("ScreenEvaluationNormal","decorations/player"),
       	InitCommand=function(s)
         	s:zoomx(pn=="PlayerNumber_P2" and -1 or 1):x(pn=="PlayerNumber_P2" and SCREEN_RIGHT or SCREEN_LEFT):halign(0):y(_screen.cy-300)
       	end;
@@ -214,4 +234,4 @@ t[#t+1] = loadfile(THEME:GetPathG(screen, "Header"))()..{
 
 t[#t+1] = StandardDecorationFromFileOptional("Help","Help");
 
-return t;
+return t
