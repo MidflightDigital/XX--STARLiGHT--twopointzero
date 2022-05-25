@@ -57,7 +57,7 @@ t[#t+1] = Def.ActorFrame{
     Texture="judgments.png",
     InitCommand=function(s) s:y(22)
       if ex_score then
-        s:Load(THEME:GetPathB("ScreenEvaluation","decorations/judgments ex"))
+        s:Load(THEME:GetPathB("ScreenEvaluationNormal","decorations/judgments ex"))
       end
     end,
   };

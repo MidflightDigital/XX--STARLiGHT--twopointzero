@@ -16,7 +16,7 @@ end
 local ring = Def.ActorFrame {};
 
 for _, pn in pairs(GAMESTATE:GetEnabledPlayers()) do
-	ring[#ring+1] = loadfile(THEME:GetPathB("ScreenEvaluation","decorations/grade/fc_ring"))(pss)..{
+	ring[#ring+1] = loadfile(THEME:GetPathB("ScreenEvaluationNormal","decorations/grade/fc_ring"))(pss)..{
 		InitCommand=function(s) s:xy(m "RingPNX",m "RingPNY") end,
 	};
 end;
@@ -28,7 +28,7 @@ return Def.ActorFrame{
 		OnCommand = m "GradePNOnCommand",
 		OffCommand = m "GradePNOffCommand",
 		SetCommand= function(s)
-			s:Load(THEME:GetPathB("ScreenEvaluation decorations/grade/GradeDisplayEval", ToEnumShortString(tier)))
+			s:Load(THEME:GetPathB("ScreenEvaluationNormal decorations/grade/GradeDisplayEval", ToEnumShortString(tier)))
 		end;
 	};
 };

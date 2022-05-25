@@ -1,7 +1,7 @@
 local screen = Var "LoadingScreen"
 
 local pf = ""
-if GAMESTATE:IsAnExtraStage() and screen == "ScreenSelectMusicExtra" then
+if screen == "ScreenSelectMusicExtra" then
   pf = "ex "
 end
 
