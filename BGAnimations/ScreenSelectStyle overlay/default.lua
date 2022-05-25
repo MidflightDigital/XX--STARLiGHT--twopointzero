@@ -110,6 +110,8 @@ t[#t+1] = Def.ActorFrame{
 		SOUND:DimMusic(1,math.huge)
 	end,
   OffCommand=function(self)
+    --Starting with Outfox 4.13, gamecommands for setting the current style is broken.
+    --As a fix, we now just apply the style via lua. -Inori
     local ind = SCREENMAN:GetTopScreen():GetSelectionIndex(GAMESTATE:GetMasterPlayerNumber())
     local styles = {
       "single",
