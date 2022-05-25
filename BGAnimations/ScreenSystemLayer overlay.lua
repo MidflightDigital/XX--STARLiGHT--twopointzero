@@ -27,10 +27,14 @@ local function CreditsText()
 end;
 
 local function PlayerText( pn )
-	local text = Def.ActorFrame{
-		InitCommand=function(self)
-			self:name("Credits" .. PlayerNumberToString(pn))
-			ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen");
+	local text = Def.BitmapText{
+		Font="_avenirnext lt pro bold/20px",
+		InitCommand=function(s) s:name("Credits" .. PlayerNumberToString(pn))
+			ActorUtil.LoadAllCommandsAndSetXY(s,Var "LoadingScreen")
+			s:maxwidth(325):strokecolor(Color.Black)
+		end,
+		UpdateTextCommand=function(s)
+			s:settext(PROFILEMAN:GetProfile(pn):GetDisplayName())
 		end;
 		UpdateVisibleCommand=function(self)
 			local screen = SCREENMAN:GetTopScreen();
@@ -41,53 +45,7 @@ local function PlayerText( pn )
 			end
 
 			self:visible( bShow );
-		end,
-		LoadFont(Var "LoadingScreen","credits") .. {
-			InitCommand=function(s) s:maxwidth(325):strokecolor(Color.Black) end,
-			UpdateTextCommand=function(s)
-				local pname = PROFILEMAN:GetProfile(pn):GetDisplayName()
-				local Dir = ""
-				if ProductID() == "StepMania 5.3" or ProductID() == "OutFox" then
-					Dir = FILEMAN:GetDirListing("/Appearance/Themes/STARLiGHT/Other/Names/")
-				else
-					Dir = FILEMAN:GetDirListing("/Themes/STARLiGHT/Other/Names/")
-				end
-				for _,v in ipairs(Dir) do
-					if string.match(v,"(%w+)") == pname then
-						s:settext("")
-					else
-						s:settext(pname)
-					end
-				end
-			end;
-		};
-		Def.Sprite{
-			InitCommand=function(s) s:xy(40,-10) end,
-			UpdateTextCommand=function(s)
-				local pname = PROFILEMAN:GetProfile(pn):GetDisplayName()
-				local Dir = ""
-				if ProductID() == "StepMania 5.3" or ProductID() == "OutFox" then
-					Dir = FILEMAN:GetDirListing("/Appearance/Themes/STARLiGHT/Other/Names/")
-				else
-					Dir = FILEMAN:GetDirListing("/Themes/STARLiGHT/Other/Names/")
-				end
-				local image = ""
-				for _,v in ipairs(Dir) do
-					if string.match(v,"(%w+)") == pname then
-						if ProductID() == "StepMania 5.3" or ProductID() == "OutFox" then
-							image = "/Appearance/Themes/STARLiGHT/Other/Names/"..v
-						else
-							image = "/Themes/STARLiGHT/Other/Names/"..v
-						end
-					end
-				end
-				if image ~= "" then
-					s:Load(image):visible(true):zoom(0.5)
-				else
-				s:visible(false)
-			end
-		end;
-		};
+		end
 	};
 	return text;
 end;
@@ -95,9 +53,9 @@ end;
 local t = Def.ActorFrame {}
 
 t[#t+1] = Def.ActorFrame {
- 	PlayerText( PLAYER_1 );
-	PlayerText( PLAYER_2 );
 	CreditsText();
+	PlayerText( PLAYER_1 );
+	PlayerText( PLAYER_2 );
 };
 
 -- Text
