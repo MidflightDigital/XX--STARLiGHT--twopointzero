@@ -33,7 +33,7 @@ for _, pn in ipairs(GAMESTATE:GetEnabledPlayers()) do
     Rows[#Rows+1] = Def.ActorProxy{
         OnCommand=function(self)
             if self:GetParent():GetParent():GetParent():GetName() == "LuaNoteSkins" then
-                if SCREENMAN:GetTopScreen() then
+                if SCREENMAN:GetTopScreen() and GAMESTATE:IsHumanPlayer(pn) then
                     local CurNoteSkin = GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred"):NoteSkin()
                     self:SetTarget(SCREENMAN:GetTopScreen():GetChild("NS"..string.lower(CurNoteSkin)))
                     :x(pn==PLAYER_1 and _screen.cx-30 or _screen.cx+500):zoom(0.9)
