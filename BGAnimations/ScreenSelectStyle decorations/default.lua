@@ -106,6 +106,21 @@ end
 };]]
 
 t[#t+1] = Def.ActorFrame{
+  OffCommand=function(self)
+    local ind = SCREENMAN:GetTopScreen():GetSelectionIndex(GAMESTATE:GetMasterPlayerNumber())
+    local styles = {
+      "single",
+      "versus",
+      "double"
+    }
+      if styles[ind+1] ~= nil then
+        GAMESTATE:SetCurrentStyle(styles[ind+1])
+      else
+        SCREENMAN:SystemMessage("Couldn't find a proper style for this gamemode. STARLiGHT only supports Dance.")
+        GAMESTATE:Reset()
+        SCREENMAN:GetTopScreen():SetNextScreenName("ScreenSelectMode")
+      end
+	end,
   Def.Quad{
 		InitCommand=function(s) s:FullScreen():diffuse(Alpha(Color.Black,0)) end,
 		OnCommand=function(s)
