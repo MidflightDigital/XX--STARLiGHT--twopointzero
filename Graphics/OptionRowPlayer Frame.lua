@@ -29,6 +29,10 @@ Rows[#Rows+1] = Def.Quad {
 	end
 }
 
+--[[TODO:
+	Fix SetTarget on PopUp options screen
+]]
+
 for _, pn in ipairs(GAMESTATE:GetEnabledPlayers()) do
     Rows[#Rows+1] = Def.ActorProxy{
         OnCommand=function(self)
