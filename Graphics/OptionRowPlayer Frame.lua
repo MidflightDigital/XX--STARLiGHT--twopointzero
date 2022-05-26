@@ -35,7 +35,7 @@ Rows[#Rows+1] = Def.Quad {
 
 for _, pn in ipairs(GAMESTATE:GetEnabledPlayers()) do
     Rows[#Rows+1] = Def.ActorProxy{
-        OnCommand=function(self)
+        BeginCommand=function(self)
             if self:GetParent():GetParent():GetParent():GetName() == "LuaNoteSkins" then
                 if SCREENMAN:GetTopScreen() and GAMESTATE:IsHumanPlayer(pn) then
                     local CurNoteSkin = GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred"):NoteSkin()
