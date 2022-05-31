@@ -3,7 +3,8 @@ local outDelay = THEME:GetMetric('ScreenGameplay', 'OutTransitionSeconds')
 
 local List = {
 	'Tohoku EVOLVED',
-	'COVID'
+	'COVID',
+	'Outbreak'
 }
 
 local function get_UI_video_path()
