@@ -59,13 +59,13 @@ x[#x+1] = Def.Actor {
 			s:queuecommand('Play')
 		end
 	end,
-	PlayCommand=function(s)
+	--[[PlayCommand=function(s)
 		if dim_vol ~= 0 then
 			SOUND:DimMusic(1-(1-dim_vol), math.huge)
 			dim_vol = round(dim_vol - 0.001,3)
 			s:sleep(0.001):queuecommand('Play')
 		end
-	end
+	end]]
 };
 
 return x
