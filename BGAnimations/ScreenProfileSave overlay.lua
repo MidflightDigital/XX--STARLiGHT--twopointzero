@@ -44,7 +44,7 @@ end
 MyGrooveRadar.SaveAllRadarData()
 ProfilePrefs.SaveAll()
 
-local dim_vol = 1
+--local dim_vol = 1
 
 x[#x+1] = Def.Actor {
 	BeginCommand=function(self)
@@ -52,14 +52,14 @@ x[#x+1] = Def.Actor {
 		self:queuecommand("Load")
 	end;
 	LoadCommand=function() SCREENMAN:GetTopScreen():Continue() end,
-	OffCommand=function(s)
+	--[[OffCommand=function(s)
 		local screen = SCREENMAN:GetTopScreen()
 		
 		if string.match("ScreenSelectMusic", screen:GetNextScreenName()) then
 			s:queuecommand('Play')
 		end
 	end,
-	--[[PlayCommand=function(s)
+	PlayCommand=function(s)
 		if dim_vol ~= 0 then
 			SOUND:DimMusic(1-(1-dim_vol), math.huge)
 			dim_vol = round(dim_vol - 0.001,3)
