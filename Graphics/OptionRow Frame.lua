@@ -7,7 +7,7 @@ for _,pn in ipairs(GAMESTATE:GetEnabledPlayers()) do
                 if SCREENMAN:GetTopScreen() then
                     local CurNoteSkin = GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred"):NoteSkin()
 					s:SetTarget( SCREENMAN:GetTopScreen():GetChild("NS"..string.lower(CurNoteSkin)) )
-					:zoom(0.6):x( pn == PLAYER_1 and 240 or 380 ):zoomx(pn == PLAYER_1 and 0.6 or -0.6)
+					:zoom(0.6):x( pn == PLAYER_1 and 220 or 550 ):zoomx(pn == PLAYER_1 and 0.6 or -0.6)
                 end
             end
         end,

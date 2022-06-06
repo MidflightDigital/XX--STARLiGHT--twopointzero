@@ -1077,3 +1077,28 @@ function Gauge()
 	setmetatable(t, t)
 	return t
 end
+
+function ListChooser1()
+	local t = {
+		Name="ListChooser1",
+		LayoutType="ShowAllInRow",
+		SelectType="SelectOne",
+		Choices={"Gameplay","Select Music","Options2","Options3"},
+		OneChoiceForAllPlayers=true,
+		LoadSelections=function(self,list,pn)
+		end,
+		SaveSelections=function(self,list,pn)
+			local screen = SCREENMAN:GetTopScreen()
+			if list[1] then
+				screen:SetNextScreenName("ScreenStageInformation")
+			elseif list[2] then
+				screen:SetNextScreenName(SelectMusicOrCourse())
+			else
+				screen:SetNextScreenName("ScreenStageInformation")
+			end
+			screen:GoToNextScreen("SM_MenuTimer")
+		end
+	}
+	setmetatable(t,t)
+	return t
+end
