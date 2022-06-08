@@ -474,8 +474,11 @@ t[#t+1] = Def.ActorFrame {
 					end
 				end
 				
-				if FILEMAN:DoesFileExist(THEME:GetPathG('', '_stages/' .. stageName ..'.png')) then
-					s:Load(THEME:GetPathG('', '_stages/' .. stageName ..'.png') )
+				--- there are only 1st up to 5th stage display graphics for now
+				if curStage <= 5 or stageName == 'final' then
+					if FILEMAN:DoesFileExist(THEME:GetPathG('', '_stages/' .. stageName ..'.png')) then
+						s:Load(THEME:GetPathG('', '_stages/' .. stageName ..'.png') )
+					end
 				end
 			end
 		end
