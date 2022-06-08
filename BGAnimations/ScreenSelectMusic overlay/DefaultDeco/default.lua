@@ -308,7 +308,7 @@ for pn in EnabledPlayers() do
 					tier = SN2Grading.ScoreToGrade(topscore, diff)
 				end
 				if scores[1]:GetScore()>1  then
-				  self:LoadBackground(THEME:GetPathB("ScreenEvaluation decorations/grade/GradeDisplayEval",ToEnumShortString(tier)));
+				  self:LoadBackground(THEME:GetPathB("ScreenEvaluationNormal decorations/grade/GradeDisplayEval",ToEnumShortString(tier)));
 				  self:diffusealpha(1):zoom(0.2)
 				end;
 			  else

@@ -157,7 +157,7 @@ t[#t+1] = Def.ActorFrame{
           local tier = SN2Grading.ScoreToGrade(topscore, diff)
           assert(topgrade);
           if scores[1]:GetScore()>1  then
-            self:LoadBackground(THEME:GetPathB("ScreenEvaluation decorations/grade/GradeDisplayEval",ToEnumShortString(tier)));
+            self:LoadBackground(THEME:GetPathB("ScreenEvaluationNormal decorations/grade/GradeDisplayEval",ToEnumShortString(tier)));
             self:diffusealpha(1);
           end;
         else
