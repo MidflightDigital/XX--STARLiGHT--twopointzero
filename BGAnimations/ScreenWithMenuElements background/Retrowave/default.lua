@@ -15,14 +15,14 @@ return Def.ActorFrame{
 			end
 		end,
 		PauseMovieCommand=function(s) s:rate(0) end,
-		NextCourseSongMessageCommand=function(s) s:queuecommand('PlayMovie') end,
+		NextCourseSongMessageCommand=function(s) s:rate(1) end,
 		OffCommand=function(s)
 			if screen == 'ScreenGameplay' then
 				local delay = THEME:GetMetric('ScreenGameplay', 'OutTransitionSeconds')
-				s:sleep(delay+BeginOutDelay()):queuecommand('PlayMovie')
+				s:sleep(delay+BeginOutDelay())
+				s:rate(1)
 			end
 		end,
-		PlayMovieCommand=function(s) s:rate(1) end,
     },
     Def.Quad{
         InitCommand=function(s) s:setsize(SCREEN_WIDTH,SCREEN_WIDTH/2):y(100):valign(1):MaskSource() end,
