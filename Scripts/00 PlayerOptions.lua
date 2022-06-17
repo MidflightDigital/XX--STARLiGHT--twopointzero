@@ -1078,14 +1078,15 @@ function Gauge()
 	return t
 end
 
-function ListChooser1()
+function ListChooser()
 	local t = {
-		Name="ListChooser1",
+		Name="ListChooser",
 		LayoutType="ShowAllInRow",
 		SelectType="SelectOne",
-		Choices={"Gameplay","Select Music","Options2","Options3"},
+		Choices={"Gameplay","Select Music","Advanced Modifiers","Uncommon Modifiers"},
 		OneChoiceForAllPlayers=true,
 		LoadSelections=function(self,list,pn)
+			list[1] = true
 		end,
 		SaveSelections=function(self,list,pn)
 			local screen = SCREENMAN:GetTopScreen()
@@ -1093,10 +1094,71 @@ function ListChooser1()
 				screen:SetNextScreenName("ScreenStageInformation")
 			elseif list[2] then
 				screen:SetNextScreenName(SelectMusicOrCourse())
+			elseif list[3] then
+				screen:SetNextScreenName("ScreenPlayerOptions2")
+			elseif list[4] then
+				screen:SetNextScreenName("ScreenPlayerOptions3")
 			else
 				screen:SetNextScreenName("ScreenStageInformation")
 			end
-			screen:GoToNextScreen("SM_MenuTimer")
+		end
+	}
+	setmetatable(t,t)
+	return t
+end
+
+function ListChooser2()
+	local t = {
+		Name="ListChooser2",
+		LayoutType="ShowAllInRow",
+		SelectType="SelectOne",
+		Choices={"Gameplay","Select Music","Main Modifiers","Uncommon Modifiers"},
+		OneChoiceForAllPlayers=true,
+		LoadSelections=function(self,list,pn)
+			list[1] = true
+		end,
+		SaveSelections=function(self,list,pn)
+			local screen = SCREENMAN:GetTopScreen()
+			if list[1] then
+				screen:SetNextScreenName("ScreenStageInformation")
+			elseif list[2] then
+				screen:SetNextScreenName(SelectMusicOrCourse())
+			elseif list[3] then
+				screen:SetNextScreenName("ScreenPlayerOptions")
+			elseif list[4] then
+				screen:SetNextScreenName("ScreenPlayerOptions3")
+			else
+				screen:SetNextScreenName("ScreenStageInformation")
+			end
+		end
+	}
+	setmetatable(t,t)
+	return t
+end
+
+function ListChooser3()
+	local t = {
+		Name="ListChooser3",
+		LayoutType="ShowAllInRow",
+		SelectType="SelectOne",
+		Choices={"Gameplay","Select Music","Main Modifiers","Advanced Modifiers"},
+		OneChoiceForAllPlayers=true,
+		LoadSelections=function(self,list,pn)
+			list[1] = true
+		end,
+		SaveSelections=function(self,list,pn)
+			local screen = SCREENMAN:GetTopScreen()
+			if list[1] then
+				screen:SetNextScreenName("ScreenStageInformation")
+			elseif list[2] then
+				screen:SetNextScreenName(SelectMusicOrCourse())
+			elseif list[3] then
+				screen:SetNextScreenName("ScreenPlayerOptions")
+			elseif list[4] then
+				screen:SetNextScreenName("ScreenPlayerOptions2")
+			else
+				screen:SetNextScreenName("ScreenStageInformation")
+			end
 		end
 	}
 	setmetatable(t,t)
