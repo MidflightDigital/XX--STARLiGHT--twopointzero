@@ -1,10 +1,29 @@
+local screen = Var 'LoadingScreen'
+
 return Def.ActorFrame{
     InitCommand=function(s) s:fov(90):Center() end,
     OffCommand=function(s) s:finishtweening() end,
+	
     Def.Sprite{
         Texture=THEME:GetPathB("ScreenWithMenuElements","background/Default/background.mp4"),
         InitCommand=function(s) s:setsize(SCREEN_WIDTH*2,SCREEN_HEIGHT):y(-300):diffuse(color("#cd22aa")):diffusetopedge(color("#bba500")) end,
-    };
+		CurrentSongChangedMessageCommand=function(s)
+			if screen == 'ScreenGameplay' then
+				s:position(0)
+				s:rate(1)
+				s:sleep(0.5):queuecommand('PauseMovie')
+			end
+		end,
+		PauseMovieCommand=function(s) s:rate(0) end,
+		NextCourseSongMessageCommand=function(s) s:rate(1) end,
+		OffCommand=function(s)
+			if screen == 'ScreenGameplay' then
+				local delay = THEME:GetMetric('ScreenGameplay', 'OutTransitionSeconds')
+				s:sleep(delay+BeginOutDelay())
+				s:rate(1)
+			end
+		end,
+    },
     Def.Quad{
         InitCommand=function(s) s:setsize(SCREEN_WIDTH,SCREEN_WIDTH/2):y(100):valign(1):MaskSource() end,
     },
