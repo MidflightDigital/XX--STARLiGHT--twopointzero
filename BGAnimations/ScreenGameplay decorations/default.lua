@@ -75,7 +75,9 @@ t[#t+1] = Def.ActorFrame {
 		end,
 		PlayCommand=function()
 			local st = STATSMAN:GetCurStageStats()
-			ANNOUNCER:SetCurrentAnnouncer(lastAnnouncer)
+			if lastAnnouncer then
+				ANNOUNCER:SetCurrentAnnouncer(lastAnnouncer)
+			end
 			
 			if st:AllFailed() then
 				SOUND:PlayAnnouncer('gameplay failed')
