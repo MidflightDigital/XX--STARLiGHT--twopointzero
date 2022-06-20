@@ -71,7 +71,7 @@ function SelectMusicOrCourse()
 	elseif GAMESTATE:IsCourseMode() then
 		return "ScreenSelectCourse"
 	else
-		if GAMESTATE:IsAnExtraStage() then
+		if GetExtraStage() then
 			return "ScreenSelectMusicExtra"
 		else
 			return "ScreenSelectMusic"
@@ -121,7 +121,7 @@ end
 
 --- custom Extra Stage system. "AllowExtraStage" setting should be OFF in the game settings
 --- for this to work
-function GAMESTATE:IsAnExtraStage()
+function GetExtraStage()
 	if GAMESTATE:IsCourseMode() or GAMESTATE:IsEventMode() then return false end
 	
 	if not STATSMAN:GetCurStageStats():AllFailed() then
@@ -149,7 +149,7 @@ function GAMESTATE:IsAnExtraStage()
 end
 
 Branch.AfterEvaluation = function()
-	if GAMESTATE:IsAnExtraStage() then
+	if GetExtraStage() then
 		for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 			local po = GAMESTATE:GetPlayerState(pn):GetPlayerOptionsArray("ModsLevel_Preferred")
 			

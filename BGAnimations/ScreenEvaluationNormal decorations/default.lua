@@ -56,7 +56,7 @@ local List = {
 --[[local dim_vol = 1
 
 t[#t+1] = Def.Sound {
-	Condition=not GAMESTATE:IsAnExtraStage() and not has_value(List,GAMESTATE:GetCurrentSong():GetDisplayMainTitle()),
+	Condition=not GetExtraStage() and not has_value(List,GAMESTATE:GetCurrentSong():GetDisplayMainTitle()),
 	File=GetMenuMusicPath "results",
 	OnCommand=function(s) s:play() end,
 	OffCommand=function(s)
@@ -393,7 +393,7 @@ else --If multiplayer
 
 end;
   
-if GAMESTATE:IsAnExtraStage() then
+if GetExtraStage() then
   t[#t+1] = loadfile(THEME:GetPathB("ScreenEvaluationNormal","decorations/EXOverlay"))();
   --Outro Movie
   t[#t+1] = Def.ActorFrame{
