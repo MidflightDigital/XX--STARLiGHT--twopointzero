@@ -123,13 +123,6 @@ function BeginOutDelay()
 	local song = GetSong()
 	local dif = 0
 	
-	if GAMESTATE:IsCourseMode() then
-		local numCourseSongs = #GAMESTATE:GetCurrentTrail(GAMESTATE:GetMasterPlayerNumber()):GetTrailEntries()
-		local j = (GAMESTATE:GetLoadingCourseSongIndex() == numCourseSongs-1) and 0 or 1
-		
-		song = GAMESTATE:GetCurrentTrail(GAMESTATE:GetMasterPlayerNumber()):GetTrailEntry(GAMESTATE:GetLoadingCourseSongIndex()-j):GetSong()
-	end
-	
 	local td = song:GetTimingData()
 	local bpm = round(td:GetBPMAtBeat(song:GetLastBeat()),3)
 	local m = 1
