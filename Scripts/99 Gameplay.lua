@@ -162,3 +162,14 @@ function BeginOutDelay()
 	
 	return dif
 end
+
+--- a.k.a Dan Courses; mainly used for Break Time function after every song
+function IsARankingCourse()
+	local course_title = GAMESTATE:GetCurrentCourse():GetDisplayFullTitle()
+	
+	if string.match(course_title, '段') or string.match(course_title, '皆伝') then
+		return true
+	end
+	
+	return false
+end

@@ -1,6 +1,6 @@
 local screen = Var 'LoadingScreen'
 
-return Def.ActorFrame{
+return Def.ActorFrame {
     InitCommand=function(s) s:fov(90):Center() end,
     OffCommand=function(s) s:finishtweening() end,
 	
@@ -13,6 +13,9 @@ return Def.ActorFrame{
 				s:rate(1)
 				s:sleep(0.5):queuecommand('PauseMovie')
 			end
+		end,
+		CourseBreakTimeMessageCommand=function(s)
+			s:rate(1)
 		end,
 		PauseMovieCommand=function(s) s:rate(0) end,
 		NextCourseSongMessageCommand=function(s) s:rate(1) end,

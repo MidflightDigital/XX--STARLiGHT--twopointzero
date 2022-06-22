@@ -23,6 +23,8 @@ local function get_UI_video_path()
 	return false
 end
 
+local beepTimerSec = 9
+
 local t = Def.ActorFrame{};
 
 t[#t+1] = StatsEngine()
@@ -48,6 +50,33 @@ t[#t+1] = Def.ActorFrame {
 	Def.Sound {
 		File=THEME:GetPathS('', 'swoosh'),
 		SetOffCommand=function(s) s:play() end,
+	},
+	
+	Def.Sound {
+		File=THEME:GetPathS('', '_gameplay break time'),
+		ChangeCourseSongInMessageCommand=function(s)
+			if IsARankingCourse() then
+				s:sleep(BeginOutDelay()*0.75):queuecommand('Play')
+			end
+		end,
+		PlayCommand=function(s) s:play() end,
+		NextCourseSongMessageCommand=function(s) s:stop() end,
+	},
+	Def.Sound {
+		Condition=IsARankingCourse(),
+		File=THEME:GetPathS('', 'MenuTimer tick'),
+		ChangeCourseSongInMessageCommand=function(s)
+			local delay = THEME:GetMetric('ScreenGameplay', 'BreakTimeSeconds')
+			beepTimerSec = 9
+			s:sleep(BeginOutDelay()+delay-8):queuecommand('Play')
+		end,
+		PlayCommand=function(s)
+			if beepTimerSec >= 0 then
+				beepTimerSec = beepTimerSec-1
+				s:play():sleep(1):queuecommand('Play')
+			end
+		end,
+		NextCourseSongMessageCommand=function(s) s:stoptweening() end,
 	},
 	Def.Sound {
 		File=THEME:GetPathS('', '_failed'),
@@ -91,6 +120,9 @@ t[#t+1] = Def.ActorFrame {
 				ANNOUNCER:SetCurrentAnnouncer(lastAnnouncer)
 			end
 		end,
+		ChangeCourseSongInMessageCommand=function(s)
+			ANNOUNCER:SetCurrentAnnouncer('')
+		end,
 	},
 	Def.Actor {
 		NextCourseSongMessageCommand=function(s) s:stoptweening() end,
@@ -104,20 +136,34 @@ t[#t+1] = Def.ActorFrame {
 				end
 			end
 		end,
-		PlayCommand=function(s) SOUND:PlayAnnouncer('gameplay ready') end,
+		PlayCommand=function()
+			if lastAnnouncer then
+				ANNOUNCER:SetCurrentAnnouncer(lastAnnouncer)
+				SOUND:PlayAnnouncer('gameplay ready')
+			end
+		end,
 	},
 	Def.Actor {
 		NextCourseSongMessageCommand=function(s) s:sleep(2):queuecommand('Play') end,
 		PlayCommand=function(s)
-			local curStage = GAMESTATE:GetLoadingCourseSongIndex()+1
-			local stageName = 'stage ' .. curStage
-			local maxStages = GAMESTATE:GetCurrentCourse():GetEstimatedNumStages()
-		
-			if curStage == maxStages then
-				stageName = 'stage final'
-			end
+			if lastAnnouncer then
+				ANNOUNCER:SetCurrentAnnouncer(lastAnnouncer)
+				
+				local curStage = GAMESTATE:GetLoadingCourseSongIndex()+1
+				local stageName = 'stage ' .. curStage
+				local maxStages = GAMESTATE:GetCurrentCourse():GetEstimatedNumStages()
 			
-			SOUND:PlayAnnouncer(stageName)
+				if curStage == maxStages then
+					stageName = 'stage final'
+				end
+				
+				SOUND:PlayAnnouncer(stageName)
+				s:sleep(0.03):queuecommand('Mute')
+			end
+		end,
+		MuteCommand=function()
+			--- mute the announcer until next gameplay ready
+			ANNOUNCER:SetCurrentAnnouncer('')
 		end,
 	},
 };
@@ -366,29 +412,18 @@ t[#t+1] = Def.ActorFrame {
 		AnOffCommand=function(s) s:play():diffusealpha(1):linear(0.4):diffusealpha(0):queuecommand('Pause') end,
 		PauseCommand=function(s) s:pause() end,
 	},
-	Def.Sprite {
-		Condition=get_UI_video_path(),
-		Texture=get_UI_video_path(),
-		BeginCommand=function(s)
-			s:diffusealpha(0):pause():Center():zoom(round(THEME:GetMetric('Common','ScreenHeight')/s:GetHeight()),3)
-		end,
-		AnOnCommand=function(s) s:play():diffusealpha(0):linear(0.8):diffusealpha(1) end,
-		AnOffCommand=function(s)
-			if not IsAnExtraStage() then
-				s:play():diffusealpha(1):linear(0.4):diffusealpha(0):queuecommand('Pause')
-			end
-		end,
-		PauseCommand=function(s) s:pause() end,
-		SetFailCommand=function(s) s:diffuse(color("1,0.2,0.2,0")):playcommand('AnOn'):sleep(outDelay-1.4):linear(0.4):diffusecolor(color('1,1,1,1')) end,
-		SetOffCommand=function(s) s:play():linear(0.4):diffusealpha(1) end,
-	},
-	loadfile(THEME:GetPathB('ScreenWithMenuElements', 'background/default.lua'))() .. {
-		Condition=not get_UI_video_path(),
-		InitCommand=function(s) s:SetSize(SCREEN_WIDTH,SCREEN_HEIGHT) end,
+	Def.ActorFrame {
 		AnOnCommand=function(s) s:linear(0.8):diffusealpha(1) end,
 		AnOffCommand=function(s) s:linear(0.4):diffusealpha(0) end,
 		SetFailCommand=function(s) s:diffuse(color("1,0.2,0.2,0")):playcommand('AnOn'):sleep(outDelay-1.4):linear(0.4):diffusecolor(color('1,1,1,1')) end,
 		SetOffCommand=function(s) s:linear(0.4):diffusealpha(1) end,
+		ChangeCourseSongInMessageCommand=function(s)
+			if IsARankingCourse() then
+				s:sleep(BeginOutDelay()*4.5/4):queuecommand('AnOn')
+			end
+		end,
+		
+		LoadActor(THEME:GetPathB('ScreenWithMenuElements', 'background/default.lua')),
 	},
 };
 
@@ -528,12 +563,85 @@ t[#t+1] = Def.Sprite {
 	end
 };
 
+t[#t+1] = LoadActor( 'btime' ) .. {
+	Condition=IsARankingCourse(),
+	InitCommand=function(s) s:Center():addy(-290):diffusealpha(0) end,
+	ChangeCourseSongInMessageCommand=function(s) s:diffusealpha(0):sleep(BeginOutDelay()*4.5/4):diffusealpha(1) end,
+	NextCourseSongMessageCommand=function(s) s:diffusealpha(0) end,
+};
+
+local function bt_numbers()
+	local v = {}
+	
+	for i=1, 10 do
+		v[#v+1] = LoadActor( 'bt_' .. 10-(i-1) .. '.png' );
+	end
+	
+	return v
+end
+
+local bt_sec = THEME:GetMetric('ScreenGameplay', 'BreakTimeSeconds')
+
+t[#t+1] = Def.ActorFrame {
+	Condition=IsARankingCourse(),
+	InitCommand=function(s) s:Center():addy(126):diffusealpha(0) end,
+	ChangeCourseSongInMessageCommand=function(s)
+		s:sleep(BeginOutDelay()):diffusealpha(1)
+	end,
+	NextCourseSongMessageCommand=function(s) s:diffusealpha(0) end,
+	
+	Def.Quad {
+		InitCommand=function(s) s:y(-456-22):zoomto(608,460):MaskSource() end,
+	},
+	Def.Quad {
+		InitCommand=function(s) s:y(456-22):zoomto(608,460):MaskSource() end,
+	},
+	LoadActor( 'bt_back_dark' ),
+	Def.ActorScroller {
+		SecondsPerItem=0.2,
+		InitCommand=function(s)
+			s:x(152):SetNumItemsToDraw(2):SetSecondsPauseBetweenItems(0.8):SetLoop(true):MaskDest()
+		end,
+		TransformFunction=function(s,o,i,n) s:y(460*o) end,
+		OnCommand=function(s)
+			s:SetCurrentAndDestinationItem(10-(bt_sec%10))
+		end,
+		StartCommand=function(s) s:SetDestinationItem(bt_sec) end,
+		ChangeCourseSongInMessageCommand=function(s)
+			s:sleep(BeginOutDelay()):sleep(2):queuecommand('Start')
+		end,
+		NextCourseSongMessageCommand=function(s) s:finishtweening():SetCurrentAndDestinationItem(10-(bt_sec%10)) end,
+		
+		children = bt_numbers()
+	},
+	Def.ActorScroller {
+		SecondsPerItem=0.2,
+		InitCommand=function(s)
+			s:x(-152):SetNumItemsToDraw(2):SetSecondsPauseBetweenItems(9.8):SetLoop(true):MaskDest()
+		end,
+		TransformFunction=function(s,o,i,n) s:y(460*o) end,
+		OnCommand=function(s) s:SetCurrentAndDestinationItem(10-(math.floor(bt_sec/10))) end,
+		StartCommand=function(s) s:SetDestinationItem(10) end,
+		ChangeCourseSongInMessageCommand=function(s)
+			s:sleep(BeginOutDelay()):sleep(2+(bt_sec%10)):queuecommand('Start')
+		end,
+		NextCourseSongMessageCommand=function(s) s:finishtweening():SetCurrentAndDestinationItem(10-(math.floor(bt_sec/10))) end,
+		
+		children = bt_numbers()
+	},
+};
+
 t[#t+1] = Def.Quad {
 	InitCommand=function(s) s:FullScreen():diffuse(color('0,0,0,0')) end,
 	CancelMessageCommand=function(s)
 		local delay = THEME:GetMetric('ScreenGameplay', 'CancelTransitionSeconds')
 		SOUND:PlayOnce(THEME:GetPathS('Common', 'Back'))
-		s:linear(delay):diffusealpha(1)
+		s:diffuse(color('0,0,0,0')):linear(delay):diffusealpha(1)
+	end,
+	ChangeCourseSongInMessageCommand=function(s)
+		if IsARankingCourse() then
+			s:sleep(BeginOutDelay()*0.75):diffuse(color('1,1,1,0')):linear(BeginOutDelay()*0.25):diffusealpha(1):sleep(1):linear(1):diffusealpha(0)
+		end
 	end,
 };
 

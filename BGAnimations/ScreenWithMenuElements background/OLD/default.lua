@@ -1,3 +1,5 @@
+local screen = Var 'LoadingScreen'
+
 -- Relative amount of meteors to create
 local starriness = 1.0
 
@@ -9,6 +11,17 @@ local function meteor()
 	local m = Def.ActorFrame {
 		InitCommand = function(s) s:valign(1) end,
 		OnCommand = function(s) s:sleep(math.random()*2):queuecommand("Animate") end,
+		CourseBreakTimeMessageCommand=function(s) s:finishtweening():playcommand('On') end,
+		NextCourseSongMessageCommand=function(s)
+			if not IsARankingCourse() then
+				s:finishtweening():playcommand('On')
+			end
+		end,
+		OffCommand=function(s)
+			if screen == 'ScreenGameplay' then
+				s:finishtweening():playcommand('On')
+			end
+		end,
 		AnimateCommand = function(s)
 			-- Random size between half- and full-size, weighted toward full
 			s:zoom(0.5 + 0.5 * math.sqrt(math.random()))
@@ -25,35 +38,34 @@ local function meteor()
 			-- and start again
 			:queuecommand("Animate")
 		end,
-	}
-
-	m[#m+1] = Def.Sprite{
-		Texture="meteor-arrow",
-		AnimateCommand = function(s)
-			-- Start partially visible
-			s:diffusealpha(0)
-			-- Come into sight
-			:linear(0.15):diffusealpha(0.7)
-			-- Let the glow brighten (see below)
-			:sleep(0.15)
-			-- Burn out
-			:linear(0.15):diffusealpha(0)
-		end,
-	}
-
-	m[#m+1] = Def.Sprite{
-		Texture="meteor-glow",
-		AnimateCommand = function(s)
-			-- Glow is almost white, with a chance of being tinted slightly.
-			-- Invisible to start with.
-			s:diffuse(HSVA(360*math.random(), 0.4*math.random(), 1, 0))
-			-- Don't start to glow until the meteor's fully visible
-			:sleep(0.15)
-			-- Flare up!
-			:linear(0.15):diffusealpha(1)
-			-- Burn out
-			:linear(0.15):diffusealpha(0)
-		end,
+		
+		Def.Sprite {
+			Texture="meteor-arrow",
+			AnimateCommand = function(s)
+				-- Start partially visible
+				s:diffusealpha(0)
+				-- Come into sight
+				:linear(0.15):diffusealpha(0.7)
+				-- Let the glow brighten (see below)
+				:sleep(0.15)
+				-- Burn out
+				:linear(0.15):diffusealpha(0)
+			end,
+		},
+		Def.Sprite{
+			Texture="meteor-glow",
+			AnimateCommand = function(s)
+				-- Glow is almost white, with a chance of being tinted slightly.
+				-- Invisible to start with.
+				s:diffuse(HSVA(360*math.random(), 0.4*math.random(), 1, 0))
+				-- Don't start to glow until the meteor's fully visible
+				:sleep(0.15)
+				-- Flare up!
+				:linear(0.15):diffusealpha(1)
+				-- Burn out
+				:linear(0.15):diffusealpha(0)
+			end,
+		}
 	}
 
 	return m
@@ -69,12 +81,23 @@ local t = Def.ActorFrame{}
 -- Diagonal of the screen (= diameter of the background rotation circle)
 local d = math.sqrt(_screen.h^2 + _screen.w^2)
 
-t[#t+1] = Def.Sprite{
+t[#t+1] = Def.Sprite {
 	Texture="bg",
 	-- Make sure the sky fills the entire screen, with room to rotate
 	InitCommand = function(s) s:scaletocover(0,0,d,d):Center() end,
 	OnCommand = function(s) s:queuecommand("Animate") end,
 	AnimateCommand = function(s) s:rotationz(0):linear(720):rotationz(360):queuecommand("Animate") end,
+	CourseBreakTimeMessageCommand=function(s) s:finishtweening():playcommand('On') end,
+	NextCourseSongMessageCommand=function(s)
+		if not IsARankingCourse() then
+			s:finishtweening():playcommand('On')
+		end
+	end,
+	OffCommand=function(s)
+		if screen == 'ScreenGameplay' then
+			s:finishtweening():playcommand('On')
+		end
+	end,
 }
 
 -- Add meteors
@@ -133,6 +156,17 @@ t[#t+1] = Def.Sprite{
 	end,
 	OnCommand = function(s) s:queuecommand("Animate") end,
 	AnimateCommand = function(s) s:rotationz(0):linear(720):rotationz(360):queuecommand("Animate") end,
+	CourseBreakTimeMessageCommand=function(s) s:finishtweening():playcommand('On') end,
+	NextCourseSongMessageCommand=function(s)
+		if not IsARankingCourse() then
+			s:finishtweening():playcommand('On')
+		end
+	end,
+	OffCommand=function(s)
+		if screen == 'ScreenGameplay' then
+			s:finishtweening():playcommand('On')
+		end
+	end,
 }
 
 t[#t+1] = ClearZ
@@ -149,6 +183,17 @@ t[#t+1] = Def.Sprite{
 		:decelerate(0.5):rotationz(math.random(89)+270):zoom(0.65)
 		:diffusealpha(0):queuecommand("On")
 	end,
+	CourseBreakTimeMessageCommand=function(s) s:finishtweening():playcommand('On') end,
+	NextCourseSongMessageCommand=function(s)
+		if not IsARankingCourse() then
+			s:finishtweening():playcommand('On')
+		end
+	end,
+	OffCommand=function(s)
+		if screen == 'ScreenGameplay' then
+			s:finishtweening():playcommand('On')
+		end
+	end,
 }
 t[#t+1] = Def.Sprite{
 	Texture="ring2",
@@ -159,6 +204,17 @@ t[#t+1] = Def.Sprite{
 		:zoom(0.6):diffusealpha(0.5):decelerate(0.5)
 		:rotationz(math.random(89)+270):zoom(0.65)
 		:diffusealpha(0):queuecommand("On")
+	end,
+	CourseBreakTimeMessageCommand=function(s) s:finishtweening():playcommand('On') end,
+	NextCourseSongMessageCommand=function(s)
+		if not IsARankingCourse() then
+			s:finishtweening():playcommand('On')
+		end
+	end,
+	OffCommand=function(s)
+		if screen == 'ScreenGameplay' then
+			s:finishtweening():playcommand('On')
+		end
 	end,
 }
 t[#t+1] = Def.Sprite{
@@ -171,6 +227,17 @@ t[#t+1] = Def.Sprite{
 		:rotationz(math.random(89)+270):zoom(0.65)
 		:diffusealpha(0):queuecommand("On")
 	end,
+	CourseBreakTimeMessageCommand=function(s) s:finishtweening():playcommand('On') end,
+	NextCourseSongMessageCommand=function(s)
+		if not IsARankingCourse() then
+			s:finishtweening():playcommand('On')
+		end
+	end,
+	OffCommand=function(s)
+		if screen == 'ScreenGameplay' then
+			s:finishtweening():playcommand('On')
+		end
+	end,
 }
 t[#t+1] = Def.Sprite{
 	Texture="ring4",
@@ -181,6 +248,17 @@ t[#t+1] = Def.Sprite{
 		:zoom(0.6):diffusealpha(0.5):decelerate(0.5)
 		:rotationz(math.random(89)+270):zoom(0.65)
 		:diffusealpha(0):queuecommand("On")
+	end,
+	CourseBreakTimeMessageCommand=function(s) s:finishtweening():playcommand('On') end,
+	NextCourseSongMessageCommand=function(s)
+		if not IsARankingCourse() then
+			s:finishtweening():playcommand('On')
+		end
+	end,
+	OffCommand=function(s)
+		if screen == 'ScreenGameplay' then
+			s:finishtweening():playcommand('On')
+		end
 	end,
 }
 
