@@ -18,19 +18,20 @@ t[#t+1] = Def.Actor {
 		s:sleep(delay+3):queuecommand('Shutter')
 	end,
 	ShutterCommand=function(s)
-		local delay = THEME:GetMetric('ScreenGameplay', 'NextCourseSongDelay')
 		bBreakTime = false
-		MESSAGEMAN:Broadcast('NextCourseSong')
-		s:sleep(delay)
+		s:queuecommand('ToNextSong')
 	end,
 	CodeMessageCommand=function(s, p)
 		if (p.Name == 'Start') and GAMESTATE:IsSideJoined(p.PlayerNumber) and bBreakTime then
 			bBreakTime = false
-			local delay = THEME:GetMetric('ScreenGameplay', 'NextCourseSongDelay')
-			s:finishtweening()
-			MESSAGEMAN:Broadcast('NextCourseSong')
-			s:sleep(delay)
+			SOUND:PlayOnce(THEME:GetPathS('', 'Common start'))
+			s:finishtweening():sleep(1):queuecommand('ToNextSong')
 		end
+	end,
+	ToNextSongCommand=function(s)
+		local delay = THEME:GetMetric('ScreenGameplay', 'NextCourseSongDelay')
+		MESSAGEMAN:Broadcast('NextCourseSong')
+		s:sleep(delay)
 	end,
 };
 

@@ -53,6 +53,8 @@ t[#t+1] = Def.ActorFrame {
 			if beepTimerSec >= 0 then
 				beepTimerSec = beepTimerSec-1
 				s:play():sleep(1):queuecommand('Play')
+			else
+				SOUND:PlayOnce(THEME:GetPathS('', '_swoosh out'))
 			end
 		end,
 		NextCourseSongMessageCommand=function(s) s:stoptweening() end,
@@ -556,14 +558,22 @@ local function bt_numbers()
 end
 
 local bt_sec = THEME:GetMetric('ScreenGameplay', 'BreakTimeSeconds')
+local bBreakTime = false
 
 t[#t+1] = Def.ActorFrame {
 	Condition=IsARankingCourse(),
 	InitCommand=function(s) s:Center():addy(126):diffusealpha(0) end,
 	CourseBreakTimeMessageCommand=function(s)
+		bBreakTime = true
 		s:sleep(2):diffusealpha(1)
 	end,
 	NextCourseSongMessageCommand=function(s) s:diffusealpha(0) end,
+	CodeMessageCommand=function(s, p)
+		if (p.Name == 'Start') and GAMESTATE:IsSideJoined(p.PlayerNumber) and bBreakTime then
+			bBreakTime = false
+			s:queuecommand('Update')
+		end
+	end,
 	
 	Def.Quad {
 		InitCommand=function(s) s:y(-456-22):zoomto(608,460):MaskSource() end,
@@ -586,6 +596,7 @@ t[#t+1] = Def.ActorFrame {
 			s:sleep(3):queuecommand('Start')
 		end,
 		NextCourseSongMessageCommand=function(s) s:finishtweening():SetCurrentAndDestinationItem(10-(bt_sec%10)) end,
+		UpdateCommand=function(s) s:SetCurrentAndDestinationItem(10) end,
 		
 		children = bt_numbers()
 	},
@@ -601,6 +612,7 @@ t[#t+1] = Def.ActorFrame {
 			s:sleep(3+(bt_sec%10)):queuecommand('Start')
 		end,
 		NextCourseSongMessageCommand=function(s) s:finishtweening():SetCurrentAndDestinationItem(10-(math.floor(bt_sec/10))) end,
+		UpdateCommand=function(s) s:SetCurrentAndDestinationItem(10) end,
 		
 		children = bt_numbers()
 	},
@@ -614,9 +626,7 @@ t[#t+1] = Def.Quad {
 		s:diffuse(color('0,0,0,0')):linear(delay):diffusealpha(1)
 	end,
 	CourseBreakTimeMessageCommand=function(s)
-		if IsARankingCourse() then
-			s:diffuse(color('1,1,1,0')):linear(1):diffusealpha(1):sleep(1):linear(1):diffusealpha(0)
-		end
+		s:diffuse(color('1,1,1,0')):linear(1):diffusealpha(1):sleep(1):linear(1):diffusealpha(0)
 	end,
 };
 
