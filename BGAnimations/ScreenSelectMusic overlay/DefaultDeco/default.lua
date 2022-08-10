@@ -372,7 +372,7 @@ return Def.ActorFrame{
 			local mw = SCREENMAN:GetTopScreen():GetChild("MusicWheel")
 			local so = ToEnumShortString(GAMESTATE:GetSortOrder())
 			if not mw then return end
-			if mw:GetSelectedSection() ~= "" and GAMESTATE:GetCurrentSong() and so == "Group" then
+			if mw:GetSelectedSection() ~= "" and GAMESTATE:GetCurrentSong() and (so == "Group" or so == "Title") then
 				s:linear(0.15):diffusealpha(1)
 			else
 				s:linear(0.15):diffusealpha(0)
@@ -385,7 +385,13 @@ return Def.ActorFrame{
 				local mw = SCREENMAN:GetTopScreen():GetChild("MusicWheel")
 				local so = ToEnumShortString(GAMESTATE:GetSortOrder())
 				if not mw then return end
-				s:diffuse(SongAttributes.GetGroupColor(mw:GetSelectedSection()))
+				if mw:GetSelectedSection() ~= "" and GAMESTATE:GetCurrentSong() then
+					if so == "Group" then
+						s:diffuse(SongAttributes.GetGroupColor(mw:GetSelectedSection()))
+					else
+						s:diffuse(SongAttributes.GetGroupColor(GAMESTATE:GetCurrentSong():GetGroupName()))
+					end
+				end
 				if mw:GetSelectedSection() ~= "" and GAMESTATE:GetCurrentSong() then
 					s:linear(0.15):cropright(0)
 				else
@@ -401,11 +407,16 @@ return Def.ActorFrame{
 				local mw = SCREENMAN:GetTopScreen():GetChild("MusicWheel")
 				local so = ToEnumShortString(GAMESTATE:GetSortOrder())
 				if not mw then return end
-				if so == "Group" then
-					s:strokecolor(ColorDarkTone(SongAttributes.GetGroupColor(mw:GetSelectedSection())))
-					s:settext("GROUP/"..SongAttributes.GetGroupName(mw:GetSelectedSection()))
-				else
-					s:settext("")
+				if mw:GetSelectedSection() ~= "" and GAMESTATE:GetCurrentSong() then
+					if so == "Group" then
+						s:strokecolor(ColorDarkTone(SongAttributes.GetGroupColor(mw:GetSelectedSection())))
+						s:settext("GROUP/"..SongAttributes.GetGroupName(mw:GetSelectedSection()))
+					elseif so == "Title" then
+						s:strokecolor(ColorDarkTone(SongAttributes.GetGroupColor(GAMESTATE:GetCurrentSong():GetGroupName())))
+						s:settext("From: "..SongAttributes.GetGroupName(GAMESTATE:GetCurrentSong():GetGroupName()))
+					else
+						s:settext("")
+					end
 				end
 				if mw:GetSelectedSection() ~= "" and GAMESTATE:GetCurrentSong() then
 					s:linear(0.15):cropright(0)
