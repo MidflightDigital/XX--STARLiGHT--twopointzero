@@ -237,7 +237,7 @@ for pn in EnabledPlayers() do
 	end
 	if PREFSMAN:GetPreference("OnlyDedicatedMenuButtons") then
 		t[#t+1] = LoadActor("../InfoPanel",pn)..{
-			InitCommand=function(s) s:visible(false):y(_screen.cy-170) end,
+			InitCommand=function(s) s:y(_screen.cy-170) end,
 		};
 	end
 	t[#t+1] = LoadActor(THEME:GetPathB("ScreenSelectMusic","overlay/_ShockArrow/default.lua"),pn)..{

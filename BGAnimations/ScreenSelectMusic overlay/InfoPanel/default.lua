@@ -469,8 +469,7 @@ local function Scroller(pn)
         SecondsPerItem=0.1,
         OnCommand=function(s)
             s:SetDestinationItem(0):SetFastCatchup(true)
-            :SetMask(320,20):fov(60):zwrite(true):ztest(true)
-            :draworder(8):z(8)
+            :SetMask(320,20):fov(60):zwrite(true):draworder(8):z(8)
         end,
         TransformFunction=function(s,o,i,n)
             s:x(math.floor(o*(10))):diffusealpha(1-math.abs(o))
@@ -556,13 +555,11 @@ local t = Def.ActorFrame{
     Def.Sprite{
         Texture="backer.png",
     };
-    Def.ActorFrame{
-        PlayerInfo(pn)..{
-            InitCommand=function(s) s:addy(90) end,
-        };
-        Scroller(pn)..{
-            InitCommand=function(s) s:addy(90) end,
-        };
+    PlayerInfo(pn)..{
+        InitCommand=function(s) s:addy(90) end,
+    };
+    Scroller(pn)..{
+        InitCommand=function(s) s:addy(90) end,
     };
     Def.BitmapText{
         Font="_stagetext",
