@@ -5,7 +5,7 @@ local function XPOS(self,offset)
 end
 
 local yspacing = 32
-local keyset = {0,0}
+local keyset={false,false}
 
 local function PlayerPanel()
     local t = Def.ActorFrame{};
@@ -477,20 +477,7 @@ local function Scroller(pn)
         end,
         CodeMessageCommand=function(s,p)
             local DI = s:GetCurrentItem();
-            if p.PlayerNumber == PLAYER_1 and keyset[1] == 1 then
-                if p.Name=="PaneLeft" then
-                    if DI>0 then
-                        s:SetDestinationItem(DI-1)
-                        SOUND:PlayOnce(THEME:GetPathS("","MusicWheel expand"))
-                    end
-                end
-                if p.Name=="PaneRight" then
-                    if DI<2 then
-                        s:SetDestinationItem(DI+1)
-                        SOUND:PlayOnce(THEME:GetPathS("","MusicWheel expand"))
-                    end
-                end
-            elseif p.PlayerNumber == PLAYER_2 and keyset[2] == 1 then
+            if p.PlayerNumber == pn and keyset[pn] then
                 if p.Name=="PaneLeft" then
                     if DI>0 then
                         s:SetDestinationItem(DI-1)
@@ -546,39 +533,19 @@ end
 
 local t = Def.ActorFrame{
     InitCommand=function(s,p) XPOS(s,0) s:visible(false)
-        if GAMESTATE:IsHumanPlayer(pn) then
-            if pn == PLAYER_1 then
-                set_ind = {PLAYER_1,PLAYER_2}
-                key_ind = {keyset[1],keyset[2]};
-            else
-                set_ind = {PLAYER_2,PLAYER_1}
-                key_ind = {keyset[2],keyset[1]};
-            end
-        end
     end,
     BeginCommand=function(s) s:playcommand("Set") end,
     OffCommand=function(s) s:sleep(0.5):decelerate(0.3):addx(pn==PLAYER_1 and -500 or 500) end,
     CurrentSongChangedMessageCommand=function(s,p) s:queuecommand("Set") end,
     CodeMessageCommand=function(s,p)
-        if p.PlayerNumber == PLAYER_1 then
+        if p.PlayerNumber == pn then
             if p.Name == "OpenPanes1" then
-                keyset[1] = 1
+                keyset[pn] = true
                 s:visible(true)
                 SOUND:PlayOnce(THEME:GetPathS("MusicWheel","expand"))
             end
             if p.Name == "ClosePanes" then
-                keyset[1] = 0
-                s:visible(false)
-                SOUND:PlayOnce(THEME:GetPathS("MusicWheel","expand"))
-            end
-        else
-            if p.Name == "OpenPanes1" then
-                keyset[2] = 1
-                s:visible(true)
-                SOUND:PlayOnce(THEME:GetPathS("MusicWheel","expand"))
-            end
-            if p.Name == "ClosePanes" then
-                keyset[2] = 0
+                keyset[pn] = false
                 s:visible(false)
                 SOUND:PlayOnce(THEME:GetPathS("MusicWheel","expand"))
             end
@@ -590,10 +557,10 @@ local t = Def.ActorFrame{
         Texture="backer.png",
     };
     Def.ActorFrame{
-        PlayerInfo(player)..{
+        PlayerInfo(pn)..{
             InitCommand=function(s) s:addy(90) end,
         };
-        Scroller(player)..{
+        Scroller(pn)..{
             InitCommand=function(s) s:addy(90) end,
         };
     };
