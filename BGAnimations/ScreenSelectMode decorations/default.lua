@@ -158,4 +158,14 @@ t[#t+1] = Def.Quad{
 	OffCommand=function(s) s:sleep(0.3):linear(0.2):diffusealpha(1) end,
 };
 
+t[#t+1] = Def.Actor{
+	CodeMessageCommand=function(s,p)
+		if p.PlayerNumber == PLAYER_1 then
+			if p.Name == 'BackgroundTest' then
+		  		SCREENMAN:GetTopScreen():SetNextScreenName("ScreenBackgroundTest"):StartTransitioningScreen("SM_GoToNextScreen")
+			end
+		end
+	end,
+}
+
 return t

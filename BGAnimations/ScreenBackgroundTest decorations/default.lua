@@ -1,0 +1,1 @@
+return loadfile(THEME:GetPathB('ScreenWithMenuElements', 'background/default.lua'))();
