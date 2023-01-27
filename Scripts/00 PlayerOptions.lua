@@ -921,6 +921,7 @@ function LuaNoteSkins()
 		Name="LuaNoteSkins",
 		LayoutType="ShowOneInRow",
 		SelectType="SelectOne",
+		ExportOnChange = true,
 		Choices = NOTESKIN:GetNoteSkinNames(),
 		Values = NOTESKIN:GetNoteSkinNames(),
 		LoadSelections=function(self,list, pn)
@@ -932,17 +933,18 @@ function LuaNoteSkins()
 			end
 			list[1] = true
 		end,
+		NotifyOfSelection=function(self,pn,choice)
+			MESSAGEMAN:Broadcast("LuaNoteSkinsChange", {pn=pn,choice=choice,choicename=self.Values[choice]})
+		end,
 		SaveSelections = function(self,list,pn)
 			for i,v2 in ipairs(self.Choices) do
 				if list[i] then
 					GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred"):NoteSkin(v2)
 				end
 			end
-		end,
-		NotifyOfSelection=function(self,pn,choice)
-			MESSAGEMAN:Broadcast("LuaNoteSkinsChange", {pn=pn,choice=choice,choicename=self.Values[choice]})
 		end
 	};
+	setmetatable(t, t)
 	return t
 end
 
