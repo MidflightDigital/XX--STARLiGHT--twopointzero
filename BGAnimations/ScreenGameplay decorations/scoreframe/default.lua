@@ -53,8 +53,6 @@ t[#t+1] = Def.ActorFrame{
 	}
 };
 
-local ProfilePrefs = LoadModule "ProfilePrefs.lua"
-
 --ScoreFrames
 for _,pn in ipairs(GAMESTATE:GetEnabledPlayers()) do
 	local profileID = GetProfileIDForPlayer(ToEnumShortString(pn))

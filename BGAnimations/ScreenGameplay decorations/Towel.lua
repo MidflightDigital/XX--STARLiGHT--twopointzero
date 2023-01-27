@@ -27,9 +27,6 @@ local center1P = PREFSMAN:GetPreference("Center1Player")
 local style = GAMESTATE:GetCurrentStyle();
 local styleType = ToEnumShortString(style:GetStyleType());
 
-local ProfilePrefs = LoadModule "ProfilePrefs.lua"
-
-
 local Options = GAMESTATE:GetPlayerState(pn):GetPlayerOptionsString('ModsLevel_Preferred');
 
 local function InitCoverPos(self, player, pos, Mode, TwoCoverMode, Flip)

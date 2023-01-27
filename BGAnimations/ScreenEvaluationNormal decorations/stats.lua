@@ -5,7 +5,6 @@ local pn = args[1];
 
 local short_plr = ToEnumShortString(pn)
 
-local ProfilePrefs = LoadModule "ProfilePrefs.lua"
 local profileID = GetProfileIDForPlayer(pn)
 local pPrefs = ProfilePrefs.Read(profileID)
 local ex_score = pPrefs.ex_score

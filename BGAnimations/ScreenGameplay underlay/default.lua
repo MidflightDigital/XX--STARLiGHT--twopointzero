@@ -43,7 +43,6 @@ for _, pn in ipairs(GAMESTATE:GetEnabledPlayers()) do
 		end
 	end;
 
-	local ProfilePrefs = LoadModule "ProfilePrefs.lua"
 	local profileID = GetProfileIDForPlayer(pn)
 	local pPrefs = ProfilePrefs.Read(profileID)
 

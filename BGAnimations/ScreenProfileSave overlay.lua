@@ -18,7 +18,6 @@ local x = Def.ActorFrame{
 	};
 };
 
-local ProfilePrefs = LoadModule "ProfilePrefs.lua"
 local MyGrooveRadar = LoadModule "MyGrooveRadar.lua"
 
 local stype = GAMESTATE:GetCurrentStyle():GetStyleType()
@@ -42,7 +41,6 @@ for _, plr in pairs(GAMESTATE:GetEnabledPlayers()) do
     GAMESTATE:StoreRankingName(plr,PROFILEMAN:GetProfile(plr):GetDisplayName())
 end
 MyGrooveRadar.SaveAllRadarData()
-ProfilePrefs.SaveAll()
 
 --local dim_vol = 1
 

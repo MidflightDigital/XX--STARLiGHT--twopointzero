@@ -8,9 +8,9 @@ t[#t+1] = StandardDecorationFromFileOptional("StageDisplay","StageDisplay");
 
 t[#t+1] = Def.Actor {
     OffCommand=function(s)
-		if GAMESTATE:IsCourseMode() then
-			s:playcommand('FadeOut')
-		end
+		  if GAMESTATE:IsCourseMode() then
+			  s:playcommand('FadeOut')
+		  end
 	end,
 	FadeOutCommand=function(s)
 		if dim_vol ~= 0 then
@@ -143,8 +143,6 @@ t[#t+1] = Def.ActorFrame{
 	  };
   };
 };
-
-local ProfilePrefs = LoadModule "ProfilePrefs.lua"
 
 for _, pn in pairs(GAMESTATE:GetEnabledPlayers()) do
   local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)

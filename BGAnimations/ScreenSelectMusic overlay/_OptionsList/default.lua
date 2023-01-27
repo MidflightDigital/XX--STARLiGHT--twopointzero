@@ -5,8 +5,6 @@ local function format_bpm(bpm)
 end
 
 local currentIndex;
-local ProfilePrefs = LoadModule "ProfilePrefs.lua"
-
 
 local t= Def.ActorFrame{
     OnCommand=function(s) setenv("OPList",0) end,

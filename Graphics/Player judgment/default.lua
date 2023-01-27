@@ -3,7 +3,6 @@
 --Stripped and remodeled for DDR SN3
 local c;
 local player = Var "Player";
-local ProfilePrefs = LoadModule "ProfilePrefs.lua"
 local playerPrefs = ProfilePrefs.Read(GetProfileIDForPlayer(player))
 
 local env = GAMESTATE:Env();

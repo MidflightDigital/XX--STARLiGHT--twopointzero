@@ -13,14 +13,15 @@ local controller = ({...})[2]
 local paneState = ({...})[3]
 local tabCount = 3
 
-local ProfilePrefs = LoadModule "ProfilePrefs.lua"
 local profileID = GetProfileIDForPlayer(pn)
 local pPrefs = ProfilePrefs.Read(profileID)
 
 local t = Def.ActorFrame{
     OnCommand=function(s) s:addy(800):sleep(0.3):linear(0.2):addy(-800) end,
-	OffCommand=function(s) s:linear(0.2):addy(800)
+	OffCommand=function(s)
+		s:linear(0.2):addy(800)
 		ProfilePrefs.Save(profileID)
+		ProfilePrefs.SaveAll()
 	end,
     --Input handler
     CodeMessageCommand=function(s,p)
