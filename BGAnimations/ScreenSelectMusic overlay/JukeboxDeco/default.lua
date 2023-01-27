@@ -172,7 +172,7 @@ return Def.ActorFrame{
 				else
 					s:Load( THEME:GetPathG("","MusicWheelItem fallback") );
 				end
-				s:zoomto(475,475);
+				s:scaletofit(-237.5,-237.5,237.5,237.5)
 			end,
 		};
 		Def.Sprite{
@@ -185,7 +185,7 @@ return Def.ActorFrame{
 					else
 						s:visible(false)
 					end
-					s:zoomto(475,475);
+					s:scaletofit(-237.5,-237.5,237.5,237.5)
 				end
 			end,
 		};

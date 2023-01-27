@@ -419,10 +419,10 @@ t[#t+1] = Def.ActorFrame {
 	
 	Def.ActorFrame {
 		BeginCommand=function(s)
-			s:GetChild('Actual Jacket'):Load(jk.GetSongGraphicPath(GetSong())):setsize(620,620):scaletoclipped(620,620)
+			s:GetChild('Actual Jacket'):Load(jk.GetSongGraphicPath(GetSong())):scaletofit(-310,-310,310,310)
 		end,
 		NextCourseSongMessageCommand=function(s)
-			s:GetChild('Actual Jacket'):Load(jk.GetSongGraphicPath(GetSong())):setsize(620,620):scaletoclipped(620,620)
+			s:GetChild('Actual Jacket'):Load(jk.GetSongGraphicPath(GetSong())):scaletofit(-310,-310,310,310)
 			s:finishtweening():diffusealpha(0):zoom(4):sleep(1):linear(0.2):diffusealpha(1):zoom(0.9):linear(0.1):zoom(1)
 		end,
 		CurrentSongChangedMessageCommand=function(s)
@@ -435,14 +435,14 @@ t[#t+1] = Def.ActorFrame {
 	Def.Sprite { Name='Blend Jacket1',
 		InitCommand=function(s) s:diffusealpha(0) end,
 		NextCourseSongMessageCommand=function(s)
-			s:Load(jk.GetSongGraphicPath(GetSong())):setsize(620,620):scaletoclipped(620,620)
+			s:Load(jk.GetSongGraphicPath(GetSong())):scaletofit(-310,-310,310,310)
 			s:finishtweening():zoom(1):sleep(1.25):diffusealpha(0.75):decelerate(0.5):zoom(4):diffusealpha(0)
 		end,
 	},
 	Def.Sprite { Name='Blend Jacket2',
 		InitCommand=function(s) s:blend(Blend.Add):diffusealpha(0) end,
 		NextCourseSongMessageCommand=function(s)
-			s:Load(jk.GetSongGraphicPath(GetSong())):setsize(620,620):scaletoclipped(620,620)
+			s:Load(jk.GetSongGraphicPath(GetSong())):scaletofit(-310,-310,310,310)
 			s:finishtweening():zoom(1):sleep(1.25):glowshift():effectcolor1(color('1,1,1,0.5')):effectcolor2(color('1,1,1,0.5')):decelerate(0.5):zoom(4):diffusealpha(0)
 		end,
 	},

@@ -11,7 +11,9 @@ return Def.ActorFrame{
     OnCommand=function(s) s:addy(-800):sleep(0.4):decelerate(0.5):addy(800) end,
     OffCommand=function(s) s:sleep(0.3):decelerate(0.5):addy(-800) end,
     CurrentSongChangedMessageCommand=function(s) s:finishtweening():queuecommand("Set") end,
-    LoadActor(ex.."Jacket Backer");
+    Def.Sprite{
+      Texture=ex.."Jacket Backer",
+    },
     Def.Quad{
       InitCommand=function(s) s:diffuse(Color.Black):setsize(240,240):xy(-2,-4) end,
     },
@@ -79,9 +81,11 @@ return Def.ActorFrame{
     OnCommand=function(s) s:addx(-800):sleep(0.3):decelerate(0.3):addx(800) end,
     OffCommand=function(s) s:sleep(0.3):decelerate(0.3):addx(-800) end,
     CurrentSongChangedMessageCommand=function(s) s:finishtweening():queuecommand("Set") end,
-    LoadActor(ex.."BannerFrame");
+    Def.Quad{
+      InitCommand=function(s)
+        s:setsize(478,150):xy(-24,-20):diffuse(Color.Black) end,
+    },
     Def.Banner{
-      InitCommand=function(s) s:xy(-24,-20) end,
       SetCommand=function(self,params)
         self:finishtweening()
         local song = GAMESTATE:GetCurrentSong();
@@ -99,7 +103,7 @@ return Def.ActorFrame{
         else
           self:visible(false)
         end;
-        self:scaletoclipped(478,150);
+        self:scaletofit(-239,-75,239,75):xy(-24,-20)
       end;
     };
     Def.Sprite{
@@ -120,6 +124,9 @@ return Def.ActorFrame{
         end;
       end;
     };
+    Def.Sprite{
+      Texture=ex.."BannerFrame",
+    },
     Def.Sprite{
       OnCommand=function(self)
         local style = GAMESTATE:GetCurrentStyle():GetStyleType()
