@@ -1,4 +1,5 @@
 local jk = LoadModule"Jacket.lua"
+local SongAttributes = LoadModule "SongAttributes.lua"
 
 return Def.ActorFrame{
     InitCommand=function(s) s:xy(_screen.cx,_screen.cy) end,
@@ -21,37 +22,38 @@ return Def.ActorFrame{
         Def.Sprite{
             CurrentSongChangedMessageCommand=function(s)
                 s:stoptweening():diffusealpha(0)
-                if GAMESTATE:GetCurrentSong() then
-                    if GAMESTATE:GetCurrentSong():GetPreviewVidPath() == nil then
-                        s:sleep(0.4):queuecommand("Load2")
-                    end
-                end
+                s:sleep(0.4):queuecommand("Load2")
             end,
             Load2Command=function(s)
                 local song = GAMESTATE:GetCurrentSong()
+                local so = GAMESTATE:GetSortOrder();
+                local mw = SCREENMAN:GetTopScreen():GetChild("MusicWheel")
+                if not mw then return end
                 if song then
                     if song:HasBackground() then
-                        if song:HasBGChanges() then
-                            local bg = song:GetSongDir()
-                            local bgvideo = {}
-                            local listing = FILEMAN:GetDirListing(bg, false, true)
-                            if not listing then return nil end
-                            for _,file in pairs(listing) do
-                                if ActorUtil.GetFileType(file) == 'FileType_Movie' then
-                                    table.insert(bgvideo,file)
-                                end
+                        local bg = song:GetSongDir()
+                        local bgvideo = {}
+                        local listing = FILEMAN:GetDirListing(bg, false, true)
+                        if not listing then return nil end
+                        for _,file in pairs(listing) do
+                            if ActorUtil.GetFileType(file) == 'FileType_Movie' then
+                                table.insert(bgvideo,file)
                             end
-                            if song:HasBGChanges() and #bgvideo ~= 0 then
-                                s:Load(bgvideo[1])
-                            else
-                                s:LoadFromSongBackground(song)
-                            end
+                        end
+                        if #bgvideo ~= 0 then
+                            s:Load(bgvideo[1])
                         else
-                            s:LoadFromSongBackground(GAMESTATE:GetCurrentSong())
+                            s:Load(jk.GetSongGraphicPath(song,"Background"))
                         end
                     end
+                elseif mw:GetSelectedType('WheelItemDataType_Section') then
+                    if mw:GetSelectedSection() == "" then
+                        s:Load(THEME:GetPathG("","_jackets/Random"))
+                    else
+                        s:Load(jk.GetGroupGraphicPath(mw:GetSelectedSection(),"Jacket",so))
+                    end
                 end
-                s:zoomto(864,522):linear(0.2):diffusealpha(1)
+                s:scaletofit(-432,-261,432,261):linear(0.2):diffusealpha(1)
             end,
         };
         Def.ActorFrame{
@@ -66,8 +68,17 @@ return Def.ActorFrame{
                 InitCommand=function(s) s:halign(0):diffusealpha(0):x(-428) end,
                 SetCommand=function(s)
                     local song = GAMESTATE:GetCurrentSong()
+                    local so = GAMESTATE:GetSortOrder();
+                    local mw = SCREENMAN:GetTopScreen():GetChild("MusicWheel")
+                    if not mw then return end
                     if song then
                         s:Load(jk.GetSongGraphicPath(song))
+                    elseif mw:GetSelectedType('WheelItemDataType_Section') then
+                        if mw:GetSelectedSection() == "" then
+                            s:Load(THEME:GetPathG("","_jackets/Random"))
+                        else
+                            s:Load(jk.GetGroupGraphicPath(mw:GetSelectedSection(),"Jacket",so))
+                        end
                     end
                     s:zoomto(68,68):linear(0.05):decelerate(0.25):diffusealpha(1):zoomto(158,158)
                 end
@@ -76,22 +87,52 @@ return Def.ActorFrame{
                 Name="Title",
                 Def.BitmapText{
                     Font="_avenirnext lt pro bold/20px",
-                    Text="TITLE:",
-                    InitCommand=function(s) s:halign(0):xy(-258.75,-52):skewx(-0.2) end,
-                    SetCommand=function(s) s:finishtweening():zoomy(0):zoomx(1.625):decelerate(0.33):zoom(1.5) end,
+                    Text="",
+                    InitCommand=function(s) s:halign(0):xy(-258.75,0):skewx(-0.2) end,
+                    SetCommand=function(s)
+                        local song = GAMESTATE:GetCurrentSong();
+                        local so = GAMESTATE:GetSortOrder();
+                        local mw = SCREENMAN:GetTopScreen():GetChild("MusicWheel")
+                        if not mw then return end
+                        if song then
+                            s:settext("TITLE:"):y(-52)
+                        elseif mw:GetSelectedType('WheelItemDataType_Section')  then
+                            if mw:GetSelectedSection() == "" then
+                              s:settext("RANDOM"):y(0)
+                            else
+                              s:settext("GROUP:"):y(0)
+                            end
+                        end
+                        s:finishtweening():zoomy(0):zoomx(1.625):decelerate(0.33):zoom(1.5)
+                    end,
                 };
                 Def.BitmapText{
                     Font="_stagetext",
-                    InitCommand=function(s) s:halign(0):xy(-156,-52):skewx(-0.2) end,
-                    SetCommand=function(s) 
-                        if not GAMESTATE:GetCurrentSong() then return end
-                        s:settext(GAMESTATE:GetCurrentSong():GetDisplayMainTitle()):maxwidth(300)
+                    InitCommand=function(s) s:halign(0):xy(-156,0):skewx(-0.2) end,
+                    SetCommand=function(s)
+                        local song = GAMESTATE:GetCurrentSong();
+                        local so = GAMESTATE:GetSortOrder();
+                        local mw = SCREENMAN:GetTopScreen():GetChild("MusicWheel")
+                        if not mw then return end
+                        if song then
+                            s:settext(song:GetDisplayMainTitle()):xy(-156,-52):maxwidth(300)
+                        elseif mw:GetSelectedType('WheelItemDataType_Section')  then
+                            if mw:GetSelectedSection() == "" then
+                                s:settext(""):xy(0,0)
+                            else
+                                s:settext(SongAttributes.GetGroupName(mw:GetSelectedSection()))
+                                :xy(-126,0):maxwidth(300)
+                            end
+                        end
                         s:finishtweening():zoomy(0):zoomx(1.525):decelerate(0.33):zoom(1.4)
                     end,
                 };
             };
             Def.ActorFrame{
                 Name="Artist",
+                CurrentSongChangedMessageCommand=function(s)
+                    s:visible(GAMESTATE:GetCurrentSong() and true or false)
+                end,
                 Def.BitmapText{
                     Font="_avenirnext lt pro bold/20px",
                     Text="ARTIST:",
@@ -110,6 +151,9 @@ return Def.ActorFrame{
             };
             Def.ActorFrame{
                 Name="BPM",
+                CurrentSongChangedMessageCommand=function(s)
+                    s:visible(GAMESTATE:GetCurrentSong() and true or false)
+                end,
                 Def.BitmapText{
                     Font="_avenirnext lt pro bold/20px",
                     Text="BPM:",

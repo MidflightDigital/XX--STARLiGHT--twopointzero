@@ -229,7 +229,9 @@ function OptionRowCharacters()
         choiceListReverse[name] = index
     end
     table.insert(choiceList, 1, THEME:GetString('OptionNames','Off'))
-    table.insert(choiceList, 2, "random")
+    if #choiceList > 1 then
+        table.insert(choiceList, 2, "random")
+    end
     local t = {
         Name="Characters",
         LayoutType = "ShowAllInRow",

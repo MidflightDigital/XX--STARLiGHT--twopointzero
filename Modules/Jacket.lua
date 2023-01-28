@@ -15,6 +15,14 @@ local Jacket = {
                 return song:GetJacketPath()
             end
             fbg = THEME:GetPathG("","Common fallback banner")
+        elseif type == "Background" then
+            if song:HasBackground() then
+                return song:GetBackgroundPath()
+            elseif song:HasJacket() then
+                return song:GetJacketPath()
+            elseif song:HasBanner() then
+                return song:GetBannerPath()
+            end
         else
             if song.HasJacket and song:HasJacket() then
                 return song:GetJacketPath()
