@@ -552,11 +552,13 @@ local t = Def.ActorFrame{
 		Def.ActorFrame{
 			Name="P1Frame";
 			InitCommand=function(s) s:xy(IsUsingWideScreen() and _screen.cx-480 or _screen.cx-400,_screen.cy-2) end,
+			OnCommand=function(s) s:diffusealpha(0):linear(0.2):diffusealpha(1) end,
 			children = LoadPlayerStuff(PLAYER_1);
 		};
 		Def.ActorFrame{
 			Name="P2Frame";
 			InitCommand=function(s) s:xy(IsUsingWideScreen() and _screen.cx+480 or _screen.cx+400,_screen.cy-2) end,
+			OnCommand=function(s) s:diffusealpha(0):linear(0.2):diffusealpha(1) end,
 			children = LoadPlayerStuff(PLAYER_2);
 		};
 		-- sounds
@@ -569,12 +571,12 @@ local t = Def.ActorFrame{
 		LoadActor( THEME:GetPathS("Common","value") )..{
 			DirectionButtonMessageCommand=function(self) self:play() end;
 		};
-		Def.Quad{
+		--[[Def.Quad{
 			InitCommand=function(s) s:FullScreen():diffuse(Color.Black) end,
 			OnCommand=function(s)
 				s:diffusealpha(1):sleep(0.1):linear(0.2):diffusealpha(0)
 			end,
-		}
+		}]]
 	};
 }
 

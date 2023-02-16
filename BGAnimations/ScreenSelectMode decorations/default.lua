@@ -1,19 +1,19 @@
 local t = Def.ActorFrame{
-	loadfile(THEME:GetPathB("","_Logo/default.lua"))()..{
-        InitCommand=function(s) s:Center() end,
-    };
-    Def.Sprite{
-        Texture=THEME:GetPathB("","_Logo/xxlogo.png"),
-        InitCommand=function(s) s:xy(_screen.cx+104,_screen.cy+16):blend(Blend.Add):diffusealpha(0):queuecommand("Anim") end,
-        AnimCommand=function(s) s:diffusealpha(0):sleep(1):linear(0.75):diffusealpha(0.3):sleep(0.1):linear(0.4):diffusealpha(0):queuecommand("Anim") end,
-    };
-    loadfile(THEME:GetPathB("","_Dancer/default.lua"))()..{
-        InitCommand = function(s) s:xy(_screen.cx-540,_screen.cy+30) end,
-    };
-	Def.Quad{
-		InitCommand=function(s) s:FullScreen():diffuse(Alpha(Color.Black,0)) end,
-		OnCommand=function(s) s:decelerate(0.4):diffusealpha(0.3) end,
-	};
+	Def.ActorFrame{
+		OffCommand=function(s) s:finishtweening():sleep(0.2):accelerate(0.2):diffusealpha(0) end,
+		loadfile(THEME:GetPathB("","_Logo/default.lua"))()..{
+			InitCommand=function(s) s:Center() end,
+		};
+		Def.Sprite{
+			Texture=THEME:GetPathB("","_Logo/xxlogo.png"),
+			InitCommand=function(s) s:xy(_screen.cx+104,_screen.cy+16):blend(Blend.Add):diffusealpha(0):queuecommand("Anim") end,
+			AnimCommand=function(s) s:diffusealpha(0):sleep(1):linear(0.75):diffusealpha(0.3):sleep(0.1):linear(0.4):diffusealpha(0):queuecommand("Anim") end,
+			
+		};
+		loadfile(THEME:GetPathB("","_Dancer/default.lua"))()..{
+			InitCommand = function(s) s:xy(_screen.cx-540,_screen.cy+30) end,
+		};
+	}
 }
 
 t[#t+1] = Def.ActorFrame{
@@ -69,6 +69,7 @@ t[#t+1] = Def.ActorFrame {
 	Def.Quad{
 		InitCommand=function(s) s:FullScreen():diffuse(color("0,0,0,0")):diffusealpha(0) end,
 		OnCommand=function(s) s:decelerate(0.4):diffusealpha(0.75) end,
+		OffCommand=function(s) s:accelerate(0.4):diffusealpha(0) end,
 	};
 	Def.ActorFrame{
 		InitCommand=function(s) s:xy(_screen.cx-435,_screen.cy-10) end,
@@ -152,11 +153,6 @@ t[#t+1] = Def.ActorFrame {
 	InitCommand=function(s) s:halign(1):xy(SCREEN_RIGHT-10,SCREEN_TOP+90):diffusealpha(0):wrapwidthpixels(400) end,
 	OnCommand=function(s) s:sleep(0.3):decelerate(0.6):diffusealpha(0.5) end,
   };}
-
-t[#t+1] = Def.Quad{
-	InitCommand=function(s) s:FullScreen():diffuse(color("0,0,0,0")) end,
-	OffCommand=function(s) s:sleep(0.3):linear(0.2):diffusealpha(1) end,
-};
 
 t[#t+1] = Def.Actor{
 	CodeMessageCommand=function(s,p)

@@ -1,3 +1,4 @@
+SOUND:DimMusic(1,math.huge)
 local num_players = GAMESTATE:GetHumanPlayers()
 
 function setting(self,screen,pn)

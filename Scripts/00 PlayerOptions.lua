@@ -1080,7 +1080,7 @@ function ListChooser()
 		Name="ListChooser",
 		LayoutType="ShowAllInRow",
 		SelectType="SelectOne",
-		Choices={"Gameplay","Select Music","Advanced Modifiers","Uncommon Modifiers"},
+		Choices={"Gameplay","Select Music","Display Options","Advanced Modifiers"},
 		OneChoiceForAllPlayers=true,
 		LoadSelections=function(self,list,pn)
 			list[1] = true
@@ -1109,7 +1109,7 @@ function ListChooser2()
 		Name="ListChooser2",
 		LayoutType="ShowAllInRow",
 		SelectType="SelectOne",
-		Choices={"Gameplay","Select Music","Main Modifiers","Uncommon Modifiers"},
+		Choices={"Gameplay","Select Music","Main Modifiers","Advanced Modifiers"},
 		OneChoiceForAllPlayers=true,
 		LoadSelections=function(self,list,pn)
 			list[1] = true
@@ -1138,7 +1138,7 @@ function ListChooser3()
 		Name="ListChooser3",
 		LayoutType="ShowAllInRow",
 		SelectType="SelectOne",
-		Choices={"Gameplay","Select Music","Main Modifiers","Advanced Modifiers"},
+		Choices={"Gameplay","Select Music","Main Modifiers","Display Options"},
 		OneChoiceForAllPlayers=true,
 		LoadSelections=function(self,list,pn)
 			list[1] = true

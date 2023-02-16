@@ -126,6 +126,8 @@ for pn in EnabledPlayers() do
 					else
 						s:visible(false)
 					end;
+				else
+					s:settext(""):visible(false)
 				end
 			end,
 		};
