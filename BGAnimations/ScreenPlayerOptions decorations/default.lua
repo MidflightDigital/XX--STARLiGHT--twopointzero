@@ -7,7 +7,7 @@ function setting(self,screen,pn)
 	local name = row:GetName();
 	local choice = row:GetChoiceInRowWithFocus(pn);
 	if name ~= "Exit" then
-		if THEME:GetMetric( "ScreenOptionsMaster",name.."Explanation" ) then
+		if THEME:GetMetric( "ScreenOptionsMaster",name.."Explanation" ) ~= false then
 			self:settext(THEME:GetString("OptionItemExplanations",name..tostring(choice)));
 		else self:settext("");
 		end;
