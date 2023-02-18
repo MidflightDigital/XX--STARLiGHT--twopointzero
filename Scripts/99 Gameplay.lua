@@ -1,3 +1,9 @@
+-- Lua Timing currently does not change these parameters, so the best we can do is
+-- look at the current mode on boot up and change to the proper values
+TimingMode = LoadModule("Config.Load.lua")("SmartTimings","Save/OutFoxPrefs.ini") or "Unknown"
+
+LoadModule("Row.Prefs.lua")(LoadModule("Options.Prefs.lua"))
+
 function GetSong()
 	if GAMESTATE:IsCourseMode() then
 		local trail = GAMESTATE:GetCurrentTrail(GAMESTATE:GetMasterPlayerNumber())
