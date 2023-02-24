@@ -23,6 +23,13 @@ local Jacket = {
             elseif song:HasBanner() then
                 return song:GetBannerPath()
             end
+        elseif type == "CD" then
+            if song.HasCDImage and song:HasCDImage() then
+                return song:GetCDImagePath()
+                
+            elseif song.HasJacket and song:HasJacket() then
+                return song:GetJacketPath()
+            end
         else
             if song.HasJacket and song:HasJacket() then
                 return song:GetJacketPath()

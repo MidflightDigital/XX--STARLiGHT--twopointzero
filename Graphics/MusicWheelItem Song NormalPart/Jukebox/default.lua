@@ -17,7 +17,7 @@ return Def.ActorFrame{
 					local diskImage = CDImage[songtit];
 					self:Load(THEME:GetPathG("","MusicWheelItem Song NormalPart/Jukebox/cd/"..diskImage));
 				else
-					self:Load(jk.GetSongGraphicPath(song,"Jacket"))
+					self:Load(jk.GetSongGraphicPath(song,"CD"))
 				end;
 			end;
 			self:setsize(475,475);
@@ -31,7 +31,7 @@ return Def.ActorFrame{
 				local song = params.Song;
 				if song then
 					local songtit = params.Song:GetDisplayMainTitle();
-					if CDImage[songtit] ~= nil then
+					if CDImage[songtit] ~= nil or song:GetCDImagePath() ~= nil then
 						self:visible(false)
 					else
 						self:visible(true)

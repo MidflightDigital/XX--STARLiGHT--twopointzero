@@ -139,7 +139,7 @@ return Def.ActorFrame{
 				local song = GAMESTATE:GetCurrentSong()
 				if song then
 					local songtit = song:GetDisplayMainTitle()
-					if CDImage[songtit] ~= nil then
+					if CDImage[songtit] ~= nil or song:GetCDImagePath() ~= nil then
 						s:visible(false)
 					else
 						s:visible(true)
@@ -164,7 +164,7 @@ return Def.ActorFrame{
 						s:Load(THEME:GetPathG("","MusicWheelItem Song NormalPart/Jukebox/cd/"..diskImage));
 						s:zoomtowidth(475):zoomtoheight(475);
 					else
-						s:Load(jk.GetSongGraphicPath(song,"Jacket"))
+						s:Load(jk.GetSongGraphicPath(song,"CD"))
 					end
 				elseif mw:GetSelectedType('WheelItemDataType_Section') then
 					s:ztest(0)
@@ -217,7 +217,7 @@ return Def.ActorFrame{
 				local song = GAMESTATE:GetCurrentSong();
 				if song then
 					local songtit = song:GetDisplayMainTitle();
-					if CDImage[songtit] ~= nil then
+					if CDImage[songtit] ~= nil or song:GetCDImagePath() ~= nil then
 						s:visible(false)
 					else
 						s:visible(true)
