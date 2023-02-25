@@ -24,7 +24,6 @@ local Jacket = {
                 return song:GetBannerPath()
             end
         elseif type == "CD" then
-            local noimagepath = false
             local rcdimage
             local paths = {
                 string.gsub(song:GetSongFilePath(),".sm","-cd.png"),
@@ -32,13 +31,12 @@ local Jacket = {
             };
             for path in ivalues(paths) do
                 if FILEMAN:DoesFileExist(path) then
-                    noimagepath = true
                     rcdimage = path
                 end
             end
             if song.HasCDImage and song:HasCDImage() then
                 return song:GetCDImagePath()
-            elseif noimagepath == true then
+            elseif rcdimage ~= nil then
                 return rcdimage
             elseif song.HasJacket and song:HasJacket() then
                 return song:GetJacketPath()
