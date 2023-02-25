@@ -4,7 +4,11 @@ return Def.ActorFrame{
 	InitCommand=function(s) s:zoom(0.5) end,
 	Def.Sprite{
 		Texture="cd/cd_mask",
-		InitCommand=function(s) s:blend(Blend.NoEffect):zwrite(1):clearzbuffer(true):zoom(1) end,
+		InitCommand=function(s) 
+			if CDImage[songtit] == nil or jk.DoesSongHaveCD(song) == false then
+				s:blend(Blend.NoEffect):zwrite(1):clearzbuffer(true):zoom(1)
+			end
+		end
 	};
 	Def.Banner{
 		Name="SongCD";
@@ -31,7 +35,7 @@ return Def.ActorFrame{
 				local song = params.Song;
 				if song then
 					local songtit = params.Song:GetDisplayMainTitle();
-					if CDImage[songtit] ~= nil or song:GetCDImagePath() ~= nil then
+					if CDImage[songtit] ~= nil or jk.DoesSongHaveCD(song) == true then
 						self:visible(false)
 					else
 						self:visible(true)

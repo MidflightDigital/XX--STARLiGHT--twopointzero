@@ -139,7 +139,7 @@ return Def.ActorFrame{
 				local song = GAMESTATE:GetCurrentSong()
 				if song then
 					local songtit = song:GetDisplayMainTitle()
-					if CDImage[songtit] ~= nil or song:GetCDImagePath() ~= nil then
+					if CDImage[songtit] ~= nil or jk.DoesSongHaveCD(song) == true then
 						s:visible(false)
 					else
 						s:visible(true)
@@ -217,7 +217,7 @@ return Def.ActorFrame{
 				local song = GAMESTATE:GetCurrentSong();
 				if song then
 					local songtit = song:GetDisplayMainTitle();
-					if CDImage[songtit] ~= nil or song:GetCDImagePath() ~= nil then
+					if CDImage[songtit] ~= nil or jk.DoesSongHaveCD(song) == true then
 						s:visible(false)
 					else
 						s:visible(true)

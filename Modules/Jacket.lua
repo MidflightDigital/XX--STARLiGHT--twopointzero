@@ -24,9 +24,22 @@ local Jacket = {
                 return song:GetBannerPath()
             end
         elseif type == "CD" then
+            local noimagepath = false
+            local rcdimage
+            local paths = {
+                string.gsub(song:GetSongFilePath(),".sm","-cd.png"),
+                string.gsub(song:GetSongFilePath(),".sm","-cd.jpg")
+            };
+            for path in ivalues(paths) do
+                if FILEMAN:DoesFileExist(path) then
+                    noimagepath = true
+                    rcdimage = path
+                end
+            end
             if song.HasCDImage and song:HasCDImage() then
                 return song:GetCDImagePath()
-                
+            elseif noimagepath == true then
+                return rcdimage
             elseif song.HasJacket and song:HasJacket() then
                 return song:GetJacketPath()
             end
@@ -46,6 +59,22 @@ local Jacket = {
             end
         end
         return fallback or fbg
+    end,
+    DoesSongHaveCD=function(song)
+        local paths = {
+            string.gsub(song:GetSongFilePath(),".sm","-cd.png"),
+            string.gsub(song:GetSongFilePath(),".sm","-cd.jpg")
+        };
+        if song.HasCDImage and song:HasCDImage() then
+            return true
+        else
+            for path in ivalues(paths) do
+                if FILEMAN:DoesFileExist(path) then
+                    return true
+                end
+            end
+        end
+        return false
     end,
     GetGroupGraphicPath=function(text,type,so,fallback)
         if not text or text=="" then
