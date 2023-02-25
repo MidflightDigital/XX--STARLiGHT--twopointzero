@@ -27,7 +27,9 @@ local Jacket = {
             local rcdimage
             local paths = {
                 string.gsub(song:GetSongFilePath(),".sm","-cd.png"),
-                string.gsub(song:GetSongFilePath(),".sm","-cd.jpg")
+                string.gsub(song:GetSongFilePath(),".sm","-cd.jpg"),
+                string.gsub(song:GetSongFilePath(),".ssc","-cd.png"),
+                string.gsub(song:GetSongFilePath(),".ssc","-cd.jpg")
             };
             for path in ivalues(paths) do
                 if FILEMAN:DoesFileExist(path) then
@@ -61,7 +63,9 @@ local Jacket = {
     DoesSongHaveCD=function(song)
         local paths = {
             string.gsub(song:GetSongFilePath(),".sm","-cd.png"),
-            string.gsub(song:GetSongFilePath(),".sm","-cd.jpg")
+            string.gsub(song:GetSongFilePath(),".sm","-cd.jpg"),
+            string.gsub(song:GetSongFilePath(),".ssc","-cd.png"),
+            string.gsub(song:GetSongFilePath(),".ssc","-cd.jpg")
         };
         if song.HasCDImage and song:HasCDImage() then
             return true
