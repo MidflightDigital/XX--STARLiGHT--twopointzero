@@ -24,20 +24,21 @@ local Jacket = {
                 return song:GetBannerPath()
             end
         elseif type == "CD" then
-            local rcdimage
+            --[[local rcdimage
             local paths = {
                 string.gsub(song:GetSongFilePath(),".sm","-cd.png"),
-                string.gsub(song:GetSongFilePath(),".sm","-cd.jpg")
+                string.gsub(song:GetSongFilePath(),".sm","-cd.jpg"),
             };
             for path in ivalues(paths) do
                 if FILEMAN:DoesFileExist(path) then
                     rcdimage = path
                 end
-            end
+            end]]
+            
             if song.HasCDImage and song:HasCDImage() then
                 return song:GetCDImagePath()
-            elseif rcdimage ~= nil then
-                return rcdimage
+            --[[elseif rcdimage ~= nil then
+                    return rcdimage]]
             elseif song.HasJacket and song:HasJacket() then
                 return song:GetJacketPath()
             end
@@ -59,18 +60,18 @@ local Jacket = {
         return fallback or fbg
     end,
     DoesSongHaveCD=function(song)
-        local paths = {
+        --[[local paths = {
             string.gsub(song:GetSongFilePath(),".sm","-cd.png"),
             string.gsub(song:GetSongFilePath(),".sm","-cd.jpg")
-        };
+        };]]
         if song.HasCDImage and song:HasCDImage() then
             return true
-        else
+        --[[else
             for path in ivalues(paths) do
                 if FILEMAN:DoesFileExist(path) then
                     return true
                 end
-            end
+            end]]
         end
         return false
     end,
