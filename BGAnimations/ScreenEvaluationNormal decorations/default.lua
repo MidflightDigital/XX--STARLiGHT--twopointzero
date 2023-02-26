@@ -407,4 +407,11 @@ if GetExtraStage() then
   }
 end
 
+if GAMESTATE:IsCourseMode() then
+  local course = GAMESTATE:GetCurrentCourse()
+  if course:IsA20DanCourse() then
+    t[#t+1] = loadfile(THEME:GetPathB("ScreenEvaluationNormal","decorations/DanOverlay"))();
+  end
+end
+
 return t;

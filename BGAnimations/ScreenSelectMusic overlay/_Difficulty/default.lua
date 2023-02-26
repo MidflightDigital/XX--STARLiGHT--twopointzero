@@ -248,6 +248,7 @@ return Def.ActorFrame{
     self:sleep(0.15):linear(0.25):addx(pn==PLAYER_1 and -500 or 500)
   end;
   ["CurrentSteps" .. ToEnumShortString(pn) .. "ChangedMessageCommand"]=function(s) s:finishtweening():queuecommand("Set") end,
+  CurrentSongChangedMessageCommand=function(s) s:finishtweening():queuecommand("Set") end,
   Def.Sprite{
     Texture="DiffFrame.png",
     InitCommand=function(s) 

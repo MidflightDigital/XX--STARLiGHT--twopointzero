@@ -317,7 +317,7 @@ end
 
 function Course:IsA20DanCourse()
 	return self:GetCourseType() == 'CourseType_Nonstop' and
-		string.find(self:GetDescription(), "A20DanCourse")~=nil
+		string.find(self:GetDescription(), "CLASS COURSE")~=nil
 end
 
 --returns the ReadBPM for a given song. This is the value that mmods treat
