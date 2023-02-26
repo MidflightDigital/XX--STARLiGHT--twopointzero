@@ -7,17 +7,17 @@ local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(GAMESTATE:GetMasterP
 
 t[#t+1] = Def.ActorFrame{
     Def.Sprite{
-        Texture="guy.png";
+        Texture="../EXOverlay/guy.png";
         InitCommand=function(s) s:diffusealpha(0) end,
         OnCommand=function(s) s:sleep(1):smooth(0.2):x(-600):diffusealpha(1) end,
     };
     Def.Sprite{
-        Texture="girl.png";
+        Texture="../EXOverlay/girl.png";
         InitCommand=function(s) s:diffusealpha(0) end,
         OnCommand=function(s) s:sleep(1):smooth(0.2):x(480):diffusealpha(1) end,
     };
     Def.Sprite{
-        Texture="lensflare",
+        Texture="../EXOverlay/lensflare",
         InitCommand=function(s) s:zoom(0) end,
         OnCommand=function(s) s:sleep(1):zoomx(3):zoomy(0):sleep(0.4):linear(0.1):zoomx(1):zoomy(1) end,
     },
@@ -37,12 +37,12 @@ for i=1,2 do
     t[#t+1] = Def.ActorFrame{
         InitCommand=function(s) s:x(i==1 and -660 or 660):zoomx(i==1 and 1 or -1) end,
         Def.Sprite{
-            Texture="hex1";
+            Texture="../EXOverlay/hex1";
             InitCommand=function(s) s:diffusealpha(0) end,
             OnCommand=function(s) s:sleep(1):smooth(0.2):diffusealpha(1) end,
         };
         Def.Sprite{
-            Texture="hex2";
+            Texture="../EXOverlay/hex2";
             OnCommand=function(s) s:diffusealpha(0):sleep(1.3):smooth(0.3):xy(50,50):diffusealpha(0.9) end,
         };
     }
