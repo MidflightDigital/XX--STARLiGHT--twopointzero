@@ -56,13 +56,25 @@ t[#t+1] = Def.ActorFrame {
 	},
 	Def.Sound {
 		File=GetMenuMusicPath 'stage',
-		NextCourseSongMessageCommand=function(s) s:sleep(0.45):queuecommand('Play') end,
+		NextCourseSongMessageCommand=function(s)
+			local course = GAMESTATE:GetCurrentCourse()
+			if course:IsA20DanCourse() then
+				s:hibernate(61)
+			end
+			s:sleep(0.45):queuecommand('Play')
+		end,
 		PlayCommand=function(s) s:play() end,
 	},
 	Def.Actor {
 		SetOffCommand=function(s) s:sleep(0.2):queuecommand('ApplauseCleared') end,
 		SetFailCommand=function(s) s:sleep(0.2):queuecommand('ApplauseFailed') end,
-		NextCourseSongMessageCommand=function(s) s:sleep(0.2):queuecommand('ApplauseStage') end,
+		NextCourseSongMessageCommand=function(s)
+			local course = GAMESTATE:GetCurrentCourse()
+			if course:IsA20DanCourse() then
+				s:hibernate(61)
+			end
+			s:sleep(0.2):queuecommand('ApplauseStage')
+		end,
 		ApplauseClearedCommand=function(s) SOUND:PlayOnce(THEME:GetPathS( '', '_applause cleared' )) end,
 		ApplauseFailedCommand=function(s) SOUND:PlayOnce(THEME:GetPathS( '', '_applause failed' )) end,
 		ApplauseStageCommand=function(s) SOUND:PlayOnce(THEME:GetPathS( '', '_applause stage' )) end,
@@ -275,7 +287,9 @@ end
 t[#t+1] = Def.ActorFrame {
 	Condition=not GAMESTATE:IsDemonstration(),
 	InitCommand=function(s) s:Center() end,
-	CurrentSongChangedMessageCommand=function(s) s:finishtweening():diffusealpha(0):sleep(BeginReadyDelay()):diffusealpha(1):queuecommand('Ready') end,
+	CurrentSongChangedMessageCommand=function(s)
+		s:finishtweening():diffusealpha(0):sleep(BeginReadyDelay()):diffusealpha(1):queuecommand('Ready')
+	end,
 	ReadyCommand=function(s) s:sleep(SongMeasureSec()):queuecommand('GoIn') end,
 	GoInCommand=function(s) s:sleep(SongMeasureSec()):queuecommand('GoOut') end,
 	
@@ -342,7 +356,13 @@ t[#t+1] = Def.ActorFrame {
 
 t[#t+1] = Def.ActorFrame {
 	CurrentSongChangedMessageCommand=function(s)s:queuecommand('AnOff') end,
-	NextCourseSongMessageCommand=function(s) s:queuecommand('AnOn') end,
+	NextCourseSongMessageCommand=function(s)
+		local course = GAMESTATE:GetCurrentCourse()
+		if course:IsA20DanCourse() then
+			s:hibernate(61)
+		end
+		s:queuecommand('AnOn')
+	end,
 	OffCommand=function(s)
 		local st = STATSMAN:GetCurStageStats()
 		
@@ -383,7 +403,7 @@ t[#t+1] = Def.ActorFrame {
 		SetOffCommand=function(s) s:play():linear(0.4):diffusealpha(1) end,
 	},
 	loadfile(THEME:GetPathB('ScreenWithMenuElements', 'background/default.lua'))() .. {
-		Condition=not get_UI_video_path(),
+		Condition=not get_UI_video_path() ,
 		InitCommand=function(s) s:SetSize(SCREEN_WIDTH,SCREEN_HEIGHT) end,
 		AnOnCommand=function(s) s:linear(0.8):diffusealpha(1) end,
 		AnOffCommand=function(s) s:linear(0.4):diffusealpha(0) end,
@@ -392,9 +412,96 @@ t[#t+1] = Def.ActorFrame {
 	},
 };
 
+local Time = 0
+local OldTime = 0
+local function updateTime(self)
+	Time = self:GetSecsIntoEffect()
+	if not PREFSMAN:GetPreference("Vsync") and Time - OldTime < 1/60 then
+        return
+    else
+        OldTime = Time
+	end
+	
+	local seconds = Time%60
+
+	local timeDisplay = string.format("%02d",seconds)
+
+	self:GetChild("Timer"):settext(60-timeDisplay)
+end
+
+--Dan Course Break Time
+t[#t+1] = Def.ActorFrame{
+	Def.Sprite {
+		Texture=THEME:GetPathB("ScreenGameplay","decorations/[DDR XX CLASS] 60 SECOND BREAK.mp4"),
+		BeginCommand=function(s) s:pause():diffusealpha(0):Center():setsize(1920,1080) end,
+		NextCourseSongMessageCommand=function(s)
+			local course = GAMESTATE:GetCurrentCourse()
+			if course:IsA20DanCourse() then
+				s:play():diffusealpha(0):sleep(0.5):linear(0.3):diffusealpha(1):sleep(61.5):linear(0.2):diffusealpha(0):queuecommand("Pause")
+			end
+		end,
+		PauseCommand=function(s) s:pause() end,
+	};
+	Def.Sound{
+		File=THEME:GetPathB("ScreenGameplay","decorations/[DDR XX CLASS] 60 SECOND BREAK.ogg"),
+		NextCourseSongMessageCommand=function(s)
+			local course = GAMESTATE:GetCurrentCourse()
+			if course:IsA20DanCourse() then
+				s:sleep(1):queuecommand("Play")
+			end
+		end,
+		PlayCommand=function(s) s:play():sleep(61):queuecommand("Pause") end,
+		PauseCommand=function(s) s:stop() end,
+	};
+	Def.ActorFrame{
+		InitCommand=function(s) s:zoom(3.5):Center() end,
+		NextCourseSongMessageCommand=function(s)
+			local course=GAMESTATE:GetCurrentCourse()
+			if course:IsA20DanCourse() then
+				s:sleep(2.2):queuecommand("StartTimer")
+			end
+		end,
+		StartTimerCommand=function(s) s:play():effectperiod(math.huge):SetUpdateFunction(updateTime):sleep(60):queuecommand("Stop") end,
+		StopCommand=function(s)
+			s:stopeffect()
+		end,
+		Def.BitmapText{
+			Name="Timer",
+			File="Combo/combo good",
+			Text="60",
+			InitCommand=function(s) s:diffusealpha(0) end,
+			NextCourseSongMessageCommand=function(s)
+				local course=GAMESTATE:GetCurrentCourse()
+				if course:IsA20DanCourse() then
+					s:sleep(0.5):diffusealpha(1):queuecommand("Stop")
+				end
+			end,
+			StopCommand=function(s) s:sleep(61):diffusealpha(0) end,
+		};
+	};
+	Def.Sprite{
+		Texture=THEME:GetPathB("ScreenGameplay","decorations/BreakTime.png"),
+		InitCommand=function(s) s:xy(_screen.cx,_screen.cy-320):diffusealpha(0) end,
+		NextCourseSongMessageCommand=function(s)
+			local course=GAMESTATE:GetCurrentCourse()
+			--hide the timer because it's borked
+			if course:IsA20DanCourse() then
+				s:sleep(0.5):diffusealpha(1):queuecommand("Stop")
+			end
+		end,
+		StopCommand=function(s) s:sleep(61):diffusealpha(0) end,
+	}
+}
+
 t[#t+1] = loadfile(THEME:GetPathB("","_StageDoors"))() .. {
 	CurrentSongChangedMessageCommand=function(s) s:queuecommand('AnOff') end,
-	NextCourseSongMessageCommand=function(s) s:queuecommand('AnOn') end,
+	NextCourseSongMessageCommand=function(s)
+		local course = GAMESTATE:GetCurrentCourse()
+		if course:IsA20DanCourse() then
+			s:sleep(61)
+		end
+		s:queuecommand('AnOn')
+	end,
 	OffCommand=function(s)
 		local st = STATSMAN:GetCurStageStats()
 		
@@ -416,12 +523,18 @@ t[#t+1] = loadfile(THEME:GetPathB("","_StageDoors"))() .. {
 t[#t+1] = Def.ActorFrame {
 	InitCommand=function(s) s:Center() end,
 	OffCommand=function(s) s:finishtweening():linear(0.2):diffusealpha(0) end,
-	
+	NextCourseSongMessageCommand=function(s)
+		local course = GAMESTATE:GetCurrentCourse()
+		if course:IsA20DanCourse() then
+			s:hibernate(61)
+		end
+	end,
 	Def.ActorFrame {
 		BeginCommand=function(s)
 			s:GetChild('Actual Jacket'):Load(jk.GetSongGraphicPath(GetSong())):scaletofit(-310,-310,310,310)
 		end,
 		NextCourseSongMessageCommand=function(s)
+			
 			s:GetChild('Actual Jacket'):Load(jk.GetSongGraphicPath(GetSong())):scaletofit(-310,-310,310,310)
 			s:finishtweening():diffusealpha(0):zoom(4):sleep(1):linear(0.2):diffusealpha(1):zoom(0.9):linear(0.1):zoom(1)
 		end,
@@ -450,7 +563,13 @@ t[#t+1] = Def.ActorFrame {
 
 t[#t+1] = Def.ActorFrame {
 	InitCommand=function(s) s:Center():diffusealpha(0) end,
-	NextCourseSongMessageCommand=function(s) s:sleep(2.2):linear(0.05):diffusealpha(1):sleep(2.5):linear(0.2):diffusealpha(0) end,
+	NextCourseSongMessageCommand=function(s)
+		local course = GAMESTATE:GetCurrentCourse()
+		if course:IsA20DanCourse() then
+			s:hibernate(61)
+		end
+		s:sleep(2.2):linear(0.05):diffusealpha(1):sleep(2.5):linear(0.2):diffusealpha(0)
+	end,
 	
 	Def.Sprite{
 		NextCourseSongMessageCommand=function(s)
@@ -488,6 +607,12 @@ t[#t+1] = Def.ActorFrame {
 };
 
 t[#t+1] = Def.ActorFrame {
+	NextCourseSongMessageCommand=function(s)
+		local course = GAMESTATE:GetCurrentCourse()
+		if course:IsA20DanCourse() then
+			s:hibernate(61)
+		end
+	end,
 	LoadActor('../ScreenStageInformation decorations/star') .. {
 		InitCommand=function(s) s:Center():diffusealpha(0) end,
 		NextCourseSongMessageCommand=function(s) s:sleep(2.2):linear(0.05):diffusealpha(1):linear(0.2):diffusealpha(0) end,
@@ -536,5 +661,16 @@ t[#t+1] = Def.Quad {
 		s:linear(delay):diffusealpha(1)
 	end,
 };
+
+--Dan Course White Fade
+--[[t[#t+1] = Def.Quad {
+	BeginCommand=function(s) s:FullScreen():diffuse(color('1,1,1,0')) end,
+	NextCourseSongMessageCommand=function(s)
+		local course=GAMESTATE:GetCurrentCourse()
+		if course:IsA20DanCourse() then
+			s:diffusealpha(0):linear(0.5):diffusealpha(1):sleep(0.5):linear(0.5):diffusealpha(0)
+		end
+	end
+};]]
 
 return t
