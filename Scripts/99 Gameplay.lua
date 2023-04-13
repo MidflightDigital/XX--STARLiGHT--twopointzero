@@ -168,6 +168,8 @@ function LifeInitialValue()
 		local course = GAMESTATE:GetCurrentCourse()
 		if course:IsA20DanCourse() then
 			return 1
+		else
+			return 0.5
 		end
 	end
 	return 0.5
@@ -178,7 +180,11 @@ function LifePercentChangeMiss()
 		local course = GAMESTATE:GetCurrentCourse()
 		if course:IsA20DanCourse() then
 			return -0.01
+		else
+			return -0.024
 		end
+	else
+		return -0.024
 	end
 	return -0.024
 end
@@ -188,6 +194,8 @@ function NextCourseSongDelay()
 		local course = GAMESTATE:GetCurrentCourse()
 		if course:IsA20DanCourse() then
 			return 70
+		else
+			return 5
 		end
 	end
 	return 5
