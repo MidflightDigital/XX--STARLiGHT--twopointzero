@@ -164,39 +164,31 @@ function BeginOutDelay()
 end
 
 function LifeInitialValue()
-	if GAMESTATE:IsCourseMode() then
+	--[[if GAMESTATE:IsCourseMode() then
 		local course = GAMESTATE:GetCurrentCourse()
 		if course:IsA20DanCourse() then
 			return 1
-		else
-			return 0.5
 		end
-	end
+	end]]
 	return 0.5
 end
 
 function LifePercentChangeMiss()
-	if GAMESTATE:IsCourseMode() then
+	--[[if GAMESTATE:IsCourseMode() then
 		local course = GAMESTATE:GetCurrentCourse()
 		if course:IsA20DanCourse() then
 			return -0.01
-		else
-			return -0.024
 		end
-	else
-		return -0.024
-	end
+	end]]
 	return -0.024
 end
 
 function NextCourseSongDelay()
-	if GAMESTATE:IsCourseMode() then
+	--[[if GAMESTATE:IsCourseMode() then
 		local course = GAMESTATE:GetCurrentCourse()
 		if course:IsA20DanCourse() then
 			return 70
-		else
-			return 5
 		end
-	end
+	end]]
 	return 5
 end
