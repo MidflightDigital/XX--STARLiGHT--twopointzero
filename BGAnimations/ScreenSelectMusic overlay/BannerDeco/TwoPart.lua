@@ -85,7 +85,12 @@ local function DrawDifListItem(diff)
         if song then
           if song:HasStepsTypeAndDifficulty( st, diff ) then
             local steps = song:GetOneSteps( st, diff )
-            self:settext( steps:GetMeter() )
+            local meter = steps:GetMeter()
+							if meter % 1 == 0 then
+								self:settext(meter)
+							else
+								self:settext(string.format("%.1f", meter))
+							end
           end
         end;
       end;

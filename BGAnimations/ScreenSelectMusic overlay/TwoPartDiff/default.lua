@@ -61,7 +61,7 @@ local function genScrollerFrame(player)
 			};
 			Def.BitmapText{
 				Font="_avenirnext lt pro bold/46px",
-				Text=steps:GetMeter();
+				Text=string.format("%.1f", steps:GetMeter()),
 				InitCommand=function(s)
 					s:y(-15):diffuse(CustomDifficultyTwoPartToColor(diff))
 				end,

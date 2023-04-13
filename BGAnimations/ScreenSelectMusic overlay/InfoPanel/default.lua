@@ -158,7 +158,13 @@ local function DifficultyPanel()
                     end
                     if steps then
                         if not GAMESTATE:IsCourseMode() then
-                            c.Text_meter:settext(steps:GetMeter()):visible(true)
+                            local meter = steps:GetMeter()
+							if meter % 1 == 0 then
+								c.Text_meter:settext(meter)
+							else
+								c.Text_meter:settext(string.format("%.1f", meter))
+							end
+                            c.Text_meter:visible(true)
                         end
                         c.Text_difficulty:settext(THEME:GetString("CustomDifficulty",ToEnumShortString(diff))):visible(true)
                         c.Text_difficulty:diffuse(CustomDifficultyToColor(diff))

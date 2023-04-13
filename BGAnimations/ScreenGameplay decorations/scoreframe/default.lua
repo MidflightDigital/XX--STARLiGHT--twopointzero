@@ -130,8 +130,12 @@ t[#t+1] = Def.ActorFrame{
 						self:x(16)
 					end;
 					SetCommand=function(s)
-						  local meter = GAMESTATE:GetCurrentSteps(pn):GetMeter()
-						s:settext(meter)
+						local meter = GAMESTATE:GetCurrentSteps(pn):GetMeter()
+						if meter % 1 == 0 then
+							s:settext(meter)
+						else
+							s:settext(string.format("%.1f", meter))
+						end
 					end;
 					CurrentSongChangedMessageCommand=function(s) s:queuecommand("Set") end,
 				};

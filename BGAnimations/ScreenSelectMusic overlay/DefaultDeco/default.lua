@@ -136,7 +136,14 @@ for pn in EnabledPlayers() do
 			InitCommand=function(s) s:zoom(1):y(20):shadowlengthy(5) end,
 			SetCommand=function(s)
 				if GAMESTATE:GetCurrentSong() then
-					s:settext(GAMESTATE:GetCurrentSteps(pn) and GAMESTATE:GetCurrentSteps(pn):GetMeter() or "")
+					local meter = GAMESTATE:GetCurrentSteps(pn):GetMeter()
+					local rmeter
+					if meter % 1 == 0 then
+						rmeter = meter
+					else
+						rmeter = string.format("%.1f", meter)
+					end
+					s:settext(GAMESTATE:GetCurrentSteps(pn) and rmeter or "")
 				else
 					s:settext("")
 				end
@@ -226,7 +233,12 @@ for pn in EnabledPlayers() do
 					if song then
 						local st = GAMESTATE:GetCurrentStyle():GetStepsType()
 						if song:GetOneSteps(st,diff) then
-							s:settext(song:GetOneSteps(st,diff):GetMeter())
+							local meter = song:GetOneSteps(st,diff):GetMeter()
+							if meter % 1 == 0 then
+								s:settext(meter)
+							else
+								s:settext(string.format("%.1f", meter))
+							end
 						else
 							s:settext("")
 						end

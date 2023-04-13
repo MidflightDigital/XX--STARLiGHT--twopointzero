@@ -89,7 +89,7 @@ t[#t+1] = Def.ActorFrame{
 	};
 	Def.BitmapText{
 		Font="_avenirnext lt pro bold/20px",
-		InitCommand=function(s) s:xy(75,16):zoom(1.1):halign(1) end,
+		InitCommand=function(s) s:xy(75,16):zoom(1.1):halign(1):wrapwidthpixels(300) end,
 		OnCommand=function(s)
 			s:settext(FoodInfo[2]..string.format(" %dkcal",FoodInfo[1][2]))
 		end,

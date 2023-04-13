@@ -663,7 +663,7 @@ t[#t+1] = Def.Quad {
 };
 
 --Dan Course White Fade
---[[t[#t+1] = Def.Quad {
+t[#t+1] = Def.Quad {
 	BeginCommand=function(s) s:FullScreen():diffuse(color('1,1,1,0')) end,
 	NextCourseSongMessageCommand=function(s)
 		local course=GAMESTATE:GetCurrentCourse()
@@ -671,6 +671,6 @@ t[#t+1] = Def.Quad {
 			s:diffusealpha(0):linear(0.5):diffusealpha(1):sleep(0.5):linear(0.5):diffusealpha(0)
 		end
 	end
-};]]
+};
 
 return t

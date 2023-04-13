@@ -55,6 +55,8 @@ return Def.ActorFrame{
 						local course = GAMESTATE:GetCurrentCourse()
 						if course:IsA20DanCourse() then
 							self:Load(THEME:GetPathB("ScreenGameplay","decorations/lifeframe/stream/dan (stretch).png"))
+						else
+							self:Load(THEME:GetPathB("","ScreenGameplay decorations/lifeframe/stream/hot (stretch).png"))
 						end
 					else]]
 						self:Load(THEME:GetPathB("","ScreenGameplay decorations/lifeframe/stream/hot (stretch).png"))

@@ -36,7 +36,13 @@ return Def.ActorFrame{
 			local steps = StepsUtil.SameDiffSteps(cur_song, pn);
             self:visible(steps~=nil);
 			if steps then
-				self:settext(steps:GetMeter()):zoom(msize)
+				local meter = steps:GetMeter();
+				if meter % 1 == 0 then
+					self:settext(meter)
+				else
+					self:settext(string.format("%.1f", meter))
+				end
+				self:zoom(msize)
 				if ThemePrefs.Get("WheelType") == "A" then
 					self:diffuse(CustomDifficultyToColor(steps:GetDifficulty()));
 				else
