@@ -1090,7 +1090,6 @@ function Gauge()
 			
 			if mod ~= '' then
 				GAMESTATE:ApplyPreferredModifiers(pn, mod)
-				SCREENMAN:SystemMessage(getenv("RiskyMode"))
 			end
 		end,
 	};
