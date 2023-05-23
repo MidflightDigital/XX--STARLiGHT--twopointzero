@@ -37,11 +37,7 @@ return Def.ActorFrame{
             self:visible(steps~=nil);
 			if steps then
 				local meter = steps:GetMeter();
-				if meter % 1 == 0 then
-					self:settext(meter)
-				else
-					self:settext(string.format("%.1f", meter))
-				end
+				self:settext(IsMeterDec(meter))
 				self:zoom(msize)
 				if ThemePrefs.Get("WheelType") == "A" then
 					self:diffuse(CustomDifficultyToColor(steps:GetDifficulty()));

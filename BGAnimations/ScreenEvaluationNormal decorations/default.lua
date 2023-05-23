@@ -307,12 +307,7 @@ for _, pn in pairs(GAMESTATE:GetEnabledPlayers()) do
         OnCommand=function(self)
           self:y(36)
           local meter = GAMESTATE:GetCurrentSteps(pn):GetMeter();
-							if meter % 1 == 0 then
-								self:settext(meter)
-							else
-								self:settext(string.format("%.1f", meter))
-							end
-              self:strokecolor(Color.Black)
+							self:settext(IsMeterDec(meter)):strokecolor(Color.Black)
         end;
       };
     };

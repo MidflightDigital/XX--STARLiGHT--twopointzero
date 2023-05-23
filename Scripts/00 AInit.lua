@@ -11,6 +11,14 @@ function setenv(name, value)
 	env[name] = value
 end
 
+function IsMeterDec(meter)
+	if meter % 1 == 0 then
+		return meter
+	else
+		return string.format("%.1f",meter)
+	end
+end
+
 local aspectRatioSuffix = {
 	[math.floor(10000*4/3)] = "4_3",
 	[math.floor(10000*1/1)] = "4_3",

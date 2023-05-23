@@ -136,14 +136,12 @@ for pn in EnabledPlayers() do
 			InitCommand=function(s) s:zoom(1):y(20):shadowlengthy(5) end,
 			SetCommand=function(s)
 				if GAMESTATE:GetCurrentSong() then
-					local meter = GAMESTATE:GetCurrentSteps(pn):GetMeter()
-					local rmeter
-					if meter % 1 == 0 then
-						rmeter = meter
+					if GAMESTATE:GetCurrentSteps(pn) then
+						local meter = GAMESTATE:GetCurrentSteps(pn):GetMeter()
+						s:settext(IsMeterDec(meter))
 					else
-						rmeter = string.format("%.1f", meter)
+						s:settext("")
 					end
-					s:settext(GAMESTATE:GetCurrentSteps(pn) and rmeter or "")
 				else
 					s:settext("")
 				end
@@ -234,11 +232,7 @@ for pn in EnabledPlayers() do
 						local st = GAMESTATE:GetCurrentStyle():GetStepsType()
 						if song:GetOneSteps(st,diff) then
 							local meter = song:GetOneSteps(st,diff):GetMeter()
-							if meter % 1 == 0 then
-								s:settext(meter)
-							else
-								s:settext(string.format("%.1f", meter))
-							end
+							s:settext(IsMeterDec(meter))
 						else
 							s:settext("")
 						end
@@ -251,7 +245,7 @@ for pn in EnabledPlayers() do
 	end
 	if PREFSMAN:GetPreference("OnlyDedicatedMenuButtons") then
 		t[#t+1] = LoadActor("../InfoPanel",pn)..{
-			InitCommand=function(s) s:y(_screen.cy-170) end,
+			InitCommand=function(s) s:y(_screen.cy-190) end,
 		};
 	end
 	t[#t+1] = LoadActor(THEME:GetPathB("ScreenSelectMusic","overlay/_ShockArrow/default.lua"),pn)..{
