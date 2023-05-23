@@ -15,7 +15,7 @@ local JudgeCmds = {
 	TapNoteScore_W2 = THEME:GetMetric( "Judgment", "JudgmentW2Command" );
 	TapNoteScore_W3 = THEME:GetMetric( "Judgment", "JudgmentW3Command" );
 	TapNoteScore_W4 = THEME:GetMetric( "Judgment", "JudgmentW4Command" );
-	TapNoteScore_W5 = THEME:GetMetric( "Judgment", "JudgmentW4Command" );
+	TapNoteScore_W5 = THEME:GetMetric( "Judgment", "JudgmentW5Command" );
 	TapNoteScore_Miss = THEME:GetMetric( "Judgment", "JudgmentMissCommand" );
 };
 
@@ -24,6 +24,7 @@ local OLDJudgeCmds = {
 	TapNoteScore_W2 = THEME:GetMetric( "Judgment", "JudgmentW2Command" );
 	TapNoteScore_W3 = THEME:GetMetric( "Judgment", "JudgmentW3Command" );
 	TapNoteScore_W4 = THEME:GetMetric( "Judgment", "JudgmentW4Command" );
+	TapNoteScore_W5 = THEME:GetMetric( "Judgment", "JudgmentW5Command" );
 	TapNoteScore_Miss = THEME:GetMetric( "Judgment", "JudgmentMissCommand" );
 };
 
@@ -34,8 +35,8 @@ local TNSFrames = {
 	TapNoteScore_W2 = 1;
 	TapNoteScore_W3 = 2;
 	TapNoteScore_W4 = 3;
-	TapNoteScore_W5 = 3;
-	TapNoteScore_Miss = 4;
+	TapNoteScore_W5 = 4;
+	TapNoteScore_Miss = 5;
 };
 
 --frame 1 is the Early frame, 2 is the Late frame and doesn't appear in the table
@@ -89,7 +90,7 @@ local t = Def.ActorFrame {
 	end;
 };
 
-t[#t+1] = LoadActor("Judgment 1x5") .. {
+t[#t+1] = LoadActor("Judgment 1x6") .. {
 	Name="Judgment";
 	InitCommand=function(s) s:pause():visible(false) end,
 	OnCommand=THEME:GetMetric("Judgment","JudgmentOnCommand");

@@ -344,9 +344,9 @@ if THEME:GetMetric("ScreenSelectMusic","UseOptionsList") then
                         if params.Player == pn then
                             currentOpList=params.Menu
                             if params.Menu == "AdvMenu" then
-                                optionsListActor:stoptweening():y(SCREEN_CENTER_Y-200) --Reset the positioning
+                                optionsListActor:stoptweening():y(SCREEN_CENTER_Y-180) --Reset the positioning
                             else
-                                optionsListActor:stoptweening():y(SCREEN_CENTER_Y-140) --Reset the positioning
+                                optionsListActor:stoptweening():y(SCREEN_CENTER_Y-180) --Reset the positioning
                             end
                             if params.Menu ~= "SongMenu" and params.Menu ~= "AdvMenu" and params.Menu ~= "RemMenu" then
                                 self:settext(THEME:GetString("OptionExplanations",params.Menu))

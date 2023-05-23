@@ -2,6 +2,11 @@ local dim_vol = 1
 local jk = LoadModule "Jacket.lua"
 local screen = Var("LoadingScreen")
 
+-- Timing mode
+local TimingMode = LoadModule("Config.Load.lua")("SmartTimings","Save/OutFoxPrefs.ini") or "Unknown"
+if TimingMode == "Original" then TimingMode = "StepMania" end
+
+
 local t = LoadFallbackB();
 
 t[#t+1] = StandardDecorationFromFileOptional("StageDisplay","StageDisplay");
@@ -341,7 +346,24 @@ for _, pn in pairs(GAMESTATE:GetEnabledPlayers()) do
         self:xy(pn=="PlayerNumber_P2" and SCREEN_RIGHT-134 or SCREEN_LEFT+134,_screen.cy-310)
         self:settext(name)
       end;
-    }
+    };
+    -- Timing mode
+    Def.Sprite{
+      Texture="player",
+      InitCommand=function(self)
+        self:zoomx(pn==PLAYER_2 and -0.75 or 0.75):zoomy(0.66)
+        self:x(pn==PLAYER_2 and SCREEN_RIGHT or SCREEN_LEFT)
+        self:halign(0):y(_screen.cy-362)
+      end;
+    };
+    Def.BitmapText{
+      Font="_avenirnext lt pro bold/25px";
+      InitCommand=function(self)
+        self:xy(pn=="PlayerNumber_P2" and SCREEN_RIGHT-100 or SCREEN_LEFT+100,_screen.cy-363)
+        -- Whenever OutFox supports split timing modes, update this
+        self:settext(TimingMode)
+      end;
+    };
   }
 end;
 
