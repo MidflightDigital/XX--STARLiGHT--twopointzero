@@ -1007,13 +1007,13 @@ function StepsListing()
 end
 
 function Gauge()
-	local choice_names = {'Normal', 'Life4', 'Risky'}
+	local choice_names = {'Normal', 'Life4', 'Risky', 'Risky+'}
 
 	if not GAMESTATE:IsCourseMode() then
 		if IsExtraStage1() then 
-			choice_names = {'Life4', 'Risky'}
+			choice_names = {'Life4', 'Risky', 'Risky+'}
 		elseif IsExtraStage2() then
-			choice_names = {'Risky'}
+			choice_names = {'Risky', 'Risky+'}
 		end
 	end
 	
@@ -1031,13 +1031,21 @@ function Gauge()
 				if table.search(po, '4Lives') then
 					list[2] = true
 				elseif table.search(po, '1Lives') then
-					list[3] = true
+					if getenv("RiskyMode") == 0 then
+						list[3] = true
+					else
+						list[4] = true
+					end
 				else
 					list[1] = true
 				end
 			elseif IsExtraStage1() then
 				if table.search(po, '1Lives') then
-					list[2] = true
+					if getenv('RiskyMode') == 0 then
+						list[2] = true
+					else
+						list[3] = true
+					end
 				else
 					list[1] = true
 				end
@@ -1051,23 +1059,38 @@ function Gauge()
 			if not IsAnExtraStage() then
 				if list[2] then
 					mod = '4 lives,battery,failimmediate'
+					setenv("RiskyMode",0)
 				elseif list[3] then
 					mod = '1 lives,battery,failimmediate'
+					setenv("RiskyMode",0)
+				elseif list[4] then
+					mod = '1 lives,battery,failimmediate'
+					setenv("RiskyMode",1)
 				else
 					mod = 'bar,failimmediate'
+					setenv("RiskyMode",0)
 				end
 			elseif IsExtraStage1() then
 				if list[2] then
 					mod = '1 lives,battery,failimmediate'
+					setenv("RiskyMode",0)
+				elseif list[3] then
+					mod = '1 lives,battery,failimmediate'
+					setenv("RiskyMode",1)
 				else
 					mod = '4 lives,battery,failimmediate'
+					setenv("RiskyMode",0)
 				end
 			elseif IsExtraStage2() then
+				if list[2] then
+					setenv("RiskyMode",1)
+				end
 				mod = '1 lives,battery,failimmediate'
 			end
 			
 			if mod ~= '' then
 				GAMESTATE:ApplyPreferredModifiers(pn, mod)
+				SCREENMAN:SystemMessage(getenv("RiskyMode"))
 			end
 		end,
 	};

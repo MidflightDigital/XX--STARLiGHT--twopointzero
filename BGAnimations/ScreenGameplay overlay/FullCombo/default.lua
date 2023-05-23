@@ -36,7 +36,7 @@ end
 local FCCheck = {0,0}
 
 local function IsFullCombo()
-	if pss:FullCombo() or pss:FullComboOfScore('TapNoteScore_W4') then
+	if (pss:FullCombo() or pss:FullComboOfScore('TapNoteScore_W4')) and STATSMAN:GetCurStageStats():GetPlayerStageStats(pn):GetFailed() == false then
 		if pn == PLAYER_1 then FCCheck[1] = 1
 		else
 			FCCheck[2] = 1

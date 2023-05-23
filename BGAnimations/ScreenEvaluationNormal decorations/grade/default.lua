@@ -15,11 +15,13 @@ end
 
 local ring = Def.ActorFrame {};
 
-for _, pn in pairs(GAMESTATE:GetEnabledPlayers()) do
-	ring[#ring+1] = loadfile(THEME:GetPathB("ScreenEvaluationNormal","decorations/grade/fc_ring"))(pss)..{
-		InitCommand=function(s) s:xy(m "RingPNX",m "RingPNY") end,
-	};
-end;
+if pss:GetFailed() == false then
+	for _, pn in pairs(GAMESTATE:GetEnabledPlayers()) do
+		ring[#ring+1] = loadfile(THEME:GetPathB("ScreenEvaluationNormal","decorations/grade/fc_ring"))(pss)..{
+			InitCommand=function(s) s:xy(m "RingPNX",m "RingPNY") end,
+		};
+	end;
+end
 
 return Def.ActorFrame{
 	ring;

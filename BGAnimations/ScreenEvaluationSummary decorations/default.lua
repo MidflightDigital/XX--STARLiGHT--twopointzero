@@ -93,6 +93,7 @@ for i = StageCheck(), mStages do
 				end,
 			};
 			loadfile(THEME:GetPathB("ScreenEvaluationSummary","decorations/FullCombo"))()..{
+				Condition=pss:GetFailed() == false,
 				InitCommand=function(s)
 					s:xy(pn==PLAYER_1 and 210 or -210,30):visible(false)
 				end,

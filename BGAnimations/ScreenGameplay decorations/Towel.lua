@@ -28,6 +28,7 @@ local style = GAMESTATE:GetCurrentStyle();
 local styleType = ToEnumShortString(style:GetStyleType());
 
 local Options = GAMESTATE:GetPlayerState(pn):GetPlayerOptionsString('ModsLevel_Preferred');
+local poptions= GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred")
 
 local function InitCoverPos(self, player, pos, Mode, TwoCoverMode, Flip)
     local profileID = GetProfileIDForPlayer(player)
@@ -42,7 +43,7 @@ local function InitCoverPos(self, player, pos, Mode, TwoCoverMode, Flip)
 	end
 	
 	
-	if GAMESTATE:PlayerIsUsingModifier(player,'reverse') then
+	if poptions:Reverse() == 1 then
 		if Mode == "Hidden+" then
 			self:y(SCREEN_CENTER_Y+SCREEN_HEIGHT/2-selfy)
 		elseif Mode == "Sudden+" then
@@ -106,7 +107,7 @@ local function ControlCoverPos(self, params, player, Mode, TwoCoverMode)
 		end	
 		self:linear(0.1);
 		
-		if GAMESTATE:PlayerIsUsingModifier(player,'reverse') then
+		if poptions:Reverse() == 1 then
 			if Mode == "Hidden+" then
 				self:y(SCREEN_HEIGHT-selfy);
 			elseif Mode == "Sudden+" then
@@ -165,13 +166,13 @@ local function AppearancePlusMain(pn)
 	elseif MyValue == "Hidden+" then
 		
 		if GAMESTATE:GetCurrentStyle():GetStepsType()=="StepsType_Dance_Single" then
-			if not GAMESTATE:PlayerIsUsingModifier(player,'reverse') then
+			if poptions:Reverse() == 0 then
 				AddCoverLayer("CoverSingle", player, pos, "Hidden+",false,180);
 			else
 				AddCoverLayer("CoverSingle", player, pos, "Hidden+",false,0);
 			end
 		elseif GAMESTATE:GetCurrentStyle():GetStepsType()=="StepsType_Dance_Double" then
-			if not GAMESTATE:PlayerIsUsingModifier(player,'reverse') then
+			if poptions:Reverse() == 0 then
 				AddCoverLayer("CoverDouble", player, pos, "Hidden+",false,180);
 			else
 				AddCoverLayer("CoverDouble", player, pos, "Hidden+",false,0);
@@ -180,13 +181,13 @@ local function AppearancePlusMain(pn)
 	elseif MyValue == "Sudden+" then
 		
 		if GAMESTATE:GetCurrentStyle():GetStepsType()=="StepsType_Dance_Single" then
-			if not GAMESTATE:PlayerIsUsingModifier(player,'reverse') then
+			if poptions:Reverse() == 0 then
 				AddCoverLayer("CoverSingle", player, pos, "Sudden+",false,0);
 			else
 				AddCoverLayer("CoverSingle", player, pos, "Sudden+",false,180);
 			end
 		elseif GAMESTATE:GetCurrentStyle():GetStepsType()=="StepsType_Dance_Double" then
-			if not GAMESTATE:PlayerIsUsingModifier(player,'reverse') then
+			if poptions:Reverse() == 0 then
 				AddCoverLayer("CoverDouble", player, pos, "Sudden+",false,180);
 			else
 				AddCoverLayer("CoverDouble", player, pos, "Sudden+",false,0);
@@ -195,7 +196,7 @@ local function AppearancePlusMain(pn)
 	elseif MyValue == "Hidden+&Sudden+" then
 		
 		if GAMESTATE:GetCurrentStyle():GetStepsType()=="StepsType_Dance_Single" then
-			if not GAMESTATE:PlayerIsUsingModifier(player,'reverse') then
+			if poptions:Reverse() == 0 then
 				AddCoverLayer("CoverSingle", player, pos, "Hidden+",true,0);
 				AddCoverLayer("CoverSingle", player, pos, "Sudden+",true,180);
 			else
@@ -203,7 +204,7 @@ local function AppearancePlusMain(pn)
 				AddCoverLayer("CoverSingle", player, pos, "Hidden+",true,0);
 			end
 		elseif GAMESTATE:GetCurrentStyle():GetStepsType()=="StepsType_Dance_Double" then
-			if not GAMESTATE:PlayerIsUsingModifier(player,'reverse') then
+			if poptions:Reverse() == 0 then
 				AddCoverLayer("CoverDouble", player, pos, "Hidden+",true,0);
 				AddCoverLayer("CoverDouble", player, pos, "Sudden+",true,180);
 			else

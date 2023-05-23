@@ -1,28 +1,16 @@
 local pn = ...
 local short = ToEnumShortString(pn)
-
-local function CurrentNoteSkin()
-	local poptions = GAMESTATE:GetPlayerState(pn):GetPlayerOptionsArray('ModsLevel_Preferred')
-	local skins = NOTESKIN:GetNoteSkinNames()
-	for i=1,#poptions do
-		for j=1,#skins do
-			if string.lower(poptions[i]) == string.lower(skins[j]) then
-				return skins[j];
-			else
-				return ""
-			end
-		end
-	end
-end
-
+local poptions= GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred")
 
 return Def.ActorFrame {
 	-- Speed
 	Def.ActorFrame{
 		OnCommand=function(self)
 			self:x(-85)
-			if GAMESTATE:PlayerIsUsingModifier(pn,'1x') then self:visible(false)
-			else self:visible(true)
+			if poptions:ScrollSpeed() == 1 then
+				self:visible(false)
+			else 
+				self:visible(true)
 			end
 		end,
 		CodeMessageCommand=function(self, params)
@@ -46,7 +34,6 @@ return Def.ActorFrame {
 			OnCommand=function(s,p)
 				local speed = nil
 				local mode = nil
-				local poptions= GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred")
 				if poptions:MaxScrollBPM() > 0 then
 					speed=math.round(poptions:MaxScrollBPM())
 					mode="M"
@@ -66,11 +53,11 @@ return Def.ActorFrame {
 	Def.Sprite {
 		InitCommand=function(self)
 			self:x(-68);
-			if GAMESTATE:PlayerIsUsingModifier(pn,'boost') then
+			if poptions:Boost() ~= 0 then
 				self:Load(THEME:GetPathB("","_optionicon/"..short.."/boost_on"));
-			elseif GAMESTATE:PlayerIsUsingModifier(pn,'brake') then
+			elseif poptions:Brake() ~= 0 then
 				self:Load(THEME:GetPathB("","_optionicon/"..short.."/boost_brake"));
-			elseif GAMESTATE:PlayerIsUsingModifier(pn,'wave') then
+			elseif poptions:Wave() ~= 0 then
 				self:Load(THEME:GetPathB("","_optionicon/"..short.."/boost_wave"));
 			end;
 		end;
@@ -83,13 +70,21 @@ return Def.ActorFrame {
 	-- Appearance
 	Def.Sprite {
 		InitCommand=function(self)
+			local PlayerUID = PROFILEMAN:GetProfile(pn):GetGUID()  
+			local MyValue = ReadOrCreateAppearancePlusValueForPlayer(PlayerUID,MyValue);
 			self:x(-51);
-			if GAMESTATE:PlayerIsUsingModifier(pn,'hidden') then
-				self:Load(THEME:GetPathB("","_optionicon/"..short.."/appearance_hidden"));
-			elseif GAMESTATE:PlayerIsUsingModifier(pn,'sudden') then
-				self:Load(THEME:GetPathB("","_optionicon/"..short.."/appearance_sudden"));
-			elseif GAMESTATE:PlayerIsUsingModifier(pn,'stealth') then
+			if MyValue == "Hidden" then
+				self:Load(THEME:GetPathB("","_optionicon/"..short.."/appearance_hidden (doubleres).png"));
+			elseif MyValue == "Hidden+" then
+				self:Load(THEME:GetPathB("","_optionicon/"..short.."/appearance_hiddenplus (doubleres).png"));
+			elseif MyValue == "Sudden" then
+				self:Load(THEME:GetPathB("","_optionicon/"..short.."/appearance_sudden (doubleres).png"));
+			elseif MyValue == "Sudden+" then
+				self:Load(THEME:GetPathB("","_optionicon/"..short.."/appearance_hiddenplus (doubleres).png"));
+			elseif MyValue == "Stealth" then
 				self:Load(THEME:GetPathB("","_optionicon/"..short.."/appearance_stealth"));
+			elseif MyValue == "Hidden+&Sudden+" then
+				self:Load(THEME:GetPathB("","_optionicon/"..short.."/appearance_hiddensuddenplus (doubleres).png"));
 			end;
 		end;
 		PlayerJoinedMessageCommand=function(self, params)
@@ -102,13 +97,13 @@ return Def.ActorFrame {
 	Def.Sprite {
 		InitCommand=function(self)
 			self:x(-34);
-			if GAMESTATE:PlayerIsUsingModifier(pn,'mirror') then
+			if poptions:Mirror() then
 				self:Load(THEME:GetPathB("","_optionicon/"..short.."/turn_mirror"));
-			elseif GAMESTATE:PlayerIsUsingModifier(pn,'left') then
+			elseif poptions:Left() then
 				self:Load(THEME:GetPathB("","_optionicon/"..short.."/turn_left"));
-			elseif GAMESTATE:PlayerIsUsingModifier(pn,'right') then
+			elseif poptions:Right() then
 				self:Load(THEME:GetPathB("","_optionicon/"..short.."/turn_right"));
-			elseif GAMESTATE:PlayerIsUsingModifier(pn,'shuffle') then
+			elseif poptions:Shuffle() then
 				self:Load(THEME:GetPathB("","_optionicon/"..short.."/turn_shuffle"));
 			end;
 		end;
@@ -122,7 +117,7 @@ return Def.ActorFrame {
 	Def.Sprite {
 		InitCommand=function(self)
 			self:x(-17);
-			if GAMESTATE:PlayerIsUsingModifier(pn,'dark') then
+			if poptions:Dark() ~= 0 then
 				self:Load(THEME:GetPathB("","_optionicon/"..short.."/dark_on"));
 			end;
 		end;
@@ -136,7 +131,7 @@ return Def.ActorFrame {
 	Def.Sprite {
 		InitCommand=function(self)
 			self:x(0);
-			if GAMESTATE:GetPlayerState(pn):GetPlayerOptions('ModsLevel_Current'):Reverse() == 1 then
+			if poptions:Reverse() == 1 then
 				self:Load(THEME:GetPathB("","_optionicon/"..short.."/scroll_reverse"));
 			end;
 		end;
@@ -150,11 +145,11 @@ return Def.ActorFrame {
 	Def.Sprite {
 		InitCommand=function(self)
 			self:x(17);
-			if string.find(CurrentNoteSkin(),"flat") then
+			if string.find(poptions:NoteSkin(),"flat") then
 				self:Load(THEME:GetPathB("","_optionicon/"..short.."/arrow_flat"));
-			elseif string.find(CurrentNoteSkin(),"note") then
+			elseif string.find(poptions:NoteSkin(),"note") then
 				self:Load(THEME:GetPathB("","_optionicon/"..short.."/arrow_note"));
-			elseif string.find(CurrentNoteSkin(),"rainbow") then
+			elseif string.find(poptions:NoteSkin(),"rainbow") then
 				self:Load(THEME:GetPathB("","_optionicon/"..short.."/arrow_rainbow"));
 			end;
 		end;
@@ -168,7 +163,7 @@ return Def.ActorFrame {
 	Def.Sprite {
 		InitCommand=function(self)
 			self:x(34);
-			if GAMESTATE:PlayerIsUsingModifier(pn,'little') then
+			if poptions:Little() then
 				self:Load(THEME:GetPathB("","_optionicon/"..short.."/cut_on"));
 			end;
 		end;
@@ -182,7 +177,7 @@ return Def.ActorFrame {
 	Def.Sprite {
 		InitCommand=function(self)
 			self:x(51);
-			if GAMESTATE:PlayerIsUsingModifier(pn,'noholds') then
+			if poptions:NoHolds() then
 				self:Load(THEME:GetPathB("","_optionicon/"..short.."/freeze_arrow_off"));
 			end;
 		end;
@@ -196,7 +191,7 @@ return Def.ActorFrame {
 	Def.Sprite {
 		InitCommand=function(self)
 			self:x(68);
-			if GAMESTATE:PlayerIsUsingModifier(pn,'nojumps') then
+			if poptions:NoJumps() then
 				self:Load(THEME:GetPathB("","_optionicon/"..short.."/jump_off"));
 			end;
 		end;
@@ -210,7 +205,7 @@ return Def.ActorFrame {
 	Def.Sprite {
 		InitCommand=function(self)
 			self:x(85);
-			if GAMESTATE:PlayerIsUsingModifier(pn,'battery') 
+			if poptions:LifeSetting(1)
 				and GAMESTATE:GetPlayMode() ~= 'PlayMode_Oni' then			
 				self:Load(THEME:GetPathB("","_optionicon/"..short.."/Risky"));			
 			end;
