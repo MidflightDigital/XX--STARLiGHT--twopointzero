@@ -6,7 +6,7 @@ return Def.ActorFrame{
 	
     Def.Sprite{
         Texture=THEME:GetPathB("ScreenWithMenuElements","background/Default/background.mp4"),
-        InitCommand=function(s) s:setsize(SCREEN_WIDTH*2,SCREEN_HEIGHT):y(-300):diffuse(color("#cd22aa")):diffusetopedge(color("#bba500")) end,
+        InitCommand=function(s) s:setsize(SCREEN_WIDTH,SCREEN_HEIGHT/2):y(-300):diffusealpha(0.7) end,
 		CurrentSongChangedMessageCommand=function(s)
 			if screen == 'ScreenGameplay' then
 				s:position(0)
@@ -23,6 +23,11 @@ return Def.ActorFrame{
 				s:rate(1)
 			end
 		end,
+    },
+    Def.Quad{
+        InitCommand=function(s) s:setsize(SCREEN_WIDTH,SCREEN_HEIGHT):y(100):valign(1)
+            :diffuse(color("#cd22aa")):diffusetopedge(color("#bba500")):blend(Blend.Multiply)
+        end,
     },
     Def.Quad{
         InitCommand=function(s) s:setsize(SCREEN_WIDTH,SCREEN_WIDTH/2):y(100):valign(1):MaskSource() end,
