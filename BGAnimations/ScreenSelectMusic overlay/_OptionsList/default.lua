@@ -46,8 +46,11 @@ table.insert(fixedNS,"EXIT")
 
 local fixedChar = Characters.GetAllCharacterNames()
 table.insert(fixedChar, 1, "OFF")
-if #fixedChar > 0 then
+if #fixedChar > 1 and fixedChar[1] ~= "OFF" then
+    if SN3Debug then SCREENMAN:SystemMessage("Found "..#fixedChar.." characters!") end
     table.insert(fixedChar, 2, "RANDOM")
+else
+    if SN3Debug then SCREENMAN:SystemMessage("Found no characters! :<") end
 end
 table.insert(fixedChar, "EXIT")
 
@@ -425,7 +428,7 @@ if THEME:GetMetric("ScreenSelectMusic","UseOptionsList") then
                                 self:settext("Select\n"..Characters.GetAllCharacterNames()[params.Selection-1].. "\nas your dancer.")
                             elseif params.Selection == 0 then
                                 self:settext("Dancer is disabled.")
-                            elseif params.Selection == 1 then
+                            elseif params.Selection == 1 and (#fixedChar > 1 and fixedChar[1] ~= "OFF") then
                                 self:settext("A random dancer is selected.")
                             else
                                 self:settext("")

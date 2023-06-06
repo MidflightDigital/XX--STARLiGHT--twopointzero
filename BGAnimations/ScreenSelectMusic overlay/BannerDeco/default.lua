@@ -38,6 +38,152 @@ for pn in EnabledPlayers() do
 				end
 			end,
 		};
+    Def.BitmapText{
+			Font="_avenirnext lt pro bold/36px",
+			InitCommand=function(s) s:y(160):strokecolor(Color.Black) end,
+			SetCommand=function(s)
+				local song = GAMESTATE:GetCurrentSong()
+				local topscore = 0
+				if song then
+					local steps = GAMESTATE:GetCurrentSteps(pn)
+					if steps then
+						local profile, scorelist;
+						if PROFILEMAN:IsPersistentProfile(pn) then
+							profile = PROFILEMAN:GetProfile(pn)
+						else
+							profile = PROFILEMAN:GetMachineProfile()
+						end
+						scorelist = profile:GetHighScoreList(song,steps)
+						local scores = scorelist:GetHighScores()
+						if scores[1] then
+							if ThemePrefs.Get("ConvertScoresAndGrades") then
+								topscore = SN2Scoring.GetSN2ScoreFromHighScore(steps, scores[1])
+							else
+								topscore = scores[1]:GetScore()
+							end
+						end
+					end
+					if topscore ~= 0 then
+						local scorel3 = topscore%1000
+						local scorel2 = (topscore/1000)%1000
+						local scorel1 = (topscore/1000000)%1000000
+						s:visible(true):settextf("%01d"..",".."%03d"..",".."%03d",scorel1,scorel2,scorel3)
+					else
+						s:visible(false)
+					end;
+				else
+					s:settext(""):visible(false)
+				end
+			end,
+		};
+    Def.ActorFrame{
+		Name="FC Ring",
+		InitCommand=function(s) s:xy(20,120) end,
+		SetCommand=function(self)
+			local st=GAMESTATE:GetCurrentStyle():GetStepsType();
+			local song=GAMESTATE:GetCurrentSong();
+			if song then
+				local steps = GAMESTATE:GetCurrentSteps(pn);
+		  
+				if PROFILEMAN:IsPersistentProfile(pn) then
+					profile = PROFILEMAN:GetProfile(pn);
+					else
+					profile = PROFILEMAN:GetMachineProfile();
+				end;
+				local scorelist = profile:GetHighScoreList(song,steps);
+				assert(scorelist);
+				local scores = scorelist:GetHighScores();
+				assert(scores);
+				local topscore;
+				if scores[1] then
+					topscore = scores[1];
+					assert(topscore);
+					local misses = topscore:GetTapNoteScore("TapNoteScore_Miss")+topscore:GetTapNoteScore("TapNoteScore_CheckpointMiss")
+					local boos = topscore:GetTapNoteScore("TapNoteScore_W5")
+					local goods = topscore:GetTapNoteScore("TapNoteScore_W4")
+					local greats = topscore:GetTapNoteScore("TapNoteScore_W3")
+					local perfects = topscore:GetTapNoteScore("TapNoteScore_W2")
+					local marvelous = topscore:GetTapNoteScore("TapNoteScore_W1")
+					if (misses+boos) == 0 and scores[1]:GetScore() > 0 and (marvelous+perfects)>0 then
+						if (greats+perfects) == 0 then
+							self:diffuse(GameColor.Judgment["JudgmentLine_W1"]);
+							self:glowblink();
+							self:effectperiod(0.20);
+						elseif greats == 0 then
+							self:diffuse(GameColor.Judgment["JudgmentLine_W2"]);
+							self:glowshift();
+						elseif (misses+boos+goods) == 0 then
+							self:diffuse(GameColor.Judgment["JudgmentLine_W3"]);
+							self:stopeffect();
+						elseif (misses+boos) == 0 then
+							self:diffuse(GameColor.Judgment["JudgmentLine_W4"]);
+							self:stopeffect();
+						end;
+						self:diffusealpha(1);
+					else
+						self:diffusealpha(0);
+					end;
+				else
+					self:diffusealpha(0);
+				end;
+			else
+				self:diffusealpha(0);
+			end;
+		end;
+		Def.Sprite{
+			Texture=THEME:GetPathB("ScreenEvaluationNormal","decorations/grade/ring"),
+			InitCommand=function(self) self:zoom(0.3):spin():effectmagnitude(0,0,170) end;
+		},
+		Def.Sprite{
+			Texture=THEME:GetPathB("ScreenEvaluationNormal","decorations/grade/lines"),
+			InitCommand=function(self) self:zoom(0.3):spin():effectmagnitude(0,0,170) end;
+		},
+	};
+    Def.Quad{
+      InitCommand=function(s) s:y(110) end,
+		  SetCommand=function(self)
+			local song = GAMESTATE:GetCurrentSong()
+			local steps = GAMESTATE:GetCurrentSteps(pn)
+	  
+			local profile, scorelist;
+			local text = "";
+			if song and steps then
+			  local st = steps:GetStepsType();
+			  local diff = steps:GetDifficulty();
+	  
+			  if PROFILEMAN:IsPersistentProfile(pn) then
+				profile = PROFILEMAN:GetProfile(pn);
+			  else
+				profile = PROFILEMAN:GetMachineProfile();
+			  end;
+	  
+			  scorelist = profile:GetHighScoreList(song,steps)
+			  assert(scorelist);
+			  local scores = scorelist:GetHighScores();
+			  assert(scores);
+			  local topscore=0;
+			  if scores[1] then
+				topscore = SN2Scoring.GetSN2ScoreFromHighScore(steps, scores[1])
+			  end;
+	  
+			  local tier
+			  if scores[1] then
+				local tier = scores[1]:GetGrade();
+				if ThemePrefs.Get("ConvertScoresAndGrades") == true then
+					tier = SN2Grading.ScoreToGrade(topscore, diff)
+				end
+				if scores[1]:GetScore()>1  then
+				  self:LoadBackground(THEME:GetPathB("ScreenEvaluationNormal decorations/grade/GradeDisplayEval",ToEnumShortString(tier)));
+				  self:diffusealpha(1):zoom(0.15)
+				end;
+			  else
+				self:diffusealpha(0)
+			  end;
+			else
+			  self:diffusealpha(0)
+			end;
+		  end;
+		};
   };
   PS[#PS+1] = loadfile(THEME:GetPathB("ScreenSelectMusic","overlay/_ShockArrow/default.lua"))(pn)..{
     InitCommand=function(s)

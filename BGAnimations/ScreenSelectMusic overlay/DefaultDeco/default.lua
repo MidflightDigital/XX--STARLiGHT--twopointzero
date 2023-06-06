@@ -283,6 +283,69 @@ for pn in EnabledPlayers() do
 		["CurrentTrail"..ToEnumShortString(pn).."ChangedMessageCommand"]=function(s) s:queuecommand("Set") end,
 		["CurrentSteps"..ToEnumShortString(pn).."ChangedMessageCommand"]=function(s) s:queuecommand("Set") end,
 		CurrentCourseChangedMessageCommand=function(s) s:queuecommand("Set") end,
+		Def.ActorFrame{
+			Name="FC Ring",
+			InitCommand=function(s) s:xy(20,20) end,
+			SetCommand=function(self)
+				local st=GAMESTATE:GetCurrentStyle():GetStepsType();
+				local song=GAMESTATE:GetCurrentSong();
+				if song then
+					local steps = GAMESTATE:GetCurrentSteps(pn);
+			  
+					if PROFILEMAN:IsPersistentProfile(pn) then
+						profile = PROFILEMAN:GetProfile(pn);
+						else
+						profile = PROFILEMAN:GetMachineProfile();
+					end;
+					local scorelist = profile:GetHighScoreList(song,steps);
+					assert(scorelist);
+					local scores = scorelist:GetHighScores();
+					assert(scores);
+					local topscore;
+					if scores[1] then
+						topscore = scores[1];
+						assert(topscore);
+						local misses = topscore:GetTapNoteScore("TapNoteScore_Miss")+topscore:GetTapNoteScore("TapNoteScore_CheckpointMiss")
+						local boos = topscore:GetTapNoteScore("TapNoteScore_W5")
+						local goods = topscore:GetTapNoteScore("TapNoteScore_W4")
+						local greats = topscore:GetTapNoteScore("TapNoteScore_W3")
+						local perfects = topscore:GetTapNoteScore("TapNoteScore_W2")
+						local marvelous = topscore:GetTapNoteScore("TapNoteScore_W1")
+						if (misses+boos) == 0 and scores[1]:GetScore() > 0 and (marvelous+perfects)>0 then
+							if (greats+perfects) == 0 then
+								self:diffuse(GameColor.Judgment["JudgmentLine_W1"]);
+								self:glowblink();
+								self:effectperiod(0.20);
+							elseif greats == 0 then
+								self:diffuse(GameColor.Judgment["JudgmentLine_W2"]);
+								self:glowshift();
+							elseif (misses+boos+goods) == 0 then
+								self:diffuse(GameColor.Judgment["JudgmentLine_W3"]);
+								self:stopeffect();
+							elseif (misses+boos) == 0 then
+								self:diffuse(GameColor.Judgment["JudgmentLine_W4"]);
+								self:stopeffect();
+							end;
+							self:diffusealpha(1);
+						else
+							self:diffusealpha(0);
+						end;
+					else
+						self:diffusealpha(0);
+					end;
+				else
+					self:diffusealpha(0);
+				end;
+			end;
+			Def.Sprite{
+				Texture=THEME:GetPathB("ScreenEvaluationNormal","decorations/grade/ring"),
+				InitCommand=function(self) self:zoom(0.3):spin():effectmagnitude(0,0,170) end;
+			},
+			Def.Sprite{
+				Texture=THEME:GetPathB("ScreenEvaluationNormal","decorations/grade/lines"),
+				InitCommand=function(self) self:zoom(0.3):spin():effectmagnitude(0,0,170) end;
+			},
+		};
 		Def.Quad{
 		  SetCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong()

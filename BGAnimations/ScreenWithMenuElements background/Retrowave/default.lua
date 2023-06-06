@@ -74,6 +74,17 @@ return Def.ActorFrame{
         Texture="mountains",
         InitCommand=function(s) s:valign(1):y(100) end,
     },
+    Def.ActorFrame{
+        InitCommand=function(s)
+            s:diffuseshift():effectcolor1(Alpha(Color.White,0.5)):effectcolor2(Alpha(Color.White,0.2)):effectclock('beat'):effectoffset(0.2):effecttiming(0.6*2,0.2*2,0.2*2,0)
+        end,
+        Def.Sprite{
+            Texture="mountain glow",
+            InitCommand=function(s)
+                s:valign(1):y(100)
+            end,
+        },
+    };
     Def.Sprite{
         Texture="midline",
         InitCommand=function(s) s:y(100):blend(Blend.Add):diffuse(color("#d626b7")):diffusealpha(1) end,
