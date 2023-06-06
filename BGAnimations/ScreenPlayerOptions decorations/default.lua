@@ -23,7 +23,7 @@ end
 local t = Def.ActorFrame{
 	Def.Quad{
 		Condition=Var"LoadingScreen" == "ScreenPlayerOptionsPopup",
-		InitCommand=function(s) s:FullScreen():diffuse(Alpha(Color.Black,0)) end,
+		InitCommand=function(s) s:FullScreen():diffuse(Alpha(Color.Black,0)):draworder(-11) end,
 		OnCommand=function(s) s:smooth(0.3):diffusealpha(0.5) end,
 		OffCommand=function(s) s:smooth(0.3):diffusealpha(0) end,
 	},
