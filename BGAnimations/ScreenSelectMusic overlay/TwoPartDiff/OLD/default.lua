@@ -1,7 +1,7 @@
 --This file uses AddChildFromPath since I need to load as many actors as there are steps
 --Thus there are no constructors, it will just take the current song and display for as many
 --joined players. And do a lot of crazy stuff to handle two actorframes.
-local Y_SPACING = 140
+local X_SPACING = 300
 
 
 --local song = SONGMAN:FindSong("Ace For Aces")
@@ -38,7 +38,7 @@ end
 local function adjustScrollerFrame(pn)
 	for i=1,numDiffs do
 		local is_focus = (i == selection[pn])
-		frame[pn]:GetChild(i):stoptweening():decelerate(.2):zoom(is_focus and 1.2 or 1):GetChild("Highlight"):visible(is_focus)
+		frame[pn]:GetChild(i):stoptweening():decelerate(.2):x((i-selection[pn])*X_SPACING):GetChild("Highlight"):visible(is_focus)
 	end;
 end;
 
@@ -48,7 +48,7 @@ local function genScrollerFrame(player)
 		local diff = steps:GetDifficulty();
 		f[i] = Def.ActorFrame{
 			Name=i;
-			InitCommand=function(s) s:y((i-center)*Y_SPACING) end,
+			InitCommand=function(s) s:x((i-center)*X_SPACING) end,
 			["OK"..player.."MessageCommand"]=function(s)
 				if i ~= selection[player] then
 					s:diffuse(color("0.3,0.3,0.3,1"))
@@ -76,9 +76,9 @@ local function genScrollerFrame(player)
 			Def.Sprite{
 				Texture="cursor";
 				Name="Highlight";
-				InitCommand=function(s) s:visible(i==selection[player]):diffuseramp():effectcolor1(Alpha(PlayerColor(player),0)):effectcolor2(Alpha(PlayerColor(player),1)):effectclock("beatnooffset") end,
+				InitCommand=function(s) s:visible(i==selection[player]):diffuseramp():effectcolor1(color("1,1,1,0")):effectcolor2(color("1,1,1,1")):effectclock("beatnooffset") end,
 				["OK"..player.."MessageCommand"]=function(s)
-					s:stopeffect():diffuse(PlayerColor(player))
+					s:stopeffect()
 				end,
 			};
 			Def.Sprite{
@@ -158,59 +158,6 @@ local function genScrollerFrame(player)
 	return f;
 end;
 
-local function RadarPanel(pn)
-    local GR = {
-        {-1,-122, "Stream"}, --STREAM
-        {-120,-43, "Voltage"}, --VOLTAGE
-        {-108,72, "Air"}, --AIR
-        {108,72, "Freeze"}, --FREEZE
-        {120,-43, "Chaos"}, --CHAOS
-    };
-    local t = Def.ActorFrame{
-		StartSelectingStepsMessageCommand=function(s) s:queuecommand("Set") end,
-		ChangeStepsMessageCommand=function(s) s:queuecommand("Set") end,
-	};
-    t[#t+1] = Def.ActorFrame{
-        Def.ActorFrame{
-            Name="Radar",
-            Def.Sprite{
-                Texture=THEME:GetPathB("ScreenSelectMusic","overlay/RadarHandler/GrooveRadar base.png"),
-            };
-            Def.Sprite{
-                Texture=THEME:GetPathB("ScreenSelectMusic","overlay/RadarHandler/sweep.png"),
-                InitCommand = function(s) s:zoom(1.35):spin():effectmagnitude(0,0,100) end,
-            };
-            create_ddr_groove_radar("radar",0,0,pn,125,Alpha(PlayerColor(pn),0.25));
-        };
-    };
-    for i,v in ipairs(GR) do
-        t[#t+1] = Def.ActorFrame{
-            InitCommand=function(s)
-                s:xy(v[1],v[2])
-            end;
-            Def.Sprite{
-                Texture=THEME:GetPathB("ScreenSelectMusic","overlay/RadarHandler/RLabels"),
-                InitCommand=function(s) s:animate(0):setstate(i-1) end,
-            };
-            Def.BitmapText{
-                Font="_avenirnext lt pro bold/20px";
-                SetCommand=function(s)
-                    local song = GAMESTATE:GetCurrentSong();
-                    if song then
-                        local steps = GAMESTATE:GetCurrentSteps(pn)
-                        local value = lookup_ddr_radar_values(song, steps, pn)[i]
-                        s:settext(math.floor(value*100+0.5))
-                    else
-                        s:settext("")
-                    end
-                    s:strokecolor(color("#1f1f1f")):y(28)
-                end,
-            };
-        };
-    end
-    return t
-end
-
 
 local keyset={false,false}
 
@@ -265,16 +212,17 @@ local t = Def.ActorFrame{
 	OffCommand=function(s)
 		s:playcommand("Remove")
 	end,
-	Def.Sprite{
-		Texture="base.png",
-		InitCommand=function(s) s:visible(false):Center() end,
-	}
 }
 
 for _,pn in pairs(GAMESTATE:GetEnabledPlayers()) do
 	t[#t+1] = Def.ActorFrame{
 		InitCommand=function(s)
-			s:xy(pn==PLAYER_1 and SCREEN_LEFT+(SCREEN_WIDTH/4.9) or SCREEN_RIGHT-(SCREEN_WIDTH/4.9),_screen.cy+30)
+			s:x(_screen.cx)
+			if GAMESTATE:GetNumPlayersEnabled() == 2 then
+				s:y(pn==PLAYER_1 and _screen.cy-200 or _screen.cy+200)
+			else
+				s:y(_screen.cy)
+			end
 		end,
 		ChangeStepsMessageCommand = function(_, param)
 			if param.Player ~= pn then return end
@@ -290,55 +238,29 @@ for _,pn in pairs(GAMESTATE:GetEnabledPlayers()) do
 			else return end
 			return MESSAGEMAN:Broadcast(msg..pn)
 		end,
+		Def.Sprite{ Texture="backer";
+			StartSelectingStepsMessageCommand=function(s) s:cropleft(0.5):cropright(0.5):decelerate(0.3):cropleft(0):cropright(0) end,
+			OffCommand=function(s) s:sleep(1.2):decelerate(0.3):cropleft(0.5):cropright(0.5) end,
+			RemoveCommand=function(s) s:sleep(0.2):decelerate(0.3):cropleft(0.5):cropright(0.5) end,
+		};
+		Def.Sprite{
+			Texture="controls",
+			InitCommand=function(s) s:y(-80) end,
+			StartSelectingStepsMessageCommand=function(s) s:cropleft(0.5):cropright(0.5):decelerate(0.3):cropleft(0):cropright(0) end,
+			OffCommand=function(s) s:sleep(1.2):decelerate(0.3):cropleft(0.5):cropright(0.5) end,
+			RemoveCommand=function(s) s:sleep(0.2):decelerate(0.3):cropleft(0.5):cropright(0.5) end,
+		},
 		genScrollerFrame(pn)..{
 			InitCommand=function(s)
 				frame[pn] = s;
 				adjustScrollerFrame(pn)
-				s:xy(pn==PLAYER_1 and 400 or -400,-40)
 			end,
-			StartSelectingStepsMessageCommand=function(s) s:addy(pn==PLAYER_1 and -SCREEN_HEIGHT*2 or SCREEN_HEIGHT*2)
-				:decelerate(1):addy(pn==PLAYER_1 and SCREEN_HEIGHT*2 or -SCREEN_HEIGHT*2)
+			StartSelectingStepsMessageCommand=function(s) s:addx(pn==PLAYER_1 and -SCREEN_WIDTH*2 or SCREEN_WIDTH*2)
+				:decelerate(1):addx(pn==PLAYER_1 and SCREEN_WIDTH*2 or -SCREEN_WIDTH*2)
 			end,
-			RemoveCommand=function(s) s:sleep(0.7):accelerate(1):addy(pn==PLAYER_1 and SCREEN_HEIGHT*2 or -SCREEN_HEIGHT*2) end,
+			OffCommand=function(s) s:sleep(1):decelerate(1):addx(pn==PLAYER_1 and SCREEN_WIDTH*2 or -SCREEN_WIDTH*2) end,
+			RemoveCommand=function(s) s:decelerate(1):addx(pn==PLAYER_1 and SCREEN_WIDTH*2 or -SCREEN_WIDTH*2) end,
 		};
-		Def.ActorFrame{
-			StartSelectingStepsMessageCommand=function(s) s:addx(pn==PLAYER_1 and -800 or 800):decelerate(0.5):addx(pn==PLAYER_1 and 800 or -800) end,
-			RemoveCommand=function(s) s:sleep(0.7):accelerate(1):addx(pn==PLAYER_1 and -800 or 800) end,
-			Def.ActorFrame{
-				Name="WINDOW FRAME",
-				InitCommand=function(s)
-					s:zoomx(pn==PLAYER_2 and -1 or 1)
-				end,
-				Def.Sprite{ Texture="WINDOW INNER";
-					InitCommand=function(s) s:diffuse(color("#333333")):y(14) end,
-				};
-				Def.Sprite{ Texture="WINDOW FRAME"};
-			};
-			Def.ActorFrame{
-				Name="DIFF HEADER",
-				--Blaze it
-				InitCommand=function(s) s:y(-420) end,
-				Def.Sprite{
-					Texture="Header Box",
-					InitCommand=function(s) s:zoomx(pn==PLAYER_2 and -1 or 1) end,
-				},
-				Def.Sprite{
-					Texture="Diff Text",
-				}
-			};
-			RadarPanel(pn)..{
-				InitCommand=function(s) s:diffusealpha(0) end,
-				StartSelectingStepsMessageCommand=function(s) s:sleep(0.4):smooth(0.1):diffusealpha(0.5)
-					:smooth(0.1):diffusealpha(0.3):decelerate(0.3):diffusealpha(1)
-				end,
-			};
-			loadfile(THEME:GetPathB("ScreenSelectMusic","overlay/TwoPartDiff/_Diff.lua"))(pn)..{
-				InitCommand=function(s) s:y(-360) end,
-				StartSelectingStepsMessageCommand=function(s) s:queuecommand("Set") end,
-				ChangeStepsMessageCommand=function(s) s:queuecommand("Set") end,
-			};
-		};
-		--Yes I'm loading a version of the diff list that literally only has the frame removed. Fight me.
 		Def.BitmapText{
 			Font="_avenirnext lt pro bold/25px",
 			Text="Please wait...",
@@ -353,5 +275,40 @@ for _,pn in pairs(GAMESTATE:GetEnabledPlayers()) do
 			end,
 		};
 	}
+	for i=1,2 do
+
+		local u = Def.Sprite{
+			Texture=THEME:GetPathG("","_shared/garrows/_selectarroww"),
+			InitCommand=function(s)
+				if GAMESTATE:GetNumPlayersEnabled() == 2 then
+					s:y(pn==PLAYER_1 and _screen.cy-200 or _screen.cy+200)
+				else
+					s:y(_screen.cy)
+				end
+				if i==2 then s:zoomx(-1) end
+				s:diffuse(color("#5bec19"))
+			end,
+			StartSelectingStepsMessageCommand=function(s)
+				s:diffusealpha(0):x(_screen.cx):sleep(0.2):decelerate(0.5):x(i==1 and SCREEN_LEFT+100 or SCREEN_RIGHT-100):diffusealpha(1)
+			end,
+			OffCommand=function(s) s:decelerate(0.2):x(i==1 and SCREEN_LEFT-100 or SCREEN_RIGHT+100) end,
+			RemoveCommand=function(s) s:playcommand("Off") end,
+		}
+
+		if i == 1 then
+			u["TwoDiffLeft"..pn.."MessageCommand"]=function(s)
+				s:finishtweening():diffuse(color("#f51a32"))
+				:decelerate(0.2):x(SCREEN_LEFT+80):decelerate(0.2):x(SCREEN_LEFT+100):sleep(0):diffuse(color("#5bec19"))
+			end
+		else
+			u["TwoDiffRight"..pn.."MessageCommand"]=function(s)
+				s:finishtweening():diffuse(color("#f51a32"))
+				:decelerate(0.2):x(SCREEN_RIGHT-80):decelerate(0.2):x(SCREEN_RIGHT-100):sleep(0):diffuse(color("#5bec19"))
+			end
+		end
+
+		t[#t+1] = u
+
+	end
 end
 return t;

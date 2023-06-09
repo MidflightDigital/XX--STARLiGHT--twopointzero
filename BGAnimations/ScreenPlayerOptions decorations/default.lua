@@ -110,14 +110,20 @@ for _,pn in ipairs(GAMESTATE:GetHumanPlayers()) do
 			local speed= nil
 			local mode= nil
 			if poptions:MaxScrollBPM() > 0 then
-				mode= "m"
+				mode= "M"
 				speed= math.round(poptions:MaxScrollBPM())
 			elseif poptions:TimeSpacing() > 0 then
 				mode= "C"
 				speed= math.round(poptions:ScrollBPM())
-			else
+			elseif poptions:AverageScrollBPM() > 0 then
+				mode= "A"
+				speed= math.round(poptions:AverageScrollBPM())
+			elseif poptions:XMod() > 0 then
 				mode= "x"
 				speed= math.round(poptions:ScrollSpeed() * 100)
+			else
+				mode= "what"
+				speed= 69
 			end
 			-- Courses don't have GetDisplayBpms.
 			if GAMESTATE:GetCurrentSong() then
@@ -145,15 +151,24 @@ for _,pn in ipairs(GAMESTATE:GetHumanPlayers()) do
 			elseif mode == "C" then
 				text= mode .. speed
 				no_change= speed == song_bpms[2] and song_bpms[1] == song_bpms[2]
-			else
+			elseif mode == "M" then
 				no_change= speed == song_bpms[2]
 				if song_bpms[1] == song_bpms[2] then
 					text= mode .. speed
 				else
 					local factor= song_bpms[1] / song_bpms[2]
-					text= mode .. format_bpm(speed * factor) .. " - "
-						.. mode .. speed
+					text= format_bpm(speed * factor) .. " - " .. speed
 				end
+			elseif mode == "A" then 
+				no_change= speed == song_bpms[2]
+				if song_bpms[1] == song_bpms[2] then
+					text= mode .. speed
+				else
+					local factor= math.average({song_bpms[1], song_bpms[2]})
+					text= speed .. " - " .. format_bpm(factor)
+				end
+			else
+				text = "??? What speed mod are you using? Like. Actually."
 			end
 			if GAMESTATE:IsCourseMode() then
 				if mode == "x" then

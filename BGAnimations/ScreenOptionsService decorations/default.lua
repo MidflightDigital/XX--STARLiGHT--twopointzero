@@ -38,7 +38,7 @@ t[#t+1] = Def.ActorFrame{
 	Def.BitmapText{
 		Font="Common normal",
 		InitCommand=function(s)
-			s:xy(SCREEN_RIGHT,SCREEN_TOP+80):halign(1):settext(VersionDate().."\n"..ProductVersion()):diffusealpha(0.5)
+			s:xy(SCREEN_RIGHT,SCREEN_TOP+80):halign(1):settext(ProductID().."\n"..VersionDate().."\n"..ProductVersion()):diffusealpha(0.5)
 		end,
 	};
 	Def.Sprite{

@@ -7,7 +7,7 @@ return Def.ActorFrame {
 	Def.ActorFrame{
 		OnCommand=function(self)
 			self:x(-85)
-			if poptions:ScrollSpeed() == 1 then
+			if poptions:ScrollSpeed() == 1 and poptions:XMod() ~= nil then
 				self:visible(false)
 			else 
 				self:visible(true)
@@ -34,11 +34,11 @@ return Def.ActorFrame {
 			OnCommand=function(s,p)
 				local speed = nil
 				local mode = nil
-				if poptions:MaxScrollBPM() > 0 then
-					speed=math.round(poptions:MaxScrollBPM())
+				if poptions:MMod() ~= nil then
+					speed=math.round(poptions:MMod())
 					mode="M"
-				elseif poptions:TimeSpacing() > 0 then
-					speed=math.round(poptions:ScrollBPM())
+				elseif poptions:CMod() ~= nil then
+					speed=math.round(poptions:CMod())
 					mode="C"
 				else
 					speed=poptions:ScrollSpeed()
@@ -203,11 +203,12 @@ return Def.ActorFrame {
 	};
 	-- Risky
 	Def.Sprite {
+		Texture=THEME:GetPathB("","_optionicon/"..short.."/Risky"),
 		InitCommand=function(self)
-			self:x(85);
+			self:x(85):visible(false);
 			if poptions:LifeSetting(1)
 				and GAMESTATE:GetPlayMode() ~= 'PlayMode_Oni' then			
-				self:Load(THEME:GetPathB("","_optionicon/"..short.."/Risky"));			
+				self:visible(true)		
 			end;
 		end;
 		PlayerJoinedMessageCommand=function(self, params)

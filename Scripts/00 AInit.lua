@@ -6,9 +6,12 @@ function getenv(name)
 	return env[name]
 end
 
-function setenv(name, value)
-	local env = GAMESTATE:Env()
-	env[name] = value
+function math.average(t)
+	local sum = 0
+	for _,v in pairs(t) do -- Get the sum of all numbers in t
+	  sum = sum + v
+	end
+	return sum / #t
 end
 
 function IsMeterDec(meter)
