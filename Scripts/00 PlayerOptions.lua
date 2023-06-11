@@ -1019,7 +1019,7 @@ function StepsListing()
 	return t
 end
 
-function Gauge()
+--[[function Gauge()
 	local choice_names = {'Normal', 'Life4', 'Risky', 'Risky+'}
 
 	if not GAMESTATE:IsCourseMode() then
@@ -1148,6 +1148,75 @@ function Gauge()
 				end
 				poptions:LifeSetting(1)
 				poptions:BatteryLives(1)
+			end
+		end,
+	};
+	setmetatable(t, t)
+	return t
+end]]
+
+function Gauge()
+	local choice_names = {'Normal', 'Life4', 'Risky'}
+
+	if not GAMESTATE:IsCourseMode() then
+		if IsExtraStage1() then 
+			choice_names = {'Life4', 'Risky'}
+		elseif IsExtraStage2() then
+			choice_names = {'Risky'}
+		end
+	end
+	
+	local t = {
+		Name="Gauge",
+		LayoutType = "ShowAllInRow",
+		SelectType = "SelectOne",
+		OneChoiceForAllPlayers = false,
+		ExportOnChange = true,
+		Choices = choice_names,
+		LoadSelections = function(self, list, pn)
+			local po = GAMESTATE:GetPlayerState(pn):GetPlayerOptionsArray("ModsLevel_Preferred")
+			
+			if not IsAnExtraStage() then
+				if table.search(po, '4Lives') then
+					list[2] = true
+				elseif table.search(po, '1Lives') then
+					list[3] = true
+				else
+					list[1] = true
+				end
+			elseif IsExtraStage1() then
+				if table.search(po, '1Lives') then
+					list[2] = true
+				else
+					list[1] = true
+				end
+			else
+				list[1] = true
+			end
+		end,
+		SaveSelections = function(self, list, pn)
+			local mod = ''
+			
+			if not IsAnExtraStage() then
+				if list[2] then
+					mod = '4 lives,battery,failimmediate'
+				elseif list[3] then
+					mod = '1 lives,battery,failimmediate'
+				else
+					mod = 'bar,failimmediate'
+				end
+			elseif IsExtraStage1() then
+				if list[2] then
+					mod = '1 lives,battery,failimmediate'
+				else
+					mod = '4 lives,battery,failimmediate'
+				end
+			elseif IsExtraStage2() then
+				mod = '1 lives,battery,failimmediate'
+			end
+			
+			if mod ~= '' then
+				GAMESTATE:ApplyPreferredModifiers(pn, mod)
 			end
 		end,
 	};
