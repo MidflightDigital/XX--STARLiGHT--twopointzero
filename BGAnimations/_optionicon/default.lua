@@ -1,6 +1,7 @@
 local pn = ...
 local short = ToEnumShortString(pn)
 local poptions= GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred")
+local soptions = GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Song")
 
 return Def.ActorFrame {
 	-- Speed
@@ -206,9 +207,11 @@ return Def.ActorFrame {
 		Texture=THEME:GetPathB("","_optionicon/"..short.."/Risky"),
 		InitCommand=function(self)
 			self:x(85):visible(false);
-			if poptions:LifeSetting(1)
-				and GAMESTATE:GetPlayMode() ~= 'PlayMode_Oni' then			
-				self:visible(true)		
+			--SCREENMAN:SystemMessage(poptions:LifeSetting()..","..soptions:LifeSetting())
+			if (poptions:LifeSetting(1) or soptions:LifeSetting(1)) then			
+				self:visible(true)
+				--SCREENMAN:SystemMessage("Risky is being shown.", poptions:LifeSetting()..","..soptions:LifeSetting())
+
 			end;
 		end;
 		PlayerJoinedMessageCommand=function(self, params)

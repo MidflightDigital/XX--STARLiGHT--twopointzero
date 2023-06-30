@@ -1155,7 +1155,7 @@ end
 	return t
 end]]
 
-function Gauge()
+function OldGauge()
 	local choice_names = {'Normal', 'Life4', 'Risky'}
 
 	if not GAMESTATE:IsCourseMode() then
@@ -1223,6 +1223,88 @@ function Gauge()
 	setmetatable(t, t)
 	return t
 end
+
+function Gauge()
+	local choice_names = {'Normal', 'Life4', 'Risky', 'Risky+'}
+
+	if not GAMESTATE:IsCourseMode() then
+		if IsExtraStage1() then 
+			choice_names = {'Life4', 'Risky'}
+		elseif IsExtraStage2() then
+			choice_names = {'Risky'}
+		end
+	end
+	
+	local t = {
+		Name="Gauge",
+		LayoutType = "ShowAllInRow",
+		SelectType = "SelectOne",
+		OneChoiceForAllPlayers = false,
+		ExportOnChange = true,
+		Choices = choice_names,
+		LoadSelections = function(self, list, pn)
+			local po = GAMESTATE:GetPlayerState(pn):GetPlayerOptionsArray("ModsLevel_Preferred")
+			local poptions = GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred")
+			SCREENMAN:SystemMessage(poptions:LifeSetting()..","..poptions:BatteryLives())
+			if not IsAnExtraStage() then
+				if poptions:LifeSetting() == "LifeType_Battery" and poptions:BatteryLives() == 4 then 
+					list[2] = true
+				elseif poptions:LifeSetting() == "LifeType_Battery" and poptions:BatteryLives() == 1 then
+					if getenv("RiskyMode") == 1 then
+						list[4] = true
+					else
+						list[3] = true
+					end	
+				else
+					list[1] = true
+				end
+			elseif IsExtraStage1() then
+				if table.search(po, '1Lives') then
+					list[2] = true
+				else
+					list[1] = true
+				end
+			else
+				list[1] = true
+			end
+		end,
+		SaveSelections = function(self, list, pn)
+			local mod = ''
+			local poptions = GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred")
+			--if not IsAnExtraStage() then
+				if list[2] then
+					mod = '4 lives,battery'
+					setenv("RiskyMode",0)
+				elseif list[3] then
+					mod = '1 lives,battery'
+					setenv("RiskyMode",0)
+				elseif list[4] then
+					mod = '1 lives,battery'
+					setenv("RiskyMode",1)
+				else
+					mod = 'bar'
+					setenv("RiskyMode",0)
+				end
+			--[[elseif IsExtraStage1() then
+				if list[2] then
+					mod = '1 lives,battery,failimmediate'
+				else
+					mod = '4 lives,battery,failimmediate'
+				end
+			elseif IsExtraStage2() then
+				mod = '1 lives,battery,failimmediate'
+			end]]
+			
+			if mod ~= '' then
+				GAMESTATE:ApplyPreferredModifiers(pn, mod)
+				SCREENMAN:SystemMessage(GAMESTATE:GetPlayerState(pn):GetPlayerOptionsString("ModsLevel_Preferred"))
+			end
+		end,
+	};
+	setmetatable(t, t)
+	return t
+end
+
 
 function ListChooser()
 	local t = {

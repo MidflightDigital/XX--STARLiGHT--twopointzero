@@ -29,6 +29,8 @@ for pn in EnabledPlayers() do
     Def.BitmapText{
 			Font="CFBPMDisplay",
 			InitCommand=function(s) s:y(130):diffuse(color("#dff0ff")):strokecolor(color("#00baff")):maxwidth(200) end,
+			OnCommand=function(s) s:diffusealpha(0):zoomx(3):sleep(0.3):decelerate(0.3):diffusealpha(1):zoomx(1) end,
+			OffCommand=function(s) s:accelerate(0.3):zoomx(3):diffusealpha(0) end,
 			SetCommand=function(s)
 				if GAMESTATE:GetCurrentSong() and GAMESTATE:GetCurrentSteps(pn) then
           local sa = GAMESTATE:GetCurrentSteps(pn):GetAuthorCredit()
@@ -39,8 +41,11 @@ for pn in EnabledPlayers() do
 			end,
 		};
     Def.BitmapText{
+		Name="Score",
 			Font="_avenirnext lt pro bold/36px",
-			InitCommand=function(s) s:y(160):strokecolor(Color.Black) end,
+			InitCommand=function(s) s:y(220):strokecolor(Color.Black) end,
+			OnCommand=function(s) s:diffusealpha(0):zoomx(3):sleep(0.3):decelerate(0.3):diffusealpha(1):zoomx(1) end,
+			OffCommand=function(s) s:accelerate(0.3):zoomx(3):diffusealpha(0) end,
 			SetCommand=function(s)
 				local song = GAMESTATE:GetCurrentSong()
 				local topscore = 0
@@ -78,7 +83,9 @@ for pn in EnabledPlayers() do
 		};
     Def.ActorFrame{
 		Name="FC Ring",
-		InitCommand=function(s) s:xy(20,120) end,
+		InitCommand=function(s) s:xy(20,180) end,
+		OnCommand=function(s) s:diffusealpha(0):zoomx(3):sleep(0.3):decelerate(0.3):diffusealpha(1):zoomx(1) end,
+		OffCommand=function(s) s:accelerate(0.3):zoomx(3):diffusealpha(0) end,
 		SetCommand=function(self)
 			local st=GAMESTATE:GetCurrentStyle():GetStepsType();
 			local song=GAMESTATE:GetCurrentSong();
@@ -140,7 +147,9 @@ for pn in EnabledPlayers() do
 		},
 	};
     Def.Quad{
-      InitCommand=function(s) s:y(110) end,
+    	InitCommand=function(s) s:y(170):zoom(0.15) end,
+		OnCommand=function(s) s:diffusealpha(0):sleep(0.3):decelerate(0.3):diffusealpha(1) end,
+		OffCommand=function(s) s:accelerate(0.3):diffusealpha(0) end,
 		  SetCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong()
 			local steps = GAMESTATE:GetCurrentSteps(pn)
