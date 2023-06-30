@@ -206,12 +206,10 @@ return Def.ActorFrame {
 	Def.Sprite {
 		Texture=THEME:GetPathB("","_optionicon/"..short.."/Risky"),
 		InitCommand=function(self)
+			local po = GAMESTATE:GetPlayerState(pn):GetPlayerOptionsArray("ModsLevel_Preferred")
 			self:x(85):visible(false);
-			--SCREENMAN:SystemMessage(poptions:LifeSetting()..","..soptions:LifeSetting())
-			if (poptions:LifeSetting(1) or soptions:LifeSetting(1)) then			
+			if table.search(po, "1Lives") then		
 				self:visible(true)
-				--SCREENMAN:SystemMessage("Risky is being shown.", poptions:LifeSetting()..","..soptions:LifeSetting())
-
 			end;
 		end;
 		PlayerJoinedMessageCommand=function(self, params)
