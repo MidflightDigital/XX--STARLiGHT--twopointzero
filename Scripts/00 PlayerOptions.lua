@@ -1247,17 +1247,17 @@ function Gauge()
 			local poptions = GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred")
 			SCREENMAN:SystemMessage(poptions:LifeSetting()..","..poptions:BatteryLives())
 			if not IsAnExtraStage() then
-				if poptions:LifeSetting() == "LifeType_Battery" and poptions:BatteryLives() == 4 then 
-					list[2] = true
-				elseif poptions:LifeSetting() == "LifeType_Battery" and poptions:BatteryLives() == 1 then
+				if table.search(po, '4Lives') then
+					 list[2] = true
+				elseif table.search(po, "1Lives") then
 					if getenv("RiskyMode") == 1 then
 						list[4] = true
 					else
 						list[3] = true
-					end	
+					end
 				else
 					list[1] = true
-				end
+				end	
 			elseif IsExtraStage1() then
 				if table.search(po, '1Lives') then
 					list[2] = true
