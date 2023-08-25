@@ -2,6 +2,23 @@ TimingWindow = {}
 
 TimingWindow[#TimingWindow+1] = function()
 	return {
+		Name = "DDR Modern",
+		Timings = {
+			['TapNoteScore_W1']=0.0170, -- Marvelous
+			['TapNoteScore_W2']=0.0340, -- Perfect
+			['TapNoteScore_W3']=0.0840, -- Great
+			['TapNoteScore_W4']=0.1240, -- Good
+			['TapNoteScore_HitMine']=0.0900, -- Dunno this value, use Original.
+			['TapNoteScore_Attack']=0.1350, -- Dunno this value, use Original.
+			['TapNoteScore_Hold']=0.2500, -- Dunno this value, use Original.
+			['TapNoteScore_Roll']=0.5000, -- Dunno this value, use Original.
+			['TapNoteScore_Checkpoint']=0.1664, -- Dunno this value, use Original.
+		}
+	}
+end
+
+TimingWindow[#TimingWindow+1] = function()
+	return {
 		Name = "StepMania",
 		Timings= {
 			['TapNoteScore_W1']=0.0225,
@@ -14,23 +31,6 @@ TimingWindow[#TimingWindow+1] = function()
 			['TapNoteScore_Hold']=0.2500,
 			['TapNoteScore_Roll']=0.5000,
 			['TapNoteScore_Checkpoint']=0.1664,
-		}
-	}
-end
-
-TimingWindow[#TimingWindow+1] = function()
-	return {
-		Name = "DDR Modern",
-		Timings = {
-			['TapNoteScore_W1']=0.0170, -- Marvelous
-			['TapNoteScore_W2']=0.0340, -- Perfect
-			['TapNoteScore_W3']=0.0840, -- Great
-			['TapNoteScore_W4']=0.1240, -- Good
-			['TapNoteScore_HitMine']=0.0900, -- Dunno this value, use Original.
-			['TapNoteScore_Attack']=0.1350, -- Dunno this value, use Original.
-			['TapNoteScore_Hold']=0.2500, -- Dunno this value, use Original.
-			['TapNoteScore_Roll']=0.5000, -- Dunno this value, use Original.
-			['TapNoteScore_Checkpoint']=0.1664, -- Dunno this value, use Original.
 		}
 	}
 end
