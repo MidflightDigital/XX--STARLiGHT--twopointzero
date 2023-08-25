@@ -75,7 +75,7 @@ t[#t+1] = Def.ActorFrame{
     end,
     Def.Quad{
         InitCommand=function(s)
-            s:setsize(SCREEN_WIDTH/1.2,2):diffusealpha(0.5)
+            s:setsize(SCREEN_WIDTH/1.2,4):diffusealpha(0.5)
         end,
     },
     Def.SongMeterDisplay{
@@ -102,7 +102,7 @@ t[#t+1] = Def.ActorFrame{
             if song then
                 local secs = song:MusicLengthSeconds()
                 s:settext(SecondsToMMSS(secs)):diffusealpha(0.5)
-                s:halign(1):xy(SCREEN_WIDTH/2.4,10):zoom(0.75)
+                s:halign(1):xy(SCREEN_WIDTH/2.4,16):zoom(0.75)
             end
         end
     }
