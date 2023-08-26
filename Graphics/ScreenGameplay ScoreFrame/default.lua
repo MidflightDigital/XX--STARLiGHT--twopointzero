@@ -53,7 +53,8 @@ t[#t+1]=Def.ActorFrame{
 		self:x(xPosPlayer[short])
 		self:halign(pn=="PlayerNumber_P2" and 1 or 0)
 	end,
-	LoadActor("frame")..{
+	Def.Sprite{
+		Texture="frame",
 		InitCommand=function(s) s:zoomx(pn=="PlayerNumber_P2" and -1 or 1):halign(0):y(yval) end,
 	};
 	Def.ActorFrame{
@@ -66,7 +67,8 @@ t[#t+1]=Def.ActorFrame{
 				self:x(pn==PLAYER_2 and 21 or 0)
 			end;
 		end;
-		LoadActor("diffframe")..{
+		Def.Sprite{
+			Texture="diffframe",
 			OnCommand=function(self)
 				if GAMESTATE:PlayerIsUsingModifier(pn,'reverse') then
 					self:zoomy(-1)
@@ -154,7 +156,7 @@ t[#t+1]=Def.ActorFrame{
 };
 
 
-t[#t+1] = LoadActor("score_counter",pn);
+t[#t+1] = loadfile(THEME:GetPathG("ScreenGameplay","ScoreFrame/score_counter/default.lua"))(pn);
 
 end;
 

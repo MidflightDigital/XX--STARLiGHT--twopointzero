@@ -24,7 +24,7 @@ t[#t+1] = Def.ActorFrame {
 	Def.ActorFrame{
 		OnCommand=function(self)
 			self:finishtweening()
-		local seed = math.random(1,13);
+			local seed = math.random(1,13);
 			--seed breakdown:
 			--8-13: pattern 1, increasing start color
 			--2-7: pattern 2, increasing start color
@@ -53,22 +53,22 @@ t[#t+1] = Def.ActorFrame {
 		end;
 		Def.Sprite{
 			Texture=THEME:GetPathB("ScreenWithMenuElements","background/SN3/back"),
-			InitCommand=cmd(FullScreen);
+			InitCommand=function(s) s:FullScreen() end,
 		};
 		Def.Sprite{
 			Texture=THEME:GetPathB("ScreenWithMenuElements","background/SN3/honeyleft"),
-			InitCommand=cmd(CenterY;halign,0;x,SCREEN_LEFT;diffuse,color("1,1,1,0.1");blend,Blend.Add;zoom,1.7);
+			InitCommand=function(s) s:halign(0):xy(SCREEN_LEFT,_screen.cy):diffuse(Alpha(Color.White,0.1)):blend(Blend.Add):zoom(1.7) end,
 		};
 		Def.Sprite{
 			Texture=THEME:GetPathB("ScreenWithMenuElements","background/SN3/honeyright"),
-			InitCommand=cmd(CenterY;halign,1;x,SCREEN_RIGHT;diffuse,color("1,1,1,0.1");blend,Blend.Add;zoom,1.7);
+			InitCommand=function(s) s:halign(1):xy(SCREEN_RIGHT,_screen.cy):diffuse(Alpha(Color.White,0.1)):blend(Blend.Add):zoom(1.7) end,
 		};
 	};
 	Def.ActorFrame{
-	InitCommand=cmd(Center;blend,Blend.Add;;diffusealpha,0.6);
-	Def.Sprite{
-		Texture=THEME:GetPathB("ScreenWithMenuElements","background/SN3/stars"),
-			InitCommand=cmd(diffusealpha,0.3;fadetop,0.5;fadebottom,0.5;zoom,2.25);
+		InitCommand=function(s) s:Center():blend(Blend.Add):diffusealpha(0.6) end,
+		Def.Sprite{
+			Texture=THEME:GetPathB("ScreenWithMenuElements","background/SN3/stars"),
+			InitCommand=function(s) s:diffusealpha(0.3):fadetop(0.5):fadebottom(0.5):zoom(2.25) end,
 			OnCommand=function(self)
 				self:finishtweening()
 				local w = DISPLAY:GetDisplayWidth() / self:GetWidth();
@@ -79,31 +79,26 @@ t[#t+1] = Def.ActorFrame {
 		};
 		Def.Sprite{
 			Texture=THEME:GetPathB("ScreenWithMenuElements","background/SN3/flash"),
-			InitCommand=cmd(y,-50;x,-200;diffusealpha,0.5;zoom,2.25);
-			OnCommand=cmd(spin;effectmagnitude,0,0,50);
+			InitCommand=function(s) s:xy(-200,-50):diffusealpha(0.5):zoom(2.25):spin():effectmagnitude(0,0,50) end,
 		};
 		Def.Sprite{
 			Texture=THEME:GetPathB("ScreenWithMenuElements","background/SN3/left flash"),
-			InitCommand=function(s) s:zoom(2.25) end,
-			OnCommand=function(s) s:playcommand("Anim") end,
-			AnimCommand=cmd(finishtweening;diffusealpha,0;sleep,4;accelerate,0.2;diffusealpha,1;sleep,0.5;linear,1;diffusealpha,0;queuecommand,'Anim');
+			InitCommand=function(s) s:zoom(2.25):queuecommand("Anim") end,
+			AnimCommand=function(s) s:finishtweening():diffusealpha(0):sleep(4):accelerate(0.2):diffusealpha(1):sleep(0.5):linear(1):diffusealpha(0):queuecommand('Anim') end,
 		};
 		Def.Sprite{
 			Texture=THEME:GetPathB("ScreenWithMenuElements","background/SN3/right flash"),
-			InitCommand=function(s) s:zoom(2.25) end,
-			OnCommand=function(s) s:playcommand("Anim") end,
-			AnimCommand=cmd(finishtweening;diffusealpha,0;sleep,2;accelerate,0.2;diffusealpha,1;sleep,0.5;linear,1;diffusealpha,0;sleep,2;queuecommand,'Anim');
+			InitCommand=function(s) s:zoom(2.25):queuecommand("Anim") end,
+			AnimCommand=function(s) s:finishtweening():diffusealpha(0):sleep(2):accelerate(0.2):diffusealpha(1):sleep(0.5):linear(1):diffusealpha(0):sleep(2):queuecommand('Anim') end,
 		};
 		Def.Sprite{
 			Texture=THEME:GetPathB("ScreenWithMenuElements","background/SN3/round grid"),
-			InitCommand=cmd(setsize,1920,1080;diffusealpha,0.5;blend,Blend.Add;);
+			InitCommand=function(s) s:setsize(1920,1080):diffusealpha(0.5):blend(Blend.Add) end,
 		};
 		Def.Sprite{
 			Texture=THEME:GetPathB("ScreenWithMenuElements","background/SN3/middle flash"),
-			InitCommand=cmd(y,-240;CenterX;zoomx,SCREEN_WIDTH;fadetop,0.5;fadebottom,0.5);
-			OnCommand=function(s) s:playcommand("Anim") end,
-			AnimCommand=cmd(finishtweening;diffusealpha,0;blend,Blend.Add;;linear,2;diffusealpha,0.55;addy,SCREEN_HEIGHT;queuecommand,"Queue");
-			QueueCommand=cmd(diffusealpha,0;addy,-SCREEN_HEIGHT;sleep,4;queuecommand,"Anim");
+			InitCommand=function(s) s:xy(_screen.cx,-240):zoomx(SCREEN_WIDTH):fadetop(0.5):fadebottom(0.5):blend(Blend.Add):queuecommand("Anim") end,
+			AnimCommand=function(s) s:finishtweening():diffusealpha(0):linear(2):diffusealpha(0.55):addy(SCREEN_HEIGHT):diffusealpha(0):addy(-SCREEN_HEIGHT):sleep(4):queuecommand("Anim") end,
 		};
 	};
 };
@@ -114,28 +109,31 @@ t[#t+1] = Def.ActorFrame{
 	end;
 	Def.ActorFrame{
 		Def.ActorFrame{
-			InitCommand=cmd(rotationx,12;rotationz,22);
-			LoadActor("SuperNovaFogBall.txt")..{
-				InitCommand=cmd(diffusealpha,0.25;blend,Blend.Add;zoom,45;spin;effectmagnitude,0,80,0);
+			InitCommand=function(s) s:rotationx(12):rotationz(22) end,
+			Def.Model{
+				Materials="SuperNovaFogBall.txt",
+				Meshes="SuperNovaFogBall.txt",
+				Bones="SuperNovaFogBall.txt",
+				InitCommand=function(s) s:diffusealpha(0.25):blend(Blend.Add):zoom(45):spin():effectmagnitude(0,80,0) end,
 			};
-			LoadActor("2ndSuperNovaFogBall.txt")..{
-				InitCommand=cmd(diffusealpha,0.25;blend,Blend.Add;zoom,45;spin;effectmagnitude,0,-80,0);
+			Def.Model{
+				Materials="2ndSuperNovaFogBall.txt",
+				Meshes="2ndSuperNovaFogBall.txt",
+				Bones="2ndSuperNovaFogBall.txt",
+				InitCommand=function(s) s:diffusealpha(0.25):blend(Blend.Add):zoom(45):spin():effectmagnitude(0,-80,0) end,
 			};
 		};
 		Def.Sprite{
 			Texture=THEME:GetPathB("ScreenWithMenuElements","background/SN3/ring.png"),
-			InitCommand=cmd(queuecommand,"Anim");
-			AnimCommand=cmd(finishtweening;blend,Blend.Add;diffusealpha,0.5;rotationx,75;rotationy,-60;zoom,5;spin;effectmagnitude,0,0,75);
+			InitCommand=function(s) s:blend(Blend.Add):diffusealpha(0.5):rotationx(75):rotationy(-60):zoom(5):spin():effectmagnitude(0,0,75) end,
 		};
 		Def.Sprite{
 			Texture=THEME:GetPathB("ScreenWithMenuElements","background/SN3/ring.png"),
-			InitCommand=cmd(queuecommand,"Anim");
-			AnimCommand=cmd(finishtweening;blend,Blend.Add;diffusealpha,0.5;rotationx,85;rotationy,-15;zoom,5;spin,effectmagnitude,0,0,75);
+			InitCommand=function(s) s:blend(Blend.Add):diffusealpha(0.5):rotationx(85):rotationy(-15):zoom(5):spin():effectmagnitude(0,0,75) end,
 		};
 		Def.Sprite{
 			Texture=THEME:GetPathB("ScreenWithMenuElements","background/SN3/ring 2.png"),
-			InitCommand=cmd(queuecommand,"Anim");
-			AnimCommand=cmd(finishtweening;blend,Blend.Add;diffusealpha,1;rotationx,83;rotationy,10;zoom,5;spin,effectmagnitude,0,0,-75);
+			InitCommand=function(s) s:blend(Blend.Add):diffusealpha(0.5):rotationx(83):rotationy(-10):zoom(5):spin():effectmagnitude(0,0,-75) end,
 		};
 	};
 };
@@ -146,27 +144,24 @@ t[#t+1] = Def.ActorFrame{
 	end;
 	Def.Sprite{
 		Texture=THEME:GetPathB("ScreenWithMenuElements","background/SN3/meter 1 (stretch).png"),
-		InitCommand=cmd(CenterX;y,SCREEN_CENTER_Y+20;zoomtowidth,SCREEN_WIDTH;zoomtoheight,SCREEN_HEIGHT);
+		InitCommand=function(s) s:xy(_screen.cx,_screen.cy+20):zoomto(SCREEN_WIDTH,SCREEN_HEIGHT):blend(Blend.Add):rotationz(180) end,
 		OnCommand=function(self)
 			self:finishtweening()
 			local w = DISPLAY:GetDisplayWidth() / self:GetWidth();
 			local h = DISPLAY:GetDisplayHeight() / self:GetHeight();
 			self:customtexturerect(0,0,w*0.5,h*0.5);
-			self:rotationz(180)
 			self:texcoordvelocity(-0.2,0);
-			self:blend(Blend.Add);
 		end;
 	};
 	Def.Sprite{
 		Texture=THEME:GetPathB("ScreenWithMenuElements","background/SN3/meter 1 (stretch).png"),
-		InitCommand=cmd(CenterX;y,SCREEN_CENTER_Y-20;zoomtowidth,SCREEN_WIDTH;zoomtoheight,SCREEN_HEIGHT);
+		InitCommand=function(s) s:xy(_screen.cx,_screen.cy-20):zoomto(SCREEN_WIDTH,SCREEN_HEIGHT):blend(Blend.Add) end,
 		OnCommand=function(self)
 			self:finishtweening()
 			local w = DISPLAY:GetDisplayWidth() / self:GetWidth();
 			local h = DISPLAY:GetDisplayHeight() / self:GetHeight();
 			self:customtexturerect(0,0,w*0.5,h*0.5);
 			self:texcoordvelocity(-0.2,0);
-			self:blend(Blend.Add);
 		end;
 	};
 };
@@ -174,7 +169,7 @@ t[#t+1] = Def.ActorFrame{
 t[#t+1] = Def.ActorFrame{
 	Def.Sprite{
 		Texture=THEME:GetPathB("ScreenWithMenuElements","background/SN3/scan"),
-		InitCommand=cmd(FullScreen;blend,Blend.Add;;diffusealpha,0.25);
+		InitCommand=function(s) s:FullScreen():blend(Blend.Add):diffusealpha(0.25) end,
 	};
 }
 

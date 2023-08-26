@@ -12,8 +12,11 @@ local t = Def.ActorFrame{};
 t[#t+1] = Def.ActorFrame{
     OnCommand=function(s) s:zoom(0):rotationz(-360):decelerate(0.4):zoom(1):rotationz(0) end,
     OffCommand=function(s) s:sleep(0.3):decelerate(0.3):rotationz(-360):zoom(0) end,
-    LoadActor("GrooveRadar base");
-    LoadActor("sweep") .. {
+    Def.Sprite{
+        Texture="GrooveRadar base",
+    };
+    Def.Sprite{
+        Texture="sweep",
         InitCommand = function(s) s:zoom(1.275):spin():effectmagnitude(0,0,100) end,
     };
     create_ddr_groove_radar("radar",0,0,pn,125,Alpha(PlayerColor(pn),0.25));

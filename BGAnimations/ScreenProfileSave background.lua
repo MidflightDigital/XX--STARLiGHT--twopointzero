@@ -1,10 +1,11 @@
 return Def.ActorFrame {
-	LoadActor( THEME:GetPathB('ScreenSelectMusicExtra', 'background/EXMovie.mp4') ) .. {
+	Def.Sprite{
+		Texture=THEME:GetPathB('ScreenSelectMusicExtra', 'background/EXMovie.mp4'),
 		Condition=GetExtraStage(),
 		InitCommand=function(s) s:Center() end,
 		OnCommand=function(s) s:play() end,
 	},
-	LoadActor( 'ScreenWithMenuElements background' ) .. {
+	loadfile(THEME:GetPathB("","ScreenWithMenuElements background"))(){
 		Condition=not GetExtraStage(),
 	},
 }

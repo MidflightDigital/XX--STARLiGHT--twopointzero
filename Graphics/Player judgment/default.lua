@@ -99,7 +99,11 @@ local t = Def.ActorFrame {
 	end;
 };
 
-t[#t+1] = LoadActor("Judgment 1x6") .. {
+local profileID = GetProfileIDForPlayer(player)
+local pPrefs = ProfilePrefs.Read(profileID)
+
+t[#t+1] = Def.Sprite{
+	Texture=pPrefs.Judgment.." 1x6",
 	Name="Judgment";
 	InitCommand=function(s) s:pause():visible(false) end,
 	OnCommand=THEME:GetMetric("Judgment","JudgmentOnCommand");
@@ -108,7 +112,8 @@ t[#t+1] = LoadActor("Judgment 1x6") .. {
 
 
 if showBias == true then
-	t[#t+1] = LoadActor("Deviation 1x2") .. {
+	t[#t+1] = Def.Sprite{
+		Texture="Deviation 1x2",
 		Name="Bias";
 		InitCommand=function(s) s:pause():visible(false) end,
 		OnCommand=THEME:GetMetric("Judgment","JudgmentBiasOnCommand");

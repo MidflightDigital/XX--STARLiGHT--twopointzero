@@ -1,4 +1,5 @@
-return LoadActor("TickThumb")..{
+return Def.Sprite{
+	Texture="TickThumb",
 	InitCommand=function(s)
 		if GAMESTATE:IsCourseMode() == false then
 			if ThemePrefs.Get("WheelType") == "A" or ThemePrefs.Get("WheelType") == "Wheel" then

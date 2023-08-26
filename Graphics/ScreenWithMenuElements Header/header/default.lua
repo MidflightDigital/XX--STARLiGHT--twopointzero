@@ -5,15 +5,19 @@ if screen == "ScreenSelectMusicExtra" then
   pf = "ex "
 end
 
-local t = Def.ActorFrame{
-  LoadActor(pf.."under mult.png")..{
+return Def.ActorFrame{
+  Def.Sprite{
+    Texture=pf.."under mult.png",
     InitCommand=function(s) s:blend(Blend.Subtract):y(-10) end,
   };
-  LoadActor(pf.."base");
+  Def.Sprite{
+    Texture=pf.."base",
+  };
   Def.ActorFrame{
     OnCommand=function(s) s:sleep(0.8):queuecommand("Anim") end,
     AnimCommand=function(s) s:diffuseshift():effectcolor1(color("1,1,1,1")):effectcolor2(color("1,1,1,0.75")):effectperiod(1.5) end,
-    LoadActor(pf.."side glows.png")..{
+    Def.Sprite{
+      Texture=pf.."side glows.png",
       InitCommand=function(s) s:y(-40) end,
       OnCommand=function(s)
         if screen ~= "ScreenSelectProfilePrefs" then
@@ -21,7 +25,8 @@ local t = Def.ActorFrame{
         end
       end,
     };
-    LoadActor(pf.."center glows.png")..{
+    Def.Sprite{
+      Texture=pf.."center glows.png",
       InitCommand=function(s) s:y(-40) end,
       OnCommand=function(s) 
         if screen ~= "ScreenSelectProfilePrefs" then
@@ -36,7 +41,8 @@ local t = Def.ActorFrame{
         s:diffusealpha(0):sleep(0.3):decelerate(0.5):diffusealpha(1)
       end
     end,
-    LoadActor(pf.."arrow")..{
+    Def.Sprite{
+      Texture=pf.."arrow",
       InitCommand=function(s) s:y(-40) end,
       OnCommand=function(s)
         if screen ~= "ScreenSelectProfilePrefs" then
@@ -46,5 +52,3 @@ local t = Def.ActorFrame{
     };
   };
 };
-
-return t

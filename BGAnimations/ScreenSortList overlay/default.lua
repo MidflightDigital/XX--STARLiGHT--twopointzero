@@ -106,8 +106,11 @@ local function MakeItem(sortorders, idx)
 					return
 				end
 			end,
-			LoadActor("TAB.png");
-			LoadActor("TABInsert.png")..{
+			Def.Sprite{
+				Texture="TAB.png",
+			};
+			Def.Sprite{
+				Texture="TABInsert.png",
 				InitCommand=function(s) s:diffuse(Color.Black) end,
 				GainFocusCommand=function(s) s:finishtweening():linear(0.1):diffuse(color("#01a2df")) end,
 				LoseFocusCommand=function(s) s:finishtweening():linear(0.1):diffuse(Color.Black) end,
@@ -121,12 +124,14 @@ local function MakeItem(sortorders, idx)
 			end,
 			GainFocusCommand=function(s) s:finishtweening():visible(true) end,
 			LoseFocusCommand=function(s) s:finishtweening():visible(false) end,
-			LoadActor(THEME:GetPathG("","_shared/arrows/arrowb"))..{
+			Def.Sprite{
+				Texture=THEME:GetPathG("","_shared/arrows/arrowb"),
 				InitCommand=function(s) s:x(-160)
 					s:bounce():effectclock("beat"):effectperiod(1):effectmagnitude(-10,0,0):effectoffset(0.2)
 				end,
 			},
-			LoadActor(THEME:GetPathG("","_shared/arrows/arrowb"))..{
+			Def.Sprite{
+				Texture=THEME:GetPathG("","_shared/arrows/arrowb"),
 				InitCommand=function(s) s:x(100):zoomx(-1)
 					s:bounce():effectclock("beat"):effectperiod(1):effectmagnitude(10,0,0):effectoffset(0.2)
 				end,
@@ -163,13 +168,16 @@ local t = Def.ActorFrame{
 		SCREENMAN:GetTopScreen():RemoveInputCallback(DDRInput(self))
 		SOUND:PlayOnce(THEME:GetPathS("_PHOTwON","back"))
 	end,
-	LoadActor("Backer")..{
+	Def.Sprite{
+		Texture="Backer",
 		OnCommand=function(s) s:y(-22):zoomy(0):decelerate(0.2):zoomy(1) end,
 	},
-	LoadActor("Header")..{
+	Def.Sprite{
+		Texture="Header",
 		OnCommand=function(s) s:valign(1):y(0):decelerate(0.2):y(-384) end,
 	},
-	LoadActor("Instruct")..{
+	Def.Sprite{
+		Texture="Instruct",
 		OnCommand=function(s) s:valign(0):y(0):decelerate(0.2):y(330) end,
 	},
 	Def.Quad{
@@ -201,8 +209,20 @@ local t = Def.ActorFrame{
 	}
 };
 
-t[#t+1] = LoadActor( THEME:GetPathS("", "MWChange/Default_MWC") )..{ Name="change_sound", SupportPan = false }
-t[#t+1] = LoadActor( THEME:GetPathS("", "player mine") )..{ Name="change_invalid", SupportPan = false }
-t[#t+1] = LoadActor( THEME:GetPathS("common", "start") )..{ Name="start_sound", SupportPan = false }
+t[#t+1] = Def.Sound{
+	File=THEME:GetPathS("", "MWChange/Default_MWC"),
+	Name="change_sound",
+	SupportPan = false
+}
+t[#t+1] = Def.Sound{
+	File=THEME:GetPathS("", "player mine"),
+	Name="change_invalid",
+	SupportPan = false
+}
+t[#t+1] = Def.Sound{
+	File=THEME:GetPathS("common", "start"),
+	Name="start_sound",
+	SupportPan = false
+}
 
 return t

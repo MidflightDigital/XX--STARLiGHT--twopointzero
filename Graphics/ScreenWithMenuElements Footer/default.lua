@@ -10,8 +10,11 @@ local out = Def.ActorFrame{
 	OffCommand = function(s)
 		s:accelerate(0.3):y(SCREEN_BOTTOM+140):diffusealpha(0):zoom(0.7)
 	end,
-  LoadActor("base");
-  LoadActor("side glow")..{
+  Def.Sprite{
+    Texture="base",
+  };
+  Def.Sprite{
+    Texture="side glow",
     InitCommand=function(s) s:y(0) end,
     OnCommand=function(s) 
       if screen ~= "ScreenSelectProfilePrefs" then
@@ -26,7 +29,8 @@ local out = Def.ActorFrame{
         s:diffusealpha(0):sleep(0.3):decelerate(0.5):diffusealpha(1)
       end
     end,
-    LoadActor("arrow")..{
+    Def.Sprite{
+      Texture="arrow",
       InitCommand=function(s) s:xy(1,-36) end,
       OnCommand=function(s) 
         if screen ~= "ScreenSelectProfilePrefs" then
@@ -38,7 +42,8 @@ local out = Def.ActorFrame{
 };
 
 if screenName then
-	table.insert(out,LoadActor("text/"..screenName..".png")..{
+	table.insert(out,Def.Sprite{
+    Texture="text/"..screenName..".png",
 		InitCommand=function(s) s:xy(0,26):diffusealpha(0) end,
     OnCommand=function(s)
       if screen ~= "ScreenSelectProfilePrefs" then

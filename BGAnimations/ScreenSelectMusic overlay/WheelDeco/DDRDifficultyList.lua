@@ -92,7 +92,8 @@ do
     local indicatorLabels = {}
     for _, pn in pairs(PlayerNumber) do
         --the initcommand here just prepares the things that are the same in both modes
-        local indicatorBackground = LoadActor("cursorglow")..{
+        local indicatorBackground = Def.Sprite{
+            Texture="cursorglow",
             Name='Background'..ToEnumShortString(pn),
             InitCommand=function(self) self:visible(false) end
         }
@@ -102,7 +103,8 @@ do
           end
             return IndicatorUpdate(self, pn)
         end)
-        local indicatorLabel = LoadActor(PlayerLabelName(pn))..{
+        local indicatorLabel = Def.Sprite{
+            Texture=PlayerLabelName(pn),
             Name='PlayerLabel',
             InitCommand=function(self) self:visible(false) end,
             PlayerJoinedMessageCommand=function(self,p)
@@ -142,9 +144,7 @@ for idx, diff in pairs(difficultiesToDraw) do
     --[[END DIFFICULTY LABEL]]
 
     --this has been moved into another file because it has to be reused.
-    local meterDisplay = LoadActor(THEME:GetPathG("_ScreenSelectMusic","MeterDisplay"),
-        {Difficulty=diff,PositionX=tickPos})
-
+    local meterDisplay = loadfile(THEME:GetPathG("_ScreenSelectMusic","MeterDisplay"))({Difficulty=diff,PositionX=tickPos})
     local element = Def.ActorFrame{
         Name = "Row"..diff,
         InitCommand = function(self) self:y( DiffToYPos(diff) ) end,

@@ -9,7 +9,8 @@ return Def.ActorFrame{
 			self:setsize(230,230)
 		end;
 	};
-	LoadActor(THEME:GetPathG("","_jackets/over.png"))..{
+	Def.Sprite{
+		Texture=THEME:GetPathG("","_jackets/over.png"),
 		InitCommand=function(s) s:visible(false) end,
 		SetMessageCommand=function(self,params)
 			local pt_text = params.Text;
@@ -24,7 +25,8 @@ return Def.ActorFrame{
 			self:setsize(230,230)
 		end;
 	};
-	LoadActor(THEME:GetPathG("","_jackets/glow.png"))..{
+	Def.Sprite{
+		Texture=THEME:GetPathG("","_jackets/glow.png"),
 		InitCommand=function(s) s:visible(false):blend(Blend.Add) end,
 		SetMessageCommand=function(self,params)
 			local pt_text = params.Text;

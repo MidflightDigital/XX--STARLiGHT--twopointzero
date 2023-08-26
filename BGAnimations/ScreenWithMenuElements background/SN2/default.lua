@@ -1,4 +1,5 @@
 local t = Def.ActorFrame{
+	OffCommand=function(s) s:stoptweening() end,
 };
 local p = {
 	red = color("1,0,0,0.812"),
@@ -22,115 +23,121 @@ t[#t+1] = Def.ActorFrame {
 		self:fov(130);
 	end;
 	Def.ActorFrame{
-		LoadActor("BG")..{
-			InitCommand=cmd(FullScreen);
-		OnCommand=function(self)
-		local seed = math.random(1,13);
-			--seed breakdown:
-			--8-13: pattern 1, increasing start color
-			--2-7: pattern 2, increasing start color
-			--1: rainbow
-			if seed > 1 then
-				if seed > 7 then
-					curPattern = 1
-					curPatternIdx = seed - 8
+		Def.Sprite{
+			Texture="BG",
+			InitCommand=function(s) s:FullScreen() end,
+			OnCommand=function(self)
+				local seed = math.random(1,13);
+				--seed breakdown:
+				--8-13: pattern 1, increasing start color
+				--2-7: pattern 2, increasing start color
+				--1: rainbow
+				if seed > 1 then
+					if seed > 7 then
+						curPattern = 1
+						curPatternIdx = seed - 8
+					else
+						curPattern = 2
+						curPatternIdx = seed - 2
+					end
+					self:diffuse(colorPatterns[curPattern][curPatternIdx])
+					self:queuecommand("Animate")
 				else
-					curPattern = 2
-					curPatternIdx = seed - 2
-				end
-				self:diffuse(colorPatterns[curPattern][curPatternIdx])
-				self:queuecommand("Animate")
-			else
-				self:rainbow();
-				self:effectperiod(120);
+					self:rainbow();
+					self:effectperiod(120);
+				end;
 			end;
-		end;
-		AnimateCommand = function(s)
-			--bump the current color to the next color in the pattern
-			curPatternIdx = (curPatternIdx + 1) % #(colorPatterns[curPattern])
-			s:linear(20)
-			:diffuse(colorPatterns[curPattern][curPatternIdx])
-			:queuecommand("Animate")
-		end;
-	};
+			AnimateCommand = function(s)
+				--bump the current color to the next color in the pattern
+				curPatternIdx = (curPatternIdx + 1) % #(colorPatterns[curPattern])
+				s:linear(20)
+				:diffuse(colorPatterns[curPattern][curPatternIdx])
+				:queuecommand("Animate")
+			end;
+		};
 	};
 	Def.ActorFrame{
-	InitCommand=cmd(x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y;spin;effectmagnitude,0,0,-4);
-	LoadActor("line") .. {
-		InitCommand=cmd(x,-550;zoomto,SCREEN_WIDTH*3,SCREEN_HEIGHT*10;rotationy,-80;customtexturerect,0,0,SCREEN_WIDTH*1.5/48,SCREEN_HEIGHT*1.5/96);
-		OnCommand=cmd(diffusealpha,0.4;texcoordvelocity,1.5,-0.02;effectperiod,4;blend,'BlendMode_Add';);
-		--bob;effectmagnitude,50,0,35;
+		InitCommand=function(s) s:Center():spin():effectmagnitude(0,0,-4) end,
+		Def.Sprite{
+			Texture="line",
+			InitCommand=function(s) s:x(-550):zoomto(SCREEN_WIDTH*3,SCREEN_HEIGHT*10):rotationy(-80):customtexturerect(0,0,SCREEN_WIDTH*1.5/48,SCREEN_HEIGHT*1.5/96):blend(Blend.Add) end,
+			OnCommand=function(s) s:diffusealpha(0.4):texcoordvelocity(1.5,-0.02):effectperiod(4) end,
+		};
+		Def.Sprite{
+			Texture="line",
+			InitCommand=function(s) s:xy(550,0):zoomto(SCREEN_WIDTH*3,SCREEN_HEIGHT*10):diffuse(ColorLightTone(color("#FFFFFF"))):rotationy(80):customtexturerect(0,0,SCREEN_WIDTH*1.5/48,SCREEN_HEIGHT*1.5/96):blend(Blend.Add) end,
+			OnCommand=function(s) s:diffusealpha(0.4):texcoordvelocity(-1.5,-0.02):effectperiod(4) end,
+		};
+		Def.Sprite{
+			Texture="decoration01",
+			InitCommand=function(s) s:x(-330):zoomto(SCREEN_WIDTH*30,SCREEN_HEIGHT*30):diffuse(ColorLightTone(color("#FFFFFF"))):rotationy(-85):customtexturerect(0,0,SCREEN_WIDTH*1.5/48,SCREEN_HEIGHT*1.5/96):blend(Blend.Add) end,
+			OnCommand=function(s) s:diffusealpha(0.4):texcoordvelocity(0.35,-0.02):effectperiod(4) end,
+		};
+		Def.Sprite{
+			Texture="decoration01",
+			InitCommand=function(s) s:x(330):zoomto(SCREEN_WIDTH*30,SCREEN_HEIGHT*30):diffuse(ColorLightTone(color("#FFFFFF"))):rotationy(85):customtexturerect(0,0,SCREEN_WIDTH*1.5/48,SCREEN_HEIGHT*1.5/96):blend(Blend.Add) end,
+			OnCommand=function(s) s:diffusealpha(0.4):texcoordvelocity(-0.35,-0.02):effectperiod(4) end,
+		};
 	};
-
-	LoadActor("line") .. {
-		InitCommand=cmd(x,550;y,0;zoomto,SCREEN_WIDTH*3,SCREEN_HEIGHT*10;diffuse,ColorLightTone(color("#FFFFFF"));rotationy,80;customtexturerect,0,0,SCREEN_WIDTH*1.5/48,SCREEN_HEIGHT*1.5/96);
-		OnCommand=cmd(diffusealpha,0.4;texcoordvelocity,-1.5,-0.02;effectperiod,4;blend,'BlendMode_Add';);
-		-- bob;effectmagnitude,50,0,35;
-	};
-	LoadActor("decoration01") .. {
-		InitCommand=cmd(x,-330;zoomto,SCREEN_WIDTH*30,SCREEN_HEIGHT*30;diffuse,ColorLightTone(color("#FFFFFF"));rotationy,-85;customtexturerect,0,0,SCREEN_WIDTH*1.5/48,SCREEN_HEIGHT*1.5/96);
-		OnCommand=cmd(diffusealpha,0.4;texcoordvelocity,0.35,-0.02;effectperiod,4;blend,'BlendMode_Add';);
-	};
-	LoadActor("decoration01") .. {
-		InitCommand=cmd(x,330;zoomto,SCREEN_WIDTH*30,SCREEN_HEIGHT*30;diffuse,ColorLightTone(color("#FFFFFF"));rotationy,85;customtexturerect,0,0,SCREEN_WIDTH*1.5/48,SCREEN_HEIGHT*1.5/96);
-		OnCommand=cmd(diffusealpha,0.4;texcoordvelocity,-0.35,-0.02;effectperiod,4;blend,'BlendMode_Add';);
-		--bob;effectmagnitude,50,0,35;
-	};
-};
 	Def.ActorFrame{
-		LoadActor("BoxBody") .. {
-			InitCommand=cmd(zbuffer,true;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y;z,-1000;zoom,40;rotationy,75;rotationx,0;diffusealpha,0.5;spin;effectmagnitude,35,10,20;blend,'BlendMode_Add');
+		InitCommand=function(s) s:Center() end,
+		Def.Model{
+			Materials = "BoxBody.txt";
+    		Meshes = "BoxBody.txt";
+    		Bones = "BoxBody.txt";
+			InitCommand=function(s) s:zbuffer(true):z(-1000):zoom(40):rotationy(75):diffusealpha(0.5):spin():effectmagnitude(35,10,20):blend(Blend.Add) end,
 		};
-		LoadActor("BoxBody") .. {
-			InitCommand=cmd(zbuffer,true;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y;z,-1000;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y;zoom,50;rotationy,75;rotationx,0;diffuse,ColorLightTone(color("#FFFFFF"));spin;effectmagnitude,55,30,10;blend,'BlendMode_Add');
+		Def.Model{
+			Materials = "BoxBody.txt";
+    		Meshes = "BoxBody.txt";
+    		Bones = "BoxBody.txt";
+			InitCommand=function(s) s:zbuffer(true):z(-1000):zoom(50):rotationy(75):diffuse(ColorLightTone(color("#FFFFFF"))):spin():effectmagnitude(55,30,10):blend(Blend.Add) end,
 		};
-		LoadActor("BoxBody") .. {
-			InitCommand=cmd(zbuffer,true;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y;z,-1000;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y;zoom,70;rotationy,75;rotationx,0;diffuse,ColorLightTone(color("#FFFFFF"));spin;effectmagnitude,18,75,75;blend,'BlendMode_Add');
+		Def.Model{
+			Materials = "BoxBody.txt";
+    		Meshes = "BoxBody.txt";
+    		Bones = "BoxBody.txt";
+			InitCommand=function(s) s:zbuffer(true):z(-1000):zoom(70):rotationy(75):diffuse(ColorLightTone(color("#FFFFFF"))):spin():effectmagnitude(18,75,75):blend(Blend.Add) end,
 		};
-		LoadActor("decoration02") .. {
-			InitCommand=cmd(x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y;),
-			OnCommand=cmd(diffusealpha,0;zoom,0;playcommand,"Animate");
-			AnimateCommand=cmd(diffusealpha,0;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y;sleep,0;zoom,0;diffusealpha,0;linear,1;zoom,1;blend,'BlendMode_Add';diffusealpha,0.5;linear,1.7;zoom,1;x,SCREEN_CENTER_X-900;y,SCREEN_CENTER_Y;diffusealpha,0;sleep,4;queuecommand,"Animate");
+		Def.Sprite{
+			Texture="decoration02",
+			InitCommand=function(s) s:blend(Blend.Add):diffusealpha(0):zoom(0):queuecommand("Animate") end,
+			AnimateCommand=function(s) s:x(0):diffusealpha(0):sleep(0):zoom(0):diffusealpha(0):linear(1):zoom(1):diffusealpha(0.5):linear(1.7):x(-900):diffusealpha(0):sleep(4):queuecommand("Animate") end,
 		};
-
-		LoadActor("decoration02") .. {
-			InitCommand=cmd(x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y;rotationz,45),
-			OnCommand=cmd(diffusealpha,0;zoom,0;sleep,0.4;playcommand,"Animate");
-			AnimateCommand=cmd(diffusealpha,0;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y;zoom,0;diffusealpha,0;linear,1;zoom,1;blend,'BlendMode_Add';diffusealpha,0.5;linear,1.7;zoom,1;x,SCREEN_CENTER_X-450;y,SCREEN_CENTER_Y-450;diffusealpha,0;sleep,4;queuecommand,"Animate");
+		Def.Sprite{
+			Texture="decoration02",
+			InitCommand=function(s) s:blend(Blend.Add):rotationz(45):diffusealpha(0):zoom(0):sleep(0.4):queuecommand("Animate") end,
+			AnimateCommand=function(s) s:xy(0,0):diffusealpha(0):sleep(0):zoom(0):diffusealpha(0):linear(1):zoom(1):diffusealpha(0.5):linear(1.7):xy(-450,-450):diffusealpha(0):sleep(4):queuecommand("Animate") end,
 		};
-
-		LoadActor("decoration02") .. {
-			InitCommand=cmd(x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y;rotationz,90),
-			OnCommand=cmd(diffusealpha,0;zoom,0;sleep,0.8;playcommand,"Animate");
-			AnimateCommand=cmd(diffusealpha,0;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y;zoom,0;diffusealpha,0;linear,1;zoom,1;blend,'BlendMode_Add';diffusealpha,0.5;linear,1.7;zoom,1;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y-900;diffusealpha,0;sleep,4;queuecommand,"Animate");
+		Def.Sprite{
+			Texture="decoration02",
+			InitCommand=function(s) s:blend(Blend.Add):rotationz(90):diffusealpha(0):zoom(0):sleep(0.8):queuecommand("Animate") end,
+			AnimateCommand=function(s) s:y(0):diffusealpha(0):sleep(0):zoom(0):diffusealpha(0):linear(1):zoom(1):diffusealpha(0.5):linear(1.7):y(-900):diffusealpha(0):sleep(4):queuecommand("Animate") end,
 		};
-
-		LoadActor("decoration02") .. {
-			InitCommand=cmd(x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y;rotationz,135),
-			OnCommand=cmd(diffusealpha,0;zoom,0;sleep,1.2;playcommand,"Animate");
-			AnimateCommand=cmd(diffusealpha,0;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y;zoom,0;diffusealpha,0;linear,1;zoom,1;blend,'BlendMode_Add';diffusealpha,0.5;linear,1.7;zoom,1;x,SCREEN_CENTER_X+450;y,SCREEN_CENTER_Y-450;diffusealpha,0;sleep,4;queuecommand,"Animate");
+		Def.Sprite{
+			Texture="decoration02",
+			InitCommand=function(s) s:blend(Blend.Add):rotationz(136):diffusealpha(0):zoom(0):sleep(1.2):queuecommand("Animate") end,
+			AnimateCommand=function(s) s:xy(0,0):diffusealpha(0):sleep(0):zoom(0):diffusealpha(0):linear(1):zoom(1):diffusealpha(0.5):linear(1.7):xy(450,450):diffusealpha(0):sleep(4):queuecommand("Animate") end,
 		};
-
-		LoadActor("decoration02") .. {
-			InitCommand=cmd(x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y;rotationz,180),
-			OnCommand=cmd(diffusealpha,0;zoom,0;sleep,1.6;playcommand,"Animate");
-			AnimateCommand=cmd(diffusealpha,0;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y;zoom,0;diffusealpha,0;linear,1;zoom,1;blend,'BlendMode_Add';diffusealpha,0.5;linear,1.7;zoom,1;x,SCREEN_CENTER_X+900;y,SCREEN_CENTER_Y;diffusealpha,0;sleep,4;queuecommand,"Animate");
+		Def.Sprite{
+			Texture="decoration02",
+			InitCommand=function(s) s:blend(Blend.Add):rotationz(180):diffusealpha(0):zoom(0):sleep(1.6):queuecommand("Animate") end,
+			AnimateCommand=function(s) s:x(0):diffusealpha(0):sleep(0):zoom(0):diffusealpha(0):linear(1):zoom(1):diffusealpha(0.5):linear(1.7):x(900):diffusealpha(0):sleep(4):queuecommand("Animate") end,
 		};
-
-		LoadActor("decoration02") .. {
-			InitCommand=cmd(x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y;rotationz,225),
-			OnCommand=cmd(diffusealpha,0;zoom,0;sleep,2.0;playcommand,"Animate");
-			AnimateCommand=cmd(diffusealpha,0;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y;zoom,0;diffusealpha,0;linear,1;zoom,1;blend,'BlendMode_Add';diffusealpha,0.5;linear,1.7;zoom,1;x,SCREEN_CENTER_X+450;y,SCREEN_CENTER_Y+450;diffusealpha,0;sleep,4;queuecommand,"Animate");
+		Def.Sprite{
+			Texture="decoration02",
+			InitCommand=function(s) s:blend(Blend.Add):rotationz(225):diffusealpha(0):zoom(0):sleep(2):queuecommand("Animate") end,
+			AnimateCommand=function(s) s:xy(0,0):diffusealpha(0):sleep(0):zoom(0):diffusealpha(0):linear(1):zoom(1):diffusealpha(0.5):linear(1.7):xy(450,450):diffusealpha(0):sleep(4):queuecommand("Animate") end,
 		};
-		LoadActor("decoration02") .. {
-			InitCommand=cmd(x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y;rotationz,270),
-			OnCommand=cmd(diffusealpha,0;zoom,0;sleep,2.4;playcommand,"Animate");
-			AnimateCommand=cmd(diffusealpha,0;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y;zoom,0;diffusealpha,0;linear,1;zoom,1;blend,'BlendMode_Add';diffusealpha,0.5;linear,1.7;zoom,1;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y+900;diffusealpha,0;sleep,4;queuecommand,"Animate");
+		Def.Sprite{
+			Texture="decoration02",
+			InitCommand=function(s) s:blend(Blend.Add):rotationz(270):diffusealpha(0):zoom(0):sleep(2.4):queuecommand("Animate") end,
+			AnimateCommand=function(s) s:y(0):diffusealpha(0):sleep(0):zoom(0):diffusealpha(0):linear(1):zoom(1):diffusealpha(0.5):linear(1.7):y(900):diffusealpha(0):sleep(4):queuecommand("Animate") end,
 		};
-		LoadActor("decoration02") .. {
-			InitCommand=cmd(x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y;rotationz,315),
-			OnCommand=cmd(diffusealpha,0;zoom,0;sleep,2.8;playcommand,"Animate");
-			AnimateCommand=cmd(diffusealpha,0;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y;zoom,0;diffusealpha,0;linear,1;zoom,1;blend,'BlendMode_Add';diffusealpha,0.5;linear,1.7;zoom,1;x,SCREEN_CENTER_X-450;y,SCREEN_CENTER_Y+450;diffusealpha,0;sleep,4;queuecommand,"Animate");
+		Def.Sprite{
+			Texture="decoration02",
+			InitCommand=function(s) s:blend(Blend.Add):rotationz(315):diffusealpha(0):zoom(0):sleep(2.8):queuecommand("Animate") end,
+			AnimateCommand=function(s) s:xy(0,0):diffusealpha(0):sleep(0):zoom(0):diffusealpha(0):linear(1):zoom(1):diffusealpha(0.5):linear(1.7):xy(-450,450):diffusealpha(0):sleep(4):queuecommand("Animate") end,
 		};
 	};
 };

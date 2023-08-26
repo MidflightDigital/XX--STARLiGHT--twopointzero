@@ -3,14 +3,13 @@ local top
 local jk = ...
 
 local diff = Def.ActorFrame{};
+local clear = Def.ActorFrame{};
 for pn in EnabledPlayers() do
-	diff[#diff+1] = Def.ActorFrame{
-		LoadActor("../diff.lua", "diff.png", pn,1)..{
-			OnCommand=function(s) s:xy(2,pn==PLAYER_1 and 153 or 190):diffusealpha(0):addy(-100):sleep(0.7):diffusealpha(1):decelerate(0.3):addy(100) end,
-		};
-		LoadActor("../clear.lua", "./Default/glow.png", pn)..{
-			OnCommand=function(s) s:diffusealpha(0):sleep(0.7):diffusealpha(1) end,
-		}
+	diff[#diff+1] = loadfile(THEME:GetPathG("MusicWheelItem","Song NormalPart/diff.lua"))(THEME:GetPathG("MusicWheelItem","Song NormalPart/Default/diff.png"), pn, 1)..{
+		OnCommand=function(s) s:y(pn==PLAYER_1 and -100 or 100):diffusealpha(0):sleep(0.7):decelerate(0.3):diffusealpha(1) end,
+	};
+	clear[#clear+1] = loadfile(THEME:GetPathG("MusicWheelItem","Song NormalPart/clear.lua"))(THEME:GetPathG("MusicWheelItem","Song NormalPart/Default/glow.png"), pn)..{
+		OnCommand=function(s) s:diffusealpha(0):sleep(0.7):diffusealpha(1) end,
 	};
 end;
 
@@ -24,7 +23,7 @@ return Def.ActorFrame{
 			s:name(tostring(p.Index))
 		end
 	end,
-	diff;
+	clear;
 	quadButton(1)..{
 		InitCommand=function(s) s:setsize(234,234):visible(false) end,
 		TopPressedCommand=function(self)
@@ -78,6 +77,7 @@ return Def.ActorFrame{
 			self:scaletofit(-115,-115,115,115)
 		end,
 	};
+	diff;
 	Def.Sprite{
 		Name="SongLength",
 		Texture=THEME:GetPathG("","_shared/SongIcon 2x1"),

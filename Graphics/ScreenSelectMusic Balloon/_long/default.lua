@@ -8,7 +8,8 @@ end
 
 
 return Def.ActorFrame{
-    LoadActor("_long")..{
+    Def.Sprite{
+        Texture="_long",
         InitCommand=function(s) s:align(0,0):cropbottom(0.5)
             if ThemePrefs.Get("WheelType") == "Jukebox" then
                 s:xy(-xPos(),-60)
@@ -21,7 +22,8 @@ return Def.ActorFrame{
         ShowCommand=function(s) s:finishtweening():diffusealpha(0):x(-300):decelerate(0.1):x(-xPos()):diffusealpha(1) end,
         HideCommand=function(s) s:finishtweening():linear(0.1):x(-300):diffusealpha(0) end,
     },
-    LoadActor("_long")..{
+    Def.Sprite{
+        Texture="_long",
         InitCommand=function(s) s:align(1,1):croptop(0.5)
             if ThemePrefs.Get("WheelType") == "Jukebox" then
                 s:xy(xPos(),66)

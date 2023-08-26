@@ -3,7 +3,8 @@ local graphic = args[1];
 local pn = args[2];
 local StepsUtil = LoadModule"StepsUtil.lua"
 
-return LoadActor(graphic)..{
+return Def.Sprite{
+    Texture=graphic,
     InitCommand=function(self)
         self:visible(false);
         if #(GAMESTATE:GetHumanPlayers()) == 2 then

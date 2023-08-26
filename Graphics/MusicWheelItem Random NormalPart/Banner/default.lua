@@ -2,11 +2,12 @@ local t = Def.ActorFrame{};
 
 
 t[#t+1] = Def.ActorFrame{
-	LoadActor(THEME:GetPathG("","_banners/random.png")) .. {
-	Name="SongCD";
-	InitCommand=function(self)
-    	self:setsize(384,120):rotationz(-45)
-	end;
+	Def.Sprite{
+		Texture=THEME:GetPathG("","_banners/random.png"),
+		Name="SongCD";
+		InitCommand=function(self)
+    		self:setsize(384,120):rotationz(-45)
+		end;
 	};
 };
 

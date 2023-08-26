@@ -1192,3 +1192,77 @@ function ListChooser3()
 	setmetatable(t,t)
 	return t
 end
+
+function JudgmentSel()
+	local t = {
+		Name="Judgment Graphic",
+		LayoutType="ShowOneInRow",
+		SelectType="SelectOne",
+		ExportOnChange=true,
+		Default = false,
+		Choices={"DEFAULT", "SN3"},
+		Values={"DEFAULT", "SN3"},
+		OneChoiceForAllPlayers=false,
+		LoadSelections=function(self,list,pn)
+			local profileID = GetProfileIDForPlayer(pn)
+			local pPrefs = ProfilePrefs.Read(profileID)
+			local judge = pPrefs.Judgment
+			if judge == "DEFAULT" then
+				list[1] = true
+			elseif judge == "SN3" then
+				list[2] = true
+			else
+				list[1] = true
+			end
+		end,
+		SaveSelections = function(self,list,pn)
+			for i,value in ipairs(self.Values) do
+				if list[i] then
+					local profileID = GetProfileIDForPlayer(pn)
+					local pPrefs = ProfilePrefs.Read(profileID)
+					pPrefs.Judgment = value
+					ProfilePrefs.Save(profileID)
+				end
+			end
+		end,
+	};
+	setmetatable(t,t)
+	return t
+end
+
+function ComboSel()
+	local t = {
+		Name="Combo Graphic",
+		LayoutType="ShowOneInRow",
+		SelectType="SelectOne",
+		ExportOnChange=true,
+		Default = false,
+		Choices={"DEFAULT", "SN3"},
+		Values={"DEFAULT", "SN3"},
+		OneChoiceForAllPlayers=false,
+		LoadSelections=function(self,list,pn)
+			local profileID = GetProfileIDForPlayer(pn)
+			local pPrefs = ProfilePrefs.Read(profileID)
+			local judge = pPrefs.Combo
+			if judge == "DEFAULT" then
+				list[1] = true
+			elseif judge == "SN3" then
+				list[2] = true
+			else
+				list[1] = true
+			end
+		end,
+		SaveSelections = function(self,list,pn)
+			for i,value in ipairs(self.Values) do
+				if list[i] then
+					local profileID = GetProfileIDForPlayer(pn)
+					local pPrefs = ProfilePrefs.Read(profileID)
+					pPrefs.Combo = value
+					ProfilePrefs.Save(profileID)
+				end
+			end
+		end,
+	};
+	setmetatable(t,t)
+	return t
+end

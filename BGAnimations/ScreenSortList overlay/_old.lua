@@ -123,7 +123,8 @@ local t = Def.ActorFrame {
 	end,
 
 	-- BG of the sortlist box
-	LoadActor("SortFrame")..{
+	Def.Sprite{
+		Texture="SortFrame",
 		InitCommand=function(s) s:Center() end,
 	},
 
@@ -132,7 +133,15 @@ local t = Def.ActorFrame {
 	sort_wheel:create_actors( "sort_wheel", 7, wheel_item_mt, _screen.cx, _screen.cy )
 }
 
-t[#t+1] = LoadActor( THEME:GetPathS("ScreenSelectMaster", "change") )..{ Name="change_sound", SupportPan = false }
-t[#t+1] = LoadActor( THEME:GetPathS("common", "start") )..{ Name="start_sound", SupportPan = false }
+t[#t+1] = Def.Sound{
+	File=THEME:GetPathS("ScreenSelectMaster", "change"),
+	Name="change_sound",
+	SupportPan = false
+}
+t[#t+1] = Def.Sound{
+	THEME:GetPathS("common", "start"),
+	Name="start_sound",
+	SupportPan = false
+}
 
 return t

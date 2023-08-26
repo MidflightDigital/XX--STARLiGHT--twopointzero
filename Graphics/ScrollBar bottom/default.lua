@@ -10,10 +10,12 @@ return Def.ActorFrame{
             s:visible(false)
         end
     end,
-    LoadActor("bottom")..{
+    Def.Sprite{
+        Texture="bottom",
         InitCommand=function(s) s:y(110) end,
     },
-    LoadActor("glow")..{
+    Def.Sprite{
+        Texture="glow",
         InitCommand=function(s) s:y(110)
         :diffuseshift():effectcolor1(color("1,1,1,0.75")):effectcolor2(color("1,1,1,1")):effectclock('beatnooffset') end,
     }

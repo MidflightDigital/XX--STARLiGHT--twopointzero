@@ -79,7 +79,7 @@ t[#t+1] = Def.ActorFrame{
         end,
     },
     Def.SongMeterDisplay{
-        InitCommand=cmd(SetStreamWidth,SCREEN_WIDTH/1.2);
+        InitCommand=function(s) s:SetStreamWidth(SCREEN_WIDTH/1.2) end,
         Stream=Def.Quad{
             InitCommand=function(s)
                 s:setsize(SCREEN_WIDTH/1.2,6)

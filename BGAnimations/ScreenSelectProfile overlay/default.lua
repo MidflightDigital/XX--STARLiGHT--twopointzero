@@ -141,7 +141,10 @@ function LoadPlayerStuff(Player)
 		end,
 		OnCommand=function(s) s:diffusealpha(0):sleep(0.7):linear(0.2):diffusealpha(1) end,
 		OffCommand=function(s) s:linear(0.2):diffusealpha(0) end,
-		LoadActor(THEME:GetPathG("","MenuTimer frame"))..{ InitCommand=function(s) s:xy(11,25) end,};
+		Def.Sprite{
+			Texture=THEME:GetPathG("","MenuTimer frame"),
+			InitCommand=function(s) s:xy(11,25) end,
+		};
 		Def.BitmapText{
 			Font="MenuTimer numbers";
 			OnCommand=function(s) s:xy(-34,0):skewx(-0.1):queuecommand("Update") end,
@@ -191,13 +194,13 @@ function LoadPlayerStuff(Player)
 	};
 
 	for _,pn in pairs(GAMESTATE:GetEnabledPlayers()) do
-		t[#t+1] = LoadActor( THEME:GetPathG("ScreenSelectProfile", "GrooveRadar" ),1,0.2,0.2,0.2,0.5,Player,'single')..{
+		t[#t+1] = loadfile(THEME:GetPathG("ScreenSelectProfile", "GrooveRadar" ))(1,0.2,0.2,0.2,0.5,Player,'single')..{
 			Name = "GVR"..ToEnumShortString(Player).."S";
 			InitCommand=function(s) s:xy(0,120):zoom(1):diffusealpha(0):diffuse(PlayerColor(PLAYER_1)) end,
 			OnCommand=function(s) s:sleep(0.9):linear(0.05):diffusealpha(1) end,
 			OffCommand=function(s) s:sleep(0.2):linear(0.2):diffusealpha(0) end,
 		};
-		t[#t+1] = LoadActor( THEME:GetPathG("ScreenSelectProfile", "GrooveRadar" ),1,0.2,0.2,0.2,0.5,Player,'double')..{
+		t[#t+1] = loadfile(THEME:GetPathG("ScreenSelectProfile", "GrooveRadar" ))(1,0.2,0.2,0.2,0.5,Player,'double')..{
 			Name = "GVR"..ToEnumShortString(Player).."D";
 			InitCommand=function(s) s:xy(0,120):zoom(1):diffusealpha(0):diffuse(PlayerColor(PLAYER_2)) end,
 			OnCommand=function(s) s:sleep(0.9):linear(0.05):diffusealpha(1) end,
@@ -562,13 +565,16 @@ local t = Def.ActorFrame{
 			children = LoadPlayerStuff(PLAYER_2);
 		};
 		-- sounds
-		LoadActor( THEME:GetPathS("Common","start") )..{
+		Def.Sound{
+			File=THEME:GetPathS("Common","start"),
 			StartButtonMessageCommand=function(self) self:play() end;
 		};
-		LoadActor( THEME:GetPathS("Common","cancel") )..{
+		Def.Sound{
+			File=THEME:GetPathS("Common","cancel"),
 			BackButtonMessageCommand=function(self) self:play() end;
 		};
-		LoadActor( THEME:GetPathS("Common","value") )..{
+		Def.Sound{
+			File=THEME:GetPathS("Common","value"),
 			DirectionButtonMessageCommand=function(self) self:play() end;
 		};
 		--[[Def.Quad{

@@ -35,17 +35,20 @@ t[#t+1] = Def.ActorFrame{
     OnCommand=function(s) s:addx(SCREEN_WIDTH):sleep(0.25):decelerate(0.22):addx(-SCREEN_WIDTH) end,
     OffCommand=function(s) s:sleep(0.25):decelerate(0.22):addx(-SCREEN_WIDTH-200) end,
   };
-  LoadActor("arrow")..{
+  Def.Sprite{
+    Texture="arrow",
     InitCommand=function(s) s:zoom(0.4):xy(-768,-56) end,
     OnCommand=function(s) s:addx(SCREEN_WIDTH):sleep(0.2):decelerate(0.28):addx(-SCREEN_WIDTH) end,
     OffCommand=function(s) s:sleep(0.2):decelerate(0.28):addx(-SCREEN_WIDTH) end,
   };
-  LoadActor("arrow")..{
+  Def.Sprite{
+    Texture="arrow",
     InitCommand=function(s) s:zoom(0.6):xy(628,-26) end,
     OnCommand=function(s) s:addx(SCREEN_WIDTH):sleep(0.25):decelerate(0.18):addx(-SCREEN_WIDTH) end,
     OffCommand=function(s) s:sleep(0.25):decelerate(0.18):addx(-SCREEN_WIDTH) end,
   };
-  LoadActor("arrow")..{
+  Def.Sprite{
+    Texture="arrow",
     InitCommand=function(s) s:xy(-476,-10) end,
     OnCommand=function(s) s:addx(SCREEN_WIDTH):sleep(0.3):decelerate(0.2):addx(-SCREEN_WIDTH) end,
     OffCommand=function(s) s:sleep(0.3):decelerate(0.2):addx(-SCREEN_WIDTH) end,

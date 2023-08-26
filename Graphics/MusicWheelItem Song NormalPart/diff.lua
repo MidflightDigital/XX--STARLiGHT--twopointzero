@@ -11,10 +11,13 @@ return Def.ActorFrame{
 		self.CurSong = param.Song;
         self:queuecommand "DiffChange";
 	end;
-	LoadActor(graphic)..{
+	Def.Sprite{
+		Texture=graphic,
 		InitCommand=function(s) s:draworder(1)
 			if ThemePrefs.Get("WheelType") == "Solo" then
 				s:zoomx(pn==PLAYER_1 and 1 or -1)
+			elseif ThemePrefs.Get("WheelType") == "Default" then
+				s:rotationz(pn==PLAYER_2 and 180 or 0)
 			end
 		end;
 		DiffChangeCommand = function(self)
@@ -43,6 +46,9 @@ return Def.ActorFrame{
 					self:diffuse(CustomDifficultyToColor(steps:GetDifficulty()));
 				else
 					self:diffuse(color("#FFFFFF"))
+					if ThemePrefs.Get("WheelType") == "Default" then
+						self:xy(pn==PLAYER_1 and -90 or 90,pn==PLAYER_1 and -2 or 2)
+					end
 				end;
 			end;
 		end;

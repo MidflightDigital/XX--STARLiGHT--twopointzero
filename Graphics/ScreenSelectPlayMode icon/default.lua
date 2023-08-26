@@ -16,7 +16,9 @@ elseif index == 4 then
 end
 --------------------------------------
 t[#t+1] = Def.ActorFrame {
-    LoadActor("preview " .. gc:GetName() );
+    Def.Sprite{
+		Texture="preview " .. gc:GetName(),
+	}
 };
 
 return t;

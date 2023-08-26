@@ -81,7 +81,8 @@ t[#t+1] = Def.ActorFrame{
 		end
 	end;
 	OffCommand=function(s) s:stopeffect():sleep(0.2):diffusealpha(0) end,
-	LoadActor( 'hl.png' )..{
+	Def.Sprite{
+		Texture='hl.png',
 		InitCommand=function(s) s:diffuseramp():effectcolor1(Alpha(Color.White,0.2)):effectcolor2(Color.White):effectclock('beatnooffset') end,
 	};
 	Def.ActorFrame{
@@ -138,19 +139,19 @@ t[#t+1] = Def.ActorFrame{
 };
 
 for pn in EnabledPlayers() do
-	t[#t+1] = LoadActor("../clear.lua", "./A/glow.png", pn)..{
+	t[#t+1] = loadfile(THEME:GetPathG("MusicWheelItem","Song NormalPart/clear.lua"))(THEME:GetPathG("MusicWheelItem","Song NormalPart/A/glow.png"), pn)..{
 		OnCommand=function(s) s:diffusealpha(0):sleep(0.7):diffusealpha(1) end,
 	}
 end;
 
 if GAMESTATE:IsPlayerEnabled(PLAYER_1) then
-	t[#t+1] = LoadActor("../diff.lua", "./A/diff.png", PLAYER_1,0.7)..{
+	t[#t+1] = loadfile(THEME:GetPathG("MusicWheelItem","Song NormalPart/clear.lua"))(THEME:GetPathG("MusicWheelItem","Song NormalPart/A/diff.png"), PLAYER_1,0.7)..{
 		OnCommand=function(s) s:xy(-100,-60) end,
 	}
 end;
 
 if GAMESTATE:IsPlayerEnabled(PLAYER_2) then
-	t[#t+1] = LoadActor("../diff.lua", "./A/diff.png", PLAYER_2,0.7)..{
+	t[#t+1] = loadfile(THEME:GetPathG("MusicWheelItem","Song NormalPart/clear.lua"))(THEME:GetPathG("MusicWheelItem","Song NormalPart/A/diff.png"), PLAYER_2,0.7)..{
 		OnCommand=function(s) s:xy(100,60) end,
 	}
 end;

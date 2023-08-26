@@ -1,8 +1,9 @@
 return Def.ActorFrame {
-	LoadActor( '../ScreenWithMenuElements background' ) .. {
+	loadfile(THEME:GetPathB("","ScreenWithMenuElements background/default.lua"))()..{
 		Condition=not IsAnExtraStage(),
 	},
-    LoadActor( 'EXMovie.mp4' ) .. {
+    Def.Sprite{
+		Texture='EXMovie.mp4',
 		Condition=IsAnExtraStage(),
         InitCommand=function(s) s:Center() end,
     }

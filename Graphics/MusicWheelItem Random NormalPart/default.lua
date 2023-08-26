@@ -1,7 +1,4 @@
-local t = Def.ActorFrame{}
-
 local wheel = ThemePrefs.Get("WheelType");
-
-t[#t+1] = LoadActor(wheel.."/default.lua")
-
-return t;
+return Def.ActorFrame{
+    loadfile(THEME:GetPathG("MusicWheelItem","Random NormalPart/"..wheel.."/default.lua"))()
+};

@@ -26,7 +26,8 @@ t[#t+1] = Def.ActorFrame{
       pPrefs.guidelines = false
     end]]
   end;
-  LoadActor("score")..{
+  Def.Sprite{
+    Texture="score",
     InitCommand=function(s) s:zoomx(pn=='PlayerNumber_P2' and -1 or 1) end,
   };
   Def.Sprite{
@@ -128,7 +129,8 @@ t[#t+1] = Def.ActorFrame{
   };
   Def.ActorFrame{
     InitCommand=function(s) s:xy(pn=='PlayerNumber_P2' and -200 or 220,-32) end,
-    LoadActor(THEME:GetPathG("Player","Badge FullCombo"))..{
+    Def.Sprite{
+      Texture=THEME:GetPathG("Player","Badge FullCombo"),
       InitCommand=function(s) s:xy(6,6):zoom(0.75) end,
       BeginCommand=function(s) s:playcommand("Set") end,
       SetCommand=function(self)

@@ -84,67 +84,70 @@ for _,pn in pairs(GAMESTATE:GetEnabledPlayers()) do
 end
 
 t[#t+1] = Def.ActorFrame{
-    Def.ActorFrame{
-        InitCommand=function(s) s:y(-150) end,
-        OnCommand=function(s) s:addy(60):sleep(0.6):decelerate(0.2):addy(-60) end,
-        OffCommand=function(s) s:accelerate(0.2):addy(70) end,
-        Def.Sprite{
-            Texture="bpm.png";
-            InitCommand=function(s)
-              if GAMESTATE:IsAnExtraStage() then
-                s:Load(THEME:GetPathB("ScreenSelectMusic","overlay/CoverFlowDeco/Difficulty/ex_bpm.png"))
-              end
-            end,
-        };
-        LoadActor("BPM.lua");
-    };
-    Def.Sprite{
-      Texture="TABLE.png";
+  Def.ActorFrame{
+    InitCommand=function(s) s:y(-150) end,
+    OnCommand=function(s) s:addy(60):sleep(0.6):decelerate(0.2):addy(-60) end,
+    OffCommand=function(s) s:accelerate(0.2):addy(70) end,
+     Def.Sprite{
+      Texture="bpm.png";
       InitCommand=function(s)
         if GAMESTATE:IsAnExtraStage() then
-          s:Load(THEME:GetPathB("ScreenSelectMusic","overlay/CoverFlowDeco/Difficulty/ex_TABLE.png"))
+          s:Load(THEME:GetPathB("ScreenSelectMusic","overlay/CoverFlowDeco/Difficulty/ex_bpm.png"))
         end
       end,
     };
-    Def.Sprite{Texture="eqbase.png";};
-    Def.Quad{
-      InitCommand=function(s) s:zoomto(1104,224):MaskSource(true) end,
-      CurrentSongChangedMessageCommand = function(s)
-        s:finishtweening()
-        local song = GAMESTATE:GetCurrentSong()
-        if song then
-          if song:IsDisplayBpmRandom() or song:IsDisplayBpmSecret() then
-            s:bounce():effectmagnitude(0,224,0):effectperiod(0.5):effectclock("music")
-          else
-            s:bounce():effectmagnitude(0,224,0):effectclock("beatnooffset")
-          end
+    loadfile(THEME:GetPathB("ScreenSelectMusic","overlay/CoverFlowDeco/Difficulty/BPM.lua"))()
+  };
+  Def.Sprite{
+    Texture="TABLE.png";
+    InitCommand=function(s)
+      if GAMESTATE:IsAnExtraStage() then
+        s:Load(THEME:GetPathB("ScreenSelectMusic","overlay/CoverFlowDeco/Difficulty/ex_TABLE.png"))
+      end
+    end,
+  };
+  Def.Sprite{Texture="eqbase.png";};
+  Def.Quad{
+    InitCommand=function(s) s:zoomto(1104,224):MaskSource(true) end,
+    CurrentSongChangedMessageCommand = function(s)
+      s:finishtweening()
+      local song = GAMESTATE:GetCurrentSong()
+      if song then
+        if song:IsDisplayBpmRandom() or song:IsDisplayBpmSecret() then
+           s:bounce():effectmagnitude(0,224,0):effectperiod(0.5):effectclock("music")
         else
-          s:bounce():effectmagnitude(0,224,0):effectperiod(1):effectclock("music")
+          s:bounce():effectmagnitude(0,224,0):effectclock("beatnooffset")
         end
-      end,
-      OffCommand=function(s) s:finishtweening() end,
+      else
+        s:bounce():effectmagnitude(0,224,0):effectperiod(1):effectclock("music")
+      end
+    end,
+    OffCommand=function(s) s:finishtweening() end,
+  };
+  Def.Sprite{
+    Texture="eq.png";
+    InitCommand=function(s)
+      s:MaskDest():ztestmode('ZTestMode_WriteOnFail')
+    end,
+  };
+  Def.ActorFrame{
+    InitCommand=function(s) s:xy(-360,10):zoom(0.8) end,
+    OnCommand=function(s) s:zoom(0):rotationz(-360):decelerate(0.4):zoom(0.8):rotationz(0) end,
+    OffCommand=function(s) s:sleep(0.3):decelerate(0.3):rotationz(-360):zoom(0) end,
+    Def.Sprite{
+      Texture=THEME:GetPathB("ScreenSelectMusic","overlay/RadarHandler/GrooveRadar base"),
     };
     Def.Sprite{
-      Texture="eq.png";
-      InitCommand=function(s)
-        s:MaskDest():ztestmode('ZTestMode_WriteOnFail')
-      end,
+       Texture=THEME:GetPathB("ScreenSelectMusic","overlay/RadarHandler/sweep"),
+       InitCommand = function(s) s:zoom(1.275):spin():effectmagnitude(0,0,100) end,
     };
-    Def.ActorFrame{
-      InitCommand=function(s) s:xy(-360,10):zoom(0.8) end,
-      OnCommand=function(s) s:zoom(0):rotationz(-360):decelerate(0.4):zoom(0.8):rotationz(0) end,
-      OffCommand=function(s) s:sleep(0.3):decelerate(0.3):rotationz(-360):zoom(0) end,
-      LoadActor(THEME:GetPathB("ScreenSelectMusic","overlay/RadarHandler/GrooveRadar base"));
-      LoadActor(THEME:GetPathB("ScreenSelectMusic","overlay/RadarHandler/sweep")) .. {
-          InitCommand = function(s) s:zoom(1.275):spin():effectmagnitude(0,0,100) end,
-      };
-    };
+  };
 }
 
 local yspacing = 34;
 
 for _,pn in pairs(GAMESTATE:GetEnabledPlayers()) do
-  t[#t+1] = LoadActor("RadarHandler",pn)..{
+  t[#t+1] = loadfile(THEME:GetPathB("ScreenSelectMusic","overlay/CoverFlowDeco/Difficulty/RadarHandler"))(pn)..{
     InitCommand=function(s) s:xy(-360,10):zoom(0.8) end,
   }
   t[#t+1] = Def.ActorFrame{
@@ -285,7 +288,8 @@ local function DrawDifListItem(diff, pn)
           };
           Def.ActorFrame{
             InitCommand=function(s) s:x(pn==PLAYER_2 and 176 or -186) end,
-            LoadActor(THEME:GetPathG("Player","Badge FullCombo"))..{
+            Def.Sprite{
+              Texture=THEME:GetPathG("Player","Badge FullCombo"),
               InitCommand=function(s) s:shadowlength(1):zoom(0):xy(18,4) end,
               OffCommand=function(s) s:decelerate(0.05):diffusealpha(0) end,
               SetCommand=function(self)

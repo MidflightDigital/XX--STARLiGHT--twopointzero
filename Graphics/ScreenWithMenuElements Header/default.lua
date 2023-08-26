@@ -9,13 +9,14 @@ local out = Def.ActorFrame {
 	OffCommand = function(s)
 		s:accelerate(0.3):y(SCREEN_TOP-140):diffusealpha(0):zoom(0.7)
 	end,
-	LoadActor("header/default.lua") .. {
+	loadfile(THEME:GetPathG("ScreenWithMenuElements","Header/header/default.lua"))() .. {
 		InitCommand = function(s) s:valign(0) end,
 	};
 };
 
 if screenName then
-	table.insert(out,LoadActor("text/"..screenName..".png")..{
+	table.insert(out,Def.Sprite{
+		Texture="text/"..screenName..".png",
 		InitCommand=function(s)
 			s:diffusealpha(0)
 			if (screen == "ScreenEvaluationNormal" and not GAMESTATE:IsCourseMode()) or screen == "ScreenSelectMusic" then

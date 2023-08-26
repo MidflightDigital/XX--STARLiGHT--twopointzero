@@ -1,7 +1,7 @@
-local c;
-local t = Def.ActorFrame{
+return Def.ActorFrame{
 	InitCommand=function(self) c = self:GetChildren(); end;
-	LoadActor("_long")..{
+	Def.Sprite{
+		Texture="_long",
 		Name="Long";
 		InitCommand=function(s) s:visible(false) end,
 		OnCommand=function(self)
@@ -11,7 +11,8 @@ local t = Def.ActorFrame{
 			end;
 		end;
 	};
-	LoadActor("_marathon")..{
+	Def.Sprite{
+		Texture="_marathon",
 		Name="Marathon";
 		InitCommand=function(s) s:visible(false) end,
 		OnCommand=function(self)
@@ -41,5 +42,3 @@ local t = Def.ActorFrame{
 		end;
 	end;
 };
-
-return t;

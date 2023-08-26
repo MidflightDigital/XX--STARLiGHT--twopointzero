@@ -30,7 +30,8 @@ return Def.ActorFrame{
 	--Overlay
 	Def.ActorFrame{
 		Name="CdOver";
-		LoadActor(THEME:GetPathG("", "MusicWheelItem Song NormalPart/Jukebox/cd/overlay"))..{
+		Def.Sprite{
+			Texture=THEME:GetPathG("", "MusicWheelItem Song NormalPart/Jukebox/cd/overlay"),
 			SetMessageCommand=function(self,params)
 				local song = params.Song;
 				if song then

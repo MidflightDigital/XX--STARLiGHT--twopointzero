@@ -49,39 +49,64 @@ t[#t+1] = Def.ActorFrame{
 		:queuecommand("Animate")
 	end;
 	Def.ActorFrame{
-		LoadActor("_bg")..{
+		Def.Sprite{
+			Texture="_bg",
 			InitCommand=function(s) s:clearzbuffer(0):Center():zoom(8):spin():effectmagnitude(0,0,-1.5):diffuse(color("0.75,0.75,0.75,1")) end,
 		};
 	};
 	Def.ActorFrame{
 	InitCommand=function(s) s:spin():effectmagnitude(-1.5,2,-1.5):Center():zoom(0.5) end,
-		LoadActor("SuperNOVABG.txt")..{
+		Def.Model{
+			Materials="SuperNOVABG.txt",
+			Meshes="SuperNOVABG.txt",
+			Bones="SuperNOVABG.txt",
 			InitCommand=function(s) s:clearzbuffer(0):rotationx(-90):rotationz(-90):diffuse(Alpha(Color.White,0.75)):blend(Blend.Add):zoom(8) end,
 		};
 		Def.ActorFrame{
 			InitCommand=function(s) s:zoom(20):x(SCREEN_WIDTH/2) end,
-			LoadActor("SuperNovaBallFog (DoubleFaced).txt")..{
+			Def.Model{
+				Materials="SuperNovaBallFog (DoubleFaced).txt",
+				Meshes="SuperNovaBallFog (DoubleFaced).txt",
+				Bones="SuperNovaBallFog (DoubleFaced).txt",
 				InitCommand=function(s) s:diffuse(Alpha(Color.White,0.5)):blend(Blend.Add):spin():effectmagnitude(10,100,10) end,
 			};
-			LoadActor("SuperNovaFogBall (DoubleFaced).txt")..{
+			Def.Model{
+				Materials="SuperNovaFogBall (DoubleFaced).txt",
+				Meshes="SuperNovaFogBall (DoubleFaced).txt",
+				Bones="SuperNovaFogBall (DoubleFaced).txt",
 				InitCommand=function(s) s:diffuse(Alpha(Color.White,0.5)):blend(Blend.Add):zoom(0.9):spin():effectmagnitude(10,100,10) end,
 			};
-			LoadActor("SuperNovaBallLine (DoubleFaced).txt")..{
+			Def.Model{
+				Materials="SuperNovaBallLine (DoubleFaced).txt",
+				Meshes="SuperNovaBallLine (DoubleFaced).txt",
+				Bones="SuperNovaBallLine (DoubleFaced).txt",
 				InitCommand=function(s) s:diffuse(color("0.8,0.8,0.8,1")):blend(Blend.Add):rotationx(-200):rotationz(-90):rotationy(-60):spin():effectmagnitude(100,100,100) end,
 			};
-			LoadActor("SuperNovaBallLine (DoubleFaced).txt")..{
+			Def.Model{
+				Materials="SuperNovaBallLine (DoubleFaced).txt",
+				Meshes="SuperNovaBallLine (DoubleFaced).txt",
+				Bones="SuperNovaBallLine (DoubleFaced).txt",
 				InitCommand=function(s) s:diffuse(color("0.8,0.8,0.8,1")):blend(Blend.Add):rotationx(200):rotationz(90):rotationy(60):spin():effectmagnitude(-100,-100,-100) end,
 			};
-			LoadActor("SuperNovaBall (DoubleFaced).txt")..{
+			Def.Model{
+				Materials="SuperNovaBall (DoubleFaced).txt",
+				Meshes="SuperNovaBall (DoubleFaced).txt",
+				Bones="SuperNovaBall (DoubleFaced).txt",
 				InitCommand=function(s) s:diffuse(color("0.6,0.6,0.6,1")):blend(Blend.Add):spin():effectmagnitude(10,100,10) end,
 			};
 		};
 	};
 	Def.ActorFrame{
-		LoadActor("SuperNOVALine.txt")..{
+		Def.Model{
+			Materials="SuperNOVALine.txt",
+			Meshes="SuperNOVALine.txt",
+			Bones="SuperNOVALine.txt",
 			InitCommand=function(s) s:diffuse(color("0.4,0.4,0.4,1")):blend(Blend.Add):Center():rotationx(-200):rotationz(90):rotationy(60):zoom(12):spin():effectmagnitude(100,100,100) end,
 		};
-		LoadActor("SuperNOVALine.txt")..{
+		Def.Model{
+			Materials="SuperNOVALine.txt",
+			Meshes="SuperNOVALine.txt",
+			Bones="SuperNOVALine.txt",
 			InitCommand=function(s) s:diffuse(color("0.4,0.4,0.4,1")):blend(Blend.Add):Center():rotationx(200):rotationz(-90):rotationy(60):zoom(12):spin():effectmagnitude(-100,-100,-100) end,
 		};
 	};

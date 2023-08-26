@@ -57,12 +57,12 @@ for i=1,2 do
 end;
 
 for pn in ivalues( GAMESTATE:GetHumanPlayers() ) do
-	t[#t+1] = LoadActor("../_Difficulty/default.lua", pn)..{
+	t[#t+1] = loadfile(THEME:GetPathB("ScreenSelectMusic","overlay/_Difficulty/default.lua"))(pn)..{
 		InitCommand=function(s) s:xy(pn==PLAYER_1 and SCREEN_LEFT+250 or SCREEN_RIGHT-250,_screen.cy+250):draworder(40) end,
 	}
 	t[#t+1] = Def.ActorFrame{
 		InitCommand=function(s) s:xy(pn==PLAYER_1 and SCREEN_LEFT+250 or SCREEN_RIGHT-250,_screen.cy+100) end,
-		LoadActor(THEME:GetPathB("ScreenSelectMusic","overlay/RadarHandler"),pn);
+		loadfile(THEME:GetPathB("ScreenSelectMusic","overlay/RadarHandler"))(pn);
 		Def.BitmapText{
 			Font="CFBPMDisplay",
 			InitCommand=function(s) s:zoom(0.7):diffuse(color("#dff0ff")):strokecolor(color("#00baff")):maxwidth(200):y(60) end,
@@ -85,7 +85,7 @@ for pn in ivalues( GAMESTATE:GetHumanPlayers() ) do
 			end,
 		};
 	}
-	t[#t+1] = LoadActor(THEME:GetPathB("ScreenSelectMusic","overlay/_ShockArrow/default.lua"),pn)..{
+	t[#t+1] = loadfile(THEME:GetPathB("ScreenSelectMusic","overlay/_ShockArrow/default.lua"))(pn)..{
 		InitCommand=function(s)
 			s:xy(pn==PLAYER_1 and SCREEN_LEFT+370 or SCREEN_RIGHT-370,_screen.cy+15):zoom(0.3)
 		end,

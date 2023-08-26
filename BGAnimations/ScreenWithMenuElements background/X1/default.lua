@@ -1,6 +1,6 @@
 return Def.ActorFrame {
-	LoadActor( "bg" )..{
-		InitCommand=cmd(FullScreen);
+	Def.Sprite{
+		Texture="bg",
+		InitCommand=function(s) s:FullScreen() end,
 	};
-
 }

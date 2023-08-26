@@ -509,7 +509,8 @@ t[#t+1] = Def.ActorFrame {
 };
 
 t[#t+1] = Def.ActorFrame {
-	LoadActor('../ScreenStageInformation decorations/star') .. {
+	Def.Sprite{
+		Texture='../ScreenStageInformation decorations/star',
 		InitCommand=function(s) s:Center():diffusealpha(0) end,
 		NextCourseSongMessageCommand=function(s) s:sleep(2.2):linear(0.05):diffusealpha(1):linear(0.2):diffusealpha(0) end,
 	},
@@ -517,11 +518,13 @@ t[#t+1] = Def.ActorFrame {
 		InitCommand=function(s) s:diffusealpha(0):Center():setsize(SCREEN_WIDTH,SCREEN_HEIGHT):diffusealpha(0):blend(Blend.Add) end,
 		NextCourseSongMessageCommand=function(s) s:sleep(2.2):linear(0.05):diffusealpha(0.25):linear(0.2):diffusealpha(0) end,
 	},
-	LoadActor('../ScreenStageInformation decorations/arrow') .. {
+	Def.Sprite{
+		Texture='../ScreenStageInformation decorations/arrow',
 		InitCommand=function(s) s:Center():diffusealpha(0) end,
 		NextCourseSongMessageCommand=function(s) s:x(SCREEN_RIGHT+636):sleep(2):diffusealpha(1):linear(0.4):x(-636):sleep(0):diffusealpha(0) end,
 	},
-	LoadActor('../ScreenStageInformation decorations/arrow') .. {
+	Def.Sprite{
+		Texture='../ScreenStageInformation decorations/arrow',
 		InitCommand=function(s) s:Center():zoomx(-1):diffusealpha(0) end,
 		NextCourseSongMessageCommand=function(s) s:x(-636):sleep(2):diffusealpha(1):linear(0.4):x(SCREEN_RIGHT+636):sleep(0):diffusealpha(0) end,
 	},

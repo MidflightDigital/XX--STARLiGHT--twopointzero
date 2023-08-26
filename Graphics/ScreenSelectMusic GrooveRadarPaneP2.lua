@@ -31,7 +31,9 @@ local t = Def.ActorFrame {
 	end,
 	Name="Radar",
 	InitCommand=function(s) s:Center() end,
-    LoadActor("_grooveradar.png");
+    Def.Sprite{
+		Texture="_grooveradar.png",
+	};
 
 	Def.GrooveRadar {
 		OnCommand=function(s) s:zoom(0):sleep(0.583):decelerate(0.150):zoom(1):diffuse(PlayerColor(PLAYER_2)) end,
@@ -40,8 +42,8 @@ local t = Def.ActorFrame {
 		CurrentStepsP2ChangedMessageCommand=radarSet,
 		CurrentTrailP2ChangedMessageCommand=radarSet,
 	},
-	LoadActor(THEME:GetPathG("Radar","Text"),PLAYER_2);
-	LoadActor(THEME:GetPathG("Steps","Text"),PLAYER_2);
+	loadfile(THEME:GetPathG("Radar","Text"))(PLAYER_2);
+	loadfile(THEME:GetPathG("Steps","Text"))(PLAYER_2)
 }
 
 return t

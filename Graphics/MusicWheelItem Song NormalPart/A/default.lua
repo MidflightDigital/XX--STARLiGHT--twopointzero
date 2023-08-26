@@ -33,10 +33,10 @@ local clearglow = Def.ActorFrame{};
 local diffblocks = Def.ActorFrame{};
 
 for pn in EnabledPlayers() do
-	clearglow[#clearglow+1] = loadfile(THEME:GetPathG("MusicWheelItem","Song NormalPart/clear.lua"))("A/glow.png",pn)..{
+	clearglow[#clearglow+1] = loadfile(THEME:GetPathG("MusicWheelItem","Song NormalPart/clear.lua"))(THEME:GetPathG("MusicWheelItem","Song NormalPart/A/glow.png"),pn)..{
 		OnCommand=function(s) s:diffusealpha(0):sleep(0.7):diffusealpha(1) end,
 	};
-	diffblocks[#diffblocks+1] = loadfile(THEME:GetPathG("MusicWheelItem","Song NormalPart/diff.lua"))("A/diff.png",pn,0.7)..{
+	diffblocks[#diffblocks+1] = loadfile(THEME:GetPathG("MusicWheelItem","Song NormalPart/diff.lua"))(THEME:GetPathG("MusicWheelItem","Song NormalPart/A/diff.png"),pn,0.7)..{
 		InitCommand=function(s) s:xy(pn==PLAYER_1 and -100 or 100,pn==PLAYER_1 and -60 or 60) end,
 	}
 end
@@ -133,6 +133,7 @@ return Def.ActorFrame{
 			end,
 		}
 	};
+	clearglow;
 	Def.ActorFrame{
 		Name="Additional Effects",
 		SetMessageCommand=function(s,p)
@@ -233,6 +234,5 @@ return Def.ActorFrame{
 			end
 		end,
 	};
-	clearglow;
 	diffblocks;
 };

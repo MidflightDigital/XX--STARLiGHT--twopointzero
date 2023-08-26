@@ -137,10 +137,10 @@ if not GAMESTATE:IsCourseMode() then
             end,
         };
     end
-    t[#t+1] = LoadActor("Difficulty");
+    t[#t+1] = loadfile(THEME:GetPathB("ScreenSelectMusic","overlay/CoverFlowDeco/Difficulty"))();
     for _,pn in pairs(GAMESTATE:GetEnabledPlayers()) do
         if PREFSMAN:GetPreference("OnlyDedicatedMenuButtons") then
-            t[#t+1] = LoadActor("../InfoPanel",pn)..{
+            t[#t+1] = loadfile(THEME:GetPathB("ScreenSelectMusic","overlay/InfoPanel"))(pn)..{
 			    InitCommand=function(s) s:visible(false):y(_screen.cy-200) end,
                 CodeMessageCommand=function(s,p)
                     if p.PlayerNumber == pn then
@@ -154,7 +154,7 @@ if not GAMESTATE:IsCourseMode() then
 			    end,
             };
         end
-        t[#t+1] = LoadActor(THEME:GetPathB("ScreenSelectMusic","overlay/_ShockArrow/default.lua"),pn)..{
+        t[#t+1] = loadfile(THEME:GetPathB("ScreenSelectMusic","overlay/_ShockArrow/default.lua"))(pn)..{
             InitCommand=function(s)
                 s:xy(pn==PLAYER_1 and _screen.cx-340 or _screen.cx+340,_screen.cy+80):zoom(0.5)
             end,

@@ -147,7 +147,8 @@ t[#t+1] = Def.ActorFrame {
 			end
 		end,
 	},
-	LoadActor('star') .. {
+	Def.Sprite{
+		Texture='star',
 		InitCommand=function(s) s:diffusealpha(0) end,
 		OnCommand=function(s) s:sleep(1.8):linear(0.05):diffusealpha(1):linear(0.2):diffusealpha(0) end,
 	},
@@ -155,10 +156,12 @@ t[#t+1] = Def.ActorFrame {
 		InitCommand=function(s) s:setsize(SCREEN_WIDTH,SCREEN_HEIGHT):diffusealpha(0):blend(Blend.Add) end,
 		OnCommand=function(s) s:sleep(1.8):linear(0.05):diffusealpha(0.25):linear(0.2):diffusealpha(0) end,
 	},
-	LoadActor('arrow') .. {
+	Def.Sprite{
+		Texture='arrow',
 		OnCommand=function(s) s:x(1700):sleep(1.6):linear(0.4):x(-1700) end,
 	},
-	LoadActor('arrow') .. {
+	Def.Sprite{
+		Texture='arrow',
 		InitCommand=function(s) s:zoomx(-1) end,
 		OnCommand=function(s) s:x(-1700):sleep(1.6):linear(0.4):x(1700) end,
 	},
@@ -166,7 +169,7 @@ t[#t+1] = Def.ActorFrame {
 
 for _, pn in pairs(GAMESTATE:GetEnabledPlayers()) do
 	if not GAMESTATE:IsCourseMode() then
-		t[#t+1] = LoadActor('record', pn);
+		t[#t+1] = loadfile(THEME:GetPathB("ScreenStageInformation","decorations/record.lua"))(pn);
 	end
 end
 

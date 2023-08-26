@@ -9,7 +9,8 @@ return Def.ActorFrame{
 			if s:GetVisible() then SOUND:PlayAnnouncer("select style comment single") end
 		end,
 		LoseFocusCommand=function(s) s:stoptweening():smooth(0.3):zoom(0.825) end,
-		LoadActor("pad") ..{
+		Def.Sprite{
+			Texture="pad",
 			InitCommand=function(s) s:diffusealpha(0):zoomx(1):xy(2,278) end,
 			OnCommand=function(s) s:zoom(0):sleep(0.5):linear(0.1):diffusealpha(1.0):zoom(1):smooth(0.1):zoom(0.9):smooth(0.1):zoom(1) end,
 			GainFocusCommand=function(s) s:smooth(0.3):diffusealpha(1):diffuseshift():effectcolor1(Color.White)
@@ -17,14 +18,16 @@ return Def.ActorFrame{
 			end,
 			LoseFocusCommand=function(s) s:stopeffect():diffuse(color("0.75,0.75,0.75,1")) end,
 		};
-		LoadActor("AFRO") ..{
+		Def.Sprite{
+			Texture="AFRO",
 			InitCommand=function(s) s:diffusealpha(0):basezoom(0.7):xy(-40,10) end,
 			OnCommand=function(s) s:sleep(0.6):linear(0.1):diffusealpha(1):zoomy(0.5)
 				:linear(0.1):zoomy(1):zoomx(1.5):linear(0.1):zoomx(1)
 			end,
 		};
 	};
-	LoadActor("title small")..{
+	Def.Sprite{
+		Texture="title small",
 		InitCommand=function(s) s:diffusealpha(0):xy(178,-120) end,
 		MenuLeftP1MessageCommand=function(s) s:playcommand("Change1") end,
 		MenuRightP1MessageCommand=function(s) s:playcommand("Change1") end,

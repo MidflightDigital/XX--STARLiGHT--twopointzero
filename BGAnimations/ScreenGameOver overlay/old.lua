@@ -1,5 +1,6 @@
 return Def.ActorFrame{
-  LoadActor("DDR STARLIGHT GAME OVER")..{
+  Def.Sprite{
+    Texture="DDR STARLIGHT GAME OVER",
     InitCommand=function(s) s:Center()
       SOUND:StopMusic()
       setenv("Credits",false)

@@ -32,56 +32,59 @@ local function cfShowOnly(...)
 	end
 end
 
+local profileID = GetProfileIDForPlayer(player)
+local pPrefs = ProfilePrefs.Read(profileID)
+
 local t = Def.ActorFrame {
 	Def.ActorFrame {
 		Name="ComboFrame";
 		Def.BitmapText{
 			Name="NumberW1";
-			Font="Combo/combo marv",
+			Font="Combo/"..pPrefs.Combo.."/combo marv",
 			OnCommand = THEME:GetMetric("Combo", "NumberOnCommand");
 		};
 		Def.BitmapText{
 			Name="NumberW2";
-			Font="Combo/combo perf",
+			Font="Combo/"..pPrefs.Combo.."/combo perf",
 			OnCommand = THEME:GetMetric("Combo", "NumberOnCommand");
 		};
 		Def.BitmapText{
 			Name="NumberW3";
-			Font="Combo/combo great",
+			Font="Combo/"..pPrefs.Combo.."/combo great",
 			OnCommand = THEME:GetMetric("Combo", "NumberOnCommand");
 		};
 		Def.BitmapText{
 			Name="NumberW4";
-			Font="Combo/combo good",
+			Font="Combo/"..pPrefs.Combo.."/combo good",
 			OnCommand = THEME:GetMetric("Combo", "NumberOnCommand");
 		};
 		Def.BitmapText{
 			Name="NumberNormal";
-			Font="Combo/combo normal",
+			Font="Combo/"..pPrefs.Combo.."/combo normal",
 			OnCommand = THEME:GetMetric("Combo", "NumberOnCommand");
 		};
 		Def.Sprite{
-			Texture="_combomarv",
+			Texture=pPrefs.Combo.."/_combomarv",
 			Name="LabelW1";
 			OnCommand = THEME:GetMetric("Combo", "LabelOnCommand");
 		};
 		Def.Sprite{
-			Texture="_comboperfect",
+			Texture=pPrefs.Combo.."/_comboperfect",
 			Name="LabelW2";
 			OnCommand = THEME:GetMetric("Combo", "LabelOnCommand");
 		};
 		Def.Sprite{
-			Texture="_combogreat",
+			Texture=pPrefs.Combo.."/_combogreat",
 			Name="LabelW3";
 			OnCommand = THEME:GetMetric("Combo", "LabelOnCommand");
 		};
 		Def.Sprite{
-			Texture="_combogood",
+			Texture=pPrefs.Combo.."/_combogood",
 			Name="LabelW4";
 			OnCommand = THEME:GetMetric("Combo", "LabelOnCommand");
 		};
 		Def.Sprite{
-			Texture="_combonormal",
+			Texture=pPrefs.Combo.."/_combonormal",
 			Name="LabelNormal";
 			OnCommand = THEME:GetMetric("Combo", "LabelOnCommand");
 		};

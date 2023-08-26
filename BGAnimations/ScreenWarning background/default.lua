@@ -2,7 +2,8 @@ return Def.ActorFrame{
 	StorageDevicesChangedMessageCommand=function(self, params)
 		MemCardInsert()
 	end;
-	LoadActor("image") .. {
+	Def.Sprite{
+	Texture="image",
 		InitCommand = function(s) s:Center() end,
 	};
 	Def.Quad{

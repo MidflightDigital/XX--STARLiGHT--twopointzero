@@ -12,8 +12,11 @@ return Def.ActorFrame{
 	GainFocusCommand=function(self)
 		MESSAGEMAN:Broadcast("TitleSelection", {Choice=style})
 	end,
-	LoadActor(style);
-	LoadActor("hl")..{
+	Def.Sprite{
+		Texture=THEME:GetPathG("ScreenSelectMode","scroller/"..style),
+	};
+	Def.Sprite{
+		Texture="hl",
 		OnCommand=function(s) s:queuecommand("Anim") end,
 		GainFocusCommand=function(s) s:finishtweening():queuecommand("Anim"):diffusealpha(0):linear(0.1):diffusealpha(1) end,
 		LoseFocusCommand=function (s) s:finishtweening():linear(0.1):diffusealpha(0) end,

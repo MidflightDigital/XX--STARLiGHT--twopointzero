@@ -16,7 +16,9 @@ return Def.ActorFrame{
             s:visible(false)
         end
     end,
-    LoadActor("genre/GENRE_sort.png");
+    Def.Sprite{
+        Texture="genre/GENRE_sort.png",
+    };
     Def.BitmapText{
         Font="_avenirnext lt pro bold/46px",
         SetCommand=function(s,param)

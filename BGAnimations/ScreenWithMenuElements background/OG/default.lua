@@ -28,7 +28,8 @@ local function meteor()
 		end,
 	}
 
-	m[#m+1] = LoadActor("../OLD/meteor-arrow") .. {
+	m[#m+1] = Def.Sprite{
+		Texture=THEME:GetPathB("ScreenWithMenuElements","background/OLD/meteor-arrow"),
 		AnimateCommand=function(s)
 			-- Start partially visible
 			s:diffusealpha(0)
@@ -41,7 +42,8 @@ local function meteor()
 		end,
 	}
 
-	m[#m+1] = LoadActor("../OLD/meteor-glow") .. {
+	m[#m+1] = Def.Sprite{
+		Texture=THEME:GetPathB("ScreenWithMenuElements","background/OLD/meteor-glow"),
 		AnimateCommand=function(s)
 			-- Glow is almost white, with a chance of being tinted slightly.
 			-- Invisible to start with.
@@ -59,8 +61,9 @@ local function meteor()
 end
 
 local t = Def.ActorFrame{
-	LoadActor("background")..{
-		InitCommand=function(s) s:FullScreen() end,
+	Def.Sprite{
+		Texture="background",
+		OnCommand=function(s) s:Center():setsize(IsUsingWideScreen() and SCREEN_WIDTH or 1920,SCREEN_HEIGHT) end,
 	};
 	--[[Def.Quad{
 		InitCommand=function(s) s:FullScreen():diffuse(color("0.1,0,0.75,0.5")):blend(Blend.Add) end,

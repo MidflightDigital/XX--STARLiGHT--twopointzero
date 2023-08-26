@@ -1,7 +1,8 @@
 local SongAttributes = LoadModule "SongAttributes.lua"
 
 return Def.ActorFrame{
-  LoadActor("Backing")..{
+  Def.Sprite{
+	Texture="Backing",
     SetMessageCommand=function(self, param)
 		  local group = param.Text;
       self:diffuse(SongAttributes.GetGroupColor(group));

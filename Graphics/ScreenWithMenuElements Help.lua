@@ -1,5 +1,7 @@
 return Def.ActorFrame{
-	LoadActor("_footer/backer");
+	Def.Sprite{
+		Texture="_footer/backer",
+	};
 	Def.HelpDisplay {
 		File = THEME:GetPathF("HelpDisplay", "text");
 		InitCommand=function(self)

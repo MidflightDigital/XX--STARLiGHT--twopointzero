@@ -1,4 +1,5 @@
-return LoadActor("back")..{
+return Def.Sprite{
+	Texture="back",
 	InitCommand=function(s)
 		if GAMESTATE:IsDemonstration() then
 			s:zoomto(680,51)

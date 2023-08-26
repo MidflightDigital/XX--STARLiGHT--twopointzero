@@ -6,7 +6,9 @@ local entryToPrefixMap = {
 	['evalpane1'] = "EvalPane1",
 	['evalpane2'] = "EvalPane2",
 	['stars'] = "EXStars",
-	["towelpos"] = "TowelPos"
+	["towelpos"] = "TowelPos",
+	["Judgment"] = "Judgment",
+	["Combo"] = "Combo"
 }
 
 function LoadFromProfilePrefs()

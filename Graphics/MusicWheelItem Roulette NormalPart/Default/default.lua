@@ -1,8 +1,8 @@
-local t = Def.ActorFrame{}
 local getOn = 0;
 local getOff = 0;
 
-t[#t+1] = LoadActor(THEME:GetPathG("","_jackets/roulette.png")) .. {
+return Def.Sprite{
+	Texture=THEME:GetPathG("","_jackets/roulette.png"),
 	SetCommand=function(self,params)
 		local song = params.Text
 		local index = params.DrawIndex
@@ -28,5 +28,3 @@ t[#t+1] = LoadActor(THEME:GetPathG("","_jackets/roulette.png")) .. {
 			self:setsize(230,230)
 	end,
 }
-
-return t

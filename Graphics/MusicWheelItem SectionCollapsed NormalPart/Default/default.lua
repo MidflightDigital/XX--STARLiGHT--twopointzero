@@ -10,7 +10,8 @@ return Def.ActorFrame{
 			self:scaletofit(-115,-115,115,115)
 		end;
 	};
-	LoadActor(THEME:GetPathG("","_jackets/glow.png"))..{
+	Def.Sprite{
+		Texture=THEME:GetPathG("","_jackets/glow.png"),
 		InitCommand=function(s) s:visible(false) end,
 		SetMessageCommand=function(self,params)
 			local pt_text = params.Text;
@@ -26,7 +27,8 @@ return Def.ActorFrame{
 			self:setsize(230,230)
 		end;
 	};
-	LoadFont("_avenirnext lt pro bold/10px")..{
+	Def.BitmapText{
+		Font="_avenirnext lt pro bold/10px",
 		InitCommand=function(s) s:diffusealpha(0.9):y(-107):strokecolor(color("0,0,0,0.5")) end,
 		SetMessageCommand=function(self,params)
 			local group = params.Text;
@@ -42,7 +44,8 @@ return Def.ActorFrame{
 			end;
 		end;
 	};
-	LoadFont("_avenirnext lt pro bold/10px")..{
+	Def.BitmapText{
+		Font="_avenirnext lt pro bold/10px",
 		InitCommand=function(s) s:diffusealpha(0.9):y(107) end,
 		SetMessageCommand=function(self,params)
 			local group = params.Text;
@@ -58,7 +61,8 @@ return Def.ActorFrame{
 			end;
 		end;
 	};
-	LoadFont("_avenirnext lt pro bold/46px")..{
+	Def.BitmapText{
+		Font="_avenirnext lt pro bold/46px",
 		InitCommand=function(s) s:y(-20):diffusealpha(1):maxwidth(200):diffusebottomedge(color("#d8d8d8")):diffusetopedge(color("#8c8c8c")):strokecolor(Color.Black) end,
 		SetMessageCommand=function(self,params)
 			local group = params.Text;
