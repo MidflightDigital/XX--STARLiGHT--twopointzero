@@ -5,7 +5,7 @@ return Def.ActorFrame {
 		InitCommand=function(s) s:Center() end,
 		OnCommand=function(s) s:play() end,
 	},
-	loadfile(THEME:GetPathB("","ScreenWithMenuElements background"))(){
+	loadfile(THEME:GetPathB("","ScreenWithMenuElements background"))()..{
 		Condition=not GetExtraStage(),
 	},
 }
