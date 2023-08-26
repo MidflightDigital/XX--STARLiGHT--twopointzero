@@ -245,7 +245,8 @@ end
 
 t[#t+1] = StandardDecorationFromFileOptional("Help","Help");
 
-t[#t+1] = LoadFont('_stagegameplay') .. {
+t[#t+1] = Def.BitmapText{
+	Font='_stagegameplay',
 	Name='StageDisplay',
 	InitCommand=function(s) s:xy(SCREEN_CENTER_X,76):maxwidth(140):zoom(1.2) end,
 	CurrentSongChangedMessageCommand=function(s)

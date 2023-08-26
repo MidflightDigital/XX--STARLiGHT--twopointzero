@@ -349,7 +349,8 @@ return Def.ActorFrame{
                     s:zoomto(378,378);
                 end;
             };
-            LoadFont("_avenirnext lt pro bold/46px")..{
+            Def.BitmapText{
+                Font="_avenirnext lt pro bold/46px",
                 InitCommand=function(s) s:y(-20):zoom(1.5):diffusealpha(1):maxwidth(200):diffusebottomedge(color("#d8d8d8")):diffusetopedge(color("#8c8c8c")):strokecolor(Color.Black) end,
                 SetMessageCommand=function(self,params)
                   local mw = SCREENMAN:GetTopScreen():GetChild("MusicWheel")

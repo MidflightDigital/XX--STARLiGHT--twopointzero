@@ -8,7 +8,8 @@ local screen2 = Var "LoadingScreen"
 for s in ivalues(Stage) do
 
 if s ~= 'Stage_Next' and s ~= 'Stage_Nonstop' and s ~= 'Stage_Oni' and s ~= 'Stage_Endless' then
-	StageDisplay[#StageDisplay+1] = LoadFont("_stagetext") .. {
+	StageDisplay[#StageDisplay+1] = Def.BitmapText{
+		Font="_stagetext",
 		SetCommand=function(self, params)
 			local Stage = GAMESTATE:GetCurrentStage();
 			local StageIndex = GAMESTATE:GetCurrentStageIndex();

@@ -4,7 +4,8 @@ local StageDisplay = Def.ActorFrame{
 };
 
 function MakeBitmapText()
-	return LoadFont("_avenirnext lt pro bold/36px") .. {
+	return Def.BitmapText{
+		Font="_avenirnext lt pro bold/36px",
 		InitCommand=function(s) s:maxwidth(180) end,
 	};
 end

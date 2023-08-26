@@ -115,7 +115,8 @@ local function LoadPlayerStuff(Player)
 			self:sleep(0.3):diffusealpha(0)
 		end,
 	};
-	x[#x+1] = LoadFont('_avenirnext lt pro bold/25px') .. {
+	x[#x+1] = Def.BitmapText{
+		Font='_avenirnext lt pro bold/25px',
 		Name='SelectedProfileText', 
 		InitCommand=function(self)
 			self:xy(-220,-15):halign(0):zoom(1.1):diffuse(color('#b5b5b5')):diffusetopedge(color('#e5e5e5')):diffusealpha(0):maxwidth(400)
@@ -123,7 +124,8 @@ local function LoadPlayerStuff(Player)
 		OnCommand=function(s) s:sleep(0.7):linear(0.2):diffusealpha(1) end,
 		['Player' .. pname(Player) .. 'FinishMessageCommand']=function(s) s:sleep(0.3):diffusealpha(0) end,
 	};
-	x[#x+1] = LoadFont('_avenirnext lt pro bold/25px') .. {
+	x[#x+1] = Def.BitmapText{
+		Font='_avenirnext lt pro bold/25px',
 		Name='selectPlayerUID', 
 		InitCommand=function(s) s:zoom(0.8):halign(0):diffuse(color('#b5b5b5')):diffusetopedge(color('#e5e5e5'))
 			:diffusealpha(0):xy(-220,18)

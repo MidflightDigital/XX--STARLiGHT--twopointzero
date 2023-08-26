@@ -20,7 +20,8 @@ end;
 
 local function CreatePaneDisplayGraph( _pnPlayer, _sLabel, _rcRadarCategory )
 	return Def.ActorFrame {
-		LoadFont("Common Normal") .. {
+		Def.BitmapText{
+			Font="Common Normal",
 			InitCommand=function(s) s:zoom(0.8):x(30) end,
 			CurrentSongChangedMessageCommand=function(s) s:playcommand("Set") end,
 			CurrentStepsP1ChangedMessageCommand=function(s) s:playcommand("Set") end,

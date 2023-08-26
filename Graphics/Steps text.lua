@@ -20,12 +20,14 @@ end;
 
 local function CreatePaneDisplayItem( _pnPlayer, _sLabel, _rcRadarCategory )
 	return Def.ActorFrame {
-		LoadFont("Common Bold") .. {
+		Def.BitmapText{
+			Font="Common Bold",
 			Text=string.upper( THEME:GetString("PaneDisplay",_sLabel) );
 			InitCommand=function(s) s:halign(0):addx(-48) end,
 			OnCommand=function(s) s:zoom(0.5875) end,
 		};
-		LoadFont("Common Bold") .. {
+		Def.BitmapText{
+			Font="Common Bold",
 			Text="0";
 			InitCommand=function(s) s:x(48):halign(1) end,
 			OnCommand=function(s) s:zoom(0.5875) end,

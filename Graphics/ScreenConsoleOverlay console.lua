@@ -11,7 +11,8 @@ t[#t+1] = Def.Quad {
 }
 
 -- Console output text
-t[#t+1] = LoadFont() .. {
+t[#t+1] = Def.BitmapText{
+	Font="Common Normal",
 	InitCommand = function(s) s:align(0,1):xy(4,-10):zoom(0.7)
 		:wrapwidthpixels((_screen.w-8)/0.7))
 	end,
@@ -20,7 +21,8 @@ t[#t+1] = LoadFont() .. {
 }
 
 -- Prompt and user input
-t[#t+1] = LoadFont() .. {
+t[#t+1] = Def.BitmapText{
+	Font="Common Normal",
 	InitCommand = function(self)
 		self:zoom(0.7)
 		self:halign(0)

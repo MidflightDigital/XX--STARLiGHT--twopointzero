@@ -36,7 +36,8 @@ function genLetterBox()
 						end
 					end
 				};
-				LoadFont("_avenirnext lt pro bold/42px")..{
+				Def.BitmapText{
+					Font="_avenirnext lt pro bold/42px",
 					InitCommand=function(s)
 						if character == "Enter" or character == "←" then
 							s:diffuse(Color.White):zoom(0.8):addx(-2)
@@ -212,7 +213,8 @@ local t = Def.ActorFrame{
 				end
 			end;
 		};
-		LoadFont("_avenirnext lt pro bold/36px")..{
+		Def.BitmapText{
+			Font="_avenirnext lt pro bold/36px",
 			InitCommand=function(s) s:xy(-250,-190):halign(0):zoom(0.9):strokecolor(Color.Black) end,
 			Text="Register a DANCER NAME.\nEnter the name you want to use."
 		};
@@ -220,7 +222,8 @@ local t = Def.ActorFrame{
 			Texture="nameframe",
 			InitCommand=function(s) s:y(-120) end,
 		};
-		LoadFont("DDRName Large")..{
+		Def.BitmapText{
+			Font="DDRName Large",
 			Name="NameActor";
 			InitCommand=function(s) s:halign(1):xy(256,-120) end,
 		};

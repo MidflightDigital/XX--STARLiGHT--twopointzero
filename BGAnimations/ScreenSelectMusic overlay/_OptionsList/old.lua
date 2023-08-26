@@ -93,7 +93,8 @@ if THEME:GetMetric("ScreenSelectMusic","UseOptionsList") then
                     s:xy(-180,-400):zoom(1.2):halign(0):vertspacing(-20)
                 end,
             };
-            LoadFont("_avenirnext lt pro bold/25px")..{
+            Def.BitmapText{
+                Font="_avenirnext lt pro bold/25px",
                 InitCommand=function(s) s:y(-345):wrapwidthpixels(420):valign(0):playcommand("Meme") end,
                 MemeCommand=function(s) s:settext("(;•́︿•̀  ;) h….hewwo…?"):sleep(math.random(3,7)):queuecommand("One") end,
                 OneCommand=function(s) s:settext("……. (　•́  ^•̀｀) hewwo….? is anybodwy hewre…?"):sleep(math.random(3,7)):queuecommand("Two") end,

@@ -68,7 +68,8 @@ t[#t+1] = Def.ActorFrame{
         end;
       end;
     };
-    LoadFont("_avenirnext lt pro bold/25px")..{
+    Def.BitmapText{
+      Font="_avenirnext lt pro bold/25px",
       Name="Score";
       InitCommand=function(s) s:y(35) end,
       BeginCommand=function(s) s:playcommand("Set") end,

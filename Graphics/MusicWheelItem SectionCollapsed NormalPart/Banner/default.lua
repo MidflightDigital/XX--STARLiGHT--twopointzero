@@ -10,7 +10,8 @@ t[#t+1] = Def.ActorFrame{
 			s:setsize(384,120)
 		end,
 	};
-	LoadFont("_avenirnext lt pro bold/36px")..{
+	Def.BitmapText{
+		Font="_avenirnext lt pro bold/36px",
 		InitCommand=function(s) s:rotationz(-45):diffusealpha(1):maxwidth(200):diffusebottomedge(color("#d8d8d8")):diffusetopedge(color("#8c8c8c")):strokecolor(Color.Black) end,
 		SetMessageCommand=function(self,params)
 			local group = params.Text;
@@ -59,7 +60,8 @@ for i = 1,3 do
 			Texture=THEME:GetPathG("","_shared/bannerwheel bottom"),
 			InitCommand=function(s) s:setsize(716,52):xy(factorsx[i],-330) end,
 		};
-		LoadFont("_avenirnext lt pro bold/42px")..{
+		Def.BitmapText{
+			Font="_avenirnext lt pro bold/42px",
 			InitCommand=function(s) s:xy(factorsx[i],-390):zoom(2)
 				s:diffusealpha(1):maxwidth(200):diffusebottomedge(color("#d8d8d8")):diffusetopedge(color("#8c8c8c")):strokecolor(Color.Black) end,
 			SetMessageCommand=function(self,params)

@@ -53,7 +53,8 @@ local wheel_item_mt = {
 				end
 			}
 
-			af[#af+1] = LoadFont("Common Normal")..{
+			af[#af+1] = Def.BitmapText{
+				Font="Common Normal",
 				Text="",
 				InitCommand=function(subself)
 					subself:diffusealpha(0)

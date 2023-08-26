@@ -1,5 +1,6 @@
 local function CreditsText()
-	local text = LoadFont("_avenirnext lt pro bold/20px") .. {
+	local text = Def.BitmapText{
+		Font="_avenirnext lt pro bold/20px",
 		InitCommand=function(s) s:xy(_screen.cx,SCREEN_BOTTOM-16):strokecolor(Color.Black):playcommand("Refresh") end,
 		RefreshCommand=function(self)
 		--Other coin modes

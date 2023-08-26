@@ -2,7 +2,8 @@
 local Player = ...
 if not Player then error("ScreenGameplay StageNumber requires a Player") end
 
-return LoadFont("BPMDisplay bpm")..{
+return Def.BitmapText{
+	Font="BPMDisplay bpm",
 	BeginCommand=function(s) s:playcommand("Set") end,
 	SetCommand=function(self)
 		local curStageStats = STATSMAN:GetCurStageStats()

@@ -1,7 +1,8 @@
 local sString;
 local t = Def.ActorFrame{
 	
-	LoadFont("Common normal")..{
+	Def.BitmapText{
+		Font="Common normal",
 		InitCommand=function(s) s:shadowlength(1) end,
 		SetMessageCommand=function(self,param)
 			if param.StepsType then
