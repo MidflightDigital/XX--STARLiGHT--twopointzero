@@ -41,6 +41,7 @@ setmetatable(Color, { __call = function(self, c) return self[c] end })
 -- Colors = Color;
 
 GameColor = {
+	Custom = LoadModule("Theme.Colors.lua")():RestoreColors(),
 	PlayerColors = {
 		PLAYER_1 = color("#01fbfc"),
 		PLAYER_2 = color("#fd45fc"),

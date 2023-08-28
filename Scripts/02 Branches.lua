@@ -74,7 +74,7 @@ function SelectMusicOrCourse()
 		if GetExtraStage() then
 			return "ScreenSelectMusicExtra"
 		else
-			return "ScreenSelectMusic"
+			return "LuaSelectMusic"
 		end
 	end
 end
