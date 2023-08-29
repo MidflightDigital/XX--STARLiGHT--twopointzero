@@ -195,7 +195,7 @@ local function UpdateCurrentlyPlayingMusic(self,Songs)
 		end
 	else
 		-- Group / nil, stop music.
-		SOUND:PlayMusicPart(GetMenuMusicPath("music"),0,-1,0,0,true)
+		SOUND:PlayMusicPart(GetMenuMusicPath("music"),0,132,0,0,true)
 	end
 end
 
@@ -207,7 +207,7 @@ local function FetchStepsForWheelItem(pn)
 end
 
 -- Change the cursor of Player on the difficulty selector.
-local function MoveDifficulty(self,offset)
+local function MoveDifficulty(self,offset,Songs)
 	if doneWithInput then return end
 	if holdingSelect then return end
 	local player = self.pn
@@ -601,7 +601,6 @@ return function(Style)
 					end
 					c.JacketContainer:visible(found)
 				end
-
 				-- Does the player have enough stages to play this song?
 				if not CheckStageAvailability(params.Data[1]) then
 					-- TODO: Redo this color by fetching it to the ItemBG item itself.
@@ -635,7 +634,26 @@ return function(Style)
 		-- But we keep it within limits.
 		while pos > #GroupsAndSongs do pos = pos-#GroupsAndSongs end
 		while pos < 1 do pos = #GroupsAndSongs+pos end
-		
+
+		local DiffItem= Def.ActorFrame{Name="DiffItem"}
+
+		for player in ivalues(PlayerNumber) do
+			DiffItem[#DiffItem+1] = LoadModule("Wheel/Objects/WIDiff.lua"){
+				Player = player,
+				CurStyle = Style,
+				Song = newsong,
+			}..{
+				InitCommand=function(s)
+					s:visible(GAMESTATE:IsPlayerEnabled(player))
+				end,
+				PlayerJoinedMessageCommand=function(self)
+					self:visible(true)
+					-- Load the profles.
+					GAMESTATE:LoadProfiles()
+				end,
+			}
+			
+		end
 		-- Append to the wheel.
 		Wheel[#Wheel+1] = Def.ActorFrame{
 			Name="Container"..i,
@@ -668,6 +686,7 @@ return function(Style)
 					self.expectedSize = 230
 				end
 			},
+			DiffItem,
 		}	
 	end
 
@@ -714,6 +733,10 @@ return function(Style)
 			end,
 			LoadModule("Wheel/Objects/DiffSelector.lua"){
 				Player = player,
+				Action = function(self)
+					hasHitAnotherSong = true
+					MoveSelection(mainActorFrame,0,GroupsAndSongs,true)
+				end
 			}..{
 			},
 		}
@@ -888,6 +911,7 @@ return function(Style)
 				end
 
 				MoveSelection(self,offset,GroupsAndSongs)
+				MoveDifficulty(self,0,GroupsAndSongs)
 			end
 		end,
 
@@ -982,7 +1006,7 @@ return function(Style)
 			
 				-- Check if we are on a group.
 				if type(GroupsAndSongs[CurSong]) == "string" then
-				
+					self:GetChild("ExpandSound"):play()
 					-- Check if we are on the same group thats currently open,
 					-- If not we set the curent group to our new selection.
 					if CurGroup ~= GroupsAndSongs[CurSong] then			

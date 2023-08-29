@@ -496,8 +496,21 @@ return function(Style)
 	end
 
 
-    -- Load the songs from the Songs.Loader module.
-	local Songs = LoadModule("Wheel/Songs.Loader.lua")(Style)
+   -- Load the songs from the Songs.Loader module.
+	if m_styleindex > #Style then m_styleindex = 1 end
+	Songs = ModuleUtils.SongLoader(Style[m_styleindex])
+
+	-- No songs were found on the current mode? Check the next one.
+	while( #Songs == 0 ) do
+		m_styleindex = m_styleindex + 1
+		-- We're out of bounds, stop operation.
+		if m_styleindex > #Style then
+			m_styleindex = #Style
+			break
+		end
+
+		Songs = ModuleUtils.SongLoader(Style[m_styleindex])
+	end
 	
 	-- Sort the Songs and Group.
     local GroupsAndSongs = LoadModule("Wheel/Group.Sort.lua")(Songs,CurGroup)

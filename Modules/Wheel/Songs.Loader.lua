@@ -74,6 +74,12 @@ return function(Style)
 			AllCompSongs[#AllCompSongs+1] = CurSongCon
 		end
 	end	
+
+	local function compare(a,b)
+        return a[1]:GetDisplayMainTitle() < b[1]:GetDisplayMainTitle()
+    end
+	
+	table.sort(AllCompSongs, compare)
 	
 	-- Return all the Songs, That support Current Style.
 	return AllCompSongs
