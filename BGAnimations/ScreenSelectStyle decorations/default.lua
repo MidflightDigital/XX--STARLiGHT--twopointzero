@@ -26,36 +26,39 @@ for i=1,2 do
         s:x(i==1 and 100 or -100)
       end,
     };
-    Def.Sprite{
+    Def.BitmapText{
       Name="Messages",
-      InitCommand=function(s) s:xy(i==1 and 260 or -260,2):zoom(0.8):queuecommand("Set") end,
+      Font="_handel gothic itc std Bold/24px",
+      InitCommand=function(s) s:xy(i==1 and 140 or -140,-1):zoom(0.9):maxwidth(300):queuecommand("Set") end,
       SetCommand=function(s)
         local GetP1 = GAMESTATE:IsPlayerEnabled(PLAYER_1)
         local GetP2 = GAMESTATE:IsPlayerEnabled(PLAYER_2)
         local masterPlayer = GAMESTATE:GetMasterPlayerNumber()
         if i == 1 then
+          s:halign(0)
           if GetP1 == true and GAMESTATE:GetNumPlayersEnabled() == 1 then
-            s:Load(THEME:GetPathB("","ScreenSelectStyle decorations/P1here"));
+            s:settext(THEME:GetString("ScreenSelectStyle","P1here"))
           elseif GetP1 == false and GAMESTATE:PlayersCanJoin() and GAMESTATE:GetMasterPlayerNumber() == PLAYER_2 then
-            s:Load(THEME:GetPathB("","ScreenSelectStyle decorations/P1CanJoin"));
+            s:settext(THEME:GetString("ScreenSelectStyle","P1CanJoin"))
           elseif GetP1 == false and GAMESTATE:GetMasterPlayerNumber() == PLAYER_2  then
             if GAMESTATE:GetCoins() ~= GAMESTATE:GetCoinsNeededToJoin() and GAMESTATE:IsEventMode() == false then
-              s:Load(THEME:GetPathB("","ScreenSelectStyle decorations/credit"));
+              s:settext(THEME:GetString("ScreenSelectStyle","Credit"))
             end;
           else
-            s:Load(THEME:GetPathB("","ScreenSelectStyle decorations/P1here"));
+            s:settext(THEME:GetString("ScreenSelectStyle","P1here"))
           end;
         elseif i == 2 then
+          s:halign(1)
           if GetP2 == true and GAMESTATE:GetNumPlayersEnabled() == 1 then
-            s:Load(THEME:GetPathB("","ScreenSelectStyle decorations/P2here"));
+            s:settext(THEME:GetString("ScreenSelectStyle","P2here"))
           elseif GetP2 == false and GAMESTATE:GetMasterPlayerNumber() == PLAYER_1  then
             if GAMESTATE:GetCoins() ~= GAMESTATE:GetCoinsNeededToJoin()  and GAMESTATE:IsEventMode() == false then
-              s:Load(THEME:GetPathB("","ScreenSelectStyle decorations/credit"));
+              s:settext(THEME:GetString("ScreenSelectStyle","Credit"))
             else
-              s:Load(THEME:GetPathB("","ScreenSelectStyle decorations/P2CanJoin"));
+              s:settext(THEME:GetString("ScreenSelectStyle","P2CanJoin"))
             end;
           else
-            s:Load(THEME:GetPathB("","ScreenSelectStyle decorations/P2here"));
+            s:settext(THEME:GetString("ScreenSelectStyle","P2here"))
           end
         end
       end,
