@@ -481,10 +481,10 @@ return Def.ActorFrame{
 				if mw:GetSelectedSection() ~= "" and GAMESTATE:GetCurrentSong() then
 					if so == "Group" then
 						s:strokecolor(ColorDarkTone(SongAttributes.GetGroupColor(mw:GetSelectedSection())))
-						s:settext("GROUP/"..SongAttributes.GetGroupName(mw:GetSelectedSection()))
+						s:settext(THEME:GetString("ScreenSelectMusic","GLabelGROUP").."/"..SongAttributes.GetGroupName(mw:GetSelectedSection()))
 					elseif so == "Title" then
 						s:strokecolor(ColorDarkTone(SongAttributes.GetGroupColor(GAMESTATE:GetCurrentSong():GetGroupName())))
-						s:settext("From: "..SongAttributes.GetGroupName(GAMESTATE:GetCurrentSong():GetGroupName()))
+						s:settext(THEME:GetString("ScreenSelectMusic","GLabelFrom")..": "..SongAttributes.GetGroupName(GAMESTATE:GetCurrentSong():GetGroupName()))
 					else
 						s:settext("")
 					end
