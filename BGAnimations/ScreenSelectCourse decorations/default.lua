@@ -119,17 +119,19 @@ t[#t+1] = Def.ActorFrame{
 		InitCommand = function(s) s:xy(320,54):maxwidth(120):zoom(0.65):align(0.5,0) end,
 		SetCommand = function(self)
 			local curTrail = GAMESTATE:GetCurrentTrail(GAMESTATE:GetMasterPlayerNumber())
-			if curTrail:IsSecret() then
-				self:settext("???")
-			else
-				local bpmlow = {}
-				local bpmhigh = {}
-				for i=1,#curTrail:GetTrailEntries() do
-					local ce = curTrail:GetTrailEntry(i-1):GetSong():GetDisplayBpms()
-					table.insert(bpmlow,ce[1])
-					table.insert(bpmhigh,ce[#ce])
+			if curTrail then
+				if curTrail:IsSecret() then
+					self:settext("???")
+				else
+					local bpmlow = {}
+					local bpmhigh = {}
+					for i=1,#curTrail:GetTrailEntries() do
+						local ce = curTrail:GetTrailEntry(i-1):GetSong():GetDisplayBpms()
+						table.insert(bpmlow,ce[1])
+						table.insert(bpmhigh,ce[#ce])
+					end
+					self:settextf("%03d - %03d",math.floor(math.min(unpack(bpmlow))+0.5),math.floor(math.max(unpack(bpmhigh)))+0.5)
 				end
-				self:settextf("%03d - %03d",math.floor(math.min(unpack(bpmlow))+0.5),math.floor(math.max(unpack(bpmhigh)))+0.5)
 			end
 		end,
 		CurrentCourseChangedMessageCommand = function(s) s:queuecommand("Set") end,
