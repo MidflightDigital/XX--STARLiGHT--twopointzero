@@ -1,3 +1,3 @@
 return Def.Actor{
-    StartTransitioningCommand=function(s) s:sleep(0.3) end,
+    StartTransitioningCommand=function(s) s:sleep(1) end,
 }

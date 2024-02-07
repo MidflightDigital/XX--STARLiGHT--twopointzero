@@ -1,15 +1,22 @@
 local t = Def.ActorFrame{
 	Def.ActorFrame{
+		OnCommand=function(s) s:diffusealpha(0):linear(0.2):diffusealpha(1) end,
 		OffCommand=function(s) s:finishtweening():sleep(0.2):accelerate(0.2):diffusealpha(0) end,
 		loadfile(THEME:GetPathB("","_Logo/default.lua"))()..{
 			InitCommand=function(s) s:Center() end,
 		};
 		Def.Sprite{
-			Texture=THEME:GetPathB("","_Logo/xxlogo.png"),
-			InitCommand=function(s) s:xy(_screen.cx+104,_screen.cy+16):blend(Blend.Add):diffusealpha(0):queuecommand("Anim") end,
+			InitCommand=function(s)
+			  if Branding() == "project_" then
+				s:Load(THEME:GetPathB("","_Logo/project_xxlogo.png"))
+			  else
+				s:Load(THEME:GetPathB("","_Logo/xxlogo.png"))
+			  end
+			  s:xy(_screen.cx+80,_screen.cy+16):blend(Blend.Add):diffusealpha(0):queuecommand("Anim")
+			end,
 			AnimCommand=function(s) s:diffusealpha(0):sleep(1):linear(0.75):diffusealpha(0.3):sleep(0.1):linear(0.4):diffusealpha(0):queuecommand("Anim") end,
-			
-		};
+			OffCommand=function(s) s:stoptweening() end,
+		  };
 		loadfile(THEME:GetPathB("","_Dancer/default.lua"))()..{
 			InitCommand = function(s) s:xy(_screen.cx-540,_screen.cy+30) end,
 		};
@@ -67,8 +74,8 @@ t[#t+1] = Def.ActorFrame {
 		OnCommand=function(s) s:play() end,
 	};
 	Def.Quad{
-		InitCommand=function(s) s:FullScreen():diffuse(color("0,0,0,0")):diffusealpha(0) end,
-		OnCommand=function(s) s:decelerate(0.4):diffusealpha(0.75) end,
+		InitCommand=function(s) s:FullScreen():diffuse(color("0,0,0,0")) end,
+		OnCommand=function(s) s:decelerate(0.2):diffusealpha(0.75) end,
 		OffCommand=function(s) s:accelerate(0.4):diffusealpha(0) end,
 	};
 	Def.ActorFrame{
@@ -139,7 +146,17 @@ t[#t+1] = Def.ActorFrame {
 			Font="_avenirnext lt pro bold/36px";
 			Text="";
 			InitCommand=function(self) self:hibernate(0.4):zoom(0.7):maxwidth(570):wrapwidthpixels(570):vertspacing(2) end;
-			TitleSelectionMessageCommand=function(self, params) self:settext(THEME:GetString("ScreenTitleMenu","Description"..params.Choice)) end;
+			TitleSelectionMessageCommand=function(self, params)
+				if params.Choice == "Exit" then
+					if Branding() == "ddr_" then
+						self:settext(THEME:GetString("ScreenTitleMenu","DescriptionExitDDR"))
+					else
+						self:settext(THEME:GetString("ScreenTitleMenu","DescriptionExitProject"))
+					end
+				else
+					self:settext(THEME:GetString("ScreenTitleMenu","Description"..params.Choice))
+				end
+			end;
 			OnCommand=function(s) s:cropbottom(1):sleep(0.1):accelerate(0.3):cropbottom(0) end,
 		};
 	}

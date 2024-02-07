@@ -19,7 +19,7 @@ return Def.ActorFrame{
 			LoseFocusCommand=function(s) s:stopeffect():diffuse(color("0.75,0.75,0.75,1")) end,
 		};
 		Def.Sprite{
-			Texture="AFRO",
+			Texture=Branding().."char",
 			InitCommand=function(s) s:diffusealpha(0):basezoom(0.7):xy(-40,10) end,
 			OnCommand=function(s) s:sleep(0.6):linear(0.1):diffusealpha(1):zoomy(0.5)
 				:linear(0.1):zoomy(1):zoomx(1.5):linear(0.1):zoomx(1)

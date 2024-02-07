@@ -39,7 +39,7 @@ function Branch.AttractStart()
 	local screen = Var"LoadingScreen"
 	if mode == "CoinMode_Home" then
 		-- Only really matters if you hit Start from ScreenInit
-		return "ScreenTitleMenu"
+		return "ScreenLogo"
 	elseif mode == "CoinMode_Free" then
 		-- Start in Free Play mode goes directly into game
 		return "ScreenLogo"

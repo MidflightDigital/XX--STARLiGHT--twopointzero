@@ -99,6 +99,12 @@ local Prefs =
 		Default = "Options List",
 		Choices = {"Options List","Player Options"},
 		Values = {"Options List", "Player Options"}
+	},
+	Branding = 
+	{
+		Default = "Project",
+		Choices = {"Project", "DDR"},
+		Values = {"Project", "DDR"},
 	}
 };
 
@@ -109,6 +115,15 @@ function OptionsListOrPlayerOptions()
 		return true
 	else
 		return false
+	end
+end
+
+function Branding()
+	--I'm too lazy to rename the actual files so uhhhh string.lower to the rescue LMAO
+	if GAMESTATE:GetCoinMode() == "CoinMode_Home" then
+		return string.lower(ThemePrefs.Get("Branding").."_")
+	else
+		return "project_"
 	end
 end
 
