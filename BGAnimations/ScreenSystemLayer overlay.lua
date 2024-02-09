@@ -53,11 +53,13 @@ end;
 
 local t = Def.ActorFrame {}
 
+if ThemePrefs.Get("BurnInProtect") ~= true then
 t[#t+1] = Def.ActorFrame {
 	CreditsText();
 	PlayerText( PLAYER_1 );
 	PlayerText( PLAYER_2 );
 };
+end
 
 -- Text
 t[#t+1] = Def.ActorFrame {

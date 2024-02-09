@@ -105,7 +105,13 @@ local Prefs =
 		Default = "Project",
 		Choices = {"Project", "DDR"},
 		Values = {"Project", "DDR"},
-	}
+	},
+	BurnInProtect =
+	{
+		Default = false,
+		Choices = {"Off", "On"},
+		Values = {false,true}
+	},
 };
 
 ThemePrefs.InitAll(Prefs)
