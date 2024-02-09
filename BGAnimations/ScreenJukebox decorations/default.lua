@@ -1,6 +1,7 @@
 local t = Def.ActorFrame{};
 
 local jk = LoadModule "Jacket.lua"
+local SongAttributes = LoadModule "SongAttributes.lua"
 
 t[#t+1] = Def.Quad{
     InitCommand=function(s)
@@ -60,6 +61,31 @@ t[#t+1] = Def.ActorFrame{
             end
         end
     },
+    Def.BitmapText{
+        Name="Group",
+        Font="_avenirnext lt pro bold/46px";
+        SetCommand=function(s)
+            s:halign(1):xy(SCREEN_WIDTH/2.4,150):maxwidth(700)
+            local song = GAMESTATE:GetCurrentSong()
+            if song then
+                s:settext("From: "..SongAttributes.GetGroupName(GAMESTATE:GetCurrentSong():GetGroupName()))
+            end
+        end
+    },
+    Def.BitmapText{
+        Font="_avenirnext lt pro bold/42px",
+        InitCommand=function(s) s:shadowlengthy(5):y(460) end,
+        SetCommand=function(s)
+            if GAMESTATE:GetCurrentSong() then
+                if GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber()) then
+                    s:settext(THEME:GetString("CustomDifficulty",ToEnumShortString(GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber()):GetDifficulty())).." "..GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber()):GetMeter())
+                    s:diffuse(CustomDifficultyToColor(ToEnumShortString(GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber()):GetDifficulty())))
+                end
+            else
+                s:settext("")
+            end
+        end,
+    };
 }
 
 --Progress Bar
