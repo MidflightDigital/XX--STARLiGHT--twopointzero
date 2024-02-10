@@ -172,6 +172,18 @@ for _, pn in ipairs(GAMESTATE:GetEnabledPlayers()) do
 				end
 			end,
 		};
+		Def.Actor{
+			OnCommand=function(self)
+				local notefield = SCREENMAN:GetTopScreen():GetChild("Player"..ToEnumShortString(pn)):GetChild("NoteField")
+				local profileID = GetProfileIDForPlayer(pn)
+				local pPrefs = ProfilePrefs.Read(profileID)
+				if pPrefs.guidelines == true then
+					notefield:SetBeatBars(true)
+					notefield:SetStopBars(true)
+					notefield:SetBpmBars(true)
+				end
+			end,
+		},
 		DS .. {
 			InitCommand=function(s) s:hibernate(math.huge) end,
 			HealthStateChangedMessageCommand=function(s,p)
