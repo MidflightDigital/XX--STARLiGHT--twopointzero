@@ -210,7 +210,8 @@ if THEME:GetMetric("ScreenSelectMusic","UseOptionsList") then
                 s:x(
                     pn==PLAYER_1 and (IsUsingWideScreen() and _screen.cx-566 or _screen.cx-360) or
                     (IsUsingWideScreen() and _screen.cx+566 or _screen.cx+360)
-                ):y(SCREEN_BOTTOM+700):zoom(0.8)
+                )
+                :y(SCREEN_BOTTOM+700):zoom(0.8)
             end,
             OnCommand=function(s)
                 optionsListActor = SCREENMAN:GetTopScreen():GetChild("OptionsList"..pname(pn))
@@ -235,6 +236,9 @@ if THEME:GetMetric("ScreenSelectMusic","UseOptionsList") then
                 self:playcommand("Adjust",params);
             end;
             OptionsListLeftMessageCommand=function(self,params)
+                self:playcommand("Adjust",params);
+            end;
+            OptionsMenuChangedMessageCommand=function(self,params)
                 self:playcommand("Adjust",params);
             end;
             OptionsListStartMessageCommand=function(self,params)
@@ -268,14 +272,9 @@ if THEME:GetMetric("ScreenSelectMusic","UseOptionsList") then
                         end
                     end
                 end,
-                OptionsListPushMessageCommand=function(self,params)
-                    self:playcommand("Adjust",params)
-                end,
-                OptionsListPopMessageCommand=function(self,params)
-                    self:playcommand("Adjust",params)
-                end,
             };
             Def.ActorFrame{
+                Name="Explanation Area",
                 InitCommand=function(s) s:y(396) end,
                 OnCommand=function(s) s:diffusealpha(1):sleep(0.05):diffusealpha(0):sleep(0.05):diffusealpha(1):sleep(0.05):diffusealpha(0):sleep(0.05):diffusealpha(1):sleep(0.05):diffusealpha(0):sleep(0.05):linear(0.05):diffusealpha(1) end,
 		        OffCommand=function(s) s:diffusealpha(1):sleep(0.05):diffusealpha(0):sleep(0.05):diffusealpha(1):sleep(0.05):diffusealpha(0):sleep(0.05):diffusealpha(1):sleep(0.05):diffusealpha(0):sleep(0.05) end,
@@ -293,61 +292,61 @@ if THEME:GetMetric("ScreenSelectMusic","UseOptionsList") then
                     OffCommand=function(s) s:stoptweening() end,
                     AdjustCommand=function(s,p)
                         if p.Player == pn then
-                        local OpListMax = {
-                            ["Mini"] = getenv("NumMini"),
-                            ["MusicRate"] = getenv("NumRate"),
-                            ["Characters"] = #Characters.GetAllCharacterNames()
-                        }
-                        if currentOpList == "SongMenu" or currentOpList == "AdvMenu" then
-                            if p.Selection+1 <= numRows then
-                                local itemName = string.gsub(THEME:GetMetric("ScreenOptionsMaster",currentOpList..","..p.Selection+1):split(";")[1],"name,","")
-                                s:settext(THEME:GetString("OptionExplanations",itemName))
+                            local OpListMax = {
+                                ["Mini"] = getenv("NumMini"),
+                                ["MusicRate"] = getenv("NumRate"),
+                                ["Characters"] = #Characters.GetAllCharacterNames()
+                            }
+                            if currentOpList == "SongMenu" or currentOpList == "AdvMenu" then
+                                if p.Selection+1 <= numRows then
+                                    local itemName = string.gsub(THEME:GetMetric("ScreenOptionsMaster",currentOpList..","..p.Selection+1):split(";")[1],"name,","")
+                                   s:settext(THEME:GetString("OptionExplanations",itemName))
+                                else
+                                    s:settext("Exit.");
+                                end;
                             else
-                                s:settext("Exit.");
-                            end;
-                        else
-							local sel = p.Selection
-							
-                            if currentOpList ~= "Exit" then
-								if currentOpList == "Gauge" then
-									if IsExtraStage1() then
-										sel = (p.Selection == 1) and 2 or 1
-									elseif IsExtraStage2() then
-										sel = 2
-									end
+						    	local sel = p.Selection
+                                
+                                if currentOpList ~= "Exit" then
+							    	if currentOpList == "Gauge" then
+							    		if IsExtraStage1() then
+							    			sel = (p.Selection == 1) and 2 or 1
+							    		elseif IsExtraStage2() then
+										    sel = 2
+									    end
+                                    end
+                                    
+								    if THEME:GetMetric("ScreenOptionsMaster",currentOpList.."Explanation") then
+								    	s:settext(THEME:GetString("OptionListItemExplanations",currentOpList..tostring(sel)))
+								    else
+								    	s:settext("")
+								    end
                                 end
-								
-								if THEME:GetMetric("ScreenOptionsMaster",currentOpList.."Explanation") then
-									s:settext(THEME:GetString("OptionListItemExplanations",currentOpList..tostring(sel)))
-								else
-									s:settext("")
-								end
+                                if currentOpList == "Mini" or currentOpList == "Characters" or currentOpList == "NoteSkins" or currentOpList == "MusicRate" then
+                                    s:settext(THEME:GetString("OptionExplanations",currentOpList))
+                                end
                             end
-                            if currentOpList == "Mini" or currentOpList == "Characters" or currentOpList == "NoteSkins" or currentOpList == "MusicRate" then
-                                s:settext(THEME:GetString("OptionExplanations",currentOpList))
+                            if currentOpList == "Mini" or currentOpList == "MusicRate" or currentOpList == "Characters" or currentOpList == "MusicRate" then
+                                local curRow
+                                if OPLIST_splitAt < OpListMax[currentOpList] then
+                                    curRow = math.floor((p.Selection)/2)+1
+                                else
+                                    curRow = p.Selection+1
+                                end
+                                if curRow>OPLIST_ScrollAt then
+                                    optionsListActor:stoptweening():linear(.2):y((SCREEN_CENTER_Y-200)+THEME:GetMetric("OptionsList","ItemsSpacingY")*(OPLIST_ScrollAt-curRow))
+                                else
+                                    optionsListActor:stoptweening():linear(.2):y(SCREEN_CENTER_Y-200)
+                                end;
                             end
                         end
-                        if currentOpList == "Mini" or currentOpList == "MusicRate" or currentOpList == "Characters" or currentOpList == "MusicRate" then
-                            local curRow
-                            if OPLIST_splitAt < OpListMax[currentOpList] then
-                                curRow = math.floor((p.Selection)/2)+1
-                            else
-                                curRow = p.Selection+1
-                            end
-                            if curRow>OPLIST_ScrollAt then
-                                optionsListActor:stoptweening():linear(.2):y((SCREEN_CENTER_Y-200)+THEME:GetMetric("OptionsList","ItemsSpacingY")*(OPLIST_ScrollAt-curRow))
-                            else
-                                optionsListActor:stoptweening():linear(.2):y(SCREEN_CENTER_Y-200)
-                            end;
-                        end
-                    end
                     end,
                     OptionsMenuChangedMessageCommand=function(self,params)
                         --SCREENMAN:SystemMessage("MenuChanged: Menu="..params.Menu);
                         if params.Player == pn then
                             currentOpList=params.Menu
-                            if params.Menu == "AdvMenu" then
-                                optionsListActor:stoptweening():y(SCREEN_CENTER_Y-180) --Reset the positioning
+                            if params.Menu == "DispMenu" then
+                                optionsListActor:stoptweening():y(SCREEN_CENTER_Y-200) --Reset the positioning
                             else
                                 optionsListActor:stoptweening():y(SCREEN_CENTER_Y-180) --Reset the positioning
                             end
