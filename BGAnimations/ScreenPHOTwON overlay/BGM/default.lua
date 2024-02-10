@@ -91,6 +91,7 @@ local t = Def.ActorFrame{
 	end;
   ShowBGMCommand=function(self)
     self:stoptweening():linear(0.2):y(_screen.cy)
+    self:queuecommand("MoveScrollerBGM")
   end;
   HideBGMCommand=function(self)
     self:stoptweening():linear(0.2):y(_screen.cy+SCREEN_HEIGHT)
@@ -129,21 +130,21 @@ local t = Def.ActorFrame{
   Def.Actor{
     MoveScrollerBGMMessageCommand=function(self,param)
       if curIndex == 1 then
-				SOUND:PlayMusicPart(THEME:GetPathS("","MenuMusic/common/Default (loop).ogg"), 0, 130, 0, 0, true)
+				SOUND:PlayMusicPart(THEME:GetPathS("","MenuMusic/common/Default (loop).ogg"), 0, -1, 0, 0, true)
 			elseif curIndex == 2 then
-        SOUND:PlayMusicPart(THEME:GetPathS("","MenuMusic/common/sk2_menu2 (loop).ogg"), 0, 52.95, 0, 0, true)
+        SOUND:PlayMusicPart(THEME:GetPathS("","MenuMusic/common/sk2_menu2 (loop).ogg"), 0, -1, 0, 0, true)
       elseif curIndex == 3 then
-				SOUND:PlayMusicPart(THEME:GetPathS("","MenuMusic/common/djvortivask (loop).ogg"), 0, 25.263, 0, 0, true)
+				SOUND:PlayMusicPart(THEME:GetPathS("","MenuMusic/common/djvortivask (loop).ogg"), 0, -1, 0, 0, true)
       elseif curIndex == 4 then
-        SOUND:PlayMusicPart(THEME:GetPathS("","MenuMusic/common/inori (loop).ogg"), 0, 51.217, 0, 0, true)
+        SOUND:PlayMusicPart(THEME:GetPathS("","MenuMusic/common/inori (loop).ogg"), 0, -1, 0, 0, true)
       elseif curIndex == 5 then
-        SOUND:PlayMusicPart(THEME:GetPathS("","MenuMusic/common/128beat (loop).ogg"), 0, 60, 0, 0, true)
+        SOUND:PlayMusicPart(THEME:GetPathS("","MenuMusic/common/128beat (loop).ogg"), 0, -1, 0, 0, true)
       elseif curIndex == 6 then
-        SOUND:PlayMusicPart(THEME:GetPathS("","MenuMusic/common/fancycake (loop).ogg"), 0, 23.9, 0, 0, true)
+        SOUND:PlayMusicPart(THEME:GetPathS("","MenuMusic/common/fancycake (loop).ogg"), 0, -1, 0, 0, true)
       elseif curIndex == 7 then
-        SOUND:PlayMusicPart(THEME:GetPathS("","MenuMusic/common/leeium (loop).ogg"), 0, 32, 0, 0, true)
+        SOUND:PlayMusicPart(THEME:GetPathS("","MenuMusic/common/leeium (loop).ogg"), 0, -1, 0, 0, true)
       elseif curIndex == 8 then
-        SOUND:PlayMusicPart(THEME:GetPathS("","MenuMusic/common/SN3 (loop).ogg"), 0, 13, 0, 0, true)
+        SOUND:PlayMusicPart(THEME:GetPathS("","MenuMusic/common/SN3 (loop).ogg"), 0, -1, 0, 0, true)
 			end
 		end;
   };

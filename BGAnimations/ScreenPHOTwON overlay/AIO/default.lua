@@ -61,9 +61,9 @@ else
 end
 
 local frames;
-if getenv(photwonchoice) == "MenuState_MenuBG" then frames = Backgrounds
-elseif getenv(photwonchoice) == "MenuState_Wheel" then frames = Wheels
-elseif getenv(photwonchoice) == "MenuState_BGM" then frames = BGM end
+if getenv("photwonchoice") == "MenuState_MenuBG" then frames = Backgrounds
+elseif getenv("photwonchoice") == "MenuState_Wheel" then frames = Wheels
+elseif getenv("photwonchoice") == "MenuState_BGM" then frames = BGM end
 
 local function GetFrame(frames, key)
     for i,v in ipairs(frames) do
@@ -102,7 +102,7 @@ local function MakeRow(frames, idx)
         Def.ActorFrame{
             InitCommand=function(s) s:y(-94) end,
             Def.Sprite{ Texture="../item.png"},
-            Def.ButmapText{
+            Def.BitmapText{
                 Font="_avenirnext lt pro bold/20px",
                 OnCommand=function(s) s:zoom(0.8):queuecommand("Set") end,
                 SetCommand=function(s)
@@ -173,4 +173,4 @@ local t = Def.ActorFrame{
       };
 }
 
-
+return t
