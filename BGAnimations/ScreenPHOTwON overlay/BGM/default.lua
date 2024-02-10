@@ -3,6 +3,7 @@ local curIndex = 1;
 local oldIndex = curIndex;
 
 -- Please ensure that Off is always at the end of the list otherwise things will bork. -Sunny
+--Order is as follows: ThemePref name, Display Name, sound file name.
 local frames = {
   {"Default", "DEFAULT (fz)", "Default"},
   {"saiiko", "saiiko", "sk2_menu2"},
