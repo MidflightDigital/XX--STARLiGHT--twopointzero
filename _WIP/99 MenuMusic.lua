@@ -96,6 +96,7 @@ do
 	end
 	function GetAllBGMs()
 		local potentials = GetAllPotentialBGMs()
+		--Currently the code adds entries if the file actually exists first instead of the order of the potential table.
 		for bgmName in ivalues(potentials) do
 			if FILEMAN:DoesFileExist(THEME:GetCurrentThemeDirectory().."/Customization/BGM/"..bgmName.."/common (loop).ogg") then
 				table.insert(names,bgmName)
@@ -130,6 +131,7 @@ do
 		local selection = ThemePrefs.Get("MenuMusic")
 		local file = type[selection]
 			or error("GetMenuMusicPath: no menu music defined for selection "..selection, 2)]]
+		--This doesn't work properly at all lmao.
 		return THEME:GetCurrentThemeDirectory()..profile[1]
 	end
 	--thanks to this code
