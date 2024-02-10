@@ -346,7 +346,7 @@ if THEME:GetMetric("ScreenSelectMusic","UseOptionsList") then
                         if params.Player == pn then
                             currentOpList=params.Menu
                             if params.Menu == "DispMenu" then
-                                optionsListActor:stoptweening():y(SCREEN_CENTER_Y-200) --Reset the positioning
+                                optionsListActor:stoptweening():y(SCREEN_CENTER_Y-210) --Reset the positioning
                             else
                                 optionsListActor:stoptweening():y(SCREEN_CENTER_Y-180) --Reset the positioning
                             end
