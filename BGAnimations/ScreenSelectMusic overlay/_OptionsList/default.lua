@@ -37,8 +37,8 @@ local t= Def.ActorFrame{
 
 local OPLIST_splitAt = THEME:GetMetric("OptionsList","MaxItemsBeforeSplit")
 local OPLIST_ScrollAt = 8
-local OPTIONSLIST_NUMNOTESKINS = ThemePrefs.Get("ExclusiveNS") == true and #GetXXSkins() or #NOTESKIN:GetNoteSkinNames()
-local OPTIONSLIST_NOTESKINS = ThemePrefs.Get("ExclusiveNS") == true and GetXXSkins() or NOTESKIN:GetNoteSkinNames()
+local OPTIONSLIST_NUMNOTESKINS = (ThemePrefs.Get("ExclusiveNS") == true and #GetXXSkins() ~= 0) and #GetXXSkins() or #NOTESKIN:GetNoteSkinNames()
+local OPTIONSLIST_NOTESKINS = (ThemePrefs.Get("ExclusiveNS") == true and #GetXXSkins() ~= 0) and GetXXSkins() or NOTESKIN:GetNoteSkinNames()
 
 local fixedNS = OPTIONSLIST_NOTESKINS
 table.insert(fixedNS,"EXIT")
