@@ -112,6 +112,12 @@ local Prefs =
 		Choices = {"Off", "On"},
 		Values = {false,true}
 	},
+	ExclusiveNS = 
+	{
+		Default = false,
+		Choices = {"Off", "On"},
+		Values = {false,true}
+	}
 };
 
 ThemePrefs.InitAll(Prefs)

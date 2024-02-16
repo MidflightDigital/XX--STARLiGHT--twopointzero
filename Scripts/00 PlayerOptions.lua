@@ -961,6 +961,70 @@ function LuaNoteSkins()
 	return t
 end
 
+--Programmatically search the noteskin list and add any matching the STARLiGHT noteskins.
+--may expand to use a whitelist system. -Sunny
+function GetXXSkins()
+	function find(table, value)
+		for key, _value in pairs(table) do
+			if type(_value) == 'table' then
+				local f = { find(_value, value) }
+				if #f ~= 0 then
+					table.insert(f, 2, key); return unpack(f)
+				end
+			elseif _value == value or key == value then
+				return key, _value
+			end
+		end
+	end
+	local All = NOTESKIN:GetNoteSkinNames()
+	XXSkins = {}
+	for v in ivalues(All) do
+		if find(All, string.find(v, "slnexxt")) then
+			table.insert(XXSkins,v)
+		end
+	end
+	return XXSkins
+end
+
+function ExclusiveNoteskins()
+	local All = NOTESKIN:GetNoteSkinNames()
+	local NSList
+	if #GetXXSkins() ~= 0 and ThemePrefs.Get("ExclusiveNS") == true then
+		NSList = GetXXSkins()
+	else
+		NSList = All
+	end
+	local t = {
+		Name="ExclusiveNoteskins",
+		LayoutType="ShowOneInRow",
+		SelectType="SelectOne",
+		ExportOnChange=true,
+		Choices = NSList,
+		Values = NSList,
+		LoadSelections=function(self,list, pn)
+			local CurNoteSkin = GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred"):NoteSkin()
+			for i,v2 in ipairs(self.Choices) do
+				if string.lower(tostring(v2)) == string.lower(tostring(CurNoteSkin)) then
+					list[i] = true return
+				end
+			end
+			list[1] = true
+		end,
+		NotifyOfSelection=function(self,pn,choice)
+			MESSAGEMAN:Broadcast("LuaNoteSkinsChange", {pn=pn,choice=choice,choicename=self.Values[choice]})
+		end,
+		SaveSelections = function(self,list,pn)
+			for i,v2 in ipairs(self.Choices) do
+				if list[i] then
+					GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred"):NoteSkin(v2)
+				end
+			end
+		end
+	}
+	setmetatable(t,t)
+	return t
+end
+
 function StepsListing()
     local Steplist = function()
         return GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentCourse():GetAllTrails() or GAMESTATE:GetCurrentSong():GetStepsByStepsType( GAMESTATE:GetCurrentStyle():GetStepsType() )
@@ -1266,3 +1330,4 @@ function ComboSel()
 	setmetatable(t,t)
 	return t
 end
+
