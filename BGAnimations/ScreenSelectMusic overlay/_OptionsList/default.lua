@@ -202,7 +202,7 @@ if THEME:GetMetric("ScreenSelectMusic","UseOptionsList") then
         --This keeps the name of the current OptionsList because OptionsListLeft and OptionsListRight does not know what list this is otherwise
 		local currentOpList
 		--The amount of rows in the current optionsList menu.
-		local numRows = tonumber(THEME:GetMetric("ScreenOptionsMaster","SongMenu"))
+		local numRows
 		--This gets a handle on the optionsList Actor so it can be adjusted.
 		local optionsListActor
         t[#t+1] = Def.ActorFrame{
