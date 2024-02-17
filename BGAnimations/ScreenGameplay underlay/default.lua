@@ -192,6 +192,18 @@ for _, pn in ipairs(GAMESTATE:GetEnabledPlayers()) do
 				notefield:SetBpmBars(false)
 			end,
 		},
+		DS .. {
+			InitCommand=function(s) s:hibernate(math.huge) end,
+			HealthStateChangedMessageCommand=function(s,p)
+				if p.PlayerNumber == pn then
+					if p.HealthState=='HealthState_Danger' then
+						s:hibernate(0):linear(0.1):diffusealpha(1)
+					else
+						s:linear(0.1):diffusealpha(0):hibernate(math.huge)
+					end
+				end
+			end,
+		};
 	};
 
 	--[[
