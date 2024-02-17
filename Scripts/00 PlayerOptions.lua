@@ -977,7 +977,7 @@ function GetXXSkins()
 		end
 	end
 	local All = NOTESKIN:GetNoteSkinNames()
-	XXSkins = {}
+	local XXSkins = {}
 	for v in ivalues(All) do
 		if find(All, string.find(v, "slnexxt")) then
 			table.insert(XXSkins,v)
