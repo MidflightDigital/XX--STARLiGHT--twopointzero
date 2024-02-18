@@ -96,11 +96,12 @@ t[#t+1] = Def.ActorFrame {
 			Name="ImageLoader";
 			TitleSelectionMessageCommand=function(self, params)
 				choice = string.lower(params.Choice)
-				self:finishtweening()
+				self:stoptweening()
 				if heardBefore then
 					self:accelerate(0.1);
 				else heardBefore = true end
-				self:croptop(0.5):cropbottom(0.5):queuecommand("TitleSelectionPart2")
+				self:croptop(0.5):cropbottom(0.5)
+				self:queuecommand("TitleSelectionPart2")
 			end;
 			TitleSelectionPart2Command=function(self, params)
 				self:Load(THEME:GetPathG("","_TitleImages/"..choice))
@@ -147,6 +148,10 @@ t[#t+1] = Def.ActorFrame {
 			Text="";
 			InitCommand=function(self) self:hibernate(0.4):zoom(0.7):maxwidth(570):wrapwidthpixels(570):vertspacing(2) end;
 			TitleSelectionMessageCommand=function(self, params)
+				local text = THEME:GetString("ScreenTitleMenu","DescriptionFallback")
+				if THEME:HasString("ScreenTitleMenu","Description"..params.Choice) then
+					text = THEME:GetString("ScreenTitleMenu","Description"..params.Choice)
+				end
 				if params.Choice == "Exit" then
 					if Branding() == "ddr_" then
 						self:settext(THEME:GetString("ScreenTitleMenu","DescriptionExitDDR"))
@@ -154,7 +159,7 @@ t[#t+1] = Def.ActorFrame {
 						self:settext(THEME:GetString("ScreenTitleMenu","DescriptionExitProject"))
 					end
 				else
-					self:settext(THEME:GetString("ScreenTitleMenu","Description"..params.Choice))
+					self:settext(text)
 				end
 			end;
 			OnCommand=function(s) s:cropbottom(1):sleep(0.1):accelerate(0.3):cropbottom(0) end,

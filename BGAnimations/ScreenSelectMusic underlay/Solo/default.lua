@@ -1,5 +1,5 @@
 local t = Def.ActorFrame{
-    Def.Sprite{
+    --[[Def.Sprite{
       Texture="../wheelunder",
       InitCommand=function(s) 
         s:xy(SCREEN_RIGHT-370,_screen.cy):rotationz(-64):basezoom(2)
@@ -11,7 +11,7 @@ local t = Def.ActorFrame{
       OffCommand=function(s) s:sleep(0.3):decelerate(0.3):zoomtowidth(0) end,
       StartSelectingStepsMessageCommand=function(s) s:queuecommand("Off") end,
       SongUnchosenMessageCommand=function(s) s:queuecommand("On") end,
-    };
+    };]]
 };
 
 return t;

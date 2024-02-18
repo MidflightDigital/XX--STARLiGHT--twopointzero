@@ -1,5 +1,11 @@
 local screen = Var "LoadingScreen"
-local screenName = THEME:GetMetric(screen,"HeaderText");
+local screenName
+
+if THEME:HasMetric(screen,"HeaderText") then
+	screenName = THEME:GetMetric(screen,"HeaderText")
+else
+	screenName = "fallback"
+end
 
 local out = Def.ActorFrame {
 	InitCommand = function(s)s:xy(_screen.cx,SCREEN_TOP-140):diffusealpha(0):zoom(0.7) end,

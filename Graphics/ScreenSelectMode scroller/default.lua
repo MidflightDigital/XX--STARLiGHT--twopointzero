@@ -13,8 +13,22 @@ return Def.ActorFrame{
 		MESSAGEMAN:Broadcast("TitleSelection", {Choice=style})
 	end,
 	Def.Sprite{
-		Texture=THEME:GetPathG("ScreenSelectMode","scroller/"..style),
+		Texture=THEME:GetPathG("ScreenSelectMode","scroller/box"),
 	};
+	Def.BitmapText{
+		Font="_avenirnext lt pro bold/glow/24.ini",
+		InitCommand=function(s)
+			if THEME:HasString("ScreenTitleMenu",style) then
+				s:settext(string.upper(THEME:GetString("ScreenTitleMenu",style)))
+			else
+				s:settext(string.upper(style))
+			end
+			s:DiffuseAndStroke(color("#dff0ff"),color("#00baffDD"))
+		end,
+	};
+	--[[Def.Sprite{
+		Texture=THEME:GetPathG("ScreenSelectMode","scroller/"..style),
+	};]]
 	Def.Sprite{
 		Texture="hl",
 		OnCommand=function(s) s:queuecommand("Anim") end,
