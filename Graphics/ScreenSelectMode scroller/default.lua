@@ -34,7 +34,15 @@ return Def.ActorFrame{
 		OnCommand=function(s) s:queuecommand("Anim") end,
 		GainFocusCommand=function(s) s:finishtweening():queuecommand("Anim"):diffusealpha(0):linear(0.1):diffusealpha(1) end,
 		LoseFocusCommand=function (s) s:finishtweening():linear(0.1):diffusealpha(0) end,
-		AnimCommand=function(s) s:diffuseramp():effectcolor1(color("1,1,1,0.5")):effectcolor2(color("1,1,1,1")):effectperiod(1) end,
+		AnimCommand=function(s) s:diffuseshift():effectcolor1(color("#00ffffDD")):effectcolor2(color("#00baff55")):effectperiod(1) end,
+	};
+	Def.Sprite{
+		Texture="box",
+		InitCommand=function(s) s:blend(Blend.Add) end,
+		OnCommand=function(s) s:queuecommand("Anim") end,
+		GainFocusCommand=function(s) s:finishtweening():queuecommand("Anim"):diffusealpha(0):linear(0.1):diffusealpha(1) end,
+		LoseFocusCommand=function (s) s:finishtweening():linear(0.1):diffusealpha(0) end,
+		AnimCommand=function(s) s:diffuseshift():effectcolor1(color("#00ffffDD")):effectcolor2(color("#00baff55")):effectperiod(1) end,
 	};
 };
 
