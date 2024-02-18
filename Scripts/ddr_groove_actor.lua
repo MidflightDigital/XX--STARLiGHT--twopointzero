@@ -138,8 +138,15 @@ local function RadarItems(pn, size, center_color, category_colors, tween_type, t
 				
 				for cat_index, value in ipairs(radars) do
 					local angle = stream_angle + ((cat_index-1) * angle_per_category)
-					local vert_x = math.cos(angle) * size * value/2
-					local vert_y = math.sin(angle) * size * value/2
+					local vert_x
+					local vert_y
+					if ThemePrefs.Get("RadarLimit") then
+						vert_x = math.cos(angle) * size * value/4
+						vert_y = math.sin(angle) * size * value/4
+					else
+						vert_x = math.cos(angle) * size * value/2
+						vert_y = math.sin(angle) * size * value/2
+					end
 					
 					if i==1 then
 						category_colors = {color("0,0,0,0.8"), color("0,0,0,0.8"), color("0,0,0,0.8"), color("0,0,0,0.8"), color("0,0,0,0.8")}
