@@ -2,7 +2,7 @@
 local screen = Var "LoadingScreen"
 local screenName = THEME:GetMetric(screen,"FooterText");
 
-local out = Def.ActorFrame{
+return Def.ActorFrame{
   InitCommand=function(s) s:xy(_screen.cx,SCREEN_BOTTOM+140):diffusealpha(0):zoom(0.7)  end,
   OnCommand = function(s)
 		s:smooth(0.3):y(SCREEN_BOTTOM-68):diffusealpha(1):zoom(1)
@@ -39,12 +39,21 @@ local out = Def.ActorFrame{
       end
     };
   };
-};
-
-if screenName then
-	table.insert(out,Def.Sprite{
-    Texture="text/"..screenName..".png",
-		InitCommand=function(s) s:xy(0,26):diffusealpha(0) end,
+  Def.BitmapText{
+    Font="_avenir next demi bold/28px header",
+    InitCommand=function(s)
+      if THEME:HasString(screen,"FooterText") then
+        if screen ~= "ScreenDemonstration" then
+          s:settext(string.upper(THEME:GetString(screen,"FooterText")))
+        else
+          s:settext(THEME:GetString(screen,"FooterText"))
+        end
+      else
+        s:settext(string.upper(THEME:GetString("ScreenWithMenuElements","FooterText")))
+      end
+      s:diffusealpha(0):xy(8,22):maxwidth(600):wrapwidthpixels(600):maxheight(60):zoom(0.8)
+      :DiffuseAndStroke(color("#dff0ff"),color("#00baff"))
+    end,
     OnCommand=function(s)
       if screen ~= "ScreenSelectProfilePrefs" then
         s:diffusealpha(0):sleep(0.25):linear(0.05):diffusealpha(0.5)
@@ -61,9 +70,5 @@ if screenName then
         s:linear(0.05):diffusealpha(0)
       end
     end
-	})
-end;
-
-
-
-return out;
+  };
+};

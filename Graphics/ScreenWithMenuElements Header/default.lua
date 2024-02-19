@@ -1,13 +1,11 @@
 local screen = Var "LoadingScreen"
-local screenName
 
-if THEME:HasMetric(screen,"HeaderText") then
-	screenName = THEME:GetMetric(screen,"HeaderText")
-else
-	screenName = "fallback"
-end
+local ShowLine = {
+	"ScreenSelectMusic",
+	"ScreenEvaluationNormal",
+}
 
-local out = Def.ActorFrame {
+return Def.ActorFrame {
 	InitCommand = function(s)s:xy(_screen.cx,SCREEN_TOP-140):diffusealpha(0):zoom(0.7) end,
 	OnCommand = function(s)
 		s:smooth(0.3):y(SCREEN_TOP+68):diffusealpha(1):zoom(1)
@@ -18,24 +16,8 @@ local out = Def.ActorFrame {
 	loadfile(THEME:GetPathG("ScreenWithMenuElements","Header/header/default.lua"))() .. {
 		InitCommand = function(s) s:valign(0) end,
 	};
-};
-
-if screenName then
-	table.insert(out,Def.Sprite{
-		Texture="text/"..screenName..".png",
-		InitCommand=function(s)
-			s:diffusealpha(0)
-			if (screen == "ScreenEvaluationNormal" and not GAMESTATE:IsCourseMode()) or screen == "ScreenSelectMusic" then
-				s:y(-3)
-			else
-				s:y(10)
-			end
-			if GAMESTATE:IsAnExtraStage() and screen == "ScreenSelectMusic" then
-				s:diffuse(color("#f900fe"))
-			else
-				s:diffuse(Color.White)
-			end
-		end;
+	Def.ActorFrame{
+		Name="Text Area",
 		OnCommand=function(s)
 			if screen ~= "ScreenSelectProfilePrefs" then
 				s:diffusealpha(0):sleep(0.25):linear(0.05)
@@ -50,7 +32,39 @@ if screenName then
 				s:linear(0.05):diffusealpha(0)
 			end
 		end,
-	})
-end;
-
-return out
+		Def.Sprite{
+			Condition=has_value(ShowLine,screen),
+			Texture="line.png",
+			InitCommand=function(s) s:y(20):zoomy(0.5) end,
+		};
+		Def.BitmapText{
+			Font="_avenir next demi bold/28px header",
+			InitCommand=function(s)
+				if THEME:HasString(screen,"HeaderText") then
+					if GAMESTATE:IsCourseMode() and screen == "ScreenEvaluation" then
+						s:settext(string.upper(THEME:GetString(screen,"CourseHeaderText")))
+					else
+						s:settext(string.upper(THEME:GetString(screen,"HeaderText")))
+					end
+				else
+					s:settext(string.upper(screen))
+				end
+				s:diffusealpha(0):x(3):maxwidth(300):maxheight(60):wrapwidthpixels(300):max_dimension_use_zoom(true)
+				if (screen == "ScreenEvaluationNormal" and not GAMESTATE:IsCourseMode()) or screen == "ScreenSelectMusic" then
+					s:y(-2)
+				else
+					s:y(8)
+				end
+				if screen == "ScreenSelectMusic" then
+					s:zoom(0.97):wrapwidthpixels(320)
+				end
+				if GAMESTATE:IsAnExtraStage() and screen == "ScreenSelectMusic" then
+					s:diffuse(color("#f900fe"))
+				else
+					s:DiffuseAndStroke(color("#dff0ff"),color("#00baff"))
+				end
+			end,
+			
+		};
+	};
+};

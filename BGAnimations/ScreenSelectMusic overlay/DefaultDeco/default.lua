@@ -439,7 +439,7 @@ return Def.ActorFrame{
 			s:xy(SCREEN_LEFT,_screen.cy+80):diffusealpha(0)
 		end,
 		SetCommand=function(s)
-			s:finishtweening()
+			s:stoptweening()
 			local mw = SCREENMAN:GetTopScreen():GetChild("MusicWheel")
 			local so = ToEnumShortString(GAMESTATE:GetSortOrder())
 			if not mw then return end
@@ -449,7 +449,7 @@ return Def.ActorFrame{
 				s:linear(0.15):diffusealpha(0)
 			end
 		end,
-		CurrentSongChangedMessageCommand=function(s) s:playcommand("Set") end,
+		CurrentSongChangedMessageCommand=function(s) s:queuecommand("Set") end,
 		Def.Sprite{ Texture="GLabel",
 			InitCommand=function(s) s:halign(0) end,
 			SetCommand=function(s)

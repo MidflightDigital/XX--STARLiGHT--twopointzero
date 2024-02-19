@@ -26,9 +26,6 @@ return Def.ActorFrame{
 			s:DiffuseAndStroke(color("#dff0ff"),color("#00baffDD"))
 		end,
 	};
-	--[[Def.Sprite{
-		Texture=THEME:GetPathG("ScreenSelectMode","scroller/"..style),
-	};]]
 	Def.Sprite{
 		Texture="hl",
 		OnCommand=function(s) s:queuecommand("Anim") end,
