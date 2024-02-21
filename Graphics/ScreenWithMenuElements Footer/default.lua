@@ -1,6 +1,5 @@
 
 local screen = Var "LoadingScreen"
-local screenName = THEME:GetMetric(screen,"FooterText");
 
 return Def.ActorFrame{
   InitCommand=function(s) s:xy(_screen.cx,SCREEN_BOTTOM+140):diffusealpha(0):zoom(0.7)  end,

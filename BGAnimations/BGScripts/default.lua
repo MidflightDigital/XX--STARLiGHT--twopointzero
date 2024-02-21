@@ -7,7 +7,7 @@ local function setVisibility(self)
     local song = GAMESTATE:GetCurrentSong();
     local shouldShowBGScripts = false
     if song then
-        shouldShowBGScripts = not song:HasBGChanges()
+        shouldShowBGScripts = not (#song:GetBGChanges() > 0)
         if shouldShowBGScripts then
             local opts = GAMESTATE:GetSongOptionsObject('ModsLevel_Current')
             shouldShowBGScripts = not opts:StaticBackground()
