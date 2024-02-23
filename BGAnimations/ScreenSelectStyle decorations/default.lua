@@ -5,20 +5,31 @@ CustStage = 1
 for i=1,2 do
   t[#t+1] = Def.ActorFrame{
     InitCommand=function(s)
-      s:xy(i==1 and SCREEN_LEFT or SCREEN_RIGHT,SCREEN_BOTTOM-172)
+      s:xy(i==1 and SCREEN_LEFT-458 or SCREEN_RIGHT+458,SCREEN_BOTTOM-172)
     end,
-    OffCommand=function(s) s:smooth(0.2):diffusealpha(0) end,
+    OnCommand=function(s) s:decelerate(0.3):x(i==1 and SCREEN_LEFT or SCREEN_RIGHT) end,
+    OffCommand=function(s) s:accelerate(0.2):diffusealpha(0):x(i==1 and SCREEN_LEFT-458 or SCREEN_RIGHT+458) end,
     PlayerJoinedMessageCommand=function(s,p)
       if p.Player then
         s:queuecommand("Off")
       end
     end,
-    OffCommand=function(s) s:smooth(0.2):diffusealpha(0) end,
-    Def.Sprite{
-      Texture="Frame";
-      InitCommand=function(s)
-        s:zoomx(i==1 and 1 or -1):halign(0)
-      end,
+    Def.ActorFrame{
+      InitCommand=function(s) s:zoomx(i==1 and 1 or -1) end,
+      
+      Def.Sprite{
+        Texture="framebase.png";
+        InitCommand=function(s) s:halign(0) end,
+      };
+      Def.Sprite{
+        Texture="framelight.png",
+        InitCommand=function(s) s:x(444):diffusealpha(0.5) end,
+        OnCommand=function(s) s:sleep(0.5):smooth(0.3):diffusealpha(1):queuecommand("Anim") end,
+        OffCommand=function(s) s:stoptweening() end,
+        AnimCommand=function(s) s:diffuseramp():effectcolor1(Alpha(Color.White,0.5)):effectcolor2(Color.White)
+          :effectperiod(1)
+        end,
+      }
     };
     Def.Sprite{
       Texture=THEME:GetPathG("","_shared/P"..i.." BADGE");
