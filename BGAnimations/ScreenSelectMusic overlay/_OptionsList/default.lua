@@ -7,6 +7,10 @@ end
 local currentIndex;
 
 local t= Def.ActorFrame{
+    InitCommand=function(s) s:visible(false) end,
+    OptionsListOpenedMessageCommand=function(s) s:visible(true) end,
+    OptionsListClosedMessageCommand=function(s) s:sleep(0.5):queuecommand("Hide") end,
+    HideCommand=function(s) s:visible(false) end,
     OnCommand=function(s) setenv("OPList",0) end,
     Def.Sound{
         File=THEME:GetPathS("","Codebox/o-change"),

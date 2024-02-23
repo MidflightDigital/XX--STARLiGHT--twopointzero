@@ -20,7 +20,9 @@ return Def.ActorFrame{
 	SetMessageCommand=function(s,p)
 		local index = p.Index
 		if index then
-			s:name(tostring(p.Index))
+			s:name(tostring(p.Index)):visible(true)
+		else
+			s:visible(false)
 		end
 	end,
 	clear;
@@ -57,18 +59,29 @@ return Def.ActorFrame{
 			SOUND:PlayOnce(THEME:GetPathS("",""..ThemePrefs.Get("WheelType").."_MusicWheel change"))
 		end
 	};
-	Def.Quad {
-		InitCommand = function(s) s:zoomto(234,234):diffuse(Alpha(Color.White,0.5)) end,
-	};
-	Def.Quad {
-		InitCommand = function(s) s:zoomto(230,230):diffuse(Alpha(Color.Black,0.75)) end,
+	Def.ActorFrame{
+		InitCommand=function(s) s:visible(false) end,
+		SetMessageCommand=function(s,p)
+			local song = p.Song
+			if song then
+				s:visible(true)
+			end
+		end,
+		Def.Quad {
+			InitCommand = function(s) s:zoomto(234,234):diffuse(Alpha(Color.White,0.5)) end,
+		};
+		Def.Quad {
+			InitCommand = function(s) s:zoomto(230,230):diffuse(Alpha(Color.Black,0.75)) end,
+		};
 	};
 	Def.Sprite {
+		InitCommand=function(s) s:visible(false) end,
 		-- Load the banner
 		-- XXX Same code can be reused for courses, etc.  Folders too?
 		SetMessageCommand = function(self, params)
 			local song = params.Song
 			if song then
+				self:visible(true)
 				if params.HasFocus then
 					centerSongObjectProxy = self;
 				end

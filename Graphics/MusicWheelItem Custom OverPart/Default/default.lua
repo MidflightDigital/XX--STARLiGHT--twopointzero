@@ -28,9 +28,9 @@ t[#t+1] = Def.ActorFrame{
 	end;
 	Def.Sprite{
 		SetMessageCommand=function(self,params)
-			self:visible(true);
+			self:visible(false);
 			if params.Label == Crstext then
-				self:Load(THEME:GetPathG("","MusicWheelItem Custom OverPart/Default/COURSE.png"))
+				self:Load(THEME:GetPathG("","MusicWheelItem Custom OverPart/Default/COURSE.png")):visible(true)
 			end;
 			self:setsize(230,230)
 		end;

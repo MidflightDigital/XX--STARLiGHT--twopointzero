@@ -25,6 +25,7 @@ local Jacket = Def.ActorFrame{
   };
   Def.Sprite{
     Name="GroupJacket",
+    InitCommand=function(s) s:visible(false) end,
     SetCommand=function(self,params)
       local mw = SCREENMAN:GetTopScreen():GetChild("MusicWheel")
       if not mw then return end
@@ -38,9 +39,9 @@ local Jacket = Def.ActorFrame{
         else
           self:Load( THEME:GetPathG("","MusicWheelItem fallback") );
         end
-        self:diffusealpha(1)
+        self:visible(true)
       else
-        self:diffusealpha(0)
+        self:visible(false)
       end
       self:scaletofit(-189,-189,189,189)
     end;
@@ -84,9 +85,8 @@ local SongInfo = Def.ActorFrame{
     local artist = s:GetChild("TextBanner"):GetChild("Artist")
     local banner = s:GetChild("Banner")
 
-    title:finishtweening():diffusealpha(0):x(-20):decelerate(0.25):x(0):diffusealpha(1)
-    artist:finishtweening():diffusealpha(0):x(20):decelerate(0.25):x(0):diffusealpha(1)
-    banner:finishtweening()
+    title:diffusealpha(0):x(-20):decelerate(0.25):x(0):diffusealpha(1)
+    artist:diffusealpha(0):x(20):decelerate(0.25):x(0):diffusealpha(1)
 
     if song then
       banner:Load(jk.GetSongGraphicPath(song,"Banner"))
@@ -143,7 +143,7 @@ local SongInfo = Def.ActorFrame{
 
 return Def.ActorFrame{
   CurrentSongChangedMessageCommand=function(s) s:finishtweening():queuecommand("Set") end,
-  ChangedLanguageDisplayMessageCommand = function(s) s:stoptweening():queuecommand("Set") end,
+  ChangedLanguageDisplayMessageCommand = function(s) s:finishtweening():queuecommand("Set") end,
   Jacket;
   SongInfo;
 };
