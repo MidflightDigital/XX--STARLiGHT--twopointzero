@@ -2,6 +2,7 @@
 --Thus there are no constructors, it will just take the current song and display for as many
 --joined players. And do a lot of crazy stuff to handle two actorframes.
 local Y_SPACING = 140
+local Radar = LoadModule "DDR Groove Radar.lua"
 
 
 --local song = SONGMAN:FindSong("Ace For Aces")
@@ -180,7 +181,7 @@ local function RadarPanel(pn)
                 Texture=THEME:GetPathB("ScreenSelectMusic","overlay/RadarHandler/sweep.png"),
                 InitCommand = function(s) s:zoom(1.35):spin():effectmagnitude(0,0,100) end,
             };
-            create_ddr_groove_radar("radar",0,0,pn,125,Alpha(PlayerColor(pn),0.25));
+            Radar.create_ddr_groove_radar("radar",0,0,pn,125,Alpha(PlayerColor(pn),0.25));
         };
     };
     for i,v in ipairs(GR) do

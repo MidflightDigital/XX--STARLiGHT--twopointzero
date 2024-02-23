@@ -1,4 +1,5 @@
 local pn = ...
+local Radar = LoadModule "DDR Groove Radar.lua"
 
 local function XPOS(self,offset)
     self:x(pn==PLAYER_1 and (SCREEN_LEFT+240)+offset or (SCREEN_RIGHT-240)+offset)
@@ -424,7 +425,7 @@ local function RadarPanel()
                 Texture=THEME:GetPathB("ScreenSelectMusic","overlay/RadarHandler/sweep.png"),
                 InitCommand = function(s) s:zoom(1.35):spin():effectmagnitude(0,0,100) end,
             };
-            create_ddr_groove_radar("radar",0,0,pn,125,Alpha(PlayerColor(pn),0.25));
+            Radar.create_ddr_groove_radar("radar",0,0,pn,125,Alpha(PlayerColor(pn),0.25));
         };
     };
     for i,v in ipairs(GR) do

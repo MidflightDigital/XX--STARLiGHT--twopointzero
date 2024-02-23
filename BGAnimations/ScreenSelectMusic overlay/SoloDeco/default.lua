@@ -6,6 +6,7 @@ if GAMESTATE:IsAnExtraStage() then
 end
 
 local jk = LoadModule "Jacket.lua"
+local Radar = LoadModule "DDR Groove Radar.lua"
 
 local Center = Def.ActorFrame{};
 --Center Song Marker
@@ -58,7 +59,7 @@ for pn in EnabledPlayers() do
 			Texture="../DefaultDeco/RadarBase.png",
 			InitCommand=function(s) s:y(10):blend(Blend.Add):zoom(1.35):diffuse(ColorMidTone(PlayerColor(pn))):diffusealpha(0.75) end,
 		};
-        create_ddr_groove_radar("radar",0,20,pn,350,Alpha(PlayerColor(pn),0.25));
+        Radar.create_ddr_groove_radar("radar",0,20,pn,350,Alpha(PlayerColor(pn),0.25));
         LoadActor(THEME:GetPathB("ScreenSelectMusic","overlay/_ShockArrow/default.lua"),pn)..{
             InitCommand=function(s)
                 s:zoom(0.6):xy(pn==PLAYER_1 and -260 or 260,130)

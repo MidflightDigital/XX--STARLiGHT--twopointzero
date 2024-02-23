@@ -5,12 +5,11 @@ end
 local function asdf()
     return _G[obf('VG9FbnVtU2hvcnRTdHJpbmc=')](_G[obf('R0FNRVNUQVRF')][obf('R2V0Q29pbk1vZGU=')](_G[obf('R0FNRVNUQVRF')]))
 end]]
-
-function Branch.FirstScreen()
+Branch.FirstScreen = function()
 	return "ScreenMDSplash"
 end
 
-function Branch.WarningOrAlert()
+Branch.WarningOrAlert = function()
 	if _VERSION ~= "Lua 5.3" and tonumber(VersionDate()) < 20190328 then
 		return "ScreenOldSM"
 	else
@@ -22,7 +21,7 @@ function Branch.WarningOrAlert()
 	end
 end
 
-function Branch.AfterOLDSM()
+Branch.AfterOLDSM = function()
 	if PREFSMAN:GetPreference('DisplayColorDepth') == 16 or PREFSMAN:GetPreference('TextureColorDepth') == 16 then
 		return "ScreenGraphicsAlert"
 	else
@@ -34,7 +33,7 @@ function Branch.AfterOLDSM()
 	end
 end
 
-function Branch.AttractStart()
+Branch.AttractStart = function()
 	local mode = GAMESTATE:GetCoinMode()
 	local screen = Var"LoadingScreen"
 	if mode == "CoinMode_Home" then
@@ -65,7 +64,7 @@ Branch.StartGame = function()
 	end
 end
 
-function SelectMusicOrCourse()
+Branch.SelectMusicOrCourse = function()
 	if IsNetSMOnline() then
 		return "ScreenNetSelectMusic"
 	elseif GAMESTATE:IsCourseMode() then
@@ -81,18 +80,18 @@ end
 
 Branch.BackOutOfPlayerOptions = function()
 	return SelectMusicOrCourse()
-end;
+end
 
-function Branch.TitleMenu()
+Branch.TitleMenu = function()
 	local coinMode = GAMESTATE:GetCoinMode()
 	if coinMode == 'CoinMode_Home' then
 		return "ScreenSelectMode"
 	else
 		return "ScreenWarning"
 	end
-end;
+end
 
-function AfterSelectStyle()
+Branch.AfterSelectStyle = function()
 	if IsNetConnected() then
 		ReportStyle()
 	end
@@ -107,7 +106,7 @@ function AfterSelectStyle()
 	--return CHARMAN:GetAllCharacters() ~= nil and "ScreenSelectCharacter" or "ScreenGameInformation"
 end
 
-function AfterCaution()
+Branch.AfterCaution = function()
 	if GAMESTATE:IsCourseMode() then
 		return "ScreenSelectCourse"
 	else
@@ -117,35 +116,6 @@ end
 
 Branch.AfterGameplay = function()
 	return "ScreenEvaluationNormal"
-end
-
---- custom Extra Stage system. "AllowExtraStage" setting should be OFF in the game settings
---- for this to work
-function GetExtraStage()
-	if GAMESTATE:IsCourseMode() or GAMESTATE:IsEventMode() then return false end
-	
-	if not STATSMAN:GetCurStageStats():AllFailed() then
-		local maxStages = PREFSMAN:GetPreference("SongsPerPlay")
-		
-		if (GetCurTotalStageCost() == maxStages) and GetTotalAccumulatedStars() >= 9 then
-			return true
-			
-			--- unblock these codes if you want to enable Encore Extra 
-		--[[elseif GetCurTotalStageCost() == maxStages+1 then
-			for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
-				local st = STATSMAN:GetCurStageStats()
-				local pss = st:GetPlayerStageStats(pn)
-				local steps = pss:GetPlayedSteps()
-				score = GetResultScore(steps[1]:GetRadarValues(pn), pss)
-				
-				if steps[1]:GetMeter() >= 13 and score >= 950000 then
-					return true
-				end
-			end--]]
-		end
-	end
-	
-	return false
 end
 
 Branch.AfterEvaluation = function()

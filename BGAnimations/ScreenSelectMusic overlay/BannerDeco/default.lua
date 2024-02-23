@@ -1,4 +1,5 @@
 local SongAttributes = LoadModule "SongAttributes.lua"
+local Radar = LoadModule "DDR Groove Radar.lua"
 
 local PS = Def.ActorFrame{};
 for pn in EnabledPlayers() do
@@ -8,7 +9,7 @@ for pn in EnabledPlayers() do
     CurrentSongChangedMessageCommand=function(s) s:queuecommand("Set") end,
 		["CurrentSteps" .. ToEnumShortString(pn) .. "ChangedMessageCommand"]=function(s) s:stoptweening():queuecommand("Set") end,
     loadfile(THEME:GetPathB("ScreenSelectMusic","overlay/RadarHandler"))(pn);
-    create_ddr_groove_radar("radar",0,0,pn,125,Alpha(PlayerColor(pn),0.25))..{
+    Radar.create_ddr_groove_radar("radar",0,0,pn,125,Alpha(PlayerColor(pn),0.25))..{
 			OnCommand=function(s) s:zoom(0):rotationz(-360):decelerate(0.4):zoom(1):rotationz(0) end,
       OffCommand=function(s) s:sleep(0.3):decelerate(0.3):rotationz(-360):zoom(0) end,
     };

@@ -169,32 +169,102 @@ function BeginOutDelay()
 	return dif
 end
 
-function LifeInitialValue()
-	--[[if GAMESTATE:IsCourseMode() then
+--Switching stuff for Dan Courses. Currently doesn't work so these are commented out to keep them from getting loaded.
+--[[function LifeInitialValue()
+	if GAMESTATE:IsCourseMode() then
 		local course = GAMESTATE:GetCurrentCourse()
 		if course:IsA20DanCourse() then
 			return 1
 		end
-	end]]
+	end
 	return 0.5
 end
 
 function LifePercentChangeMiss()
-	--[[if GAMESTATE:IsCourseMode() then
+	if GAMESTATE:IsCourseMode() then
 		local course = GAMESTATE:GetCurrentCourse()
 		if course:IsA20DanCourse() then
 			return -0.01
 		end
-	end]]
+	end
 	return -0.024
 end
 
 function NextCourseSongDelay()
-	--[[if GAMESTATE:IsCourseMode() then
+	if GAMESTATE:IsCourseMode() then
 		local course = GAMESTATE:GetCurrentCourse()
 		if course:IsA20DanCourse() then
 			return 70
 		end
-	end]]
+	end
 	return 5
+end]]
+
+--The function will first try to look up the style by StepsType.
+--Failing that, it will look it up by StyleType.
+--If that fails, it will throw an error as every style type should be in this table.
+--If the result is a function, that will be run.
+local function NormalX()
+	return WideScale(175, 235)
+end
+
+local xOffsetControl = {
+	StepsType = {
+		StepsType_Dance_Solo = 0,
+		StepsType_Dance_Couple = function() return WideScale(175, 160) end,
+	},
+	StyleType = {
+		StyleType_OnePlayerOneSide = NormalX,
+		StyleType_OnePlayerTwoSides = 0,
+		StyleType_TwoPlayersTwoSides = NormalX,
+		StyleType_TwoPlayersSharedSides = 0
+	}
+}
+	
+function ScreenGameplay_X(pn)
+	local st = GAMESTATE:GetCurrentStyle()
+	local scale = pn=='PlayerNumber_P1' and -1 or 1
+
+	local determiner = xOffsetControl.StepsType[st:GetStepsType()]
+	if not determiner then
+		local styletype = st:GetStyleType()
+		determiner = xOffsetControl.StyleType[styletype]
+		if not determiner then
+			error("No position information for StyleType "..styletype)
+		end
+	end
+	
+	local x = type(determiner) == "function" and determiner() or determiner
+	return x * scale + SCREEN_CENTER_X
+end
+
+
+
+--- custom Extra Stage system. "AllowExtraStage" setting should be OFF in the game settings
+--- for this to work
+function GetExtraStage()
+	if GAMESTATE:IsCourseMode() or GAMESTATE:IsEventMode() then return false end
+	
+	if not STATSMAN:GetCurStageStats():AllFailed() then
+		local maxStages = PREFSMAN:GetPreference("SongsPerPlay")
+		
+		if (GetCurTotalStageCost() == maxStages) and GetTotalAccumulatedStars() >= 9 then
+			return true
+			
+			--- unblock these codes if you want to enable Encore Extra 
+		--[[elseif GetCurTotalStageCost() == maxStages+1 then
+			for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
+				local st = STATSMAN:GetCurStageStats()
+				local pss = st:GetPlayerStageStats(pn)
+				local steps = pss:GetPlayedSteps()
+				score = GetResultScore(steps[1]:GetRadarValues(pn), pss)
+				
+				if steps[1]:GetMeter() >= 13 and score >= 950000 then
+					return true
+				end
+			end--]]
+		end
+	end
+	
+	return false
 end

@@ -1,6 +1,5 @@
 local numwh = THEME:GetMetric("MusicWheel","NumWheelItems")+2
 local SongAttributes = LoadModule "SongAttributes.lua"
-local Radar = LoadModule "DDR Groove Radar.lua"
 local Arrows = Def.ActorFrame{};
 for i=1,2 do
 	Arrows[#Arrows+1] = Def.ActorFrame{
@@ -79,7 +78,7 @@ for pn in EnabledPlayers() do
 			Texture="RadarBase.png",
 			InitCommand=function(s) s:y(10):blend(Blend.Add):zoom(1.35):diffuse(ColorMidTone(PlayerColor(pn))):diffusealpha(0.75) end,
 		};
-		Radar.create_ddr_groove_radar("radar",0,20,pn,350,Alpha(PlayerColor(pn),0.25));
+		create_ddr_groove_radar("radar",0,20,pn,350,Alpha(PlayerColor(pn),0.25));
 		Def.BitmapText{
 			Font="_avenirnext lt pro bold/42px",
 			InitCommand=function(s) s:shadowlengthy(5):y(-180) end,
