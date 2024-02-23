@@ -91,14 +91,14 @@ local songinfo = Def.ActorFrame{
 return Def.ActorFrame{
   CurrentSongChangedMessageCommand=function(s)
     if GAMESTATE:GetCurrentSong() then
-      s:finishtweening():queuecommand("Show"):playcommand("Set")
+      s:stoptweening():queuecommand("Show"):playcommand("Set")
     else
       s:queuecommand("Hide")
     end
   end,
   ShowCommand=function(s)
     if AnimPlayed == false then 
-      s:finishtweening():diffusealpha(0):linear(0.05):diffusealpha(0.75)
+      s:stoptweening():diffusealpha(0):linear(0.05):diffusealpha(0.75)
       :linear(0.1):diffusealpha(0.25):linear(0.1):diffusealpha(1)
       s:queuecommand("UpdateShow")
     end
@@ -106,7 +106,7 @@ return Def.ActorFrame{
   UpdateShowCommand=function(s) AnimPlayed = true end,
   HideCommand=function(s)
     if AnimPlayed == true then
-      s:finishtweening():diffusealpha(1):sleep(0.05):diffusealpha(0):sleep(0.05):diffusealpha(0.5)
+      s:stoptweening():diffusealpha(1):sleep(0.05):diffusealpha(0):sleep(0.05):diffusealpha(0.5)
       :sleep(0.05):diffusealpha(0):sleep(0.05):diffusealpha(0.25):sleep(0.05)
       :linear(0.05):diffusealpha(0)
       s:queuecommand("UpdateHide")
@@ -133,10 +133,12 @@ return Def.ActorFrame{
   };
   Def.Sprite{
 		Texture="grad.png",
-		InitCommand=function(s) s:setsize(102,306):diffusealpha(0.5):blend(Blend.Add):MaskDest():ztestmode("ZTestMode_WriteOnFail") end,
-		OnCommand=function(s) s:queuecommand("Anim") end,
+		InitCommand=function(s) s:setsize(102,306):diffusealpha(0.5):blend(Blend.Add):x(-540):MaskDest():ztestmode("ZTestMode_WriteOnFail"):queuecommand("Anim") end,
 		AnimCommand=function(s) s:x(-540):sleep(4):smooth(1.5):x(480):queuecommand("Anim") end,
 	};
+  Def.Quad{
+    InitCommand=function(s) s:x(301):setsize(240,240):diffuse(Color.Black) end,
+  };
   Jacket..{
     InitCommand=function(s) s:x(301) end,
   };
