@@ -1,5 +1,20 @@
 function GetLocalProfiles()
 	local t = {}
+
+	local NoProfileCard = Def.ActorFrame{
+		Def.Sprite{
+			Texture=THEME:GetPathG("","ScreenSelectProfile/card.png"),
+		};
+		Def.BitmapText{
+			Font="_avenirnext lt pro bold/25px",
+			Text="Guest",
+			InitCommand=function(s) s:xy(-220,-15):halign(0):diffuse(color("#b5b5b5")):diffusetopedge(color("#e5e5e5"))
+				:maxwidth(400):zoom(1.1)
+			end,
+		};
+	}
+	t[#t+1] = NoProfileCard
+
 	for p = 0,PROFILEMAN:GetNumLocalProfiles()-1 do
 		local profile=PROFILEMAN:GetLocalProfileFromIndex(p);
 		local ProfileCard = Def.ActorFrame{
@@ -346,7 +361,7 @@ function UpdateInternal3(self, Player)
 			selGVRDoubleValue_Chaos:visible(true)
 			
 			if ind > 0 then
-				scroller:SetDestinationItem(ind-1);
+				scroller:SetDestinationItem(ind);
 				seltext:settext(PROFILEMAN:GetLocalProfileFromIndex(ind-1):GetDisplayName());
 
 				local RadarValueTableSingle = {};
@@ -395,9 +410,25 @@ function UpdateInternal3(self, Player)
 				local pastValues = GetOrCreateChild(GAMESTATE:Env(), 'PastRadarValues')
 				pastValues[Player] = DeepCopy(MyGrooveRadar.GetRadarTable(profileID))
 			else
-				if SCREENMAN:GetTopScreen():SetProfileIndex(Player, 1) then
+				if SCREENMAN:GetTopScreen():SetProfileIndex(Player, 0) then
 					scroller:SetDestinationItem(0);
-					self:queuecommand('UpdateInternal2');
+					smallframe:visible(false);
+					seltext:settext('No profile');
+					selGVRValue_Stream:visible(false)
+					selGVRValue_Voltage:visible(false)
+					selGVRValue_Air:visible(false)
+					selGVRValue_Freeze:visible(false)
+					selGVRValue_Chaos:visible(false)
+					selGVRSingleValue_Stream:visible(false)
+					selGVRSingleValue_Voltage:visible(false)
+					selGVRSingleValue_Air:visible(false)
+					selGVRSingleValue_Freeze:visible(false)
+					selGVRSingleValue_Chaos:visible(false)
+					selGVRDoubleValue_Stream:visible(false)
+					selGVRDoubleValue_Voltage:visible(false)
+					selGVRDoubleValue_Air:visible(false)
+					selGVRDoubleValue_Freeze:visible(false)
+					selGVRDoubleValue_Chaos:visible(false)
 				else
 					joinframe:visible(true);
 					smallframe:visible(false);
@@ -443,7 +474,7 @@ function UpdateInternal3(self, Player)
 			selGVRDoubleValue_Air:visible(true)
 			selGVRDoubleValue_Freeze:visible(true)
 			selGVRDoubleValue_Chaos:visible(true)
-			SCREENMAN:GetTopScreen():SetProfileIndex(Player, 0);
+			SCREENMAN:GetTopScreen():SetProfileIndex(Player, 0)
 		end;
 	else
 		joinframe:visible(true);
@@ -489,14 +520,18 @@ local t = Def.ActorFrame{
 				ready[p.PlayerNumber] = true
 				s:queuecommand('UpdateInternal2');
 				if AllPlayersReady() then
-					SCREENMAN:GetTopScreen():Finish()
+					if SCREENMAN:GetTopScreen():GetProfileIndex(p.PlayerNumber) == 0 then
+						SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
+					else
+						SCREENMAN:GetTopScreen():Finish()
+					end
 				end
 			end
 		end
 		if p.Name == 'Up' or p.Name == 'Up2' or p.Name == 'Up3' or p.Name == 'Up4' or p.Name == 'DownLeft' then
 			if GAMESTATE:IsHumanPlayer(p.PlayerNumber) and not ready[p.PlayerNumber] then
 				local ind = SCREENMAN:GetTopScreen():GetProfileIndex(p.PlayerNumber)
-				if ind > 1 then
+				if ind >= 1 then
 					if SCREENMAN:GetTopScreen():SetProfileIndex(p.PlayerNumber,ind-1) then
 						MESSAGEMAN:Broadcast("DirectionButton")
 						s:queuecommand("UpdateInternal2")
@@ -507,7 +542,7 @@ local t = Def.ActorFrame{
 		if p.Name == 'Down' or p.Name == 'Down2' or p.Name == 'Down3' or p.Name == 'Down4' or p.Name == 'DownRight' then
 			if GAMESTATE:IsHumanPlayer(p.PlayerNumber) and not ready[p.PlayerNumber] then
 				local ind = SCREENMAN:GetTopScreen():GetProfileIndex(p.PlayerNumber);
-				if ind > 0 then
+				if ind >= 0 then
 					if SCREENMAN:GetTopScreen():SetProfileIndex(p.PlayerNumber, ind + 1 ) then
 						MESSAGEMAN:Broadcast("DirectionButton");
 						s:queuecommand('UpdateInternal2');
