@@ -243,7 +243,10 @@ if THEME:GetMetric("ScreenSelectMusic","UseOptionsList") then
                 self:playcommand("Adjust",params);
             end;
             OptionsMenuChangedMessageCommand=function(self,params)
-                self:playcommand("Adjust",params);
+                if params.Player == pn then
+                    currentOpList=params.Menu
+                    self:playcommand("Adjust",params);
+                end
             end;
             OptionsListStartMessageCommand=function(self,params)
                 self:playcommand("Adjust",params);
@@ -267,15 +270,28 @@ if THEME:GetMetric("ScreenSelectMusic","UseOptionsList") then
                 }
             };
             Def.Actor{
-                AdjustCommand=function(s,p)
-                    if p.Player == pn then
-                        if currentOpList == "NoteSkins" or currentOpList == "Characters" or currentOpList == "Mini" or currentOpList == "MusicRate" then
-                            optionsListActor:stoptweening():diffusealpha(0)
+                OptionsMenuChangedMessageCommand=function(self,params)
+                    --SCREENMAN:SystemMessage("MenuChanged: Menu="..params.Menu);
+                    if params.Player == pn then
+                        if params.Menu == "DispMenu" then
+                            optionsListActor:stoptweening():y(SCREEN_CENTER_Y-210) --Reset the positioning
                         else
-                            optionsListActor:stoptweening():diffusealpha(1)
+                            optionsListActor:stoptweening():y(SCREEN_CENTER_Y-180) --Reset the positioning
                         end
-                    end
-                end,
+                        if params.Menu ~= "SongMenu" and params.Menu ~= "AdvMenu" and params.Menu ~= "RemMenu" then
+                            if params.Menu == "NoteSkins" or params.Menu == "Characters" or params.Menu == "Mini" or params.Menu == "MusicRate" then
+                                optionsListActor:stoptweening():diffusealpha(0)
+                            else
+                                optionsListActor:stoptweening():diffusealpha(1)
+                            end
+                        else
+                            --SCREENMAN:SystemMessage(params.Size);
+                            optionsListActor:stoptweening():diffusealpha(1)
+                            numRows = tonumber(THEME:GetMetric("ScreenOptionsMaster",currentOpList))
+                        end;
+                        
+                    end;
+                end;
             };
             Def.ActorFrame{
                 Name="Explanation Area",
@@ -290,11 +306,13 @@ if THEME:GetMetric("ScreenSelectMusic","UseOptionsList") then
                         s:stoptweening()
                         if p.Player == pn then
                             currentOpList = "SongMenu"
+                            numRows = tonumber(THEME:GetMetric("ScreenOptionsMaster",currentOpList))
                             s:settext(THEME:GetString("OptionExplanations",string.gsub(THEME:GetMetric("ScreenOptionsMaster",THEME:GetMetric("OptionsList","TopMenu")..",1"):split(";")[1],"name,","")))
                         end
                     end;
                     OffCommand=function(s) s:stoptweening() end,
                     AdjustCommand=function(s,p)
+                        s:stoptweening()
                         if p.Player == pn then
                             local OpListMax = {
                                 ["Mini"] = getenv("NumMini"),
@@ -346,21 +364,7 @@ if THEME:GetMetric("ScreenSelectMusic","UseOptionsList") then
                         end
                     end,
                     OptionsMenuChangedMessageCommand=function(self,params)
-                        --SCREENMAN:SystemMessage("MenuChanged: Menu="..params.Menu);
-                        if params.Player == pn then
-                            currentOpList=params.Menu
-                            if params.Menu == "DispMenu" then
-                                optionsListActor:stoptweening():y(SCREEN_CENTER_Y-210) --Reset the positioning
-                            else
-                                optionsListActor:stoptweening():y(SCREEN_CENTER_Y-180) --Reset the positioning
-                            end
-                            if params.Menu ~= "SongMenu" and params.Menu ~= "AdvMenu" and params.Menu ~= "RemMenu" then
-                                self:settext(THEME:GetString("OptionExplanations",params.Menu))
-                            else
-                                --SCREENMAN:SystemMessage(params.Size);
-                                numRows = tonumber(THEME:GetMetric("ScreenOptionsMaster",currentOpList))
-                            end;
-                        end;
+                        self:playcommand("Adjust",params)
                     end;
                 };
             };
