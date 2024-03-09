@@ -65,7 +65,7 @@ end
 
 return Def.ActorFrame{
 	SongChosenMessageCommand=function(self)
-		self:AddChildFromPath(THEME:GetPathB("ScreenSelectMusic","overlay/TwoPartDiff"));
+		--self:AddChildFromPath(THEME:GetPathB("ScreenSelectMusic","overlay/TwoPartDiff"));
 	end;
 	Def.ActorFrame{
 		Name="SongInfo/Jacket",
@@ -89,4 +89,5 @@ return Def.ActorFrame{
 			s:xy(SCREEN_LEFT+160,SCREEN_TOP+180)
 		end,
 	};
+	LoadActor("../TwoPartDiff"),
 }
