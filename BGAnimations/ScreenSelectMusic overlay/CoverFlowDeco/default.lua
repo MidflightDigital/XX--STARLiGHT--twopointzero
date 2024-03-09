@@ -190,7 +190,7 @@ return Def.ActorFrame{
 	end,
     RemoveCommand=function(s) s:RemoveChild("TwoPartDiff") end,
 	SongChosenMessageCommand=function(self)
-		self:AddChildFromPath(THEME:GetPathB("ScreenSelectMusic","overlay/TwoPartDiff"));
+		--self:AddChildFromPath(THEME:GetPathB("ScreenSelectMusic","overlay/TwoPartDiff"));
 	end;
     Def.Actor{
         Name="WheelActor",
@@ -224,4 +224,5 @@ return Def.ActorFrame{
     SongInfo;
     Arrows;
     t;
+    LoadActor("../TwoPartDiff")
 }

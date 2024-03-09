@@ -1,9 +1,40 @@
 local Y_SPACING = 140
 local Radar = LoadModule "DDR Groove Radar.lua"
+local numItems = 7
+
+local keyset={false,false}
+
+local function DiffInputHandler(event)
+	local pn= event.PlayerNumber
+	local button = event.button
+	if event.type == "InputEventType_Release" then return end
+
+	if (button == "Start") and GAMESTATE:IsPlayerEnabled(pn) and not keyset[pn] and getenv("OPList") == 0 then
+		keyset[pn] = true
+		MESSAGEMAN:Broadcast("OK"..pn)
+	end
+end
 
 local af = Def.ActorFrame{
-	InitCommand=function(self)
-	end
+	InitCommand=function(s) s:visible(ThemePrefs.Get("ShowDiffSelect")) end,
+	-- OnCommand=function(s) s:playcommand("Remove") end,
+	StartSelectingStepsMessageCommand=function(s)
+		s:sleep(0.5):queuecommand("Add")
+	end,
+	SongUnchosenMessageCommand=function(self)
+		self:playcommand("Remove")
+	end,
+	RemoveCommand=function(self)
+		SCREENMAN:GetTopScreen():RemoveInputCallback(DiffInputHandler)
+		setenv("OPStop",1)
+	end,
+	AddCommand=function(self)
+		SCREENMAN:GetTopScreen():AddInputCallback(DiffInputHandler)
+		setenv("OPStop",0)
+	end,
+	OffCommand=function(self)
+		self:playcommand("Remove")
+	end,
 }
 
 -- Store the player's selections.
@@ -84,7 +115,7 @@ local function genScrollerFrame(pn)
 	local t = Def.ActorFrame{}
 
 	t[#t+1] = Def.DynamicActorScroller{
-		NumItemsToDraw = 5,
+		NumItemsToDraw = numItems,
 		SecondsPerItem = 0.1,
 		-- LoopScroller = true,
 		OnCommand=function(self)
@@ -93,12 +124,14 @@ local function genScrollerFrame(pn)
 	
 			-- TRICK: Make the scroller be outside of range, so by the time it comes back,
 			-- it has been loaded with the present steps data.
-			self:SetCurrentAndDestinationItem( 7 )
+			self:SetCurrentAndDestinationItem( numItems+2 )
+		end,
+		RemoveCommand=function (self)
+			self:sleep(1.7):queuecommand("On")
 		end,
 		StartSelectingStepsMessageCommand=function (self)
 			local song = GAMESTATE:GetCurrentSong()
 			stepsData = SongUtil.GetPlayableSteps(song)
-			lua.ReportScriptError("i am ready with ".. #stepsData .. " items!")
 	
 			SetActiveSelections()
 	
@@ -114,6 +147,7 @@ local function genScrollerFrame(pn)
 			if self then
 				---@type Steps
 				local steps = stepsData[itemIndex+1]
+				self:visible( steps ~= nil )
 				if steps then 
 					local diff = steps:GetDifficulty()
 					local diffItem = THEME:GetString("CustomDifficulty",ToEnumShortString(diff))
@@ -123,7 +157,7 @@ local function genScrollerFrame(pn)
 					self:GetChild("ShockArrow"):visible( steps:GetRadarValues(pn):GetValue('RadarCategory_Mines') >= 1 )
 				end
 			end
-			return 5
+			return numItems
 		end,
 		TransformFunction=function(self, offset, itemIndex, numItems)
 			self:y( offset * Y_SPACING )
@@ -151,12 +185,12 @@ local function genScrollerFrame(pn)
 				end,
 			},
 			Def.Sprite{
-				Texture="cursor";
-				Name="Highlight";
-				InitCommand=function(s) s:visible(false):diffuseramp():effectcolor1(Alpha(PlayerColor(player),0)):effectcolor2(Alpha(PlayerColor(player),1)):effectclock("beatnooffset") end,
-				-- ["OK"..player.."MessageCommand"]=function(s)
-				-- 	s:stopeffect():diffuse(PlayerColor(player))
-				-- end,
+				Texture="cursor",
+				Name="Highlight",
+				InitCommand=function(s) s:visible(false):diffuseramp():effectcolor1(Alpha(PlayerColor(pn),0)):effectcolor2(Alpha(PlayerColor(pn),1)):effectclock("beatnooffset") end,
+				["OK"..pn.."MessageCommand"]=function(self)
+					self:stopeffect():diffuse(PlayerColor(pn))
+				end,
 			},
 			Def.Sprite{
 				Texture="../_ShockArrow/ShockArrowText",
@@ -169,7 +203,6 @@ local function genScrollerFrame(pn)
 			if param.Player ~= pn then return end
 			local dir = param.Direction
 			selection[pn] = selection[pn] + dir
-			SCREENMAN:SystemMessage(selection[pn])
 			self:SetDestinationItem( selection[pn]-1 )
 		end,
 	}
@@ -184,19 +217,20 @@ for _,pn in pairs(GAMESTATE:GetEnabledPlayers()) do
 		end,
 		genScrollerFrame(pn) .. {
 			InitCommand=function(self)
-				-- frame[pn] = s;
-				-- adjustScrollerFrame(pn)
 				self:xy(pn==PLAYER_1 and 400 or -400,-40)
 			end,
 			StartSelectingStepsMessageCommand=function(self)
-				self:addy(pn==PLAYER_1 and -SCREEN_HEIGHT*2 or SCREEN_HEIGHT*2)
-				:decelerate(1):addy(pn==PLAYER_1 and SCREEN_HEIGHT*2 or -SCREEN_HEIGHT*2)
+				self:finishtweening():y(pn==PLAYER_1 and -SCREEN_HEIGHT*2 or SCREEN_HEIGHT*2)
+				:decelerate(1):y(-40)
 			end,
-			RemoveCommand=function(s) s:sleep(0.7):accelerate(1):addy(pn==PLAYER_1 and SCREEN_HEIGHT*2 or -SCREEN_HEIGHT*2) end,
+			RemoveCommand=function(s) s:finishtweening():sleep(0.7):accelerate(1):addy(pn==PLAYER_1 and SCREEN_HEIGHT*2 or -SCREEN_HEIGHT*2) end,
 		},
 		-- Now generate the difficulty info frame.
 		Def.ActorFrame{
-			StartSelectingStepsMessageCommand=function(s) s:addx(pn==PLAYER_1 and -800 or 800):decelerate(0.5):addx(pn==PLAYER_1 and 800 or -800) end,
+			InitCommand=function (self)
+				self:x(pn==PLAYER_1 and -800 or 800)
+			end,
+			StartSelectingStepsMessageCommand=function(s) s:x(pn==PLAYER_1 and -800 or 800):decelerate(0.5):x(0) end,
 			RemoveCommand=function(s) s:sleep(0.7):accelerate(1):addx(pn==PLAYER_1 and -800 or 800) end,
 			Def.ActorFrame{
 				Name="WINDOW FRAME",
@@ -231,7 +265,21 @@ for _,pn in pairs(GAMESTATE:GetEnabledPlayers()) do
 				StartSelectingStepsMessageCommand=function(s) s:queuecommand("Set") end,
 				ChangeStepsMessageCommand=function(s) s:queuecommand("Set") end,
 			};
-		}
+		},
+		--Yes I'm loading a version of the diff list that literally only has the frame removed. Fight me.
+		Def.BitmapText{
+			Font="_avenirnext lt pro bold/25px",
+			Text="Please wait...",
+			InitCommand=function(s) s:diffusealpha(0):y(60):strokecolor(Color.Black):sleep(0.4) end,
+			AnimCommand=function(s) s:finishtweening():cropright(0.2):linear(0.5):cropright(0):queuecommand("Anim") end,
+			["OK"..pn.."MessageCommand"]=function(s)
+				s:x(-100):decelerate(0.4):x(0):diffusealpha(1):queuecommand("Anim")
+			end,
+			OffCommand=function(s) 
+				s:settext("O.K.!")
+				:finishtweening():diffusealpha(1):sleep(1):decelerate(0.3):diffusealpha(0)
+			end,
+		};
 	}
 end
 
