@@ -21,8 +21,8 @@ t[#t+1] = Def.ActorFrame{
     Def.Sprite{
         SetCommand=function(s,p)
             if p.Song then
-                s:Load(jk.GetSongGraphicPath(p.Song,"Banner"))
-                s:setsize(473,148)
+                s:LoadFromCached("Banner",jk.GetSongGraphicPath(p.Song,"Banner"))
+                s:scaletofit(-236.5,-74,236.5,74)
             end
         end
     };

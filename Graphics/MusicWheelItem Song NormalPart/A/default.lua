@@ -99,13 +99,7 @@ return Def.ActorFrame{
 		SetMessageCommand=function(s,p)
 			local song = p.Song
 			if song then
-				if HasThumbnail(song) then
-					--- rescaling down 256x256 and above yields bad image quality, unreadable and slows down screen performance so we use thumbnail images instead
-					--- thumbnail image uses "-tn" filename affix; preferably 104x104 (for 720p) or 156x156 (for 1080p) dimension
-					s:Load(GetThumbnailPath(song))
-				else
-					s:Load(jk.GetSongGraphicPath(song))
-				end
+				s:LoadFromCached("Jacket",jk.GetSongGraphicPath(song))
 			end
 			s:scaletofit(-69,-69,69,69):xy(2,-1)
 		end

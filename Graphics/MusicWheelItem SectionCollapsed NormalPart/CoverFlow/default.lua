@@ -9,7 +9,11 @@ return Def.ActorFrame{
 	};
 	Def.Sprite {
 		SetMessageCommand=function(self,p)
-			self:Load(JM.GetGroupGraphicPath(p.Text,"Jacket",GAMESTATE:GetSortOrder()))
+			if JM.GetGroupGraphicPath(p.Text,"Jacket",GAMESTATE:GetSortOrder()) ~= nil then
+				self:LoadFromCached("Jacket",JM.GetGroupGraphicPath(p.Text,"Jacket",GAMESTATE:GetSortOrder()))
+			else
+				self:Load(JM.GetGroupGraphicPath(p.Text,"Jacket",GAMESTATE:GetSortOrder()))
+			end
 			self:scaletofit(-186,-186,186,186)
 		end;
 	};

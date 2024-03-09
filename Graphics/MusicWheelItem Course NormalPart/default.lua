@@ -5,9 +5,6 @@ for i=1,2 do
 		Def.Sprite{
 			Texture="light.png",
 			InitCommand=function(s) s:x(i==1 and -290 or 290):rotationz(i==2 and 180 or 0):blend(Blend.Add):diffusealpha(0.6) end,
-			SetMessageCommand=function(s,p)
-
-			end
 		};
 	};
 end
@@ -24,7 +21,9 @@ return Def.ActorFrame{
 		Name="SongBanner";
 		InitCommand=function(s) s:scaletoclipped(512,160) end,
 		SetMessageCommand=function(self,params)
-			self:LoadFromCourse(params.Course);
+			if params.Type == "Course" then
+				self:LoadFromCourse(params.Course);
+			end
 		end;
 	};
 	lights;

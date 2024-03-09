@@ -25,12 +25,16 @@ return Def.ActorFrame{
         local mw = SCREENMAN:GetTopScreen():GetChild("MusicWheel")
         if not mw then return end
         if song then
-          self:Load(jk.GetSongGraphicPath(song,"Jacket"))
+          self:LoadFromCached("Jacket",jk.GetSongGraphicPath(song,"Jacket"))
         elseif mw:GetSelectedType('WheelItemDataType_Section')  then
           if mw:GetSelectedSection() == "" then
             self:Load(THEME:GetPathG("","_jackets/Random"))
           else
-            self:Load(jk.GetGroupGraphicPath(mw:GetSelectedSection(),"Jacket",so))
+            if jk.GetGroupGraphicPath(mw:GetSelectedSection(),"Jacket",GAMESTATE:GetSortOrder()) ~= nil then
+              self:LoadFromCached("Jacket",jk.GetGroupGraphicPath(mw:GetSelectedSection(),"Jacket",GAMESTATE:GetSortOrder()))
+            else
+              self:Load(jk.GetGroupGraphicPath(mw:GetSelectedSection(),"Jacket",GAMESTATE:GetSortOrder()))
+            end
           end
         else
           self:Load( THEME:GetPathG("","MusicWheelItem fallback") );
@@ -94,12 +98,16 @@ return Def.ActorFrame{
         local mw = SCREENMAN:GetTopScreen():GetChild("MusicWheel")
         if not mw then return end
         if song then
-          self:Load(jk.GetSongGraphicPath(song,"Banner"))
+          self:LoadFromCached("Banner",jk.GetSongGraphicPath(song,"Banner"))
         elseif mw:GetSelectedType('WheelItemDataType_Section') then
           if mw:GetSelectedSection() == "" then
             self:Load(THEME:GetPathG("","_banners/Random"))
           else
-            self:Load(jk.GetGroupGraphicPath(mw:GetSelectedSection(),"Banner",so))
+            if jk.GetGroupGraphicPath(mw:GetSelectedSection(),"Banner",GAMESTATE:GetSortOrder()) ~= nil then
+              self:LoadFromCached("Banner",jk.GetGroupGraphicPath(mw:GetSelectedSection(),"Banner",GAMESTATE:GetSortOrder()))
+            else
+              self:Load(jk.GetGroupGraphicPath(mw:GetSelectedSection(),"Banner",GAMESTATE:GetSortOrder()))
+            end
           end
         else
           self:visible(false)

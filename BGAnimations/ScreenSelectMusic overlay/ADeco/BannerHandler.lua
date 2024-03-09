@@ -11,7 +11,7 @@ local Jacket = Def.ActorFrame{
     SetCommand=function(s)
       local song = GAMESTATE:GetCurrentSong()
       if song then
-        s:Load(jk.GetSongGraphicPath(song)):scaletofit(-120,-120,120,120)
+        s:LoadFromCached("Jacket",jk.GetSongGraphicPath(song)):scaletofit(-120,-120,120,120)
       end
 		end;
   };

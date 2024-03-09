@@ -6,7 +6,11 @@ t[#t+1] = Def.ActorFrame{
 	Def.Sprite{
 		SetMessageCommand=function(s,p)
 			s:rotationz(-45)
-			s:Load(jk.GetGroupGraphicPath(p.Text,"Banner",GAMESTATE:GetSortOrder()))
+			if jk.GetGroupGraphicPath(p.Text,"Banner",GAMESTATE:GetSortOrder()) ~= nil then
+				s:LoadFromCached("Banner",jk.GetGroupGraphicPath(p.Text,"Banner",GAMESTATE:GetSortOrder()))
+			else
+				s:Load(jk.GetGroupGraphicPath(p.Text,"Banner",GAMESTATE:GetSortOrder()))
+			end
 			s:setsize(384,120)
 		end,
 	};
@@ -49,7 +53,11 @@ for i = 1,3 do
 				local index = params.DrawIndex
 				if index then
 					if index == indexes[i] then
-						self:Load(jk.GetGroupGraphicPath(params.Text,"Jacket",GAMESTATE:GetSortOrder()))
+						if jk.GetGroupGraphicPath(params.Text,"Jacket",GAMESTATE:GetSortOrder()) ~= nil then
+							self:LoadFromCached("Jacket",jk.GetGroupGraphicPath(params.Text,"Jacket",GAMESTATE:GetSortOrder()))
+						else
+							self:Load(jk.GetGroupGraphicPath(params.Text,"Jacket",GAMESTATE:GetSortOrder()))
+						end
 						self:scaletoclipped(716,716)
                         self:cropbottom(0.35):croptop(0.26)
 					end

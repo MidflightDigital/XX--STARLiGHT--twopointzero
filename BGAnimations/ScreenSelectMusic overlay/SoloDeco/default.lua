@@ -333,17 +333,25 @@ return Def.ActorFrame{
                     local mw = SCREENMAN:GetTopScreen():GetChild("MusicWheel")
                     if not mw then return end
                     if song then
-                        s:Load(jk.GetSongGraphicPath(song,"Jacket"))
+                        s:LoadFromCached("Jacket",jk.GetSongGraphicPath(song,"Jacket"))
                     elseif mw:GetSelectedType('WheelItemDataType_Section') then
                         if mw:GetSelectedSection() == "" then
                             s:Load(THEME:GetPathG("","_jackets/Random"))
                         else
-                            s:Load(jk.GetGroupGraphicPath(mw:GetSelectedSection(),"Jacket",GAMESTATE:GetSortOrder()))
+                            if jk.GetGroupGraphicPath(mw:GetSelectedSection(),"Jacket",GAMESTATE:GetSortOrder()) ~= nil then
+                                s:LoadFromCached("Jacket",jk.GetGroupGraphicPath(mw:GetSelectedSection(),"Jacket",GAMESTATE:GetSortOrder()))
+                            else
+                                if jk.GetGroupGraphicPath(mw:GetSelectedSection(),"Jacket",GAMESTATE:GetSortOrder()) ~= nil then
+                                    self:LoadFromCached("Jacket",jk.GetGroupGraphicPath(mw:GetSelectedSection(),"Jacket",GAMESTATE:GetSortOrder()))
+                                  else
+                                    self:Load(jk.GetGroupGraphicPath(mw:GetSelectedSection(),"Jacket",GAMESTATE:GetSortOrder()))
+                                  end
+                            end
                         end
                     else
                         s:Load( THEME:GetPathG("","MusicWheelItem fallback") );
                     end;
-                    s:zoomto(374,374);
+                    s:scaletofit(-187,-187,187,187)
                 end;
             };
             Def.Sprite{

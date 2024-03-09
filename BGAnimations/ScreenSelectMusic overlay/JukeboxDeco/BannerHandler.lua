@@ -23,12 +23,16 @@ return Def.ActorFrame{
       local mw = SCREENMAN:GetTopScreen():GetChild("MusicWheel")
       if not mw then return end
       if song then
-        self:Load(jk.GetSongGraphicPath(song,"Banner"))
+        self:LoadFromCached("Banner",jk.GetSongGraphicPath(song,"Banner"))
       elseif mw:GetSelectedType('WheelItemDataType_Section') then
         if mw:GetSelectedSection() == "" then
           self:Load(THEME:GetPathG("","_banners/Random"))
         else
-          self:Load(jk.GetGroupGraphicPath(mw:GetSelectedSection(),"Banner",so))
+          if jk.GetGroupGraphicPath(params.Text,"Banner",GAMESTATE:GetSortOrder()) ~= nil then
+						self:LoadFromCached("Banner",jk.GetGroupGraphicPath(params.Text,"Banner",GAMESTATE:GetSortOrder()))
+					else
+						self:Load(jk.GetGroupGraphicPath(mw:GetSelectedSection(),"Banner",so))
+					end
         end
       else
         self:Load(THEME:GetPathG("","Common fallback banner"));

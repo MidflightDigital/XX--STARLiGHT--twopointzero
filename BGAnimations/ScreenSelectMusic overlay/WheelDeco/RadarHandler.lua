@@ -6,6 +6,7 @@ local GR = {
     {108,72, "Freeze"}, --FREEZE
     {120,-43, "Chaos"}, --CHAOS
 };
+local Radar = LoadModule "DDR Groove Radar.lua"
 
 local lab = Def.ActorFrame{};
 local radars = Def.ActorFrame{}
@@ -14,7 +15,7 @@ for _,pn in pairs(GAMESTATE:GetEnabledPlayers()) do
     radars[#radars+1] = Def.ActorFrame{
         OnCommand=function(s) s:zoom(0):rotationz(-360):sleep(0.3):decelerate(0.4):zoom(1):rotationz(0) end,
         OffCommand=function(s) s:sleep(0.3):decelerate(0.3):rotationz(-360):zoom(0) end,
-        create_ddr_groove_radar("radar",0,0,pn,125,Alpha(PlayerColor(pn),0.25))
+        Radar.create_ddr_groove_radar("radar",0,0,pn,125,Alpha(PlayerColor(pn),0.25))
     }
 end
 

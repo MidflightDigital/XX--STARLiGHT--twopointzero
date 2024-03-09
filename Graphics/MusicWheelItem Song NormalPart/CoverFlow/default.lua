@@ -22,7 +22,7 @@ return Def.ActorFrame{
 		SetMessageCommand=function(s, p)
 			local song = p.Song
 			if song then
-				s:Load(JM.GetSongGraphicPath(song,"Jacket"))
+				s:LoadFromCached("Jacket",JM.GetSongGraphicPath(song,"Jacket"))
 			end
 			s:scaletofit(-186,-186,186,186)
 		end,

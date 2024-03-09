@@ -85,7 +85,7 @@ return Def.ActorFrame{
 				if params.HasFocus then
 					centerSongObjectProxy = self;
 				end
-				self:Load(jk.GetSongGraphicPath(song))
+				self:LoadFromCached("Jacket",jk.GetSongGraphicPath(song))
 			end
 			self:scaletofit(-115,-115,115,115)
 		end,

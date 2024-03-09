@@ -21,7 +21,7 @@ return Def.ActorFrame{
 					local diskImage = CDImage[songtit];
 					self:Load(THEME:GetPathG("","MusicWheelItem Song NormalPart/Jukebox/cd/"..diskImage));
 				else
-					self:Load(jk.GetSongGraphicPath(song,"CD"))
+					self:LoadFromCached("Disc",jk.GetSongGraphicPath(song,"CD"))
 				end;
 			end;
 			self:setsize(475,475);

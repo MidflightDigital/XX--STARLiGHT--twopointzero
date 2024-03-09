@@ -8,7 +8,7 @@ t[#t+1] = Def.ActorFrame{
 		self:rotationz(-45)
 		local song = params.Song;
 		if song then
-			self:Load(jk.GetSongGraphicPath(song,"Banner"))
+			self:LoadFromCached("Banner",jk.GetSongGraphicPath(song,"Banner"))
 			self:setsize(384,120);
 		end;
 	end;
@@ -42,7 +42,7 @@ for i = 1,3 do
 				if song then
 					if index then
 						if index == indexes[i] then
-							self:Load(jk.GetSongGraphicPath(song,"Jacket"))
+							self:LoadFromCached("Jacket",jk.GetSongGraphicPath(song,"Jacket"))
 							self:setsize(716,716)
 							self:cropbottom(0.35):croptop(0.26)
 						end;
