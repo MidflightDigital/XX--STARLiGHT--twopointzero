@@ -8,7 +8,7 @@ return Def.Actor{
         local increasing_speed
 
         local code_name = p.Name
-        if PREFSMAN:GetPreference("OnlyDedicatedMenuButtons") then
+        if PREFSMAN:GetPreference("OnlyDedicatedMenuButtons") and not SCREENMAN:GetTopScreen():IsPaused() then
             if code_name == "SpeedUp" then
                 increasing_speed = true
             elseif code_name == "SpeedDown" then
