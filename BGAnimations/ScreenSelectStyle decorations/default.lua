@@ -62,11 +62,11 @@ for i=1,2 do
           s:halign(1)
           if GetP2 == true and GAMESTATE:GetNumPlayersEnabled() == 1 then
             s:settext(THEME:GetString("ScreenSelectStyle","P2here"))
+          elseif GetP2 == false and GAMESTATE:PlayersCanJoin() and GAMESTATE:GetMasterPlayerNumber() == PLAYER_1 then
+            s:settext(THEME:GetString("ScreenSelectStyle","P2CanJoin"))
           elseif GetP2 == false and GAMESTATE:GetMasterPlayerNumber() == PLAYER_1  then
-            if GAMESTATE:GetCoins() ~= GAMESTATE:GetCoinsNeededToJoin()  and GAMESTATE:IsEventMode() == false then
+            if GAMESTATE:GetCoins() ~= GAMESTATE:GetCoinsNeededToJoin() and GAMESTATE:IsEventMode() == false then
               s:settext(THEME:GetString("ScreenSelectStyle","Credit"))
-            else
-              s:settext(THEME:GetString("ScreenSelectStyle","P2CanJoin"))
             end;
           else
             s:settext(THEME:GetString("ScreenSelectStyle","P2here"))
