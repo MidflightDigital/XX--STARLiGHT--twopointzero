@@ -16,11 +16,6 @@ local function CreditsText()
 				if coinsPerCredit > 1 then
 					add = " ("..remainder.."/"..coinsPerCredit..")"
 				end
-				if credits >= 1 then
-					s = credits
-				else
-					s = 0
-				end
 				self:settext("CREDIT(S): "..credits..add)
 			end
 		end;
