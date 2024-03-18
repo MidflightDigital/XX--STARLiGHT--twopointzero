@@ -5,6 +5,8 @@ end
 local Jacket = {
     GetSongGraphicPath=function(song,type,fallback)
         local fbg = THEME:GetPathG("MusicWheelItem", "fallback")
+        local ran = math.random(1,100)
+        SCREENMAN:SystemMessage(ran)
         --i.e. 
         if type == "Banner" then
             if song.HasBanner and song:HasBanner() then
@@ -53,7 +55,11 @@ local Jacket = {
             end
         else
             if song.HasJacket and song:HasJacket() then
-                return song:GetJacketPath()
+                if song:GetDisplayFullTitle() == "automne" and ran == 69 then
+                    return THEME:GetPathG("","_jackets/amogus")
+                else
+                    return song:GetJacketPath()
+                end
             elseif song:HasBackground() then
                 --disable the animated banner loading stuff for now
                 --[[if (string.find(song:GetBannerPath(),".avi")) or
@@ -63,7 +69,11 @@ local Jacket = {
                     return song:GetBackgroundPath()
                 --end
             elseif song:HasBanner() then
-                return song:GetBannerPath()
+                if song:GetDisplayFullTitle() == "automne" and ran == 69 then
+                    return THEME:GetPathG("","_banners/amogus")
+                else
+                    return song:GetBannerPath()
+                end
             end
         end
         return fallback or fbg
