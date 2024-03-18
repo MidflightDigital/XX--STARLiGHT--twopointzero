@@ -75,15 +75,15 @@ local function ControlCoverPos(self, params, player, Mode, TwoCoverMode)
         local yDelta = 0;
 		
 		if TwoCoverMode then --Hidden+&Sudden+
-			if (params.Name == "AppearancePlusHarsher" and PREFSMAN:GetPreference("OnlyDedicatedMenuButtons")) or params.Name == "AppearancePlusHarsher2" then
+			if (params.Name == "AppearancePlusHarsher" and PREFSMAN:GetPreference("OnlyDedicatedMenuButtons")) or params.Name == "AppearancePlusHarsher2" or params.Name == "AppearancePlusHarsher3" then
 				yDelta = 5;
-			elseif (params.Name == "AppearancePlusEasier" and PREFSMAN:GetPreference("OnlyDedicatedMenuButtons")) or params.Name == "AppearancePlusEasier2" then
+			elseif (params.Name == "AppearancePlusEasier" and PREFSMAN:GetPreference("OnlyDedicatedMenuButtons")) or params.Name == "AppearancePlusEasier2" or params.Name == "AppearancePlusEasier3" then
 				yDelta = -5;
 			end;
 		else
-			if (params.Name == "AppearancePlusHarsher" and PREFSMAN:GetPreference("OnlyDedicatedMenuButtons")) or params.Name == "AppearancePlusHarsher2" then
+			if (params.Name == "AppearancePlusHarsher" and PREFSMAN:GetPreference("OnlyDedicatedMenuButtons")) or params.Name == "AppearancePlusHarsher2" or params.Name == "AppearancePlusHarsher3" then
 				yDelta = 10;
-			elseif (params.Name == "AppearancePlusEasier" and PREFSMAN:GetPreference("OnlyDedicatedMenuButtons")) or params.Name == "AppearancePlusEasier2" then
+			elseif (params.Name == "AppearancePlusEasier" and PREFSMAN:GetPreference("OnlyDedicatedMenuButtons")) or params.Name == "AppearancePlusEasier2" or params.Name == "AppearancePlusEasier3" then
 				yDelta = -10;
 			end;
         end
