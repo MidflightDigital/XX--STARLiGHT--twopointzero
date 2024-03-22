@@ -118,7 +118,7 @@ return Def.ActorFrame{
 	end,
 	RemoveCommand=function(s) s:RemoveChild("TwoPartDiff") end,
 	SongChosenMessageCommand=function(self)
-		self:AddChildFromPath(THEME:GetPathB("ScreenSelectMusic","overlay/TwoPartDiff"));
+		-- self:AddChildFromPath(THEME:GetPathB("ScreenSelectMusic","overlay/TwoPartDiff"));
 	end;
 	Def.Sprite{
 		Texture="Header.png",
@@ -237,4 +237,5 @@ return Def.ActorFrame{
 	StandardDecorationFromFileOptional("StageDisplay","StageDisplay")..{
 		InitCommand=function(s) s:xy(_screen.cx-234,_screen.cy-270):zoom(1):draworder(100):halign(0) end,
 	};
+	LoadActor("../TwoPartDiff"),
 }
