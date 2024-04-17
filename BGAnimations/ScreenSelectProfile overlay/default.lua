@@ -44,6 +44,11 @@ end
 local profnum = PROFILEMAN:GetNumLocalProfiles();
 local MyGrooveRadar = LoadModule "MyGrooveRadar.lua"
 
+local ver = ""
+if ThemePrefs.Get("SV") == "onepointzero" then
+  ver = "1_"
+end
+
 function LoadCard(cColor,cColor2,Player,IsJoinFrame)
 	local t = Def.ActorFrame{
 		Def.Sprite{
@@ -60,9 +65,34 @@ function LoadCard(cColor,cColor2,Player,IsJoinFrame)
 				s:sleep(IsJoinFrame and 0 or 0.3):linear(0.1):y(0):sleep(0):diffusealpha(0)
 			end,
 			Def.Sprite{
-				Texture=THEME:GetPathG("","ScreenSelectProfile/BGTOP_"..ToEnumShortString(Player));
 				InitCommand=function(s) s:valign(1) end,
+				OnCommand=function(s)
+					if ver == "1_" then
+						s:Load(THEME:GetPathG("","ScreenSelectProfile/1_BGTOP"))
+					else
+						s:Load(THEME:GetPathG("","ScreenSelectProfile/BGTOP_"..ToEnumShortString(Player)))
+					end
+				end,
 			};
+			Def.Sprite{
+				Texture=THEME:GetPathG("","ScreenSelectProfile/TOP-LINE"),
+				Condition=ver == "1_",
+				InitCommand=function(self)
+				  self:valign(1):diffuse(PlayerColor(Player));
+				end;
+			  };
+			Def.BitmapText{
+				Font="_handel gothic itc std Bold/18px";
+				Condition=ver == "1_",
+				InitCommand=function(self)
+				  self:diffuse(PlayerColor(Player)):zoom(1.3):y(-26)
+				  if Player == PLAYER_1 then
+					self:settext("PLAYER 1")
+				  else
+					self:settext("PLAYER 2")
+				  end;
+				end;
+			  };
 		};
 		Def.ActorFrame{
 			Name="Bottom",
@@ -71,7 +101,7 @@ function LoadCard(cColor,cColor2,Player,IsJoinFrame)
 				s:sleep(IsJoinFrame and 0 or 0.3):linear(0.1):y(0):sleep(0):diffusealpha(0)
 			end,
 			Def.Sprite{
-				Texture=THEME:GetPathG("","ScreenSelectProfile/BGBOTTOM"),
+				Texture=THEME:GetPathG("","ScreenSelectProfile/"..ver.."BGBOTTOM"),
 				InitCommand=function(s) s:valign(0) end,
 			};
 			Def.Sprite{

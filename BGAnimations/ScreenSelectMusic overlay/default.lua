@@ -61,6 +61,24 @@ return Def.ActorFrame{
 		OffCommand=function(s) s:sleep(1):queuecommand("Play") end,
 		PlayCommand=function(s) s:play() end,
 	};
+	Def.Sound{
+		File=THEME:GetPathB("ScreenSelectMusic","overlay/bruh.ogg"),
+		OffCommand=function(s)
+			local song = GAMESTATE:GetCurrentSong()
+			local gettitle = song:GetDisplayMainTitle()
+			if gettitle == "BroGamer" then
+				if PROFILEMAN:IsPersistentProfile(PLAYER_1) or PROFILEMAN:IsPersistentProfile(PLAYER_2) then
+					if PROFILEMAN:GetSongNumTimesPlayed(song, 'ProfileSlot_Player1') >= 10 or PROFILEMAN:GetSongNumTimesPlayed(song, 'ProfileSlot_Player2') >=10 then
+						SCREENMAN:SystemMessage("You've played BroGamer "..PROFILEMAN:GetSongNumTimesPlayed(song, 'ProfileSlot_Player1').." times. Please seek help.")
+						s:sleep(0.5):queuecommand("Bruh")
+					end
+				end
+			end
+		end,
+		BruhCommand=function(s)
+			s:play()
+		end,
+	};
 	OffCommand=function(s)
 		LoadFromProfilePrefs()
 		s:sleep(1):queuecommand("Dim")

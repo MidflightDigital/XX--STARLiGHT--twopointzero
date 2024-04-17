@@ -1,6 +1,6 @@
 local doors = Def.ActorFrame{}
 
-if ThemePrefs.Get("ShowHTP") == true and (PROFILEMAN:IsPersistentProfile(PLAYER_1) or PROFILEMAN:IsPersistentProfile(PLAYER_2)) then
+--[[if ThemePrefs.Get("ShowHTP") == true and (PROFILEMAN:IsPersistentProfile(PLAYER_1) or PROFILEMAN:IsPersistentProfile(PLAYER_2)) then
 	doors[#doors+1] = loadfile(THEME:GetPathB("","_StageDoors"))()..{
 		OnCommand=function(s)
 			if PROFILEMAN:IsPersistentProfile(PLAYER_1) or PROFILEMAN:IsPersistentProfile(PLAYER_2) then
@@ -19,7 +19,7 @@ if ThemePrefs.Get("ShowHTP") == true and (PROFILEMAN:IsPersistentProfile(PLAYER_
 			end
 		end,
 	};
-end
+end]]
 
 return Def.ActorFrame{
 	doors,

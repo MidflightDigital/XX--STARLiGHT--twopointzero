@@ -231,7 +231,7 @@ function SetupCredits()
     return "ScreenCreditsXX"
 end
 
-function SetupHowToPlay()
+--[[function SetupHowToPlay()
     if PROFILEMAN:IsPersistentProfile(PLAYER_1) or PROFILEMAN:IsPersistentProfile(PLAYER_2) then
         setenv("HTP",false)
         return "ScreenSelectMusic"
@@ -262,7 +262,7 @@ function SetupHowToPlay()
         end
     end
 	return "ScreenSelectMusic"
-end
+end]]
 
 function CustStageCheck()
     if not GAMESTATE:IsAnExtraStage() then

@@ -63,7 +63,7 @@ return Def.ActorFrame{
 		InitCommand=function(s) s:visible(false) end,
 		SetMessageCommand=function(s,p)
 			local song = p.Song
-			if song then
+			if song and p.Type == "Song" then
 				s:visible(true)
 			end
 		end,
@@ -80,7 +80,7 @@ return Def.ActorFrame{
 		-- XXX Same code can be reused for courses, etc.  Folders too?
 		SetMessageCommand = function(self, params)
 			local song = params.Song
-			if song then
+			if song and params.Type == "Song" then
 				self:visible(true)
 				if params.HasFocus then
 					centerSongObjectProxy = self;
@@ -97,7 +97,7 @@ return Def.ActorFrame{
 		InitCommand=function(s) s:animate(0):zoom(0.5):xy(-80,80) end,
 		SetCommand=function(s,p)
 			local song = p.Song
-			if song then
+			if song and p.Type == "Song" then
 				if song:IsLong() then
 					s:setstate(0)
 					s:visible(true)

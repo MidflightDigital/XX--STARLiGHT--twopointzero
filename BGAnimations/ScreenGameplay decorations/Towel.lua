@@ -59,7 +59,7 @@ local function InitCoverPos(self, player, pos, Mode, TwoCoverMode, Flip)
 end
 
 local function ControlCoverPos(self, params, player, Mode, TwoCoverMode)
-    if params.PlayerNumber == player then
+    if params.PlayerNumber == player and not SCREENMAN:GetTopScreen():IsPaused() then
         local profileID = GetProfileIDForPlayer(player)
 		local pPrefs = ProfilePrefs.Read(profileID)
         if params.Name == "AppearancePlusShow" then

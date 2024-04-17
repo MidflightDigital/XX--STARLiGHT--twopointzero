@@ -1,6 +1,12 @@
 
 local screen = Var "LoadingScreen"
 
+local ver = ""
+if ThemePrefs.Get("SV") == "onepointzero" then
+  ver = "1_"
+end
+
+
 return Def.ActorFrame{
   InitCommand=function(s) s:xy(_screen.cx,SCREEN_BOTTOM+140):diffusealpha(0):zoom(0.7)  end,
   OnCommand = function(s)
@@ -10,7 +16,7 @@ return Def.ActorFrame{
 		s:accelerate(0.3):y(SCREEN_BOTTOM+140):diffusealpha(0):zoom(0.7)
 	end,
   Def.Sprite{
-    Texture="base",
+    Texture=ver.."base",
   };
   Def.Sprite{
     Texture="side glow",

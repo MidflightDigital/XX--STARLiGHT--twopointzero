@@ -1,3 +1,8 @@
+local ver = ""
+if ThemePrefs.Get("SV") == "onepointzero" then
+  ver = "1_"
+end
+
 local t = Def.ActorFrame{
 	Def.ActorFrame{
 		OnCommand=function(s) s:diffusealpha(0):linear(0.2):diffusealpha(1) end,
@@ -46,7 +51,7 @@ t[#t+1] = Def.ActorFrame {
 		OnCommand=function(s) s:addx(-SCREEN_WIDTH):sleep(0.2):decelerate(0.2):addx(SCREEN_WIDTH) end,
 		OffCommand=function(s) s:linear(0.2):addx(-SCREEN_WIDTH) end,
 		Def.Sprite{
-			Texture="windowmid",
+			Texture=ver.."windowmid",
 			TitleSelectionMessageCommand=function(self, params)
 				self:finishtweening()
 				if heardBefore then
@@ -75,7 +80,7 @@ t[#t+1] = Def.ActorFrame {
 			OffCommand=function(s) s:accelerate(.4):croptop(0.5):cropbottom(0.5) end,
 		};
 		Def.Sprite{
-			Texture="windowtop",
+			Texture=ver.."windowtop",
 			InitCommand=function(s) s:y(-172):valign(1) end,
 			TitleSelectionMessageCommand=function(self, params)
 				self:finishtweening()
@@ -86,7 +91,7 @@ t[#t+1] = Def.ActorFrame {
 			end;
 		};
 		Def.Sprite{
-			Texture="windowbottom",
+			Texture=ver.."windowbottom",
 			InitCommand=function(s) s:y(172):valign(0); end,
 			TitleSelectionMessageCommand=function(self, params)
 				self:finishtweening()
@@ -101,8 +106,9 @@ t[#t+1] = Def.ActorFrame {
 		InitCommand=function(s) s:xy(_screen.cx,_screen.cy+276) end,
 		OnCommand=function(s) s:zoomy(0):sleep(0.1):accelerate(0.3):zoomy(1) end,
 		OffCommand=function(s) s:linear(0.2):zoomy(0) end,
-		Def.Sprite{Texture="exp.png",};
+		Def.Sprite{Texture=ver.."exp.png",};
 		Def.Sprite{
+			Condition=ver == "",
 			Texture="expglow.png",
 			InitCommand=function(s) s:diffuseramp():effectcolor1(color("1,1,1,0.5")):effectcolor2(color("1,1,1,1")):effectperiod(1.5) end,
 		};
@@ -113,7 +119,11 @@ t[#t+1] = Def.ActorFrame {
 			TitleSelectionMessageCommand=function(self, params)
 				local text = THEME:GetString("ScreenTitleMenu","DescriptionFallback")
 				if THEME:HasString("ScreenTitleMenu","Description"..params.Choice) then
-					text = THEME:GetString("ScreenTitleMenu","Description"..params.Choice)
+					if params.Choice == "GameStart" and DayOfMonth() == 1 and MonthOfYear() == 3 then
+						text = THEME:GetString("ScreenTitleMenu","DescriptionGameStartEE")
+					else
+						text = THEME:GetString("ScreenTitleMenu","Description"..params.Choice)
+					end
 				end
 				if params.Choice == "Exit" then
 					if Branding() == "ddr_" then

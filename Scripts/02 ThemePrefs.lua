@@ -4,6 +4,11 @@
 
 local Prefs =
 {
+	SV = {
+		Default = "twopointzero",
+		Choices = {"onepointzero","twopointzero"},
+		Values = { "onepointzero","twopointzero"}
+	},
 	Touch = 
 	{
 		Default = false,

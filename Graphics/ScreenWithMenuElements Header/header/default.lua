@@ -5,13 +5,18 @@ if screen == "ScreenSelectMusicExtra" then
   pf = "ex "
 end
 
+local ver = ""
+if ThemePrefs.Get("SV") == "onepointzero" then
+  ver = "1_"
+end
+
 return Def.ActorFrame{
   Def.Sprite{
     Texture=pf.."under mult.png",
     InitCommand=function(s) s:blend(Blend.Subtract):y(-10) end,
   };
   Def.Sprite{
-    Texture=pf.."base",
+    Texture=ver..pf.."base",
   };
   Def.ActorFrame{
     OnCommand=function(s) s:sleep(0.8):queuecommand("Anim") end,
