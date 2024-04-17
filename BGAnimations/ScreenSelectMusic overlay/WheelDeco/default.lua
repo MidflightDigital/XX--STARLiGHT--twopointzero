@@ -102,7 +102,7 @@ return Def.ActorFrame{
 	end,
 	RemoveCommand=function(s) s:RemoveChild("TwoPartDiff") end,
 	SongChosenMessageCommand=function(self)
-		self:AddChildFromPath(THEME:GetPathB("ScreenSelectMusic","overlay/TwoPartDiff"));
+		--self:AddChildFromPath(THEME:GetPathB("ScreenSelectMusic","overlay/TwoPartDiff"));
 	end;
   loadfile(THEME:GetPathB("ScreenSelectMusic","overlay/WheelDeco/BannerHandler.lua"))();
   StandardDecorationFromFileOptional("StageDisplay","StageDisplay")..{
@@ -171,4 +171,5 @@ return Def.ActorFrame{
 		end,
 		CurrentSongChangedMessageCommand=function(s) s:queuecommand("Set") end,
 	};
+  LoadActor("../TwoPartDiff"),
 }
