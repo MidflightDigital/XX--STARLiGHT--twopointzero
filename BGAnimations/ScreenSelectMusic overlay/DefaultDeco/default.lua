@@ -499,21 +499,6 @@ return Def.ActorFrame{
 			OffCommand=function(s) s:sleep(0.3):linear(0.15):cropright(1) end,
 		};
 	};
-	RemoveCommand=function(s) 
-		if ThemePrefs.Get("ShowDiffSelect") == true then
-			s:RemoveChild("TwoPartDiff")
-		end
-	end,
-	SongChosenMessageCommand=function(self)
-		if ThemePrefs.Get("ShowDiffSelect") == true then
-			self:AddChildFromPath(THEME:GetPathB("ScreenSelectMusic","overlay/TwoPartDiff"));
-		end
-	end;
-	StandardDecorationFromFileOptional("StageDisplay","StageDisplay")..{
-		InitCommand=function(s)
-			s:xy(_screen.cx,SCREEN_TOP+104)
-		end,
-	};
 	loadfile(THEME:GetPathB("ScreenSelectMusic","overlay/DefaultDeco/BPM.lua"))(0.5)..{
 		InitCommand=function(s) s:xy(_screen.cx,_screen.cy+120) end,
 		StartSelectingStepsMessageCommand=function(self)
@@ -561,5 +546,16 @@ return Def.ActorFrame{
 		end,
 		OnCommand=function(s) s:sleep(0.4):decelerate(0.4):diffusealpha(1) end,
 		OffCommand=function(s) s:sleep(0.2):decelerate(0.2):diffusealpha(0) end,
-	}
+	},
+	LoadActor("../TwoPartDiff")..{
+		InitCommand=function(s) s:draworder(1) end,
+	},
+	loadfile(THEME:GetPathG("ScreenWithMenuElements","Header/default.lua"))()..{
+		InitCommand=function(s) s:draworder(2) end,
+	};
+	StandardDecorationFromFileOptional("StageDisplay","StageDisplay")..{
+		InitCommand=function(s)
+			s:xy(_screen.cx,SCREEN_TOP+104):draworder(2)
+		end,
+	};
 };

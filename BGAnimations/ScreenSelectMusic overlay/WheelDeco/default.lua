@@ -9,7 +9,6 @@ local t = Def.ActorFrame{
     BeginCommand=function(s)
 			local mw = SCREENMAN:GetTopScreen():GetChild("MusicWheel")
       mw:xy(_screen.cx+360,_screen.cy+20)
-      SCREENMAN:GetTopScreen():GetChild("Header"):visible(false)
 		end,
 		OnCommand=function(s)
 			local mw = SCREENMAN:GetTopScreen():GetChild("MusicWheel")
