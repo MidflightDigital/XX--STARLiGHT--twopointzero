@@ -2,71 +2,71 @@
   <br>
   <img src="https://github.com/MidflightDigital/XX--STARLiGHT--twopointzero/blob/main/xxlogo.png?raw=true" alt="STARLiGHT Logo" width="600">
   <br>
-  XX -STARLiGHT- twopointzero
+  Project XX STARLiGHT
   <br>
 </h1>
 
-<h4 align="center">Repository for the XX -STARLiGHT- twopointzero theme by Midflight Digital.</h4>
-<h1 align="center">
-  <img src="https://inori.s-ul.eu/CbXKGk7K.png" alt="Screenshots" width="600">
-</h1>
+<h4 align="center">Repository for the Project XX STARLiGHT theme by Midflight Digital.</h4>
 
-## Where's the Download? ##
+## About
+Project XX STARLiGHT is a Project OutFox theme focused on 4 and 8-panel play, created by Midflight Digital.
 
+It features a space/astronomy theme, offers a number of elements that make use of features that are only available on Project OutFox, and is customizable, allowing you to change the look and feel of the theme.
+
+## How to download
+For the latest cutting edge release:
+* Click on the **Code** button, then **Download ZIP** to download the theme.
+ * You can also click [here](https://github.com/MidflightDigital/XX--STARLiGHT--twopointzero/archive/refs/heads/main.zip) to download it.
+
+For the latest stable release:
 * Click on the [Releases](https://github.com/MidflightDigital/XX--STARLiGHT--twopointzero/releases) options in the sidebar and download the latest dated release.
 
----
-## Installation Instructions ##
+## Installation instructions
 
-### Theme Package: ###
-* Delete any previous installations of the theme before updating!
-* Open the XX -starlight- .zip
-* Extract the folders in the XX -starlight- folder into the root of your StepMania directory (Please note that the SNCharacters Folder must be placed in the Appearance Folder     when using Project Outfox)
+### Theme
+1. Before upgrading from a previous version of the theme, make sure to fully delete any previous installations of the theme. Do not merge the new folder into the old one.
+2. Open the Project XX STARLiGHT theme .zip file
+3. Extract its contents into this directory: ``OutFox folder/Appearance/Themes``
 
-* Extract the "group.ini" and "jacket.png" files into your DDR XX song pack folder.
+### Hotfix
+1. Open the hotfix .zip file
+2. Extract the contents of the hotfix folder into your Project XX STARLiGHT theme folder.
+3. Overwrite all files if asked to do so.
 
-### Hotfix: ###
-* Open the XX -starlight- hotfix .zip
-* Extract the contents of the XX -starlight- hotfix folder into your DDR XX -starlight- theme folder.
-* Overwrite all files.
+## Extras
+* SNCharacters and DancerVideos: https://drive.google.com/drive/folders/1dUpl4qsrITAqAd3bDk-pcxpG7fmnu5Gc
 
-## Extras ##
-* Updated SNCharacters and DancerVideos can be downloaded from here: https://drive.google.com/drive/folders/1dUpl4qsrITAqAd3bDk-pcxpG7fmnu5Gc
-
-## How To Contribute ##
+## How to contribute
 * Please refrain from pushing new features or major code changes to mainline. Please use the branch named after the incremental update after current.
 
 =========================================================================
+## Copyright info
 
-# Copyright Info #
-
-We are in no way affiliated with Konami. Any references made to the DanceDanceRevolution franchise is strictly for continuity purposes.
+This theme and Midflight Digital are in no way affiliated with Konami.
 
 Do not use any graphical elements from this project without explicit permission from the Graphics Team.
 
 You are allowed to borrow code/metrics if you ask the Metrics/Lua team or if credit is given. Our team has spent many months developing this theme and coming up with newer implementations for several elements. Please respect our work, it'll only take a couple of keystrokes.
 
-You are allowed to edit this theme for PERSONAL USE ONLY.
+You are allowed to edit this theme for **PERSONAL USE ONLY**.
 
-This theme is NOT to be used with Pay Mode enabled. Free Play is accepted however.
+While this theme can be used with Free Play mode, it is NOT to be used with Pay mode enabled, as the Midflight Digital team is currently in the process of updating assets to ensure that anything mentioning DDR is removed.
 
-You are allowed to run this theme in a public setting only with permission from the Midflight Digital team.
-
+You are not allowed to use this theme in a public setting for the reason above. Public usage will be allowed once this transition is finished.
 
 =========================================================================
-
-# Contributors #
-## PROJECT MANAGERS ##
+# Contributors
+## Project managers
 
 HypnoticMarten77
 
 NewbStepper/hnkul702
 
-## STARLiGHT CONCEPT + DESIGN ##
+## STARLiGHT concept + design
 
 silverdragon754
 
-## GRAPHICS + DESIGN ##
+## Graphics + design
 
 silverdragon754
 
@@ -86,13 +86,13 @@ Nicolas/Capacity
 
 HypnoticMarten77
 
-## CODING + PROGRAMMING ##
+## Coding + programming
 
 Inorizushi
 
 tertu
 
-### With Special Thanks to: ###
+### With Special Thanks to:
 
 dbk2
 
@@ -116,7 +116,7 @@ The StepMania Team
 
 Konami
 
-## STEP ARTISTS ##
+## Step artists
 
 HypnoticMarten77
 
@@ -134,8 +134,7 @@ PandemoniumX
 
 tak
 
-
-## SOUND DESIGN ##
+## Sound design
 
 funkyzukin/MiDO
 
@@ -155,4 +154,7 @@ DJ Vortivask
 
 djVERTICAI
 
-
+---
+Project XX STARLiGHT™& ©Midflight Digital.
+Project XX STARLiGHT and all related elements are trademarks of Midflight Digital.
+All other trademarks are the property of their respective owners, trademark fair use doctrines apply.
