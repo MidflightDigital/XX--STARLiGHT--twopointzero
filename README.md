@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-  <img src="https://github.com/MidflightDigital/XX--STARLiGHT--twopointzero/blob/main/xxlogo.png?raw=true" alt="STARLiGHT Logo" width="600">
+  <img src="https://github.com/MattMayuga/XX--STARLiGHT--twopointzero/blob/main/newxxlogo.png?raw=true" alt="STARLiGHT Logo" width="600">
   <br>
   Project XX STARLiGHT
   <br>
@@ -156,5 +156,7 @@ djVERTICAI
 
 ---
 Project XX STARLiGHT™& ©Midflight Digital.
+
 Project XX STARLiGHT and all related elements are trademarks of Midflight Digital.
+
 All other trademarks are the property of their respective owners, trademark fair use doctrines apply.
