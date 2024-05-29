@@ -92,6 +92,10 @@ Inorizushi
 
 tertu
 
+## Translations:
+
+MattMayuga (Japanese)
+
 ### With Special Thanks to:
 
 dbk2
