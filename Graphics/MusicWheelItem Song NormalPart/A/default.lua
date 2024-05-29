@@ -3,12 +3,15 @@ local top
 local jk = LoadModule"Jacket.lua"
 
 local function GetExpandedSectionIndex()
-	local mWheel = SCREENMAN:GetTopScreen():GetMusicWheel()
-	local curSections = mWheel:GetCurrentSections()
+	local mWheel
+	if SCREENMAN:GetTopScreen():GetChild("MusicWheel")  ~= nil then
+		mWheel = SCREENMAN:GetTopScreen():GetChild("MusicWheel")
+		local curSections = mWheel:GetCurrentSections()
 	
-	for i=1, #curSections do
-		if curSections[i] == GAMESTATE:GetExpandedSectionName() then
-			return i-1
+		for i=1, #curSections do
+			if curSections[i] == GAMESTATE:GetExpandedSectionName() then
+				return i-1
+			end
 		end
 	end
 end
@@ -16,16 +19,17 @@ end
 local function SetXYPosition(self, param)
 	if GetExpandedSectionIndex() then
 		local index = param.Index-GetExpandedSectionIndex()-1
+		if index then
+			if index%3 == 0 then
+				self:x(-250):y(80)
+			elseif index%3 == 1 then
+				self:x(0):y(0)
+			else
+				self:x(250):y(-80)
+			end
 		
-		if index%3 == 0 then
-			self:x(-250):y(80)
-		elseif index%3 == 1 then
-			self:x(0):y(0)
-		else
-			self:x(250):y(-80)
+			self:addy(-30)
 		end
-		
-		self:addy(-30)
 	end
 end
 
