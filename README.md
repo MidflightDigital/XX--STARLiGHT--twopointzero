@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-  <img src="https://github.com/MattMayuga/XX--STARLiGHT--twopointzero/blob/main/newxxlogo.png?raw=true" alt="STARLiGHT Logo" width="600">
+  <img src="https://github.com/MidflightDigital/XX--STARLiGHT--twopointzero/blob/main/newxxlogo.png?raw=true" alt="STARLiGHT Logo" width="600">
   <br>
   Project XX STARLiGHT
   <br>
