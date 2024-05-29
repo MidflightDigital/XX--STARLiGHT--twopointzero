@@ -273,7 +273,11 @@ local function DrawDifListItem(diff, pn)
                   local topscore = 0
             
                   if scores[1] then
-                    topscore = SN2Scoring.GetSN2ScoreFromHighScore(steps, scores[1])
+                    if ThemePrefs.Get("ConvertScoresAndGrades") == true then
+                      topscore = scores[1]
+                    else
+                      topscore = SN2Scoring.GetSN2ScoreFromHighScore(steps, scores[1])
+                    end
                   end;
             
                   self:strokecolor(Color.Black)

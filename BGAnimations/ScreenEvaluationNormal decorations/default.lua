@@ -151,7 +151,13 @@ t[#t+1] = Def.ActorFrame{
 
 for _, pn in pairs(GAMESTATE:GetEnabledPlayers()) do
   local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
-  local Score = pss:GetScore()
+  local Score;
+
+  if ThemePrefs.Get("ConvertScoresAndGrades") == true then
+    Score = SN2Scoring.GetSN2ScoreFromHighScore(GAMESTATE:GetCurrentSteps(pn):GetDifficulty(),pss:GetScore())
+  else
+    Score = pss:GetScore()
+  end
 
   local EXScore = SN2Scoring.ComputeEXScoreFromData(SN2Scoring.GetCurrentScoreData(pss));
   local seconds = pss:GetSurvivalSeconds()
