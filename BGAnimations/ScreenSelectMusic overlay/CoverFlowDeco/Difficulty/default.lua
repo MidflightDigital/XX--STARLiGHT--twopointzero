@@ -274,9 +274,9 @@ local function DrawDifListItem(diff, pn)
             
                   if scores[1] then
                     if ThemePrefs.Get("ConvertScoresAndGrades") == true then
-                      topscore = scores[1]
-                    else
                       topscore = SN2Scoring.GetSN2ScoreFromHighScore(steps, scores[1])
+                    else
+                      topscore = scores[1]
                     end
                   end;
             
