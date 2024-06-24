@@ -265,9 +265,11 @@ local function genScrollerFrame(pn)
 		ChangeStepsMessageCommand=function (self, param)
 			if param.Player ~= pn then return end
 			local dir = param.Direction
-			selection[pn] = selection[pn] + dir
-			self:SetDestinationItem( selection[pn]-1 )
-			self:playcommand("CheckItem")
+			if selection[pn] ~= nil then
+				selection[pn] = selection[pn] + dir
+				self:SetDestinationItem( selection[pn]-1 )
+				self:playcommand("CheckItem")
+			end
 		end,
 	}
 
