@@ -85,11 +85,11 @@ local function RivalScore(pn,rival)
 					local scores = scorelist:GetHighScores();
 					local topscore=0;
 					if scores[rival] then
-						if ThemePrefs.Get("ConvertScoresAndGrades") then
+						--[[if ThemePrefs.Get("ConvertScoresAndGrades") then
 							topscore = SN2Scoring.GetSN2ScoreFromHighScore(StepsOrTrail, scores[rival]:GetScore())
-						else
+						else]]
 							topscore = scores[rival]:GetScore();
-						end
+						--end
 					end;
 					assert(topscore);
 					if topscore ~= 0  then
@@ -142,11 +142,11 @@ local function RivalScore(pn,rival)
 								assert(scores);
 								local topscore=0;
 								if scores[rival] then
-									if ThemePrefs.Get("ConvertScoresAndGrades") then
+									--[[if ThemePrefs.Get("ConvertScoresAndGrades") then
 										topscore = SN2Scoring.GetSN2ScoreFromHighScore(StepsOrTrail, scores[rival]:GetScore())
-									else
+									else]]
 										topscore = scores[rival]:GetScore();
-									end
+									--end
 								end;
 								assert(topscore);
 								local topgrade;
