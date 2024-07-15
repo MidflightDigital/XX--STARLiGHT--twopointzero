@@ -814,8 +814,8 @@ function OptionRowScoreLab()
 		OneChoiceForAllPlayers=false,
 		ExportOnChange=true,
 		Default = false,
-		Choices = {"Profile","BPM"},
-		Values = {"Profile","BPM"},
+		Choices = {"Profile","BPM","Speed"},
+		Values = {"Profile","BPM","Speed"},
 		LoadSelections = function(self,list,pn)
 			local profileID = GetProfileIDForPlayer(pn)
 			local pPrefs = ProfilePrefs.Read(profileID)
@@ -823,6 +823,8 @@ function OptionRowScoreLab()
 				list[1] = true
 			elseif pPrefs.scorelabel == "BPM" then
 				list[2] = true
+			elseif pPrefs.scorelabel == "Speed" then
+				list[3] = true
 			else
 				list[1] = true
 			end

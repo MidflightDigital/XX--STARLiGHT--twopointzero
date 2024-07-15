@@ -157,6 +157,9 @@ t[#t+1] = Def.ActorFrame{
 				};
 				loadfile(THEME:GetPathB("ScreenGameplay","decorations/scoreframe/BPMDisplay.lua"))()..{
 					InitCommand=function(s) s:visible(pPrefs.scorelabel == "BPM") end,
+				},
+				loadfile(THEME:GetPathB("ScreenGameplay","decorations/scoreframe/SpeedDisplay.lua"))(pn)..{
+					InitCommand=function(s) s:visible(pPrefs.scorelabel == "Speed") end,
 				}
 			};
 			

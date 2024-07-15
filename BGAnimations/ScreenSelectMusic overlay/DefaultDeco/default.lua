@@ -553,6 +553,7 @@ return Def.ActorFrame{
 	loadfile(THEME:GetPathG("ScreenWithMenuElements","Header/default.lua"))()..{
 		InitCommand=function(s) s:draworder(2) end,
 	};
+	StandardDecorationFromFileOptional("Help","Help");
 	StandardDecorationFromFileOptional("StageDisplay","StageDisplay")..{
 		InitCommand=function(s)
 			s:xy(_screen.cx,SCREEN_TOP+104):draworder(2)
