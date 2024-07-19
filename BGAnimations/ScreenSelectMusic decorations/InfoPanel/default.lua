@@ -11,7 +11,13 @@ local function XPOS(self,offset)
 end
 
 local yspacing = 32
-local keyset={false,false}
+local keyset={}
+
+for i, pn in ipairs(GAMESTATE:GetHumanPlayers()) do
+    if not keyset[pn] then
+        keyset[pn] = false
+    end
+end
 
 local function PlayerPanel()
     local t = Def.ActorFrame{};
@@ -441,15 +447,15 @@ local t = Def.ActorFrame{
     OffCommand=function(s) s:sleep(0.5):decelerate(0.3):addx(pn==PLAYER_1 and -500 or 500) end,
     CurrentSongChangedMessageCommand=function(s,p) s:queuecommand("Set") end,
     CodeMessageCommand=function(s,p)
+        
         if p.PlayerNumber == pn then
             if p.Name == "OpenPanes1" then
-                keyset[pn] = true
-                s:visible(true)
-                SOUND:PlayOnce(THEME:GetPathS("MusicWheel","expand"))
-            end
-            if p.Name == "ClosePanes" then
-                keyset[pn] = false
-                s:visible(false)
+                if keyset[pn] == false then
+                    keyset[pn] = true
+                else
+                    keyset[pn] = false
+                end
+                s:visible(keyset[pn])
                 SOUND:PlayOnce(THEME:GetPathS("MusicWheel","expand"))
             end
         end
