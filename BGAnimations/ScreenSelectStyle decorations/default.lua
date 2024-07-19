@@ -164,12 +164,12 @@ t[#t+1] = Def.ActorFrame{
     OffCommand=function(s) s:sleep(2) end,
 	};
 	Def.Sound{
-		File=THEME:GetPathS("","ScreenSelectStyle in.ogg"),
+		File=THEME:GetPathS("","_swoosh in.ogg"),
 		OnCommand=function(s) s:sleep(0.2):queuecommand("Play") end,
 		PlayCommand=function(s) s:play() end,
 	};
   Def.Sound{
-		File=THEME:GetPathS("","ScreenSelectStyle out.ogg"),
+		File=THEME:GetPathS("","_swoosh out.ogg"),
 		OffCommand=function(s) s:queuecommand("Play") end,
 		PlayCommand=function(s) s:play() end,
 	};

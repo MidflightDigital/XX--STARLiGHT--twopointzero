@@ -6,12 +6,7 @@ return Def.ActorFrame{
 	Def.Sprite {
 		Name="Jacket",
 		SetMessageCommand=function(self,params)
-			if jk.GetGroupGraphicPath(params.Text,"Jacket",GAMESTATE:GetSortOrder()) ~= nil then
-				self:LoadFromCached("Jacket",jk.GetGroupGraphicPath(params.Text,"Jacket",GAMESTATE:GetSortOrder()))
-			else
-				self:Load(jk.GetGroupGraphicPath(params.Text,"Jacket",GAMESTATE:GetSortOrder()))
-			end
-			self:scaletofit(-115,-115,115,115)
+			self:Load(jk.GetGroupGraphicPath(params.Text,"Jacket",GAMESTATE:GetSortOrder())):scaletofit(-115,-115,115,115)
 		end;
 	};
 	Def.Sprite{

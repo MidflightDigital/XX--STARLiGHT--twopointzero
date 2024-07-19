@@ -11,6 +11,10 @@ local invalidprefsWheel = {
 local invalidprefsmenu = {
 	"New",
 	"Old",
+	"SN1",
+	"SN2",
+	"X1",
+	"X2"
 };
 
 local mus_path = THEME:GetCurrentThemeDirectory().."/Sounds/ScreenSelectMusic music (loop).redir"
@@ -30,35 +34,6 @@ local function UpdateSSM()
       end
       f:destroy()
 	  CurrentMenuMusic = ThemePrefs.Get("MenuMusic")
-      THEME:ReloadMetrics()
-    end
-  end
-end
-
-local mw_path = THEME:GetCurrentThemeDirectory().."/Sounds/MusicWheel change.redir"
-local function UpdateMWC()
-  if ThemePrefs.Get("WheelType") ~= CurrentWT then
-    if not CurrentWT and FILEMAN:DoesFileExist(mw_path) then
-      CurrentWT = ThemePrefs.Get("WheelType")
-    else
-      local f = RageFileUtil.CreateRageFile()
-      local worked = f:Open(mw_path, 10)
-      if worked then
-        if ThemePrefs.Get("WheelType") == "A" then
-          f:Write("_silent")
-        elseif ThemePrefs.Get("WheelType") == "Jukebox" then
-          f:Write("MWChange/Jukebox_MWC.ogg")
-        elseif ThemePrefs.Get("WheelType") == "Banner" then
-          f:Write("MWChange/Banner_MWC.ogg")
-        else
-          f:Write("MWChange/Default_MWC.ogg")
-        end
-        f:Close()
-      elseif SN3Debug then
-        SCREENMAN:SystemMessage("Couldn't open MusicWheel change redir")
-      end
-      f:destroy()
-	  CurrentWT = ThemePrefs.Get("WheelType")
       THEME:ReloadMetrics()
     end
   end

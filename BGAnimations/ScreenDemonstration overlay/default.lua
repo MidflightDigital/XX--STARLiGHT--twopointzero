@@ -27,7 +27,7 @@ return Def.ActorFrame{
 	};
 	
 	Def.ActorFrame{
-		InitCommand=function(s) s:xy(_screen.cx,IsUsingWideScreen() and _screen.cy-210 or _screen.cy-60) end,
+		InitCommand=function(s) s:xy(_screen.cx,IsUsingWideScreen() and _screen.cy or _screen.cy-60) end,
 		Def.ActorFrame {
 			InitCommand=function(s) s:y(260) end,
 			Def.Sprite{

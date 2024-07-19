@@ -15,7 +15,7 @@ return Def.ActorFrame{
     OnCommand=function(s) s:queuecommand("Capture") end,
 	CaptureCommand=function(s) 
 		SCREENMAN:GetTopScreen():AddInputCallback(input)
-		SOUND:PlayOnce(THEME:GetPathS("ScreenSelectPlayMode","in"))
+		SOUND:PlayOnce(THEME:GetPathS("","_swoosh in"))
     end,
     Def.Sprite{
         Texture="pane",

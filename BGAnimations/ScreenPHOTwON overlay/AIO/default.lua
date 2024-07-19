@@ -151,7 +151,7 @@ local t = Def.ActorFrame{
               MESSAGEMAN:Broadcast("MenuStateChanged",{NewState = "MenuState_Main"});
             elseif param.Input == "Back" then
               MESSAGEMAN:Broadcast("MenuStateChanged",{NewState = "MenuState_Main"});
-              SOUND:PlayOnce(THEME:GetPathS("","_PHOTwON back.ogg"))
+              SOUND:PlayOnce(THEME:GetPathS("","Codebox/o-close.ogg"))
             elseif param.Input == "Up" or param.Input == "Left" then
               if curIndex == 1 then
                           curIndex = 1

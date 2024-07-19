@@ -1,30 +1,20 @@
-local main = "main.png"
+local main = "project_main.png"
 
 if MonthOfYear() == 3 and DayOfMonth() == 1 then
-  main = "mainowo.png"
+  main = "project_mainowo.png"
 end
 
 return Def.ActorFrame{
   Def.Sprite{
       Texture="XX.png",
       InitCommand=function(s)
-        if Branding() == "ddr_" then
-          s:x(362)
-        else
-          s:x(280)
-        end
-        s:y(16)
+        s:xy(280,16)
       end,
   },
   Def.Sprite{
       Texture="starlight.png",
       InitCommand=function(s)
-        if Branding() == "ddr_" then
-          s:y(84)
-        else
-          s:y(60)
-        end
-        s:x(22)
+        s:xy(22,60)
       end,
   };
   --[[Def.Sprite{
@@ -39,7 +29,7 @@ return Def.ActorFrame{
       end,
   };]]
   Def.Sprite{
-    Texture=Branding()..main,
+    Texture=main,
     InitCommand=function(s)
       s:xy(-64,-32)
     end,

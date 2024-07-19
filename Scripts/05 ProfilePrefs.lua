@@ -25,6 +25,7 @@ local defaultPrefs =
 	exstars = 0,
 	evalpane1 = 2,
 	evalpane2 = 0,
+	targetscore = "Off",
 	guidelines_top_aligned = false,
 	scorelabel = "profile",
 	Judgment = "DEFAULT",

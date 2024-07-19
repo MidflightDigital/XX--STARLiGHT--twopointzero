@@ -138,9 +138,9 @@ function LoadPlayerStuff(Player)
 		InitCommand=function(s) s:y(120):hibernate(0.2) end,
 		OnCommand=function(s) s:zoom(0):rotationz(-360):decelerate(0.4):zoom(1):rotationz(0) end,
         OffCommand=function(s) s:decelerate(0.3):rotationz(-360):zoom(0) end,
-		Def.Sprite{Texture=THEME:GetPathB("","ScreenSelectMusic overlay/RadarHandler/GrooveRadar base"),};
+		Def.Sprite{Texture=THEME:GetPathG("","_shared/Radar/"..ver.."GrooveRadar base"),};
 		Def.Sprite{
-			Texture=THEME:GetPathB("","ScreenSelectMusic overlay/RadarHandler/sweep"),
+			Texture=THEME:GetPathG("","_shared/Radar/"..ver.."sweep"),
 			InitCommand = function(s) s:zoom(1.275):spin():effectmagnitude(0,0,100) end,
         	OnCommand = function(s) s:hibernate(0.4) end,
         	OffCommand=function(s) s:finishtweening():sleep(0.3):decelerate(0.3):rotationz(-360):zoom(0) end,
@@ -264,7 +264,7 @@ function LoadPlayerStuff(Player)
 					s:sleep(i/20):linear(0.1):diffusealpha(0):addx(-10)
 				end;
 				Def.Sprite{
-					Texture=THEME:GetPathB("ScreenSelectMusic","overlay/RadarHandler/RLabels"),
+					Texture=THEME:GetPathG("","_shared/Radar/"..ver.."Rlabels"),
 					OnCommand=function(s) s:animate(0):setstate(i-1) end,
 				};
 			};

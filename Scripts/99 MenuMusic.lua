@@ -57,14 +57,14 @@ do
 			["Off"] = "_silent.ogg";
 		};
 		title = {
-			["Default"] = "Title_In.ogg";
-			["saiiko"] = "Title_In.ogg";
-			["vortivask"] = "Title_In.ogg";
-			["inori"] = "Title_In.ogg";
-			["RGTM"] = "Title_In.ogg";
-			["fancy cake"] = "Title_In.ogg";
+			["Default"] = "_swoosh in.ogg";
+			["saiiko"] = "_swoosh in.ogg";
+			["vortivask"] = "_swoosh in.ogg";
+			["inori"] = "_swoosh in.ogg";
+			["RGTM"] = "_swoosh in.ogg";
+			["fancy cake"] = "_swoosh in.ogg";
 			["leeium"] = "MenuMusic/Title/leeium.ogg";
-			["SN3"] = "Title_In.ogg";
+			["SN3"] = "_swoosh in.ogg";
 			["Off"] = "_silent.ogg";
 		};
 		options = {

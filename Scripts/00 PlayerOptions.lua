@@ -1333,3 +1333,41 @@ function ComboSel()
 	return t
 end
 
+function OptionRowTargetScore()
+	local t = {
+		Name="ShowTarget",
+		LayoutType = "ShowAllInRow",
+		SelectType="SelectOne",
+		OneChoiceForAllPlayers=false,
+		ExportOnChange=true,
+		Default = false,
+		Choices = {"Off","Best Score","Machine Record"},
+		Values = {"Off","Best Score","Machine Record"},
+		LoadSelections = function(self,list,pn)
+			local profileID = GetProfileIDForPlayer(pn)
+			local pPrefs = ProfilePrefs.Read(profileID)
+			if pPrefs.targetscore == "Off" then
+				list[1] = true
+			elseif pPrefs.targetscore == "Best Score" then
+				list[2] = true
+			elseif pPrefs.targetscore == "Machine Record" then
+				list[3] = true
+			else
+				list[1] = true
+			end
+		end,
+		SaveSelections = function(self,list,pn)
+			for i, value in ipairs(self.Values) do
+				if list[i] then
+					local profileID = GetProfileIDForPlayer(pn)
+					local pPrefs = ProfilePrefs.Read(profileID)
+					pPrefs.targetscore = value
+					ProfilePrefs.Save(profileID)
+				end
+			end
+		end,	
+	};
+	setmetatable(t ,t)
+	return t
+end
+

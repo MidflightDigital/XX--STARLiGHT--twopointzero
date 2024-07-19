@@ -660,3 +660,29 @@ function IsAnExtraStage()
 	
 	return false
 end
+
+
+function UpdateMWC()
+	local mw_path = THEME:GetCurrentThemeDirectory().."/Sounds/MusicWheel change.redir"
+  if ThemePrefs.Get("WheelType") ~= CurrentWT then
+    if not CurrentWT and FILEMAN:DoesFileExist(mw_path) then
+      CurrentWT = ThemePrefs.Get("WheelType")
+    else
+      local f = RageFileUtil.CreateRageFile()
+      local worked = f:Open(mw_path, 10)
+      if worked then
+        if ThemePrefs.Get("WheelType") == "A" then
+          f:Write("_silent")
+        else
+          f:Write("MusicWheel/dance/Default/change.ogg")
+        end
+        f:Close()
+      elseif SN3Debug then
+        SCREENMAN:SystemMessage("Couldn't open MusicWheel change redir")
+      end
+      f:destroy()
+	  CurrentWT = ThemePrefs.Get("WheelType")
+      THEME:ReloadMetrics()
+    end
+  end
+end

@@ -8,7 +8,8 @@ local entryToPrefixMap = {
 	['stars'] = "EXStars",
 	["towelpos"] = "TowelPos",
 	["Judgment"] = "Judgment",
-	["Combo"] = "Combo"
+	["Combo"] = "Combo",
+	["targetscore"] = "TargetScore"
 }
 
 function LoadFromProfilePrefs()

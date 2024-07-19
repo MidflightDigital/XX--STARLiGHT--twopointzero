@@ -11,12 +11,8 @@ local t = Def.ActorFrame{
 			InitCommand=function(s) s:Center() end,
 		};
 		Def.Sprite{
+			Texture=THEME:GetPathB("","_Logo/project_xxlogo.png"),
 			InitCommand=function(s)
-			  if Branding() == "project_" then
-				s:Load(THEME:GetPathB("","_Logo/project_xxlogo.png"))
-			  else
-				s:Load(THEME:GetPathB("","_Logo/xxlogo.png"))
-			  end
 			  s:xy(_screen.cx+80,_screen.cy+16):blend(Blend.Add):diffusealpha(0):queuecommand("Anim")
 			end,
 			AnimCommand=function(s) s:diffusealpha(0):sleep(1):linear(0.75):diffusealpha(0.3):sleep(0.1):linear(0.4):diffusealpha(0):queuecommand("Anim") end,
@@ -72,7 +68,7 @@ t[#t+1] = Def.ActorFrame {
 				self:queuecommand("TitleSelectionPart2")
 			end;
 			TitleSelectionPart2Command=function(self, params)
-				self:Load(THEME:GetPathG("","_TitleImages/"..choice))
+				self:Load(THEME:GetPathB("ScreenSelectMode","decorations/Images/"..choice))
 				self:sleep(0.1)
 				self:accelerate(0.2);
 				self:croptop(0):cropbottom(0)
@@ -126,11 +122,7 @@ t[#t+1] = Def.ActorFrame {
 					end
 				end
 				if params.Choice == "Exit" then
-					if Branding() == "ddr_" then
-						self:settext(THEME:GetString("ScreenTitleMenu","DescriptionExitDDR"))
-					else
-						self:settext(THEME:GetString("ScreenTitleMenu","DescriptionExitProject"))
-					end
+					self:settext(THEME:GetString("ScreenTitleMenu","DescriptionExitProject"))
 				else
 					self:settext(text)
 				end

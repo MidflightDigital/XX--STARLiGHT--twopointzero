@@ -210,7 +210,7 @@ local t = Def.ActorFrame{
 };
 
 t[#t+1] = Def.Sound{
-	File=THEME:GetPathS("", "MWChange/Default_MWC"),
+	File=THEME:GetPathS("", "MusicWheel/dance/Default/change.ogg"),
 	Name="change_sound",
 	SupportPan = false
 }

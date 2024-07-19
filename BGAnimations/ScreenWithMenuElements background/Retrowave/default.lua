@@ -39,7 +39,8 @@ return Def.ActorFrame{
     Def.ActorFrame{
         InitCommand=function(s) s:queuecommand("Anim") end,
         AnimCommand=function(s) s:sleep(8):diffusealpha(0.7):xy(2,-2):sleep(0.05):diffusealpha(0.9):xy(0,0):sleep(0.05):diffusealpha(0.4):xy(-2,2):sleep(0.05):diffusealpha(1):xy(0,0):sleep(5)
-            :sleep(0.05):diffusealpha(0.7):xy(2,2):sleep(0.05):diffusealpha(0.3):xy(-2,-2):sleep(0.05):diffusealpha(1):xy(0,0):queuecommand("Anim") end,
+            :sleep(0.05):diffusealpha(0.7):xy(2,2):sleep(0.05):diffusealpha(0.3):xy(-2,-2):sleep(0.05):diffusealpha(1):xy(0,0):queuecommand("Anim")
+        end,
         Def.Sprite{
             Texture=THEME:GetPathB("ScreenWithMenuElements","background/SN2/line"),
             InitCommand=function(s)

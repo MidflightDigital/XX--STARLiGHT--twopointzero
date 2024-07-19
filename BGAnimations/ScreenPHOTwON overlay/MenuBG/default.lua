@@ -7,11 +7,6 @@ local frames = {
   {"Default","DEFAULT"},
   {"OG","STARLiGHT 1.0"},
   {"OLD","STARLiGHT 2011"},
-  {"SN1","SuperNOVA"},
-  {"SN2", "SuperNOVA2"},
-  {"X1", "X"},
-  {"X2", "X2"},
-  {"SN3","SuperNOVA 3"},
   {"NG2","Next Generation 2"},
   {"Retrowave","Retrowave"},
 };
@@ -103,7 +98,7 @@ local t = Def.ActorFrame{
           MESSAGEMAN:Broadcast("MenuStateChanged",{NewState = "MenuState_Main"});
         elseif param.Input == "Back" then
           MESSAGEMAN:Broadcast("MenuStateChanged",{NewState = "MenuState_Main"});
-          SOUND:PlayOnce(THEME:GetPathS("","_PHOTwON back.ogg"))
+          SOUND:PlayOnce(THEME:GetPathS("","Codebox/o-close.ogg"))
         elseif param.Input == "Up" then
           if curIndex - 3 <= 0 then
             curIndex = 1
@@ -176,7 +171,7 @@ local t = Def.ActorFrame{
 		children = RowList;
     ChangeRowMessageCommand=function(s,p)
 			local curScrollerItem = s:GetCurrentItem()
-			if curIndex <= 8 and curScrollerItem - 8 <= 0 then
+			if curIndex <= #frames and curScrollerItem - #frames <= 0 then
 				s:SetCurrentAndDestinationItem(0)
 			else
 				s:SetCurrentAndDestinationItem(curIndex-6)

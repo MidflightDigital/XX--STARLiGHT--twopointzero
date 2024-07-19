@@ -1,16 +1,6 @@
 local t = Def.ActorFrame{};
 
 t[#t+1] = Def.ActorFrame{
-    Def.Sprite{
-        Texture="bg",
-        InitCommand=function(s) s:FullScreen():pause():sleep(2.48)
-            GAMESTATE:AddStageToPlayer("PlayerNumber_P1")
-            GAMESTATE:AddStageToPlayer("PlayerNumber_P2")
-            s:queuecommand("Play")
-        end,
-        PlayCommand=function(s) s:play()
-        end,
-    };
     Def.Actor{
         OnCommand=function(self) SCREENMAN:GetTopScreen():AddInputCallback(DDRInput(self)) end,
         StartReleaseCommand=function(s)

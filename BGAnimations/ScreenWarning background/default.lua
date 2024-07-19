@@ -3,7 +3,7 @@ return Def.ActorFrame{
 		MemCardInsert()
 	end;
 	Def.Sprite{
-	Texture="image",
+	Texture="DDR_Interface-WARNING2024",
 		InitCommand = function(s) s:Center() end,
 	};
 	Def.Quad{

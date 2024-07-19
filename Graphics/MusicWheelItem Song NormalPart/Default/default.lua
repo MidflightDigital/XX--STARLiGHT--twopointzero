@@ -17,14 +17,6 @@ return Def.ActorFrame{
 	OnCommand = function(self)
 		top = SCREENMAN:GetTopScreen()
 	end;
-	SetMessageCommand=function(s,p)
-		local index = p.Index
-		if index then
-			s:name(tostring(p.Index)):visible(true)
-		else
-			s:visible(false)
-		end
-	end,
 	clear;
 	quadButton(1)..{
 		InitCommand=function(s) s:setsize(234,234):visible(false) end,

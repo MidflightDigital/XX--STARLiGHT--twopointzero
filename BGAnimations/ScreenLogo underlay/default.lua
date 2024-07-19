@@ -74,11 +74,7 @@ return Def.ActorFrame{
     OnCommand=function(s) s:sleep(1.5):linear(0.01):diffusealpha(0.75):linear(0.01):diffusealpha(0.2):linear(0.01)
       :diffusealpha(0.8):linear(0.01):diffusealpha(0.2)
       :linear(0.1):diffusealpha(1):sleep(0.4):decelerate(0.5):zoom(1.15)
-      if Branding() == "project_" then
-        s:xy(SCREEN_RIGHT-420,_screen.cy+70)
-      else
-        s:xy(SCREEN_RIGHT-350,_screen.cy+70)
-      end
+      :xy(SCREEN_RIGHT-420,_screen.cy+70)
     end,
     StartPressedLogoMessageCommand=function(s) s:linear(0.1):diffusealpha(0) end,
     Def.Sprite{ Texture=THEME:GetPathB("","_Logo/XX.png") },
@@ -91,31 +87,21 @@ return Def.ActorFrame{
     },
   },
   Def.Sprite{
-    Texture=THEME:GetPathB("","_Logo/"..Branding().."main.png"),
+    Texture=THEME:GetPathB("","_Logo/project_main.png"),
     InitCommand=function(s) s:xy(_screen.cx+130,_screen.cy-70):diffusealpha(0):zoom(1.23) end,
-    OnCommand=function(s) s:sleep(2.2):linear(0.2):diffusealpha(1):zoom(1.15):y(_screen.cy+15)
-      if Branding() == "project_" then
-        s:x(_screen.cx+146)
-      else
-        s:x(_screen.cx+118) 
-      end
+    OnCommand=function(s) s:sleep(2.2):linear(0.2):diffusealpha(1):zoom(1.15):xy(_screen.cx+146,_screen.cy+15)
     end,
     StartPressedLogoMessageCommand=function(s) s:linear(0.1):diffusealpha(0) end,
   },
   Def.Sprite{
     Texture=THEME:GetPathB("","_Logo/starlight.png"),
     InitCommand=function(s) s:xy(_screen.cx+180,_screen.cy+120):diffusealpha(0):zoom(1.23) end,
-    OnCommand=function(s) s:sleep(2.3):linear(0.2):diffusealpha(1):zoom(1.15)
-      if Branding() == "project_" then
-        s:xy(_screen.cx+244,_screen.cy+120) 
-      else
-        s:xy(_screen.cx+218,_screen.cy+150) 
-      end
+    OnCommand=function(s) s:sleep(2.3):linear(0.2):diffusealpha(1):zoom(1.15):xy(_screen.cx+244,_screen.cy+120) 
     end,
     StartPressedLogoMessageCommand=function(s) s:linear(0.1):diffusealpha(0) end,
   },
   Def.Sprite{
-    Texture=THEME:GetPathB("","_Logo/"..Branding().."xxlogo.png"),
+    Texture=THEME:GetPathB("","_Logo/project_xxlogo.png"),
     InitCommand=function(s) s:zoom(1.15):xy(SCREEN_RIGHT-650,_screen.cy+70):diffusealpha(0):blend(Blend.Add) end,
     OnCommand=function(s) s:sleep(2.6):diffusealpha(1):linear(1):diffusealpha(0):zoom(1.5):sleep(0):zoom(1.15):queuecommand("Anim") end,
     AnimCommand=function(s) s:diffusealpha(0):sleep(1):linear(0.75):diffusealpha(0.3):sleep(0.1):linear(0.4):diffusealpha(0):queuecommand("Anim") end,

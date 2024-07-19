@@ -1,5 +1,5 @@
 -- Relative amount of meteors to create
-local starriness = 0.3
+local starriness = 0.4
 
 -- Scale based on how much sky is visible
 local nMeteors = ((_screen.h > 1080) and (_screen.h+260)/49 or _screen.w/64) * starriness
@@ -11,9 +11,9 @@ local function meteor()
 		OnCommand = function(s) s:sleep(math.random()*2):queuecommand("Animate") end,
 		AnimateCommand = function(s)
 			-- Random size between half- and full-size, weighted toward full
-			s:zoom(0.6 + 0.5 * math.sqrt(math.random()))
+			s:zoom(1.2 + 0.7 * math.sqrt(math.random()))
 			-- Appear somewhere random
-			:xy(math.random(_screen.w)+40,math.random(_screen.h))
+			:xy(math.random(_screen.w)+180,math.random(_screen.h))
 			-- Move in the direction of the arrow, slowing down when
 			-- it starts to burn out.  (Note: this is slightly
 			-- below the 42° angle of the arrow, because I like the
@@ -21,7 +21,7 @@ local function meteor()
 			:linear(0.4):addx(-100):addy(100)
 			:linear(0.2):addx(-60):addy(60)
 			-- Wait a random amount of time
-			:sleep(math.random()*5)
+			:sleep(math.random()*8)
 			-- and start again
 			:queuecommand("Animate")
 		end,
@@ -52,7 +52,7 @@ local function meteor()
 			-- Don't start to glow until the meteor's fully visible
 			:sleep(0.15)
 			-- Flare up!
-			:linear(0.2):diffusealpha(1)
+			:linear(0.2):diffusealpha(0.7)
 			-- Burn out
 			:linear(0.15):diffusealpha(0)
 		end,
@@ -66,6 +66,15 @@ local t = Def.ActorFrame{
 		Texture="background",
 		OnCommand=function(s) s:Center():setsize(IsUsingWideScreen() and SCREEN_WIDTH or 1920,SCREEN_HEIGHT) end,
 	};
+	Def.Quad{
+        InitCommand=function(s) s:setsize(SCREEN_WIDTH,SCREEN_HEIGHT):Center()
+            :diffuse(color("#81ffff88")):blend(Blend.Multiply)
+        end,
+    },
+	Def.Sprite{
+		Texture="darken",
+		InitCommand=function(s) s:setsize(SCREEN_WIDTH,SCREEN_HEIGHT):Center():diffusealpha(0.6) end,
+	}
 };
 
 -- Add meteors

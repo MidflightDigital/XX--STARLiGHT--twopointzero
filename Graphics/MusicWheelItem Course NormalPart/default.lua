@@ -10,6 +10,13 @@ for i=1,2 do
 end
 
 return Def.ActorFrame{
+	InitCommand=function(s,p)
+		if p.Type == "Course" then
+			s:visible(true)
+		else
+			s:visible(false)
+		end
+	end, 
 	Def.Sprite{
 		Texture="coursebox",
 	};
