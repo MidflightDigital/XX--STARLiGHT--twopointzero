@@ -449,7 +449,7 @@ local t = Def.ActorFrame{
     CodeMessageCommand=function(s,p)
         
         if p.PlayerNumber == pn then
-            if p.Name == "OpenPanes1" then
+            if p.Name == "OpenPanes1" or p.Name == "OpenPanesEFUp" then
                 if keyset[pn] == false then
                     keyset[pn] = true
                 else
