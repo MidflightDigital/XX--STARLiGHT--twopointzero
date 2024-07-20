@@ -88,6 +88,11 @@ local t = Def.ActorFrame {
 			JudgeCmds[param.TapNoteScore](c.Judgment);
 			if showBias == true then
 				---XXX: don't hardcode this
+				if GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Preferred"):Reverse() == 1 then
+					c.Bias:y(-20)
+				else
+					c.Bias:y(20)
+				end
 				if param.TapNoteScore ~= 'TapNoteScore_W1' and
 					param.TapNoteScore ~= 'TapNoteScore_Miss' then
 					c.Bias:visible(true);
