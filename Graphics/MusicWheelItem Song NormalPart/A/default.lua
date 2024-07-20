@@ -52,46 +52,24 @@ return Def.ActorFrame{
 	end;
 	SetMessageCommand=function(self,params)
 		local index = params.Index
+		local song = params.Song
+
+		local TB = self:GetChild("Textbox")
 		
 		if index ~= nil then
 			SetXYPosition(self, params)
 			self:zoom(params.HasFocus and 1.2 or 1);
 			self:name(tostring(params.Index))
 		end
+
+		if song and params.Type == "Song" then
+			self:GetChild("Jacket"):LoadFromCached("Jacket",jk.GetSongGraphicPath(song))
+			:scaletofit(-69,-69,69,69):xy(2,-1)
+
+			TB:GetChild("Title"):settext(song:GetDisplayMainTitle()):diffuse(SongAttributes.GetMenuColor(song)):strokecolor(ColorDarkTone(SongAttributes.GetMenuColor(song)))
+			:basezoom(0.7):maxwidth(200)
+		end
 	end;
-	quadButton(1)..{
-		InitCommand=function(s)
-			s:zoomto(304,172):visible(false)
-		end,
-		TopPressedCommand=function(self)
-			local newIndex = tonumber(self:GetParent():GetName())
-			local wheel = SCREENMAN:GetTopScreen():GetChild("MusicWheel")
-			local size = wheel:GetNumItems()
-			local move = newIndex-wheel:GetCurrentIndex()
-
-		if math.abs(move)>math.floor(size/2) then
-			if newIndex > wheel:GetCurrentIndex() then
-				move = (move)%size-size
-			else
-				move = (move)%size
-			end
-		end
-
-		wheel:Move(move)
-		wheel:Move(0)
-
-		-- TODO: play sounds.
-		if move == 0 and wheel:GetSelectedType() == 'WheelItemDataType_Section' then
-			if wheel:GetSelectedSection() == curFolder then
-				wheel:SetOpenSection("")
-				curFolder = ""
-			else
-				wheel:SetOpenSection(wheel:GetSelectedSection())
-				curFolder = wheel:GetSelectedSection()
-			end
-		end
-	end,
-	};
 	Def.Sprite{
 		Texture="backer",
 	},
@@ -100,13 +78,7 @@ return Def.ActorFrame{
 		InitCommand=function(s) s:diffusealpha(0.5) end,
 	},
 	Def.Sprite{
-		SetMessageCommand=function(s,p)
-			local song = p.Song
-			if song then
-				s:LoadFromCached("Jacket",jk.GetSongGraphicPath(song))
-			end
-			s:scaletofit(-69,-69,69,69):xy(2,-1)
-		end
+		Name="Jacket",
 	};
 	Def.ActorFrame{
 		Name="Textbox",
@@ -121,14 +93,8 @@ return Def.ActorFrame{
 			},
 		};
 		Def.BitmapText{
+			Name="Title",
 			Font="_avenirnext lt pro bold/20px",
-			SetMessageCommand=function(s,p)
-				local song = p.Song
-				if song then
-					s:settext(song:GetDisplayMainTitle()):diffuse(SongAttributes.GetMenuColor(song)):strokecolor(ColorDarkTone(SongAttributes.GetMenuColor(song)))
-				end
-				s:basezoom(0.7):maxwidth(200)
-			end,
 		}
 	};
 	clearglow;

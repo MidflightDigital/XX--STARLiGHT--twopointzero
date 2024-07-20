@@ -49,16 +49,15 @@ return Def.ActorFrame{
                         topscore = scores[index]:GetScore()
                         topgrade = scores[index]:GetGrade()
                     end
-                    local RStats = scores[index]
                 end
 
                 if topscore ~= 0 then
-                    local misses = RStats:GetTapNoteScore("TapNoteScore_Miss")+RStats:GetTapNoteScore("TapNoteScore_CheckpointMiss")
-                    local boos = RStats:GetTapNoteScore("TapNoteScore_W5")
-                    local goods = RStats:GetTapNoteScore("TapNoteScore_W4")
-                    local greats = RStats:GetTapNoteScore("TapNoteScore_W3")
-                    local perfects = RStats:GetTapNoteScore("TapNoteScore_W2")
-                    local marvelous = RStats:GetTapNoteScore("TapNoteScore_W1")
+                    local misses = scores[index]:GetTapNoteScore("TapNoteScore_Miss")+scores[index]:GetTapNoteScore("TapNoteScore_CheckpointMiss")
+                    local boos = scores[index]:GetTapNoteScore("TapNoteScore_W5")
+                    local goods = scores[index]:GetTapNoteScore("TapNoteScore_W4")
+                    local greats = scores[index]:GetTapNoteScore("TapNoteScore_W3")
+                    local perfects = scores[index]:GetTapNoteScore("TapNoteScore_W2")
+                    local marvelous = scores[index]:GetTapNoteScore("TapNoteScore_W1")
                     s:GetChild("Grade"):visible(true):Load(THEME:GetPathG("myMusicWheel/GradeDisplayEval",ToEnumShortString(topgrade)))
                     if (misses+boos) == 0 and scores[index]:GetScore() > 0 and (marvelous+perfects)>0 then
                         fc:visible(true)

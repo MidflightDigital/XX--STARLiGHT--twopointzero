@@ -8,7 +8,7 @@ local screen = Var"LoadingScreen"
 local function InputHandler(event)
   local player = event.PlayerNumber
   local MusicWheel = SCREENMAN:GetTopScreen("ScreenSelectMusic"):GetChild("MusicWheel");
-  local overlay = SCREENMAN:GetTopScreen():GetChild("Overlay")
+  local overlay = SCREENMAN:GetTopScreen()
   if event.type == "InputEventType_Release" then return false end
   if event.DeviceInput.button == "DeviceButton_left mouse button" then
     MESSAGEMAN:Broadcast("MouseLeftClick")
