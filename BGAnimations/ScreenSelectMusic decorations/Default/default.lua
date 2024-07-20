@@ -350,9 +350,9 @@ return Def.ActorFrame{
 		InitCommand=function(s)
 			s:xy(SCREEN_LEFT,_screen.cy+80):diffusealpha(0)
 		end,
-		CurrentSongChangedMessageCommand=function(s) s:stoptweening():queuecommand("Set") end,
+		CurrentSongChangedMessageCommand=function(s) s:finishtweening():queuecommand("Set") end,
 		SetCommand=function(s)
-			s:stoptweening()
+			s:finishtweening()
 			local mw = SCREENMAN:GetTopScreen():GetChild("MusicWheel")
 			local so = ToEnumShortString(GAMESTATE:GetSortOrder())
 			if not mw then return end

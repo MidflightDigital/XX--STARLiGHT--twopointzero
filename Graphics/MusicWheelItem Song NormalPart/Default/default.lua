@@ -18,47 +18,17 @@ return Def.ActorFrame{
 		top = SCREENMAN:GetTopScreen()
 	end;
 	clear;
-	quadButton(1)..{
-		InitCommand=function(s) s:setsize(234,234):visible(false) end,
-		TopPressedCommand=function(self)
-			local newIndex = tonumber(self:GetParent():GetName())
-			local wheel = SCREENMAN:GetTopScreen():GetChild("MusicWheel")
-			local size = wheel:GetNumItems()
-			local move = newIndex-wheel:GetCurrentIndex()
-
-			if math.abs(move)>math.floor(size/2) then
-				if newIndex > wheel:GetCurrentIndex() then
-					move = (move)%size-size
-				else
-					move = (move)%size
-				end
-			end
-
-			wheel:Move(move)
-			wheel:Move(0)
-			
-
-			-- TODO: play sounds.
-			if move == 0 and wheel:GetSelectedType() == 'WheelItemDataType_Section' then
-				if wheel:GetSelectedSection() == curFolder then
-					wheel:SetOpenSection("")
-					curFolder = ""
-				else
-					wheel:SetOpenSection(wheel:GetSelectedSection())
-					curFolder = wheel:GetSelectedSection()
-				end
-			end
-			SOUND:PlayOnce(THEME:GetPathS("",""..ThemePrefs.Get("WheelType").."_MusicWheel change"))
+	SetMessageCommand=function(s,p)
+		s:visible(false)
+		local song = p.Song
+		if song and p.Type == "Song" then
+			s:visible(true)
+			s:GetChild("Jacket"):LoadFromCached("Jacket",jk.GetSongGraphicPath(song))
+			--s:GetChild("Jacket"):Load(jk.GetSongGraphicPath(song))
+			:scaletofit(-115,-115,115,115)
 		end
-	};
+	end,
 	Def.ActorFrame{
-		InitCommand=function(s) s:visible(false) end,
-		SetMessageCommand=function(s,p)
-			local song = p.Song
-			if song and p.Type == "Song" then
-				s:visible(true)
-			end
-		end,
 		Def.Quad {
 			InitCommand = function(s) s:zoomto(234,234):diffuse(Alpha(Color.White,0.5)) end,
 		};
@@ -67,21 +37,7 @@ return Def.ActorFrame{
 		};
 	};
 	Def.Sprite {
-		InitCommand=function(s) s:visible(false) end,
-		-- Load the banner
-		-- XXX Same code can be reused for courses, etc.  Folders too?
-		SetMessageCommand = function(self, params)
-			local song = params.Song
-			if song and params.Type == "Song" then
-				self:visible(true)
-				if params.HasFocus then
-					centerSongObjectProxy = self;
-				end
-				--self:LoadFromCached("Jacket",jk.GetSongGraphicPath(song))
-				self:Load(jk.GetSongGraphicPath(song))
-			end
-			self:scaletofit(-115,-115,115,115)
-		end,
+		Name="Jacket",
 	};
 	diff;
 	Def.Sprite{
