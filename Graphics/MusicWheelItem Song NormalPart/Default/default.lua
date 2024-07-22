@@ -23,8 +23,8 @@ return Def.ActorFrame{
 		local song = p.Song
 		if song and p.Type == "Song" then
 			s:visible(true)
-			s:GetChild("Jacket"):LoadFromCached("Jacket",jk.GetSongGraphicPath(song))
-			--s:GetChild("Jacket"):Load(jk.GetSongGraphicPath(song))
+			--s:GetChild("Jacket"):LoadFromCached("Jacket",jk.GetSongGraphicPath(song))
+			s:GetChild("Jacket"):Load(jk.GetSongGraphicPath(song))
 			:scaletofit(-115,-115,115,115)
 		end
 	end,

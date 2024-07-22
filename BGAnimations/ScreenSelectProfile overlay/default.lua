@@ -104,11 +104,12 @@ function LoadCard(cColor,cColor2,Player,IsJoinFrame)
 				Texture=THEME:GetPathG("","ScreenSelectProfile/"..ver.."BGBOTTOM"),
 				InitCommand=function(s) s:valign(0) end,
 			};
-			Def.Sprite{
-				Texture=THEME:GetPathG("","ScreenSelectProfile/start game"),
-				InitCommand=function(s) s:valign(0):diffusealpha(0) end,
+			Def.BitmapText{
+				Font="_avenirnext lt pro bold/25px",
+				Text=THEME:GetString("ScreenSelectProfile","StartGame"),
+				InitCommand=function(s) s:diffuse(color("#fbfc00")):diffusebottomedge(color("#dcad00")):y(55):diffusealpha(0) end,
 				OnCommand=function(s) s:sleep(0.8):diffusealpha(1) end,
-			};
+			},
 		};
 	};
 	return t;
@@ -121,12 +122,24 @@ function LoadPlayerStuff(Player)
 	t[#t+1] = Def.ActorFrame{
 		Name = 'JoinFrame';
 		LoadCard(Color('Outline'),Color.Black,Player,true);
-		Def.Sprite{
-			Texture=THEME:GetPathG("","ScreenSelectProfile/ScreenSelectProfile Start"),
+		Def.ActorFrame{
 			InitCommand=function(s) s:zoomy(0):diffuseshift():effectcolor1(Color.White):effectcolor2(color("#A5A6A5")) end,
 			OnCommand=function(s) s:zoomy(0):zoomx(0):sleep(0.5):linear(0.1):zoomx(1):zoomy(1) end,
 			OffCommand=function(s) s:linear(0.1):zoomy(0):diffusealpha(0) end,
+			Def.Quad{
+				InitCommand=function(s) s:setsize(482,69):diffuse(Color.White) end,
+			},
+			Def.Quad{
+				InitCommand=function(s) s:setsize(478,65):diffuse(Color.Black) end,
+			},
+			Def.BitmapText{
+				Font="_avenirnext lt pro bold/25px",
+				Text=THEME:GetString("ScreenSelectProfile","Join"),
+				InitCommand=function(s) s:diffuse(color("#fbfc00")):diffusebottomedge(color("#dcad00")) end,
+				
+			},
 		}
+		
 	};
 
 	t[#t+1] = Def.ActorFrame{
@@ -612,12 +625,36 @@ local t = Def.ActorFrame{
 	end;
 
 	children = {
-		Def.Sprite{
-			Texture=THEME:GetPathG("","ScreenSelectProfile/Cab outline");
+		Def.ActorFrame{
 			InitCommand=function(s) s:Center():diffusealpha(0) end,
+			PlayerJoinedMessageCommand=cmd(playcommand,"On");
 			OnCommand=function(s) s:sleep(0.2):diffusealpha(0.5):sleep(0.1):diffusealpha(0):sleep(0.12):diffusealpha(0.2):linear(0.2):diffusealpha(1) end,
 			OffCommand=function(s) s:diffusealpha(0):sleep(0.1):diffusealpha(0.5):sleep(0.1):diffusealpha(0):sleep(0.12):diffusealpha(1):linear(0.2):diffusealpha(0) end,
-		};
+			Def.Sprite{ Texture=THEME:GetPathG("","ScreenSelectProfile/Machine/nocolor"); },
+			Def.ActorFrame{
+				Def.Sprite{
+					Texture=THEME:GetPathG("","ScreenSelectProfile/Machine/shadow");
+					OnCommand=function(self)
+						if GAMESTATE:IsPlayerEnabled(PLAYER_1) then
+							self:diffuseleftedge(ColorDarkTone(PlayerColor(PLAYER_1)))
+						elseif GAMESTATE:IsPlayerEnabled(PLAYER_2) then
+							self:diffuserightedge(ColorDarkTone(PlayerColor(PLAYER_2)))
+						end
+					end;
+				};
+				Def.Sprite{
+					Texture=THEME:GetPathG("","ScreenSelectProfile/Machine/glow");
+					OnCommand=function(self)
+						if GAMESTATE:IsPlayerEnabled(PLAYER_1) then
+							self:diffuseleftedge(PlayerColor(PLAYER_1))
+						elseif GAMESTATE:IsPlayerEnabled(PLAYER_2) then
+							self:diffuserightedge(PlayerColor(PLAYER_2))
+						end
+					end;
+				};
+			},
+			
+		},
 		Def.ActorFrame{
 			Name="P1Frame";
 			InitCommand=function(s) s:xy(IsUsingWideScreen() and _screen.cx-480 or _screen.cx-400,_screen.cy-2) end,

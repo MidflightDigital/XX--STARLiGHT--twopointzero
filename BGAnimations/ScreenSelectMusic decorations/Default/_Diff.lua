@@ -16,20 +16,20 @@ local function DrawDiffListItem(diff)
             local meter = song:GetOneSteps(st,diff):GetMeter()
 
             if song:GetOneSteps(st,diff) == GAMESTATE:GetCurrentSteps(pn) then
-							self:decelerate(0.2):x(pn==PLAYER_1 and SCREEN_LEFT+20 or SCREEN_RIGHT-20)
+							self:decelerate(0.2):x(pn==PLAYER_1 and 20 or -20)
 						else
-							self:decelerate(0.2):x(pn==PLAYER_1 and SCREEN_LEFT+6 or SCREEN_RIGHT-6)
+							self:decelerate(0.2):x(pn==PLAYER_1 and 6 or -6)
 						end
 
             self:GetChild("Background"):diffuse(CustomDifficultyToColor(ToEnumShortString(diff))):visible(true)
             self:GetChild("Meter"):settext(IsMeterDec(meter)):visible(true)
           else
-            self:decelerate(0.2):x(pn==PLAYER_1 and SCREEN_LEFT+6 or SCREEN_RIGHT-6)
+            self:decelerate(0.2):x(pn==PLAYER_1 and 6 or -6)
             self:GetChild("Background"):visible(false)
             self:GetChild("Meter"):settext(""):visible(false)
           end
       else
-        self:decelerate(0.2):x(pn==PLAYER_1 and SCREEN_LEFT+6 or SCREEN_RIGHT-6)
+        self:decelerate(0.2):x(pn==PLAYER_1 and 6 or -6)
         self:GetChild("Background"):visible(false)
         self:GetChild("Meter"):settext(""):visible(false)
       end;
