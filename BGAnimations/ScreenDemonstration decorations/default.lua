@@ -1,5 +1,11 @@
 local jk = LoadModule "Jacket.lua"
 
+local t = Def.ActorFrame{}
+
+for _,pn in pairs(GAMESTATE:GetEnabledPlayers()) do
+	t[#t+1] = loadfile(THEME:GetPathB("ScreenDemonstration","decorations/gauge"))(pn);
+end
+
 return Def.ActorFrame{
 	InitCommand=function(s)
 		setenv("JoinP1",0)
@@ -14,6 +20,7 @@ return Def.ActorFrame{
 			end
 		end
 	end;
+	
 	Def.ActorFrame{
 		InitCommand=function(s) s:xy(_screen.cx,SCREEN_TOP+36):zoom(IsUsingWideScreen() and 1 or 0.9) end,
 		Def.Sprite{
@@ -25,7 +32,7 @@ return Def.ActorFrame{
 			InitCommand=function(s) s:diffuseshift():effectcolor1(color("1,1,1,1")):effectcolor2(color("1,1,1,0.5")):effectperiod(2) end,
 		};
 	};
-	
+	t;
 	Def.ActorFrame{
 		InitCommand=function(s) s:xy(_screen.cx,IsUsingWideScreen() and _screen.cy or _screen.cy-60) end,
 		Def.ActorFrame {
@@ -113,4 +120,9 @@ return Def.ActorFrame{
 		end,
 	};
 	loadfile(THEME:GetPathG("","ScreenWithMenuElements footer"))();
+	Def.Quad{
+		InitCommand=function(s) s:FullScreen():diffuse(Color.Black) end,
+		OnCommand=function(s) s:sleep(0.2):linear(0.2):diffusealpha(0) end,
+		OffCommand=function(s) s:linear(0.2):diffusealpha(1) end,
+	}
 };

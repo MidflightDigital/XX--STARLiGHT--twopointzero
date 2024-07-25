@@ -6,6 +6,12 @@ local nMeteors = ((_screen.h > 1080) and (_screen.h+260)/49 or _screen.w/64) * s
 
 -- Definition of a meteor
 
+local rancolors = {
+	"#5BCEFA",
+	"#F5A9B8",
+	"#FFFFFF",
+}
+
 local function meteor()
 	local m = Def.ActorFrame {
 		OnCommand = function(s) s:sleep(math.random()*2):queuecommand("Animate") end,
@@ -32,7 +38,7 @@ local function meteor()
 		InitCommand=function(s) s:blend(Blend.Add) end,
 		AnimateCommand=function(s)
 			-- Start partially visible
-			s:diffusealpha(0)
+			s:diffuse(color(rancolors[math.random(#rancolors)])):diffusealpha(0)
 			-- Come into sight
 			:linear(0.15):diffusealpha(0.7)
 			-- Let the glow brighten (see below)
@@ -48,7 +54,8 @@ local function meteor()
 		AnimateCommand=function(s)
 			-- Glow is almost white, with a chance of being tinted slightly.
 			-- Invisible to start with.
-			s:diffuse(HSVA(360*math.random(), 0.4*math.random(), 1, 0))
+			s:diffuse(color(rancolors[math.random(#rancolors)])):diffusealpha(0)
+			--s:diffuse(HSVA(360*math.random(), 0.4*math.random(), 1, 0))
 			-- Don't start to glow until the meteor's fully visible
 			:sleep(0.15)
 			-- Flare up!

@@ -283,7 +283,7 @@ t[#t+1] = Def.ActorFrame{
       Name="SFrame Light",
       Texture="stageframe/light_normal",
       InitCommand=function(s)
-        s:xy(_screen.cx,SCREEN_TOP+16):visible(not GAMESTATE:IsDemonstration())
+        s:xy(_screen.cx,SCREEN_TOP+16)
         if IsAnExtraStage() then
             s:Load(THEME:GetPathB("ScreenGameplay","decorations/stageframe/light_extra"))
         end
@@ -296,7 +296,7 @@ t[#t+1] = Def.ActorFrame{
         Name="StageFrame",
         Texture="stageframe/normal",
         InitCommand=function(s)
-            s:xy(_screen.cx,SCREEN_TOP+52):visible(not GAMESTATE:IsDemonstration())
+            s:xy(_screen.cx,SCREEN_TOP+52)
             if IsAnExtraStage() then
                 s:Load(THEME:GetPathB("ScreenGameplay","decorations/stageframe/extra"))
             end
@@ -363,7 +363,6 @@ local function GetTimeSigs()
 end
 
 t[#t+1] = Def.ActorFrame {
-	Condition=not GAMESTATE:IsDemonstration(),
 	InitCommand=function(s) s:Center() end,
 	CurrentSongChangedMessageCommand=function(s) s:finishtweening():diffusealpha(0):sleep(BeginReadyDelay()):diffusealpha(1):queuecommand('Ready') end,
 	ReadyCommand=function(s) s:sleep(SongMeasureSec()):queuecommand('GoIn') end,
