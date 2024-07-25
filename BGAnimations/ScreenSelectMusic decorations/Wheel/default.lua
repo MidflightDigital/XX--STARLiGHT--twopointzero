@@ -16,7 +16,7 @@ local RecordPane = Def.ActorFrame{
       Texture="eq",
       InitCommand = function(s) s:diffuse(color("0.25,0.25,0.25,0.5")) end,
     };
-    loadfile(THEME:GetPathB("ScreenSelectMusic","overlay/WheelDeco/BPM.lua"))();
+    loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/Wheel/BPM.lua"))();
     Def.ActorFrame{
       Def.Quad {
           InitCommand = function(s) s:zoomto(916,204):y(-10) end,
@@ -131,7 +131,7 @@ return Def.ActorFrame{
           InitCommand=function(self) self:x(4)
           end
         };
-        loadfile(THEME:GetPathB("ScreenSelectMusic","overlay/WheelDeco/NewDiff.lua"))()..{
+        loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/Wheel/NewDiff.lua"))()..{
           InitCommand=function(self) self:x(4) end,
         };
     };
