@@ -26,7 +26,7 @@ t[#t+1] = Def.ActorFrame{
 		Font="_avenirnext lt pro bold/36px",
 		InitCommand=function(s) s:zoom(0.7):halign(1):x(14) end,
 		OnCommand=function(self)
-			self:settext("Calories from this song:");
+			self:settext(THEME:GetString("ScreenEvaluation","SongCal"));
 		end;
 	};
 	Def.BitmapText{
@@ -44,7 +44,7 @@ t[#t+1] = Def.ActorFrame{
 		Font="_avenirnext lt pro bold/36px",
 		InitCommand=function(s) s:zoom(0.7):halign(1):x(14) end,
 		OnCommand=function(self)
-			self:settext("Calories today:");
+			self:settext(THEME:GetString("ScreenEvaluation","TodayCal"));
 		end;
 	};
 	Def.BitmapText{
@@ -87,6 +87,11 @@ t[#t+1] = Def.ActorFrame{
 		Texture="reference",
 		InitCommand=function(s) s:y(-20) end,
 	};
+	Def.BitmapText{
+		Font="_avenirnext lt pro bold/20px",
+		Text=THEME:GetString("ScreenEvaluation","FoodEquiv"),
+		InitCommand=function(s) s:y(-20):zoom(0.6):maxwidth(240) end,
+	},
 	Def.BitmapText{
 		Font="_avenirnext lt pro bold/20px",
 		InitCommand=function(s) s:xy(75,16):zoom(1.1):halign(1):wrapwidthpixels(300) end,
