@@ -1,6 +1,6 @@
 local Deco = Def.ActorFrame{};
 if not GAMESTATE:IsCourseMode() then
-	Deco[#Deco+1] = loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/"..ThemePrefs.Get("WheelType").."/default.lua"))();
+	Deco[#Deco+1] = loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/Types/"..ThemePrefs.Get("WheelType").."/default.lua"))();
 end;
 
 local jk = LoadModule"Jacket.lua"
@@ -40,14 +40,14 @@ return Def.ActorFrame{
 	};
 	Deco;
 	loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/InputHandler.lua"))();
-	loadfile(THEME:GetPathB("ScreenSelectMusic","overlay/_OptionsList/default.lua"))();
+	loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/_shared/_OptionsList/default.lua"))();
 	Def.Sound{
 		File=THEME:GetPathS("","_swoosh out"),
 		OffCommand=function(s) s:sleep(1):queuecommand("Play") end,
 		PlayCommand=function(s) s:play() end,
 	};
 	Def.Sound{
-		File=THEME:GetPathB("ScreenSelectMusic","overlay/bruh.ogg"),
+		File=THEME:GetPathB("ScreenSelectMusic","decorations/_shared/bruh.ogg"),
 		OffCommand=function(s)
 			local song = GAMESTATE:GetCurrentSong()
 			local gettitle = song:GetDisplayMainTitle()

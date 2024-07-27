@@ -48,7 +48,7 @@ return Def.ActorFrame{
     InitCommand=function(s)
       s:xy(8,9)
       if GAMESTATE:IsAnExtraStage() then
-        s:Load(THEME:GetPathB("ScreenSelectMusic","overlay/ADeco/extra_SongInfo"))
+        s:Load(THEME:GetPathB("ScreenSelectMusic","decorations/Types/A/extra_SongInfo"))
       end
     end,
   };
@@ -57,7 +57,7 @@ return Def.ActorFrame{
     InitCommand=function(s)
       s:xy(8,9):MaskSource(true)
       if GAMESTATE:IsAnExtraStage() then
-        s:Load(THEME:GetPathB("ScreenSelectMusic","overlay/ADeco/extra_SongInfo"))
+        s:Load(THEME:GetPathB("ScreenSelectMusic","decorations/Types/A/extra_SongInfo"))
       end
     end,
   };
@@ -66,7 +66,7 @@ return Def.ActorFrame{
     InitCommand=function(s)
       s:xy(8,9):MaskSource(true)
       if GAMESTATE:IsAnExtraStage() then
-        s:Load(THEME:GetPathB("ScreenSelectMusic","overlay/ADeco/extra_SongInfo"))
+        s:Load(THEME:GetPathB("ScreenSelectMusic","decorations/Types/A/extra_SongInfo"))
       end
     end,
   };
@@ -99,7 +99,7 @@ return Def.ActorFrame{
       InitCommand=function(s) s:maxwidth(500):halign(0):zoomx(0.78):zoomy(0.65) end,
     };
   },
-  loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/_CDTITLE.lua"))(0,50)..{
+  loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/_shared/_CDTITLE.lua"))(0,50)..{
     InitCommand=function(s)
       s:visible(ThemePrefs.Get("CDTITLE")):draworder(-1):diffusealpha(0)
     end,

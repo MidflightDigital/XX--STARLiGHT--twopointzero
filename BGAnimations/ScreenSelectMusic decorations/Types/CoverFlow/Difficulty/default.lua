@@ -43,7 +43,7 @@ for _,pn in pairs(GAMESTATE:GetEnabledPlayers()) do
             Texture="insert.png";
             InitCommand=function(s) s:zoomx(pn==PLAYER_2 and -1 or 1)
               if GAMESTATE:IsAnExtraStage() then
-                s:Load(THEME:GetPathB("ScreenSelectMusic","decorations/CoverFlow/Difficulty/ex_insert.png"))
+                s:Load(THEME:GetPathB("ScreenSelectMusic","decorations/Types/CoverFlow/Difficulty/ex_insert.png"))
               end    
             end,
         };
@@ -97,17 +97,17 @@ t[#t+1] = Def.ActorFrame{
       Texture="bpm.png";
       InitCommand=function(s)
         if GAMESTATE:IsAnExtraStage() then
-          s:Load(THEME:GetPathB("ScreenSelectMusic","decorations/CoverFlow/Difficulty/ex_bpm.png"))
+          s:Load(THEME:GetPathB("ScreenSelectMusic","decorations/Types/CoverFlow/Difficulty/ex_bpm.png"))
         end
       end,
     };
-    loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/CoverFlow/Difficulty/BPM.lua"))()
+    loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/Types/CoverFlow/Difficulty/BPM.lua"))()
   };
   Def.Sprite{
     Texture="TABLE.png";
     InitCommand=function(s)
       if GAMESTATE:IsAnExtraStage() then
-        s:Load(THEME:GetPathB("ScreenSelectMusic","decorations/CoverFlow/Difficulty/ex_TABLE.png"))
+        s:Load(THEME:GetPathB("ScreenSelectMusic","decorations/Types/CoverFlow/Difficulty/ex_TABLE.png"))
       end
     end,
   };
@@ -152,7 +152,7 @@ t[#t+1] = Def.ActorFrame{
 local yspacing = 34;
 
 for _,pn in pairs(GAMESTATE:GetEnabledPlayers()) do
-  t[#t+1] = loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/CoverFlow/Difficulty/RadarHandler"))(pn)..{
+  t[#t+1] = loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/Types/CoverFlow/Difficulty/RadarHandler"))(pn)..{
     InitCommand=function(s) s:xy(-360,10):zoom(0.8) end,
   }
   t[#t+1] = Def.ActorFrame{
@@ -471,7 +471,7 @@ t[#t+1] = Def.Sprite{
   CurrentSongChangedMessageCommand=function(s) s:queuecommand("Set") end,
 };
 
-t[#t+1] = loadfile(THEME:GetPathB("ScreenSelectMusic","overlay/_CDTITLE.lua"))(-250,-80)..{
+t[#t+1] = loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/_shared/_CDTITLE.lua"))(-250,-80)..{
   InitCommand=function(s)
     s:visible(ThemePrefs.Get("CDTITLE")):draworder(1):diffusealpha(0)
   end,

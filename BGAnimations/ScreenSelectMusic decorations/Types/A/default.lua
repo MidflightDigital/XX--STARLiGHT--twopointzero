@@ -1,22 +1,22 @@
 local t = Def.ActorFrame{}
 
 for pn in EnabledPlayers() do
-    t[#t+1] = loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/_Difficulty"))(pn)..{
+    t[#t+1] = loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/_shared/_Difficulty"))(pn)..{
 		InitCommand=function(s) s:diffusealpha(0):draworder(40)
 			:xy(pn==PLAYER_1 and SCREEN_LEFT+200 or SCREEN_RIGHT-200,_screen.cy-230)
 		end,
 		OnCommand=function(s) s:diffusealpha(0):linear(0.2):diffusealpha(1) end,
 		OffCommand=function(s) s:linear(0.2):diffusealpha(0) end,
 	};
-	t[#t+1] = loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/RadarHandler"))(pn)..{
+	t[#t+1] = loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/_shared/RadarHandler"))(pn)..{
 		InitCommand=function(s) s:xy(pn==PLAYER_1 and SCREEN_LEFT+200 or SCREEN_RIGHT-200,_screen.cy+126) end,
 	}
 	if PREFSMAN:GetPreference("OnlyDedicatedMenuButtons") then
-		t[#t+1] = loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/InfoPanel"))(pn)..{
+		t[#t+1] = loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/_shared/InfoPanel"))(pn)..{
 			InitCommand=function(s) s:visible(false):y(_screen.cy+240) end,
 		};
 	end
-	t[#t+1] = loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/_ShockArrow/default.lua"))(pn)..{
+	t[#t+1] = loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/_shared/_ShockArrow/default.lua"))(pn)..{
 		InitCommand=function(s)
 			s:xy(pn==PLAYER_1 and SCREEN_LEFT+200 or SCREEN_RIGHT-200,_screen.cy+126):zoom(0.5)
 		end,
@@ -66,8 +66,8 @@ return Def.ActorFrame{
 		InitCommand=function(s) s:xy(IsUsingWideScreen() and _screen.cx-100 or _screen.cx+20,_screen.cy-396):zoom(IsUsingWideScreen() and 1 or 0.9) end,
 		OnCommand=function(s) s:diffusealpha(0):linear(0.2):diffusealpha(1) end,
 		OffCommand=function(s) s:linear(0.2):diffusealpha(0) end,
-		loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/A/BannerHandler.lua"))();
-		loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/A/BPM.lua"))()..{
+		loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/Types/A/BannerHandler.lua"))();
+		loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/Types/A/BPM.lua"))()..{
 			InitCommand=function(s) s:xy(140,48) end,
 		};
 	};
@@ -83,5 +83,5 @@ return Def.ActorFrame{
 			s:xy(SCREEN_LEFT+160,SCREEN_TOP+180)
 		end,
 	};
-	LoadActor("../TwoPartDiff"),
+	LoadActor("../../_shared/TwoPartDiff"),
 }

@@ -120,7 +120,7 @@ for pn in EnabledPlayers() do
 			end
 		end,
 		Def.Sprite{
-			Texture="RadarBase.png",
+			Texture=THEME:GetPathG("","_shared/RadarBase.png"),
 			InitCommand=function(s) s:y(10):blend(Blend.Add):zoom(1.35):diffuse(ColorMidTone(PlayerColor(pn))):diffusealpha(0.75) end,
 		},
 		Radar.create_ddr_groove_radar("radar",0,20,pn,350,Alpha(PlayerColor(pn),0.25));
@@ -151,11 +151,11 @@ for pn in EnabledPlayers() do
 		OffCommand=function(s) s:sleep(0.5):decelerate(0.25):addx(pn==PLAYER_1 and -100 or 100) end,
 	}
 	if PREFSMAN:GetPreference("OnlyDedicatedMenuButtons") then
-		t[#t+1] = loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/InfoPanel"))(pn)..{
+		t[#t+1] = loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/_shared/InfoPanel"))(pn)..{
 			InitCommand=function(s) s:y(_screen.cy-190) end,
 		};
 	end
-	t[#t+1] = loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/_ShockArrow/default.lua"))(pn)..{
+	t[#t+1] = loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/_shared/_ShockArrow/default.lua"))(pn)..{
 		InitCommand=function(s)
 			s:xy(pn==PLAYER_1 and _screen.cx-340 or _screen.cx+340,_screen.cy+50):zoom(0.6)
 		end,
@@ -395,7 +395,7 @@ return Def.ActorFrame{
 		};
 	};
 
-	loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/Default/BPM.lua"))(0.5)..{
+	loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/Types/Default/BPM.lua"))(0.5)..{
 		InitCommand=function(s) s:xy(_screen.cx,_screen.cy+120) end,
 		StartSelectingStepsMessageCommand=function(self)
 			self:sleep(0.3):decelerate(0.3):diffusealpha(0):queuecommand("Hide")
@@ -405,19 +405,19 @@ return Def.ActorFrame{
 			self:visible(true):linear(0.3):diffusealpha(1)
 		end;
 	};
-	loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/Default/BannerHandler"))()..{
+	loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/Types/Default/BannerHandler"))()..{
 		InitCommand=function(s) s:xy(_screen.cx,_screen.cy-150):diffusealpha(1):draworder(1):zoomy(0) end,
   		OnCommand=function(s) s:zoomy(0):sleep(0.3):bounceend(0.175):zoomy(1) end,
   		OffCommand=function(s) s:sleep(0.2):bouncebegin(0.175):zoomy(0) end,
 	};
-	loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/_CDTITLE.lua"))(_screen.cx+160,_screen.cy-20)..{
+	loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/_shared/_CDTITLE.lua"))(_screen.cx+160,_screen.cy-20)..{
 		InitCommand=function(s)
 			s:visible(ThemePrefs.Get("CDTITLE")):draworder(1):diffusealpha(0)
 		end,
 		OnCommand=function(s) s:sleep(0.4):decelerate(0.4):diffusealpha(1) end,
 		OffCommand=function(s) s:sleep(0.2):decelerate(0.2):diffusealpha(0) end,
 	},
-	LoadActor("../TwoPartDiff")..{
+	LoadActor("../../_shared/TwoPartDiff")..{
 		InitCommand=function(s) s:draworder(1) end,
 	},
 	loadfile(THEME:GetPathG("ScreenWithMenuElements","Header/default.lua"))()..{

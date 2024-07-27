@@ -341,7 +341,7 @@ local function genScrollerFrame(pn)
 				if steps then 
 					local diff = steps:GetDifficulty()
 					local diffItem = THEME:GetString("CustomDifficulty",ToEnumShortString(diff))
-					self:GetChild("DifficultyBG"):Load( THEME:GetPathB("ScreenSelectMusic","decorations/TwoPartDiff/".. diffItem) )
+					self:GetChild("DifficultyBG"):Load( THEME:GetPathB("ScreenSelectMusic","decorations/_shared/TwoPartDiff/".. diffItem) )
 					self:GetChild("Meter"):settext( IsMeterDec(steps:GetMeter()) ):diffuse(CustomDifficultyTwoPartToColor(diff))
 					self:GetChild("CFBPMDisplay"):settext( steps:GetAuthorCredit() ):diffuse(CustomDifficultyTwoPartToColor(diff))
 					self:GetChild("ShockArrow"):visible( steps:GetRadarValues(pn):GetValue('RadarCategory_Mines') >= 1 )
@@ -520,7 +520,7 @@ for _,pn in pairs(GAMESTATE:GetEnabledPlayers()) do
 					:smooth(0.1):diffusealpha(0.3):decelerate(0.3):diffusealpha(1)
 				end,
 			},
-			loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/TwoPartDiff/_Diff.lua"))(pn)..{
+			loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/_shared/TwoPartDiff/_Diff.lua"))(pn)..{
 				InitCommand=function(s) s:y(-360) end,
 				StartSelectingStepsMessageCommand=function(s) s:queuecommand("Set") end,
 				ChangeStepsMessageCommand=function(s) s:queuecommand("Set") end,

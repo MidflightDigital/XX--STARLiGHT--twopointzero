@@ -229,7 +229,7 @@ end
 
 return Def.ActorFrame{
   Def.Sprite{
-    Texture=THEME:GetPathB("ScreenSelectMusic","decorations/_Difficulty/cursorglow"),
+    Texture=THEME:GetPathB("ScreenSelectMusic","decorations/_shared/_Difficulty/cursorglow"),
     StartSelectingStepsMessageCommand=function(s)
       local song=GAMESTATE:GetCurrentSong()
       if song then

@@ -141,14 +141,14 @@ if not GAMESTATE:IsCourseMode() then
             end,
         };
     end
-    t[#t+1] = loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/CoverFlow/Difficulty"))();
+    t[#t+1] = loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/Types/CoverFlow/Difficulty"))();
     for _,pn in pairs(GAMESTATE:GetEnabledPlayers()) do
         if PREFSMAN:GetPreference("OnlyDedicatedMenuButtons") then
-            t[#t+1] = loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/InfoPanel"))(pn)..{
+            t[#t+1] = loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/_shared/InfoPanel"))(pn)..{
 			    InitCommand=function(s) s:visible(false):y(_screen.cy-200) end,
             };
         end
-        t[#t+1] = loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/_ShockArrow/default.lua"))(pn)..{
+        t[#t+1] = loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/_shared/_ShockArrow/default.lua"))(pn)..{
             InitCommand=function(s)
                 s:xy(pn==PLAYER_1 and _screen.cx-340 or _screen.cx+340,_screen.cy+80):zoom(0.5)
             end,
@@ -179,18 +179,11 @@ end;
 local numwh = THEME:GetMetric("MusicWheelCoverFlow","NumWheelItems")+2
 
 return Def.ActorFrame{
-    SongUnchosenMessageCommand=function(s) 
-		s:sleep(0.2):queuecommand("Remove")
-	end,
-    RemoveCommand=function(s) s:RemoveChild("TwoPartDiff") end,
-	SongChosenMessageCommand=function(self)
-		--self:AddChildFromPath(THEME:GetPathB("ScreenSelectMusic","overlay/TwoPartDiff"));
-	end;
     Def.Actor{
         Name="WheelActor",
         BeginCommand=function(s)
 			local mw = SCREENMAN:GetTopScreen():GetChild("MusicWheel")
-            mw:xy(_screen.cx,_screen.cy-156)
+            mw:xy(_screen.cx,_screen.cy-156):draworder(-1)
 		end,
         OnCommand=function(s)
             local mw = SCREENMAN:GetTopScreen():GetChild("MusicWheel")
@@ -226,5 +219,5 @@ return Def.ActorFrame{
 			s:xy(_screen.cx,SCREEN_TOP+104):draworder(2)
 		end,
 	};
-    LoadActor("../TwoPartDiff")
+    LoadActor("../../_shared/TwoPartDiff")
 }

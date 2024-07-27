@@ -3,12 +3,12 @@ local Radar = LoadModule "DDR Groove Radar.lua"
 
 local PS = Def.ActorFrame{};
 for pn in EnabledPlayers() do
-  PS[#PS+1] = loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/Banner/TwoPart.lua"))(pn);
+  PS[#PS+1] = loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/Types/Banner/TwoPart.lua"))(pn);
   PS[#PS+1] = Def.ActorFrame{
     InitCommand=function(s) s:xy(pn==PLAYER_1 and SCREEN_LEFT+200 or SCREEN_RIGHT-200,IsUsingWideScreen() and _screen.cy+220 or _screen.cy-240) end,
     CurrentSongChangedMessageCommand=function(s) s:queuecommand("Set") end,
 		["CurrentSteps" .. ToEnumShortString(pn) .. "ChangedMessageCommand"]=function(s) s:stoptweening():queuecommand("Set") end,
-    loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/RadarHandler"))(pn);
+    loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/_shared/RadarHandler"))(pn);
     Radar.create_ddr_groove_radar("radar",0,0,pn,125,Alpha(PlayerColor(pn),0.25))..{
 			OnCommand=function(s) s:zoom(0):rotationz(-360):decelerate(0.4):zoom(1):rotationz(0) end,
       OffCommand=function(s) s:sleep(0.3):decelerate(0.3):rotationz(-360):zoom(0) end,
@@ -192,7 +192,7 @@ for pn in EnabledPlayers() do
 			},
 		};
   };
-  PS[#PS+1] = loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/_ShockArrow/default.lua"))(pn)..{
+  PS[#PS+1] = loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/_shared/_ShockArrow/default.lua"))(pn)..{
     InitCommand=function(s)
         s:xy(pn==PLAYER_1 and _screen.cx-340 or _screen.cx+340,_screen.cy):zoom(0.5)
     end,
@@ -310,10 +310,10 @@ return Def.ActorFrame{
       Font="_avenir next demi bold/20px";
       InitCommand=function(s) s:maxwidth(480):y(-10):strokecolor(Alpha(Color.Black,0.5)) end,
     };
-    loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/Default/BPM"))(0.5)..{
+    loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/Types/Default/BPM"))(0.5)..{
       InitCommand=function(s) s:y(18) end,
     };
-    loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/_CDTITLE.lua"))(320,-10)..{
+    loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/_shared/_CDTITLE.lua"))(320,-10)..{
       InitCommand=function(s)
         s:visible(ThemePrefs.Get("CDTITLE"))
       end,

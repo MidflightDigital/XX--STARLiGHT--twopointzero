@@ -9,6 +9,11 @@ local function RivalScore(pn,rival)
 		["CurrentSteps"..ToEnumShortString(pn).."ChangedMessageCommand"]=function(s) s:queuecommand("Set") end,
         ["CurrentTrail"..ToEnumShortString(pn).."ChangedMessageCommand"]=function(s) s:queuecommand("Set") end,
 		Def.BitmapText{
+			Font="_avenirnext lt pro bold/25px",
+			Text=THEME:GetString("ScreenEvaluation","RIVAL"..rival),
+			InitCommand=function(s) s:halign(1):x(-130):maxwidth(140):strokecolor(Alpha(Color.Black,0.4)) end,
+		},
+		Def.BitmapText{
 			Font="_avenirnext lt pro bold/36px",
 			InitCommand=function(s) s:zoom(0.8):halign(0):x(-100):strokecolor(Color.Black) end,
 			OnCommand=function(self)

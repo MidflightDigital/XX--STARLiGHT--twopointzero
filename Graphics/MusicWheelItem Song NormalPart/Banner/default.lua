@@ -1,18 +1,42 @@
 local t = Def.ActorFrame{};
 local jk = ...
+local SongAttributes = LoadModule "SongAttributes.lua"
 
 t[#t+1] = Def.ActorFrame{
-	Def.Banner{
-	Name="SongCD";
-	SetMessageCommand=function(self,params)
-		self:rotationz(-45)
-		local song = params.Song;
-		if song then
-			self:LoadFromCached("Banner",jk.GetSongGraphicPath(song,"Banner"))
-			self:setsize(384,120);
+	SetMessageCommand=function(s)
+		s:rotationz(-45):zoom(0.95)
+	end,
+	Def.Sprite{
+		Texture=THEME:GetPathG("","_shared/_banner back"),
+		InitCommand=function(s) s:zoom(0.7) end,
+	},
+	Def.Sprite{
+		Name="SongCD";
+		SetMessageCommand=function(self,params)
+			local song = params.Song;
+			if song then
+				self:Load(jk.GetSongGraphicPath(song,"Banner")):scaletofit(-180,-60,180,60)
+			end;
 		end;
-	end;
 	};
+	Def.ActorFrame{
+		InitCommand=function(s) s:y(48) end,
+		Def.Sprite{
+			Texture="box.png",
+			InitCommand=function(s) s:zoom(0.51) end,
+		},
+		Def.BitmapText{
+			Font="_avenir next demi bold/20px";
+			SetMessageCommand=function(s,p)
+				local song = p.Song
+				if song then
+					s:settext(song:GetDisplayMainTitle()):diffuse(SongAttributes.GetMenuColor(song)):strokecolor(ColorDarkTone(SongAttributes.GetMenuColor(song)))
+				end
+				s:maxwidth(300)
+			end,
+		}
+	},
+	
 };
 
 local factorsx = {-518, 0, 518};
