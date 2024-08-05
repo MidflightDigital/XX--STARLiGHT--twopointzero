@@ -536,7 +536,7 @@ for _,pn in pairs(GAMESTATE:GetEnabledPlayers()) do
 				s:x(-100):decelerate(0.4):x(0):diffusealpha(1):queuecommand("Anim")
 			end,
 			RemoveCommand=function (self)
-				self:stoptweening():decelerate(0.4):x(0)
+				self:stoptweening():decelerate(0.4):x(0):diffusealpha(0)
 			end,
 			OffCommand=function(s) 
 				s:settext("O.K.!")
