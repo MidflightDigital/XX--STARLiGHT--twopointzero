@@ -16,7 +16,7 @@ local RecordPane = Def.ActorFrame{
       Texture="eq",
       InitCommand = function(s) s:diffuse(color("0.25,0.25,0.25,0.5")) end,
     };
-    loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/Wheel/BPM.lua"))();
+    loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/Types/Wheel/BPM.lua"))();
     Def.ActorFrame{
       Def.Quad {
           InitCommand = function(s) s:zoomto(916,204):y(-10) end,
@@ -33,10 +33,10 @@ local RecordPane = Def.ActorFrame{
 
 for _,pn in pairs(GAMESTATE:GetEnabledPlayers()) do
     t[#t+1] = Def.ActorFrame{
-      loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/Wheel/RadarHandler.lua"))(pn)..{
+      loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/Types/Wheel/RadarHandler.lua"))(pn)..{
         InitCommand = function(s) s:xy(SCREEN_LEFT+172,SCREEN_BOTTOM-130):zoom(0.65) end,
       };
-      loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/Wheel/Pane.lua"))()..{
+      loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/Types/Wheel/Pane.lua"))()..{
         InitCommand = function(s) s:xy(SCREEN_LEFT+480,SCREEN_BOTTOM-145) end,
           OnCommand=function(s) s:addy(600):sleep(0.4):decelerate(0.3):addy(-600) end,
           OffCommand=function(s) s:sleep(0.3):decelerate(0.3):addy(600) end,
@@ -50,7 +50,7 @@ for _,pn in pairs(GAMESTATE:GetEnabledPlayers()) do
           end;
       };
     };
-    t[#t+1] = loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/_ShockArrow/default.lua"))(pn)..{
+    t[#t+1] = loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/_shared/_ShockArrow/default.lua"))(pn)..{
           InitCommand=function(s)
               s:xy(pn==PLAYER_1 and SCREEN_LEFT+80 or SCREEN_LEFT+263,SCREEN_BOTTOM-200):zoom(0.25)
           end,
@@ -131,7 +131,7 @@ return Def.ActorFrame{
           InitCommand=function(self) self:x(4)
           end
         };
-        loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/Wheel/NewDiff.lua"))()..{
+        loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/Types/Wheel/NewDiff.lua"))()..{
           InitCommand=function(self) self:x(4) end,
         };
     };
@@ -159,5 +159,5 @@ return Def.ActorFrame{
 		end,
 		CurrentSongChangedMessageCommand=function(s) s:queuecommand("Set") end,
 	};
-    LoadActor("../TwoPartDiff"),
+  loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/_shared/TwoPartDiff"))(),
 }

@@ -56,12 +56,12 @@ for i=1,2 do
 end;
 
 for pn in ivalues( GAMESTATE:GetHumanPlayers() ) do
-	t[#t+1] = loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/_Difficulty/default.lua"))(pn)..{
+	t[#t+1] = loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/_shared/_Difficulty/default.lua"))(pn)..{
 		InitCommand=function(s) s:xy(pn==PLAYER_1 and SCREEN_LEFT+250 or SCREEN_RIGHT-250,_screen.cy+250):draworder(40) end,
 	}
 	t[#t+1] = Def.ActorFrame{
 		InitCommand=function(s) s:xy(pn==PLAYER_1 and SCREEN_LEFT+250 or SCREEN_RIGHT-250,_screen.cy+100) end,
-		loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/RadarHandler"))(pn);
+		loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/_shared/RadarHandler"))(pn);
 		Def.BitmapText{
 			Font="CFBPMDisplay",
 			InitCommand=function(s) s:zoom(0.7):diffuse(color("#dff0ff")):strokecolor(color("#00baff")):maxwidth(200):y(60) end,
@@ -84,7 +84,7 @@ for pn in ivalues( GAMESTATE:GetHumanPlayers() ) do
 			end,
 		};
 	}
-	t[#t+1] = loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/_ShockArrow/default.lua"))(pn)..{
+	t[#t+1] = loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/_shared/_ShockArrow/default.lua"))(pn)..{
 		InitCommand=function(s)
 			s:xy(pn==PLAYER_1 and SCREEN_LEFT+370 or SCREEN_RIGHT-370,_screen.cy+15):zoom(0.3)
 		end,
@@ -109,6 +109,12 @@ for pn in ivalues( GAMESTATE:GetHumanPlayers() ) do
 		["CurrentSteps"..ToEnumShortString(pn).."ChangedMessageCommand"]=function(s) s:stoptweening():queuecommand("Set") end,
 		OffCommand=function(s) s:queuecommand("Hide") end,	
 	}
+
+	if PREFSMAN:GetPreference("OnlyDedicatedMenuButtons") then
+		t[#t+1] = loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/_shared/InfoPanel"))(pn)..{
+			InitCommand=function(s) s:y(_screen.cy-190) end,
+		};
+	end
 end
 
 return Def.ActorFrame{
@@ -231,12 +237,12 @@ return Def.ActorFrame{
 			end,
 		};
 	};
-	loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/Jukebox/BannerHandler.lua"))(jk);
+	loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/Types/Jukebox/BannerHandler.lua"))(jk);
 	t;
 	StandardDecorationFromFileOptional("StageDisplay","StageDisplay")..{
 		InitCommand=function(s) s:xy(_screen.cx-234,_screen.cy-270):zoom(1):draworder(1):halign(0) end,
 	};
-	LoadActor("../TwoPartDiff")..{
+	loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/_shared/TwoPartDiff"))()..{
 		InitCommand=function(s) s:draworder(2) end,
 	}
 }

@@ -217,6 +217,13 @@ for pn in EnabledPlayers() do
     ["CurrentSteps"..ToEnumShortString(pn).."ChangedMessageCommand"]=function(s) s:stoptweening():queuecommand("Set") end,
     OffCommand=function(s) s:queuecommand("Hide") end,	
 }
+
+	if PREFSMAN:GetPreference("OnlyDedicatedMenuButtons") then
+		PS[#PS+1] = loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/_shared/InfoPanel"))(pn)..{
+			InitCommand=function(s) s:y(_screen.cy-190) end,
+		};
+	end
+
 end
 
 return Def.ActorFrame{
