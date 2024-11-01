@@ -80,7 +80,7 @@ return Def.ActorFrame{
     Def.Sprite{ Texture=THEME:GetPathB("","_Logo/XX.png") },
     Def.Sprite{
       Texture=THEME:GetPathB("","_Logo/XX.png"),
-      InitCommand=function(s) s:blend(Blend.Add):diffuseshift():effectcolor1(Alpha(Color.White,0.3))
+      InitCommand=function(s) s:blend(Blend.Add):diffuseshift():effectcolor1(Alpha(Color.White,0.5))
         :effectcolor2(Alpha(Color.White,0)):effectperiod(5) 
       end,
       OffCommand=function(s) s:stoptweening() end,
@@ -94,6 +94,17 @@ return Def.ActorFrame{
     StartPressedLogoMessageCommand=function(s) s:linear(0.1):diffusealpha(0) end,
   },
   Def.Sprite{
+    Texture=THEME:GetPathB("","_Logo/project_main.png"),
+    InitCommand=function(s) 
+      s:xy(_screen.cx+146,_screen.cy+15):diffusealpha(0):zoom(1.15):blend(Blend.Add)
+      :diffuseshift():effectcolor1(Alpha(Color.White,0.5))
+      :effectcolor2(Alpha(Color.White,0)):effectperiod(5) 
+    end,
+    OnCommand=function(s) s:sleep(2.2):linear(0.2):diffusealpha(1) end,
+    OffCommand=function(s) s:stoptweening() end,
+    StartPressedLogoMessageCommand=function(s) s:linear(0.1):diffusealpha(0) end,
+  },
+  Def.Sprite{
     Texture=THEME:GetPathB("","_Logo/starlight.png"),
     InitCommand=function(s) s:xy(_screen.cx+180,_screen.cy+120):diffusealpha(0):zoom(1.23) end,
     OnCommand=function(s) s:sleep(2.3):linear(0.2):diffusealpha(1):zoom(1.15):xy(_screen.cx+244,_screen.cy+120) 
@@ -101,12 +112,20 @@ return Def.ActorFrame{
     StartPressedLogoMessageCommand=function(s) s:linear(0.1):diffusealpha(0) end,
   },
   Def.Sprite{
-    Texture=THEME:GetPathB("","_Logo/project_xxlogo.png"),
-    InitCommand=function(s) s:zoom(1.15):xy(SCREEN_RIGHT-650,_screen.cy+70):diffusealpha(0):blend(Blend.Add) end,
-    OnCommand=function(s) s:sleep(2.6):diffusealpha(1):linear(1):diffusealpha(0):zoom(1.5):sleep(0):zoom(1.15):queuecommand("Anim") end,
-    AnimCommand=function(s) s:diffusealpha(0):sleep(1):linear(0.75):diffusealpha(0.3):sleep(0.1):linear(0.4):diffusealpha(0):queuecommand("Anim") end,
+    Texture=THEME:GetPathB("","_Logo/starlight.png"),
+    InitCommand=function(s) 
+      s:xy(_screen.cx+244,_screen.cy+120):diffusealpha(0):zoom(1.15):blend(Blend.Add)
+      :diffuseshift():effectcolor1(Alpha(Color.White,0.5))
+      :effectcolor2(Alpha(Color.White,0)):effectperiod(5) 
+    end,
+    OnCommand=function(s) s:sleep(2.2):linear(0.2):diffusealpha(1) end,
     OffCommand=function(s) s:stoptweening() end,
     StartPressedLogoMessageCommand=function(s) s:linear(0.1):diffusealpha(0) end,
+  },
+  Def.Sprite{
+    Texture=THEME:GetPathB("","_Logo/project_xxlogo.png"),
+    InitCommand=function(s) s:zoom(1.15):xy(SCREEN_RIGHT-650,_screen.cy+70):diffusealpha(0):blend(Blend.Add) end,
+    OnCommand=function(s) s:sleep(2.6):diffusealpha(1):linear(1):diffusealpha(0):zoom(1.5):sleep(0) end,
   },
   Def.BitmapText{
     Font='_avenirnext lt pro bold/36px',
@@ -138,7 +157,7 @@ return Def.ActorFrame{
     },
   },
   Def.Sprite{
-    InitCommand=function(s) s:xy(_screen.cx+500,_screen.cy+360):diffuseshift():effectcolor1(Color.White):effectcolor2(color("#B4FF01")) end,
+    InitCommand=function(s) s:xy(SCREEN_RIGHT-300,_screen.cy+360):diffuseshift():effectcolor1(Color.White):effectcolor2(color("#B4FF01")) end,
     BeginCommand=function(s) s:queuecommand("Set") end,
     OnCommand=function(s) s:diffusealpha(0):sleep(2.8):linear(0.4):diffusealpha(1) end,
     OffCommand=function(s) s:stoptweening() end,
