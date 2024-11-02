@@ -40,6 +40,17 @@ local af = Def.ActorFrame{
 	OffCommand=function(self)
 		self:playcommand("Remove")
 	end,
+	--[[Def.Quad{
+		InitCommand=function(s)
+			s:setsize(SCREEN_WIDTH,SCREEN_HEIGHT):diffuse(Alpha(Color.Black,0)):Center()
+		end,
+		StartSelectingStepsMessageCommand=function(s)
+			s:sleep(0.3):linear(0.2):diffusealpha(0.4)
+		end,
+		SongUnchosenMessageCommand=function(s)
+			s:linear(0.2):diffusealpha(0)
+		end,
+	}]]
 }
 
 -- Store the player's selections.
@@ -468,7 +479,12 @@ end
 for _,pn in pairs(GAMESTATE:GetEnabledPlayers()) do
 	af[#af+1] = Def.ActorFrame{
 		InitCommand=function(s)
-			s:xy(pn==PLAYER_1 and SCREEN_LEFT+(SCREEN_WIDTH/4.9) or SCREEN_RIGHT-(SCREEN_WIDTH/4.9),_screen.cy+30)
+			s:y(_screen.cy+30):zoom(IsUsingWideScreen() and 1 or 0.83)
+			if IsUsingWideScreen() then
+				s:x(pn==PLAYER_1 and SCREEN_LEFT+(SCREEN_WIDTH/4.9) or SCREEN_RIGHT-(SCREEN_WIDTH/4.9))
+			else
+				s:x(pn==PLAYER_1 and SCREEN_LEFT+200 or SCREEN_RIGHT-200)
+			end
 		end,
 		genScrollerFrame(pn) .. {
 			InitCommand=function(self)

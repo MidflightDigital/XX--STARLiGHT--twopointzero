@@ -82,7 +82,7 @@ return Def.ActorFrame{
                 self:xy(-210,85):zoom(0.6)
             end;
         };
-        loadfile(THEME:GetPathB("ScreenSelectMusic","overlay/_CDTITLE.lua"))(180,-70)..{
+        loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/_shared/_CDTITLE.lua"))(180,-70)..{
             InitCommand=function(s)
               s:visible(ThemePrefs.Get("CDTITLE")):draworder(1)
             end,

@@ -49,6 +49,7 @@ return Def.ActorFrame{
         BeginCommand=function(s)
 			local mw = SCREENMAN:GetTopScreen():GetChild("MusicWheel")
 			mw:xy(_screen.cx,_screen.cy):draworder(-1)
+			:zoom(IsUsingWideScreen() and 1 or 0.75)
 		end,
 		OnCommand=function(s)
 			local mw = SCREENMAN:GetTopScreen():GetChild("MusicWheel")
@@ -59,18 +60,15 @@ return Def.ActorFrame{
 		OffCommand=function(s)
 			local mw = SCREENMAN:GetTopScreen():GetChild("MusicWheel")
 			mw:bouncebegin(0.15):zoomx(3):diffusealpha(0)
+		end,
+		SongChosenMessageCommand=function(s)
+			s:queuecommand("Off")
+		end,
+		SongUnchosenMessageCommand=function(s)
+			local mw = SCREENMAN:GetTopScreen():GetChild("MusicWheel")
+			mw:bounceend(0.15):zoomx(IsUsingWideScreen() and 1 or 0.75):diffusealpha(1)
 		end
     };
-    Def.ActorFrame{
-		Name="SongInfo/Jacket",
-		InitCommand=function(s) s:xy(IsUsingWideScreen() and _screen.cx-100 or _screen.cx+20,_screen.cy-396):zoom(IsUsingWideScreen() and 1 or 0.9) end,
-		OnCommand=function(s) s:diffusealpha(0):linear(0.2):diffusealpha(1) end,
-		OffCommand=function(s) s:linear(0.2):diffusealpha(0) end,
-		loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/Types/A/BannerHandler.lua"))();
-		loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/Types/A/BPM.lua"))()..{
-			InitCommand=function(s) s:xy(140,48) end,
-		};
-	};
     t;
     Def.Sprite{
 		Texture="Stager",
@@ -84,4 +82,14 @@ return Def.ActorFrame{
 		end,
 	};
 	LoadActor("../../_shared/TwoPartDiff"),
+	Def.ActorFrame{
+		Name="SongInfo/Jacket",
+		InitCommand=function(s) s:xy(IsUsingWideScreen() and _screen.cx-100 or _screen.cx+20,_screen.cy-396):zoom(IsUsingWideScreen() and 1 or 0.9) end,
+		OnCommand=function(s) s:diffusealpha(0):linear(0.2):diffusealpha(1) end,
+		OffCommand=function(s) s:linear(0.2):diffusealpha(0) end,
+		loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/Types/A/BannerHandler.lua"))();
+		loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/Types/A/BPM.lua"))()..{
+			InitCommand=function(s) s:xy(140,48) end,
+		};
+	};
 }

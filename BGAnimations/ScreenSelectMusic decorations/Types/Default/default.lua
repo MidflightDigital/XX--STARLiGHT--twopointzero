@@ -181,8 +181,13 @@ for pn in EnabledPlayers() do
 		OffCommand=function(s) s:queuecommand("Hide") end,	
 	}
 	t[#t+1] = Def.ActorFrame{
-		InitCommand=function(s) s:xy(pn==PLAYER_1 and _screen.cx-280 or _screen.cx+280,_screen.cy-360)
-			:zoom(0):halign(pn==PLAYER_1 and 1 or 0)
+		InitCommand=function(s) 
+			s:zoom(0):halign(pn==PLAYER_1 and 1 or 0)
+			if IsUsingWideScreen() then
+				s:x(pn==PLAYER_1 and _screen.cx-280 or _screen.cx+280):y(_screen.cy-360)
+			else
+				s:x(pn==PLAYER_1 and _screen.cx-260 or _screen.cx+260):y(_screen.cy-320)
+			end
 		end,
 		OnCommand=function(s) s:sleep(0.3):bounceend(0.25):zoom(1) end,
 		OffCommand=function(s) s:sleep(0.5):bouncebegin(0.25):zoom(0) end,

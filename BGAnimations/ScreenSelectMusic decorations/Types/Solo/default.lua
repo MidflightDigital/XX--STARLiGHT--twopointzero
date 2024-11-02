@@ -56,11 +56,11 @@ for pn in EnabledPlayers() do
 		CurrentSongChangedMessageCommand=function(s) s:queuecommand("Set") end,
 		["CurrentSteps" .. ToEnumShortString(pn) .. "ChangedMessageCommand"]=function(s) s:stoptweening():queuecommand("Set") end,
 		Def.Sprite{
-			Texture="../Default/RadarBase.png",
+			Texture=THEME:GetPathG("","_shared/RadarBase.png"),
 			InitCommand=function(s) s:y(10):blend(Blend.Add):zoom(1.35):diffuse(ColorMidTone(PlayerColor(pn))):diffusealpha(0.75) end,
 		};
         Radar.create_ddr_groove_radar("radar",0,20,pn,350,Alpha(PlayerColor(pn),0.25));
-        LoadActor(THEME:GetPathB("ScreenSelectMusic","decorations/_ShockArrow/default.lua"),pn)..{
+        LoadActor(THEME:GetPathB("ScreenSelectMusic","decorations/_shared/_ShockArrow/default.lua"),pn)..{
             InitCommand=function(s)
                 s:zoom(0.6):xy(pn==PLAYER_1 and -260 or 260,130)
             end,
@@ -192,7 +192,7 @@ for pn in EnabledPlayers() do
 		}
 	end
 	if PREFSMAN:GetPreference("OnlyDedicatedMenuButtons") then
-		PS[#PS+1] = LoadActor("../InfoPanel",pn)..{
+		PS[#PS+1] = loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/_shared/InfoPanel"))(pn)..{
 			InitCommand=function(s) s:visible(false):y(_screen.cy+320):zoom(0.8):addx(pn==PLAYER_1 and 80 or -80) end,
 		};
 	end
@@ -391,7 +391,7 @@ return Def.ActorFrame{
         };
     };
     PS;
-    LoadActor("../TwoPartDiff")..{
+    LoadActor("../../_shared/TwoPartDiff")..{
 		InitCommand=function(s) s:draworder(1) end,
 	},
 }

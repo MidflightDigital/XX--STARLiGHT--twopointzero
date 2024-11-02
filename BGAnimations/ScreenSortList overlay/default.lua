@@ -166,7 +166,7 @@ local t = Def.ActorFrame{
 	CaptureCommand=function(s) 
 		SCREENMAN:GetTopScreen():AddInputCallback(input)
 		SCREENMAN:GetTopScreen():RemoveInputCallback(DDRInput(self))
-		SOUND:PlayOnce(THEME:GetPathS("_PHOTwON","back"))
+		SOUND:PlayOnce(THEME:GetPathS("Common","back"))
 	end,
 	Def.Sprite{
 		Texture="Backer",

@@ -33,7 +33,7 @@ for i,v in ipairs(GR) do
             s:sleep(i/10):linear(0.1):diffusealpha(0):addx(-10)
         end;
         Def.Sprite{
-            Texture=THEME:GetPathB("ScreenSelectMusic","overlay/RadarHandler/RLabels"),
+            Texture=THEME:GetPathB("ScreenSelectMusic","decorations/_shared/RadarHandler/RLabels"),
             OnCommand=function(s) s:animate(0):setstate(i-1) end,
         };
         Def.BitmapText{

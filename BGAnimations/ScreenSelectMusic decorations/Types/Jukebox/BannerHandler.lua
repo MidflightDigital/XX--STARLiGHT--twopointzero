@@ -82,10 +82,10 @@ return Def.ActorFrame{
       end,
     };
   };
-  loadfile(THEME:GetPathB("ScreenSelectMusic","overlay/DefaultDeco/BPM.lua"))(1)..{
+  loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/Types/Default/BPM.lua"))(1)..{
     InitCommand=function(s) s:xy(234,-80) end,
   };
-  loadfile(THEME:GetPathB("ScreenSelectMusic","overlay/_CDTITLE.lua"))(320,0)..{
+  loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/_shared/_CDTITLE.lua"))(320,0)..{
     InitCommand=function(s)
       s:visible(ThemePrefs.Get("CDTITLE"))
     end,
