@@ -5,6 +5,12 @@ end;
 
 local jk = LoadModule"Jacket.lua"
 
+local op = Def.ActorFrame{};
+
+if THEME:GetMetric("ScreenSelectMusic","UseOptionsList") then
+	op[#op+1] = loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/_shared/_OptionsList/default.lua"))();
+end
+
 return Def.ActorFrame{
 	OnCommand=function(s) 
 		setenv("OPList",0)
@@ -40,7 +46,7 @@ return Def.ActorFrame{
 	};
 	Deco;
 	loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/InputHandler.lua"))();
-	loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/_shared/_OptionsList/default.lua"))();
+	op;
 	Def.Sound{
 		File=THEME:GetPathS("","_swoosh out"),
 		OffCommand=function(s) s:sleep(1):queuecommand("Play") end,

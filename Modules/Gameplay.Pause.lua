@@ -139,7 +139,7 @@ return Def.ActorFrame{
 	Def.ActorFrame{
 		Name="Frame",
 		Def.Sprite{
-			Texture=THEME:GetPathB("","ScreenSelectMusic overlay/InfoPanel/Backer.png"),
+			Texture=THEME:GetPathB("","ScreenSelectMusic decorations/_shared/InfoPanel/Backer.png"),
 		},
 		Selections
 	},

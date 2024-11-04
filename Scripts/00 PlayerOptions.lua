@@ -936,7 +936,8 @@ function LuaNoteSkins()
 		Name="LuaNoteSkins",
 		LayoutType="ShowOneInRow",
 		SelectType="SelectOne",
-		ExportOnChange = true,
+		OneChoiceForAllPlayers=false,
+		ExportOnChange=true,
 		Choices = NOTESKIN:GetNoteSkinNames(),
 		Values = NOTESKIN:GetNoteSkinNames(),
 		LoadSelections=function(self,list, pn)

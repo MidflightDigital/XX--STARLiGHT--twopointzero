@@ -64,7 +64,7 @@ local t = Def.ActorFrame {
 			
 			SOUND:PlayAnnouncer('stage ' .. stageName)
 		end,
-	}
+	},
 };
 
 t[#t+1] = Def.ActorFrame {
