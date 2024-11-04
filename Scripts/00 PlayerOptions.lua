@@ -955,7 +955,7 @@ function LuaNoteSkins()
 		SaveSelections = function(self,list,pn)
 			for i,v2 in ipairs(self.Choices) do
 				if list[i] then
-					GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred"):NoteSkin(v2)
+					prev_note_name, succeeded=GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred"):NoteSkin(v2)
 				end
 			end
 		end
@@ -1019,7 +1019,7 @@ function ExclusiveNoteskins()
 		SaveSelections = function(self,list,pn)
 			for i,v2 in ipairs(self.Choices) do
 				if list[i] then
-					GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred"):NoteSkin(v2)
+					prev_note_name, succeeded=GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred"):NoteSkin(v2)
 				end
 			end
 		end
