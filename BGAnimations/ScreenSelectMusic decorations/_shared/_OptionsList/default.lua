@@ -14,11 +14,18 @@ local t= Def.ActorFrame{
     };
     Def.Sound{
         File=THEME:GetPathS("","Codebox/o-open"),
-        OptionsListOpenedMessageCommand=function(s) s:play() end,
+        OptionsListOpenedMessageCommand=function(s)
+            setenv("OPList",1)
+            s:play()
+        end,
     };
     Def.Sound{
         File=THEME:GetPathS("","Codebox/o-close"),
         OptionsListClosedMessageCommand=function(s) s:play()
+            setenv("OPList",0)
+            if getenv("DList") == 1 and not ShowTwoPart() then
+                SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_MenuTimer")
+            end
             ProfilePrefs.SaveAll()
         end,
     };

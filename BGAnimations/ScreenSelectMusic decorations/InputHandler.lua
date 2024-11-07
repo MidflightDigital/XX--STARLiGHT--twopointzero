@@ -70,7 +70,8 @@ end
 setenv("OPOpened",0)
 setenv("DList",0)
 return Def.ActorFrame{
-  OnCommand=function(self) SCREENMAN:GetTopScreen():AddInputCallback(InputHandler)
+  OnCommand=function(self)
+    SCREENMAN:GetTopScreen():AddInputCallback(InputHandler)
     SCREENMAN:GetTopScreen():AddInputCallback(DDRInput(self))
   end;
   OffCommand=function(self) 

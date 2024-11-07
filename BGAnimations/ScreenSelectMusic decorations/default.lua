@@ -12,9 +12,11 @@ if THEME:GetMetric("ScreenSelectMusic","UseOptionsList") then
 end
 
 return Def.ActorFrame{
-	OnCommand=function(s) 
-		setenv("OPList",0)
-	end,
+	Def.Actor{
+		OnCommand=function(s) 
+			setenv("OPList",0)
+		end,
+	};
 	PlayerJoinedMessageCommand=function(self,param)
 		SCREENMAN:GetTopScreen():SetNextScreenName("ScreenSelectMusic"):StartTransitioningScreen("SM_GoToNextScreen")
   	end;
