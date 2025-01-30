@@ -96,6 +96,7 @@ local function RadarPanel(pn)
             Def.Sprite{
                 Texture=THEME:GetPathG("","_shared/Radar/sweep.png"),
                 InitCommand = function(s) s:zoom(1.35):spin():effectmagnitude(0,0,100) end,
+				OffCommand=function(s) s:stoptweening() end,
             },
             Radar.create_ddr_groove_radar("radar",0,0,pn,125,Alpha(PlayerColor(pn),0.25))
         }
@@ -454,11 +455,13 @@ local function genScrollerFrame(pn)
 				Name="Lamp",
 				Texture="lamp",
 				InitCommand=function(s) s:queuecommand("Set"):visible(false) end,
+				OffCommand=function(s) s:stopeffect() end,
 			},
 			Def.Sprite{
 				Texture="../_ShockArrow/ShockArrowText",
 				Name="ShockArrow",
 				InitCommand=function(s) s:y(10):visible(false):zoom(0.3):glowblink():effectcolor1(color("1,1,1,0.6")):effectcolor2(color("1,1,1,0")):effectperiod(0.15) end,
+				OffCommand=function(s) s:stopeffect() end,
 			},
 		},
 		-- Let's add input to this scroller.

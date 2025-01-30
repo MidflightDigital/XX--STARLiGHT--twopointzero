@@ -682,7 +682,6 @@ function OptionRowScreenFilter()
 					local pPrefs = ProfilePrefs.Read(profileID)
 					pPrefs.filter = choiceToAlpha[i]
 					ProfilePrefs.Save(profileID)
-					break
 				end
 			end
 		end,

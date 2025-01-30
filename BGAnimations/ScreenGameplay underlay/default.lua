@@ -145,7 +145,8 @@ for _, pn in ipairs(GAMESTATE:GetEnabledPlayers()) do
 			InitCommand=function(s)
 				s:diffuse(filter_color):fadeleft(1/32):faderight(1/32)
 			end,
-			BeginCommand=function(s,p)
+			BeginCommand=function(s) s:playcommand("CurrentSongChangedMessage") end,
+			CurrentSongChangedMessageCommand=function(s,p)
 				s:setsize(width,_screen.h)
 				if screen == "ScreenDemonstration" then
 					s:diffusealpha(0.5)

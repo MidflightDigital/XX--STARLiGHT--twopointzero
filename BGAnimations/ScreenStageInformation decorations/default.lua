@@ -34,6 +34,9 @@ if not GAMESTATE:IsCourseMode() then
 end
 
 local t = Def.ActorFrame {
+	OnCommand=function(s)
+		LoadFromProfilePrefs()
+	end,
 	Def.Sprite {
 		Texture=THEME:GetPathB('', 'EX.png'),
 		InitCommand=function(s) s:visible(IsAnExtraStage()):Center() end,

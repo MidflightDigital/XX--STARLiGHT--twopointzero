@@ -25,7 +25,9 @@ local t = Def.ActorFrame{
 		Condition=Var"LoadingScreen" == "ScreenPlayerOptionsPopup",
 		InitCommand=function(s) s:FullScreen():diffuse(Alpha(Color.Black,0)):draworder(-11) end,
 		OnCommand=function(s) s:smooth(0.3):diffusealpha(0.5) end,
-		OffCommand=function(s) s:smooth(0.3):diffusealpha(0) end,
+		OffCommand=function(s) 
+			s:smooth(0.3):diffusealpha(0)
+		end,
 	},
 }
 
@@ -39,7 +41,10 @@ end
 
 t[#t+1] = Def.ActorFrame{
 	OnCommand=function(s) s:draworder(-10):addy(SCREEN_HEIGHT):sleep(0.2):decelerate(0.2):addy(-SCREEN_HEIGHT) end,
-	OffCommand=function(s) s:accelerate(0.2):addy(-SCREEN_HEIGHT) end,
+	OffCommand=function(s) 
+		ProfilePrefs.SaveAll()
+		s:accelerate(0.2):addy(-SCREEN_HEIGHT)
+	end,
 	Def.ActorFrame{
 		InitCommand=function(s) s:xy(_screen.cx,SCREEN_CENTER_Y-90) end,
 		Def.ActorFrame{

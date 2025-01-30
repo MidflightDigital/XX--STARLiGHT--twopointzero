@@ -74,6 +74,7 @@ return Def.ActorFrame{
 		Texture="grad.png",
 		InitCommand=function(s) s:setsize(102,306):diffusealpha(0.5):blend(Blend.Add):x(-540):MaskDest():ztestmode("ZTestMode_WriteOnFail"):queuecommand("Anim") end,
 		AnimCommand=function(s) s:x(-540):sleep(4):smooth(1.5):x(480):queuecommand("Anim") end,
+    OffCommand=function(s) s:stoptweening() end,
 	};
   Def.Quad{
     InitCommand=function(s) s:x(301):setsize(240,240):diffuse(Color.Black) end,
