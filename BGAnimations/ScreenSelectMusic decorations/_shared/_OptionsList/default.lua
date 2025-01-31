@@ -197,6 +197,41 @@ end
 for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
     local OptionsListActor, OptionsListMenu
     local numRows
+    if string.sub(ProductVersion(),1,3) == "LTS" then
+        if SN3Debug then
+            SCREENMAN:SystemMessage("LTS detected! Changing OptionsList actor call!")
+        end
+        t[#t+1] = Def.ActorFrame{
+            Def.Actor{
+                Name="OptionsList" .. pname(pn),
+                CodeMessageCommand=function(self, params)
+                    if ((params.Name == "OpenOpList" and not MenuButtonsOnly) or
+                        params.Name == "OpenOpListButton") and params.PlayerNumber == pn and not IsMenuOpen[pn] then
+                        SCREENMAN:GetTopScreen():OpenOptionsList(p.PlayerNumber)
+                        MESSAGEMAN:Broadcast("OptionsListPlaySound")
+                    end
+             end
+            },
+        }
+    elseif string.sub(ProductVersion(),1,3) ~= "LTS" then
+        if SN3Debug then
+            SCREENMAN:SystemMessage("AlphaV detected! Changing OptionsList actor call!")
+        end
+        t[#t+1] = Def.ActorFrame{
+            Def.OptionsList {
+                Name="OptionsList" .. pname(pn),
+                Player=pn,
+                InitCommand=function(s) s:ztestmode('ZTestMode_WriteOnPass'):MaskDest() end,
+                CodeMessageCommand=function(self, params)
+                    if ((params.Name == "OpenOpList" and not MenuButtonsOnly) or
+                        params.Name == "OpenOpListButton") and params.PlayerNumber == pn and not IsMenuOpen[pn] then
+                        self:Open()
+                        MESSAGEMAN:Broadcast("OptionsListPlaySound")
+                    end
+                end
+            },
+        }
+    end
 
     t[#t+1] = Def.ActorFrame{
         InitCommand=function(s)
@@ -410,19 +445,6 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 
         Def.Quad {
             InitCommand=function(self) self:setsize(620, 360):xy(0, 332):valign(0):MaskSource() end,
-        },
-
-        Def.OptionsList {
-            Name="OptionsList" .. pname(pn),
-            Player=pn,
-            InitCommand=function(s) s:ztestmode('ZTestMode_WriteOnPass'):MaskDest() end,
-            CodeMessageCommand=function(self, params)
-                if ((params.Name == "OpenOpList" and not MenuButtonsOnly) or
-                    params.Name == "OpenOpListButton") and params.PlayerNumber == pn and not IsMenuOpen[pn] then
-                    self:Open()
-                    MESSAGEMAN:Broadcast("OptionsListPlaySound")
-                end
-            end
         },
         --Characters
         Def.ActorFrame{
