@@ -339,7 +339,8 @@ local function genScrollerFrame(pn)
 	
 			-- Force the scroller to update its items.
 			self:SetCurrentAndDestinationItem( selection[pn]-1 )
-			self:playcommand("CheckItem")
+			self:sleep(0.1)
+			self:queuecommand("CheckItem")
 		end,
 		LoadFunction = function(self, itemIndex)
 			-- This will tell the scroller how many items will be generated for the scroller. It just needs a number.
