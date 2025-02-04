@@ -495,7 +495,7 @@ for _,pn in pairs(GAMESTATE:GetEnabledPlayers()) do
 				self:xy(pn==PLAYER_1 and 400 or -400,-40)
 			end,
 			StartSelectingStepsMessageCommand=function(self)
-				self:finishtweening():y(pn==PLAYER_1 and -SCREEN_HEIGHT*2 or SCREEN_HEIGHT*2)
+				self:y(pn==PLAYER_1 and -SCREEN_HEIGHT*2 or SCREEN_HEIGHT*2)
 				:decelerate(0.4):y(-40)
 			end,
 			RemoveCommand=function(s) s:finishtweening():accelerate(0.5):addy(pn==PLAYER_1 and SCREEN_HEIGHT*2 or -SCREEN_HEIGHT*2) end,
