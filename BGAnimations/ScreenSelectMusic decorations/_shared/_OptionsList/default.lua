@@ -197,9 +197,9 @@ end
 for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
     local OptionsListActor, OptionsListMenu
     local numRows
-    if (string.sub(ProductVersion(),1,3) == "LTS") or (tonumber((string.sub(ProductVersion(),1,3)) == 0.4)) then
+    if (string.sub(ProductVersion(),1,3) == "LTS") then
         if SN3Debug then
-            SCREENMAN:SystemMessage("LTS or below detected! Changing OptionsList actor call! Version: "..tonumber(string.sub(ProductVersion(),1,3)))
+            SCREENMAN:SystemMessage("LTS or below detected! Changing OptionsList actor call!")
         end
         t[#t+1] = Def.ActorFrame{
             Def.Actor{

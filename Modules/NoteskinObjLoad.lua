@@ -3,7 +3,7 @@ local Player = Args.Player
 local NoteskinToUse = Args.NoteSkin
 local curgame = GAMESTATE:GetCurrentGame():GetName()
 
-local GameDirections = { ["dance"] = "Down", ["pump"] = "UpLeft" }
+local GameDirections = { ["dance"] = "Down", ["groove"] = "Down", ["pump"] = "UpLeft" }
 
 local nbox
 if NoteskinToUse ~= "EXIT" then
