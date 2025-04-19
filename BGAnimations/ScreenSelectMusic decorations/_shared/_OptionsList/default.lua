@@ -45,8 +45,8 @@ table.insert(fixedNS,"EXIT")
 
 
 local fixedChar = Characters.GetAllCharacterNames()
-table.insert(fixedChar, 1, "OFF")
-if #fixedChar > 1 and fixedChar[1] ~= "OFF" then
+if #fixedChar > 1 then
+    table.insert(fixedChar, 1, "OFF")
     if SN3Debug then SCREENMAN:SystemMessage("Found "..#fixedChar.." characters!") end
     table.insert(fixedChar, 2, "RANDOM")
 else

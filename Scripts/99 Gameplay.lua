@@ -122,7 +122,7 @@ function SongMeasureSec()
 		sec = 60/bpm*4*m*(n/d)
 	end
 	
-	return sec
+	return sec/1.75
 end
 
 function BeginOutDelay()
