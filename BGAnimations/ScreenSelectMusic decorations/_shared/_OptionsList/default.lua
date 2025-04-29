@@ -197,7 +197,7 @@ end
 for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
     local OptionsListActor, OptionsListMenu
     local numRows
-    if (string.sub(ProductVersion(),1,3) == "LTS") then
+    if (string.find(ProductVersion(), "LTS")) then
         if SN3Debug then
             SCREENMAN:SystemMessage("LTS or below detected! Changing OptionsList actor call!")
         end
