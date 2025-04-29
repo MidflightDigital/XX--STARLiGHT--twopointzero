@@ -197,10 +197,10 @@ end
 for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
     local OptionsListActor, OptionsListMenu
     local numRows
-    if (string.find(ProductVersion(), "LTS")) then
-        if SN3Debug then
-            SCREENMAN:SystemMessage("LTS or below detected! Changing OptionsList actor call!")
-        end
+    --if (string.find(ProductVersion(), "LTS")) then
+        --if SN3Debug then
+        --    SCREENMAN:SystemMessage("LTS or below detected! Changing OptionsList actor call!")
+        --end
         t[#t+1] = Def.ActorFrame{
             Def.Actor{
                 Name="OptionsList" .. pname(pn),
@@ -213,7 +213,7 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
              end
             },
         }
-    else
+    --[[else
         if SN3Debug then
             SCREENMAN:SystemMessage("AlphaV or above detected! Changing OptionsList actor call! Version: "..string.sub(ProductVersion(),1,3))
         end
@@ -231,7 +231,7 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
                 end
             },
         }
-    end
+    end]]
 
     t[#t+1] = Def.ActorFrame{
         InitCommand=function(s)
