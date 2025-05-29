@@ -116,6 +116,12 @@ local Prefs =
 		Default = false,
 		Choices = {"Off", "On"},
 		Values = {false,true}
+	},
+	PauseMenu = 
+	{
+		Default = false,
+		Choices = {"Off", "On"},
+		Values = {false,true},
 	}
 };
 
