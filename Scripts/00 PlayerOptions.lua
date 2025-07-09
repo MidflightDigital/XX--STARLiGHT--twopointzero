@@ -1018,8 +1018,7 @@ function ExclusiveNoteskins()
 		SaveSelections = function(self,list,pn)
 			for i,v2 in ipairs(self.Choices) do
 				if list[i] then
-					prev_note_name, succeeded=GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred"):NoteSkin(v2)
-					SCREENMAN:SystemMessage(GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred"):NoteSkin())
+					GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred"):NoteSkin(v2)
 				end
 			end
 		end

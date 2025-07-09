@@ -28,6 +28,9 @@ local function input(event, param)
 			MESSAGEMAN:Broadcast("MusicWheelSort")
 			if sortorders[curIndex] == "EasyMeter" then
 				mw:ChangeSort("SortOrder_"..ToEnumShortString(steps:GetDifficulty()).."Meter")
+			elseif sortorders[curIndex] == "Preferred" then
+				mw:ChangeSort("SortOrder_Preferred")
+				SONGMAN:SetPreferredSongs("PreferredSongs.txt")
 			else
 				mw:ChangeSort("SortOrder_"..sortorders[curIndex])
 			end

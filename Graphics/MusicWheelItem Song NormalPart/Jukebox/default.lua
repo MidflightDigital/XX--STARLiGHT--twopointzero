@@ -10,7 +10,7 @@ return Def.ActorFrame{
 			end
 		end
 	};
-	Def.Banner{
+	Def.Sprite{
 		Name="SongCD";
 		SetMessageCommand=function(self,params)
 			self:ztest(1)

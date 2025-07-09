@@ -6,11 +6,15 @@ local function GetExpandedSectionIndex()
 	local mWheel
 	if SCREENMAN:GetTopScreen():GetChild("MusicWheel")  ~= nil then
 		mWheel = SCREENMAN:GetTopScreen():GetChild("MusicWheel")
-		local curSections = mWheel:GetCurrentSections()
+		if PREFSMAN:GetPreference("MusicWheelUsesSections") ~= "Always" then
+			return 1
+		else
+			local curSections = mWheel:GetCurrentSections()
 	
-		for i=1, #curSections do
-			if curSections[i] == GAMESTATE:GetExpandedSectionName() then
-				return i-1
+			for i=1, #curSections do
+				if curSections[i] == GAMESTATE:GetExpandedSectionName() then
+					return i-1
+				end
 			end
 		end
 	end
@@ -19,6 +23,9 @@ end
 local function SetXYPosition(self, param)
 	if GetExpandedSectionIndex() then
 		local index = param.Index-GetExpandedSectionIndex()-1
+		if PREFSMAN:GetPreference("MusicWheelUsesSections") ~= "Always" then
+			index = param.Index
+		end
 		if index then
 			if index%3 == 0 then
 				self:x(-250):y(80)
