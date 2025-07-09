@@ -18,6 +18,7 @@ return Def.ActorFrame{
             Title:visible(true):settext(song:GetDisplayFullTitle()):diffuse(SongAttributes.GetMenuColor(song)):y(-6):strokecolor(ColorDarkTone(SongAttributes.GetMenuColor(song)))
             Artist:visible(true):settext(song:GetDisplayArtist()):diffuse(SongAttributes.GetMenuColor(song)):strokecolor(ColorDarkTone(SongAttributes.GetMenuColor(song)))
         else
+            Artist:settext(""):visible(false)
             if mw:GetSelectedType('WheelItemDataType_Section') then
                 if mw:GetSelectedSection() ~= "" then
                     Jacket:Load(jk.GetGroupGraphicPath(mw:GetSelectedSection(),"Jacket",GAMESTATE:GetSortOrder()))
