@@ -375,6 +375,10 @@ return Def.ActorFrame{
 				elseif so == "Title" then
 					s:GetChild("Text"):strokecolor(ColorDarkTone(SongAttributes.GetGroupColor(GAMESTATE:GetCurrentSong():GetGroupName())))
 					:settext(THEME:GetString("ScreenSelectMusic","GLabelFrom")..": "..SongAttributes.GetGroupName(GAMESTATE:GetCurrentSong():GetGroupName()))
+				elseif so  == "Preferred" then
+					s:GetChild("Text"):strokecolor(ColorDarkTone(SongAttributes.GetMenuColor(GAMESTATE:GetCurrentSong())))
+					:settext(SongAttributes.GetGroupName(mw:GetSelectedSection()))
+					s:GetChild("Label"):diffuse(SongAttributes.GetMenuColor(GAMESTATE:GetCurrentSong()))
 				else
 					s:GetChild("Label"):diffuse(SongAttributes.GetGroupColor(GAMESTATE:GetCurrentSong():GetGroupName()))
 					s:GetChild("Text"):settext("")
