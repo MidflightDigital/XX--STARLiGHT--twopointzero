@@ -264,6 +264,7 @@ end
 	return "ScreenSelectMusic"
 end]]
 
+CustStage = 1
 function CustStageCheck()
     if not GAMESTATE:IsAnExtraStage() then
         if GAMESTATE:GetCurrentStage() == "Stage_Final" then
