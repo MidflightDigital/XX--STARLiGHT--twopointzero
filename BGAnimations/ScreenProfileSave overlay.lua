@@ -32,11 +32,7 @@ for _, plr in pairs(GAMESTATE:GetEnabledPlayers()) do
 		MyGrooveRadar.ApplyBonuses(profileID, STATSMAN:GetCurStageStats():GetPlayerStageStats(plr), styleName)
 		ProfilePrefs.Save(profileID)
 	end
-	--stepmania checks the last used HS name and if it's empty, it saves it as "EVNT" in event mode.
-	--Except you know, there is no last used hs name or it's not handled properly.
-	-- Inori
-	PROFILEMAN:GetProfile(plr):SetLastUsedHighScoreName(PROFILEMAN:GetProfile(plr):GetDisplayName())
-    GAMESTATE:StoreRankingName(plr,PROFILEMAN:GetProfile(plr):GetDisplayName())
+  GAMESTATE:StoreRankingName(plr,PROFILEMAN:GetProfile(plr):GetDisplayName())
 end
 MyGrooveRadar.SaveAllRadarData()
 

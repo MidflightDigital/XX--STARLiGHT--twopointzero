@@ -1,4 +1,5 @@
 local player = ...
+local defaultName = "STARLGHT"
 
 local CHARACTER_MAP = {
 {"A","B","C","D","E","F","G","H","I","J"},
@@ -169,9 +170,13 @@ local t = Def.ActorFrame{
 						local selection = CHARACTER_MAP[SELECTION_Y][SELECTION_X]
 						if selection == "Enter" then
 							if string.len(name) == 0 then
-								name = "STARLGHT"
+								name = defaultName
 							end
-							PROFILEMAN:GetProfile(player):SetDisplayName(name)
+							-- At the end of ScreenGameplay, Stepmania checks the last used highscore name and if it's empty, it 
+							-- saves the score as "EVNT" in event mode. We can fix that by setting it from the very start here.
+							local profile = PROFILEMAN:GetProfile(player)
+							profile:SetDisplayName(name)
+							profile:SetLastUsedHighScoreName(name)
 							setenv("keysetSDDRN"..ToEnumShortString(player),1)
 							if GAMESTATE:GetNumPlayersEnabled() == 1 then
 								local mp = GAMESTATE:GetMasterPlayerNumber()
