@@ -1,6 +1,24 @@
-local t = LoadFallbackB();
+local t = LoadFallbackB()
 
 CustStage = 1
+
+local autoSelectStyle = ThemePrefs.Get('AutoSelectStyle')
+if autoSelectStyle and autoSelectStyle ~= '' then
+  if autoSelectStyle == 'single'
+  or autoSelectStyle == 'double'
+  or autoSelectStyle == 'versus' then
+    t[#t+1] = Def.Actor{
+      OnCommand=function(s)
+        SCREENMAN:SystemMessage('Auto set style to: '..autoSelectStyle)
+        GAMESTATE:SetCurrentStyle(autoSelectStyle)
+        SCREENMAN:SetNewScreen(Branch.AfterSelectStyle())
+      end
+    }
+    return t
+  else
+    Warning('ThemePerfs: Invalid AutoSelectStyle value "'..autoSelectStyle..'", ignoring.')
+  end
+end 
 
 for i=1,2 do
   t[#t+1] = Def.ActorFrame{
