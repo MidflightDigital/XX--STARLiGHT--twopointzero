@@ -3,41 +3,44 @@ local top
 local jk = LoadModule"Jacket.lua"
 
 local function GetExpandedSectionIndex()
-	local mWheel
-	if SCREENMAN:GetTopScreen():GetChild("MusicWheel")  ~= nil then
-		mWheel = SCREENMAN:GetTopScreen():GetChild("MusicWheel")
-		if PREFSMAN:GetPreference("MusicWheelUsesSections") ~= "Always" then
-			return 1
-		else
-			local curSections = mWheel:GetCurrentSections()
+	if ToEnumShortString(PREFSMAN:GetPreference("MusicWheelUsesSections")) ~= "Always" then return 0 end
 	
-			for i=1, #curSections do
-				if curSections[i] == GAMESTATE:GetExpandedSectionName() then
-					return i-1
-				end
-			end
+	local expandedSectionName = GAMESTATE:GetExpandedSectionName()
+	if expandedSectionName == '' then return 0 end
+	
+	local mWheel = SCREENMAN:GetTopScreen():GetChild("MusicWheel")
+	if not mWheel then return 0 end
+	
+	local currentSections = mWheel:GetCurrentSections()
+	for index, name in ipairs(currentSections) do
+		if name == expandedSectionName then
+			return index
 		end
 	end
+	
+	return 0
 end
 
+
 local function SetXYPosition(self, param)
-	if GetExpandedSectionIndex() then
-		local index = param.Index-GetExpandedSectionIndex()-1
-		if PREFSMAN:GetPreference("MusicWheelUsesSections") ~= "Always" then
-			index = param.Index
-		end
-		if index then
-			if index%3 == 0 then
-				self:x(-250):y(80)
-			elseif index%3 == 1 then
-				self:x(0):y(0)
-			else
-				self:x(250):y(-80)
-			end
-		
-			self:addy(-30)
-		end
+	local column = (param.Index - GetExpandedSectionIndex()) % 3
+	local width, height = 250, 80 -- height should be the same as the x-factor in ItemTransformFunction
+	
+	
+	local x, y
+	if column == 0 then
+		x = -width
+		y = 0
+	elseif column == 1 then
+		x = 0
+		y = -height
+	elseif column == 2 then
+		x = width
+		y = -height * 2
 	end
+	y = y + (height - 30)
+	
+	self:xy(x, y)
 end
 
 local clearglow = Def.ActorFrame{};
