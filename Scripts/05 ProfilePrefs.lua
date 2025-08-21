@@ -23,8 +23,8 @@ local defaultPrefs =
 	TowelPos = 0,
 	ex_score = false,
 	exstars = 0,
-	evalpane1 = 2,
-	evalpane2 = 0,
+	evalpane1 = 0,
+	evalpane2 = 2,
 	targetscore = "Off",
 	guidelines_top_aligned = false,
 	scorelabel = "profile",
@@ -33,22 +33,20 @@ local defaultPrefs =
 }
 local gameSeed = nil
 local machinePrefs = DeepCopy(defaultPrefs)
-local profilePrefsSetting = create_setting('ProfilePrefs','ProfilePrefs.lua',
-	defaultPrefs, 1, {})
-
+local profilePrefsSetting = create_setting('ProfilePrefs','ProfilePrefs.lua', defaultPrefs, 1, {})
+local allowMachineProfileSaveToFile = true
 ProfilePrefs = {}
 
 function ProfilePrefs.Read(profileID)
-	if profileID == "!MACHINE" then
+	if not allowMachineProfileSaveToFile and profileID == "!MACHINE" then
 		if GAMESTATE then
 			local curGameSeed = GAMESTATE:GetGameSeed()
 			if curGameSeed ~= gameSeed then
+				gameSeed = curGameSeed
 				machinePrefs = DeepCopy(defaultPrefs)
 			end
-			return machinePrefs
-		else
-			return DeepCopy(defaultPrefs)
 		end
+		return machinePrefs
 	end
 	if not profilePrefsSetting:is_loaded(profileID) then
 		profilePrefsSetting:load(profileID)
@@ -57,7 +55,7 @@ function ProfilePrefs.Read(profileID)
 end
 
 function ProfilePrefs.Save(profileID)
-	if profileID == "!MACHINE" then
+	if not allowMachineProfileSaveToFile and profileID == "!MACHINE" then
 		--don't do anything
 		return
 	end
