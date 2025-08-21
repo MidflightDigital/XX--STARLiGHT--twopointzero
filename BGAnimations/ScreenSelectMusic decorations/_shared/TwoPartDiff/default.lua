@@ -1,5 +1,6 @@
 local Y_SPACING = 140
-local Radar = LoadModule "DDR Groove Radar.lua"
+local Radar = LoadModule('DDR Groove Radar.lua')
+local ScoreAndGrade = LoadModule('ScoreAndGrade.lua')
 local numItems = 7
 
 local ver = ""
@@ -139,175 +140,78 @@ local function RivalsPanel(pn)
 			SetCommand=function(s)
 				local c = s:GetChildren()
 				local song = GAMESTATE:GetCurrentSong()
-				if song then
-					local steps = GAMESTATE:GetCurrentSteps(pn)
-					if steps then
-						c.Bar_underlay:visible(true)
-						if rival == 1 then
-							c.Bar_underlay:diffuse(Color.Red)
-							c.Text_place:settext(THEME:GetString("RecordList","MachineBest"))
-						elseif rival == 2 then
-							c.Bar_underlay:diffuse(color("#00a651"))
-							c.Text_place:settext(THEME:GetString("RecordList","BestScore"))
-						else
-							c.Bar_underlay:diffuse(color("#006cff"))
-							if rival == 3 then
-								c.Text_place:settext(THEME:GetString("RecordList","Rival1"))
-							elseif rival == 4 then
-								c.Text_place:settext(THEME:GetString("RecordList","Rival2"))
-							elseif rival == 5 then
-								c.Text_place:settext(THEME:GetString("RecordList","Rival3"))
-							end
-						end
-					end
-
-					local profile
-					local scorelist
-					local scores
-					local topgrade
-					local topscore = 0
-					c.GradeArea:visible(false)
-					c.Text_score:settext("")
-					c.Text_name:settext("")
-					c.GradeArea:GetChild("FCStar"):visible(false)
-
+				local steps = GAMESTATE:GetCurrentSteps(pn)
+				if song and steps then
+					c.Bar_underlay:visible(true)
 					if rival == 1 then
-						--Always show machine best.
-						profile = PROFILEMAN:GetMachineProfile()
-						scorelist = profile:GetHighScoreList(song,steps)
-						scores = scorelist:GetHighScores()
-						if scores[1] then
-							if ThemePrefs.Get("ConvertScoresAndGrades") then
-								topscore = SN2Scoring.GetSN2ScoreFromHighScore(steps, scores[1])
-								topgrade = SN2Grading.ScoreToGrade(topscore,steps)
-							else
-								topscore = scores[1]:GetScore()
-								topgrade = scores[1]:GetGrade()
-							end
-						end
-						if topscore ~= 0 then
-							c.Text_score:settext(commify(topscore))
-							if scores[1]:GetName() ~= nil then
-								if scores[1]:GetName() == "" then
-									c.Text_name:settext("NO NAME")
-								else
-									c.Text_name:settext(scores[1]:GetName())
-								end
-							else
-								c.Text_name:settext("STEP")
-							end
-							local misses = scores[1]:GetTapNoteScore("TapNoteScore_Miss")+scores[1]:GetTapNoteScore("TapNoteScore_CheckpointMiss")
-                    		local boos = scores[1]:GetTapNoteScore("TapNoteScore_W5")
-                    		local goods = scores[1]:GetTapNoteScore("TapNoteScore_W4")
-                    		local greats = scores[1]:GetTapNoteScore("TapNoteScore_W3")
-                    		local perfects = scores[1]:GetTapNoteScore("TapNoteScore_W2")
-                    		local marvelous = scores[1]:GetTapNoteScore("TapNoteScore_W1")
-							c.GradeArea:visible(true)
-							c.GradeArea:GetChild("Grade"):Load(THEME:GetPathG("myMusicWheel/GradeDisplayEval",ToEnumShortString(topgrade)))
-							if (misses+boos) == 0 and scores[1]:GetScore() > 0 and (marvelous+perfects)>0 then
-								c.GradeArea:GetChild("FCStar"):visible(true)
-								if (greats+perfects) == 0 then
-									c.GradeArea:GetChild("FCStar"):diffuse(GameColor.Judgment["JudgmentLine_W1"])
-								  :glowblink():effectperiod(0.20)
-								elseif greats == 0 then
-									c.GradeArea:GetChild("FCStar"):diffuse(GameColor.Judgment["JudgmentLine_W2"])
-								  :glowshift()
-								elseif (misses+boos+goods) == 0 then
-									c.GradeArea:GetChild("FCStar"):diffuse(GameColor.Judgment["JudgmentLine_W3"])
-								  :stopeffect()
-								elseif (misses+boos) == 0 then
-									c.GradeArea:GetChild("FCStar"):diffuse(GameColor.Judgment["JudgmentLine_W4"])
-									:stopeffect()
-								end;
-							end
-						end
+						c.Bar_underlay:diffuse(Color.Red)
+						c.Text_place:settext(THEME:GetString('RecordList','MachineBest'))
 					elseif rival == 2 then
-						--Always show player's High Score
-						profile = PROFILEMAN:GetProfile(pn)
-						scorelist = profile:GetHighScoreList(song,steps)
-						scores = scorelist:GetHighScores()
-						if scores[1] then
-							if ThemePrefs.Get("ConvertScoresAndGrades") then
-								topscore = SN2Scoring.GetSN2ScoreFromHighScore(steps, scores[1])
-								topgrade = SN2Grading.ScoreToGrade(topscore,steps)
-							else
-								topscore = scores[1]:GetScore()
-								topgrade = scores[1]:GetGrade()
-							end
-						end
-						if topscore ~= 0 then
-							c.Text_score:settext(commify(topscore))
-							if scores[1]:GetName() ~= nil then
-								if scores[1]:GetName() == "" then
-									c.Text_name:settext("NO NAME")
-								else
-									c.Text_name:settext(scores[1]:GetName())
-								end
-							else
-								c.Text_name:settext("STEP")
-							end
-							local misses = scores[1]:GetTapNoteScore("TapNoteScore_Miss")+scores[1]:GetTapNoteScore("TapNoteScore_CheckpointMiss")
-                    		local boos = scores[1]:GetTapNoteScore("TapNoteScore_W5")
-                    		local goods = scores[1]:GetTapNoteScore("TapNoteScore_W4")
-                    		local greats = scores[1]:GetTapNoteScore("TapNoteScore_W3")
-                    		local perfects = scores[1]:GetTapNoteScore("TapNoteScore_W2")
-                    		local marvelous = scores[1]:GetTapNoteScore("TapNoteScore_W1")
-							c.GradeArea:visible(true)
-							c.GradeArea:GetChild("Grade"):Load(THEME:GetPathG("myMusicWheel/GradeDisplayEval",ToEnumShortString(topgrade)))
-							if (misses+boos) == 0 and scores[1]:GetScore() > 0 and (marvelous+perfects)>0 then
-								c.GradeArea:GetChild("FCStar"):visible(true)
-								if (greats+perfects) == 0 then
-									c.GradeArea:GetChild("FCStar"):diffuse(GameColor.Judgment["JudgmentLine_W1"])
-								  :glowblink():effectperiod(0.20)
-								elseif greats == 0 then
-									c.GradeArea:GetChild("FCStar"):diffuse(GameColor.Judgment["JudgmentLine_W2"])
-								  :glowshift()
-								elseif (misses+boos+goods) == 0 then
-									c.GradeArea:GetChild("FCStar"):diffuse(GameColor.Judgment["JudgmentLine_W3"])
-								  :stopeffect()
-								elseif (misses+boos) == 0 then
-									c.GradeArea:GetChild("FCStar"):diffuse(GameColor.Judgment["JudgmentLine_W4"])
-									:stopeffect()
-								end;
-							end
-						end
+						c.Bar_underlay:diffuse(color('#00a651'))
+						c.Text_place:settext(THEME:GetString('RecordList','BestScore'))
+					else
+						c.Bar_underlay:diffuse(color('#006cff'))
+						c.Text_place:settext(THEME:GetString('RecordList','Rival'..(rival-2)))
 					end
-							
 				end
+
+				local profile
+				if rival == 1 then
+					--Always show machine best.
+					profile = PROFILEMAN:GetMachineProfile()
+				elseif rival == 2 then
+					--Always show player's High Score
+					profile = PROFILEMAN:GetProfile(pn)
+				end
+				
+				local score
+				if profile then
+					local scores = profile:GetHighScoreList(song, steps):GetHighScores()
+					score = scores[1]
+				end
+				
+				if not score then
+					c.Text_name:visible(false)
+					c.Text_name:settext('')
+					c.Text_score:visible(false)
+					c.GradeFrame:visible(false)
+					return
+				end
+				
+				c.Text_name:visible(true)
+				if score:GetName() == nil then
+					c.Text_name:settext('STEP')
+				elseif score:GetName() == '' then
+						c.Text_name:settext('NO NAME')
+				else
+					c.Text_name:settext(score:GetName())
+				end
+				
+				s:playcommand('SetGrade', { Highscore = score, Steps = steps })
 			end,
 			Def.Quad{
-				Name="Bar_underlay";
+				Name='Bar_underlay';
 				InitCommand=function(s) s:visible(false):setsize(410,28):faderight(0.75):diffusealpha(0.5) end,
 			};
 			Def.BitmapText{
-                Font="_avenirnext lt pro bold/25px",
-                Name="Text_place";
+                Font='_avenirnext lt pro bold/25px',
+                Name='Text_place';
                 Text=rival;
                 InitCommand=function(s) s:x(-200):strokecolor(Alpha(Color.Black,0.5)):zoom(0.7):halign(0):maxwidth(140) end,
             };
 			Def.BitmapText{
-                Name="Text_name",
-                Font="_avenirnext lt pro bold/20px",
+                Name='Text_name',
+                Font='_avenirnext lt pro bold/20px',
                 InitCommand=function(s) s:x(-60):halign(0):diffuse(Color.White):strokecolor(Color.Black):zoom(0.8) end,
             };
-			Def.BitmapText{
-                Name="Text_score",
-                Font="_avenirnext lt pro bold/20px",
-                InitCommand=function(s) s:x(160):halign(1):diffuse(Color.White):strokecolor(Color.Black):zoom(0.8) end,
-            };
-			Def.ActorFrame{
-				Name="GradeArea",
+			ScoreAndGrade.GetScoreActor{}..{
+				Name='Text_score',
+				InitCommand=function(s) s:x(160):halign(1):diffuse(Color.White):strokecolor(Color.Black):zoom(0.8) end,
+			},
+			ScoreAndGrade.GetGradeActor{}..{
+				Name='GradeFrame',
 				InitCommand=function(s) s:x(190) end,
-				Def.Sprite{
-					Name="Grade",
-				},
-				Def.Sprite{
-					Name="FCStar",
-					Texture=THEME:GetPathG("","myMusicWheel/star.png"),
-					InitCommand=function(s) s:zoom(0.4):xy(14,5) end,
-				}
 			}
-			
 		}
 	end
 	return t
@@ -530,10 +434,10 @@ for _,pn in pairs(GAMESTATE:GetEnabledPlayers()) do
 				}
 			},
 			RivalsPanel(pn)..{
-		        InitCommand=function(s) s:y(260) end,
+				InitCommand=function(s) s:y(260) end,
 				StartSelectingStepsMessageCommand=function(s) s:queuecommand("Set") end,
 				ChangeStepsMessageCommand=function(s) s:queuecommand("Set") end,
-            };
+			},
 			RadarPanel(pn)..{
 				InitCommand=function(s) s:diffusealpha(0) end,
 				StartSelectingStepsMessageCommand=function(s) s:sleep(0.4):smooth(0.1):diffusealpha(0.5)

@@ -1,6 +1,7 @@
 local dim_vol = 1
-local jk = LoadModule "Jacket.lua"
-local screen = Var("LoadingScreen")
+local jk = LoadModule('Jacket.lua')
+local screen = Var('LoadingScreen')
+local ScoreAndGrade = LoadModule('ScoreAndGrade.lua')
 
 -- Timing mode
 local TimingMode = LoadModule("Config.Load.lua")("SmartTimings","Save/OutFoxPrefs.ini") or "Unknown"
@@ -149,88 +150,95 @@ t[#t+1] = Def.ActorFrame{
   };
 };
 
+local function FindText(pss)
+  return string.format('%02d STAGE', pss:GetSongsPassed())
+end
+
 for _, pn in pairs(GAMESTATE:GetEnabledPlayers()) do
+  local function m(metric)
+    metric = metric:gsub('PN', ToEnumShortString(pn))
+    return THEME:GetMetric(Var('LoadingScreen'),metric)
+  end
+  
   local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
-  local Score;
+  local steps = GAMESTATE:GetCurrentSteps(pn)
 
-  --[[if ThemePrefs.Get("ConvertScoresAndGrades") == true then
-    Score = SN2Scoring.GetSN2ScoreFromHighScore(GAMESTATE:GetCurrentSteps(pn),pss:GetScore())
-  else]]
-    Score = pss:GetScore()
-  --end
-
-  local EXScore = SN2Scoring.ComputeEXScoreFromData(SN2Scoring.GetCurrentScoreData(pss));
   local seconds = pss:GetSurvivalSeconds()
   local short_plr = ToEnumShortString(pn)
   local profileID = GetProfileIDForPlayer(pn)
   local pPrefs = ProfilePrefs.Read(profileID)
-  local ex_score = pPrefs.ex_score
+  local showEXScore = pPrefs.ex_score
 
-  local function FindText(pss)
-    return string.format("%02d STAGE",pss:GetSongsPassed())
-  end
-
-  t[#t+1] = loadfile(THEME:GetPathB("ScreenEvaluationNormal","decorations/grade"))(pn)
+  t[#t+1] = ScoreAndGrade.GetGradeActor{
+      Big = true,
+      ActorConcat = {
+        Grade = {
+          OnCommand = m('GradePNOnCommand'),
+          OffCommand = m('GradePNOffCommand')
+        }
+      }
+    }..{
+    InitCommand = function(s)
+      local c = s:GetChildren()
+      c.Grade:xy(m('GradePNX'), m('GradePNY'))		
+      c.FullCombo:xy(m('RingPNX'), m('RingPNY'))
+      
+      s:playcommand('SetGrade', { Highscore = pss, Steps = steps })
+    end,
+  }
 
   t[#t+1] = Def.ActorFrame{
-    Name="Scores",
+    Name='Scores',
     InitCommand=function(s) s:y(_screen.cy-2):zoom(0)
       if pn == PLAYER_1 then
         s:x(IsUsingWideScreen() and _screen.cx-500 or _screen.cx-440)
       elseif pn == PLAYER_2 then
         s:x(IsUsingWideScreen() and _screen.cx+500 or _screen.cx+440)
       end
+      
+      s:playcommand('SetGrade', { Highscore = pss, Steps = steps })
     end,
     OnCommand=function(s) s:zoom(0):sleep(0.3):bounceend(0.2):zoom(2) end,
     OffCommand=function(s) s:linear(0.2):zoom(0) end,
-    Def.RollingNumbers{
-      Font="_avenirnext lt pro bold/46px",
-      OnCommand=function(s)
-        s:strokecolor(Color.Black):visible(not ex_score)
-        :Load("RollingNumbersEvaluation"):targetnumber(Score)
-      end,
-    };
-    Def.RollingNumbers{
-      Font="_avenirnext lt pro bold/46px",
-      OnCommand=function(s)
-        s:strokecolor(Color.Black):visible(ex_score)
-        :Load("RollingNumbersEXScore"):targetnumber(EXScore)
-      end,
-    };
+    ScoreAndGrade.GetScoreActorRolling{
+      Font = '_avenirnext lt pro bold/46px',
+      Load = showEXScore and 'RollingNumbersEXScore' or 'RollingNumbersEvaluation',
+      ShowEXScore = showEXScore,
+    }..{
+      InitCommand=function(s) s:strokecolor(Color.Black) end,
+    },
     Def.BitmapText{
-      Font="_avenirnext lt pro bold/25px";
+      Font='_avenirnext lt pro bold/25px';
       InitCommand=function(s) s:xy(120,26):strokecolor(Color.Black):halign(1):zoom(0.5) end,
-      OnCommand=function(self)
-        self:hibernate(0.6)
-        local short = ToEnumShortString(pn)
-        local steps = GAMESTATE:GetCurrentSteps(pn)
-        local song=GAMESTATE:GetCurrentSong()
-        if song then
-          local st=GAMESTATE:GetCurrentStyle():GetStepsType();
+      OnCommand=function(s)
+        s:hibernate(0.6)
+        local song = GAMESTATE:GetCurrentSong()
+        if not song then s:visible(false); return end
   
-          if PROFILEMAN:IsPersistentProfile(pn) then
-            profile = PROFILEMAN:GetProfile(pn)
-          else
-            profile = PROFILEMAN:GetMachineProfile()
-          end;
-  
-          scorelist = profile:GetHighScoreList(song,steps)
-          local scores = scorelist:GetHighScores()
-          local HS = 0
-  
-          if scores[2] then
-            HS = SN2Scoring.GetSN2ScoreFromHighScore(steps, scores[2])
-          end;
-          local adjHS = Score-HS
-          if adjHS > 0 then
-            self:settextf("+".."%7d",adjHS)
-            self:diffuse(color("0.3,0.7,1,1"))
-          else
-            self:settextf("%7d",adjHS)
-            self:diffuse(color("1,0.3,0.5,1"))
-          end
+        local profile, compareIndex
+        if PROFILEMAN:IsPersistentProfile(pn) then
+          profile = PROFILEMAN:GetProfile(pn)
+          compareIndex = pss:GetPersonalHighScoreIndex() == 0 and 2 or 1
+        else
+          profile = PROFILEMAN:GetMachineProfile()
+          compareIndex = pss:GetMachineHighScoreIndex() == 0 and 2 or 1
         end
-  
+        
+        local scores = profile:GetHighScoreList(song, steps):GetHighScores()
+        local compareHS = scores[compareIndex]
+        if not compareHS then s:visible(false); return end
+        s:visible(true)
+        
+        local compareScore = ScoreAndGrade.GetScore(compareHS, steps, showEXScore)
+        local currentScore = ScoreAndGrade.GetScore(pss, steps, showEXScore)
+        local delta = currentScore - compareScore
+        if delta > 0 then
+          s:settextf('+%7d', delta)
+          s:diffuse(color('0.3,0.7,1,1'))
+        else
+          s:settextf('-%7d', math.abs(delta))
+          s:diffuse(color('1,0.3,0.5,1'))
+        end
       end;
     };
   };

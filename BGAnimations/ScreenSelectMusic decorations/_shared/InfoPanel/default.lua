@@ -1,5 +1,6 @@
 local pn = ...
-local Radar = LoadModule "DDR Groove Radar.lua"
+local Radar = LoadModule('DDR Groove Radar.lua')
+local ScoreAndGrade = LoadModule('ScoreAndGrade.lua')
 
 local ver = ""
 if ThemePrefs.Get("SV") == "onepointzero" then
@@ -31,21 +32,30 @@ t[#t+1] = Def.ActorFrame{
             if steps then
                 c.Bar_underlay:visible(true)
                 c.Text_name:settext(PROFILEMAN:GetProfile(pn):GetDisplayName())
-                scorelist = PROFILEMAN:GetProfile(pn):GetHighScoreList(song,steps)
-                assert(scorelist)
-                local scores = scorelist:GetHighScores()
-                assert(scores)
-                local topscore=0
-                local temp=#scores
-                if scores[1] then
-                    if ThemePrefs.Get("ConvertScoresAndGrades") then
-                        topscore = SN2Scoring.GetSN2ScoreFromHighScore(steps, scores[1])
-                    else
-                        topscore = scores[1]:GetScore()
-                    end
-                    RStats = scores[1];
+
+                local profile
+                if PROFILEMAN:IsPersistentProfile(pn) then
+                    profile = PROFILEMAN:GetProfile(pn)
+                else
+                    profile = PROFILEMAN:GetMachineProfile()
                 end
-                assert(topscore)
+
+                local scores = profile:GetHighScoreList(song, steps):GetHighScores()
+                assert(scores)
+                local score = scores[1]
+                
+                s:playcommand('SetGrade', { Highscore = score, Steps = steps })
+                
+                local topscore = 0
+                if score then
+                    if ThemePrefs.Get("ConvertScoresAndGrades") and false then
+                        topscore = SN2Scoring.GetSN2ScoreFromHighScore(steps, score)
+                    else
+                        topscore = score:GetScore()
+                    end
+                    RStats = score -- Is this a global? Or just missing a local declaration?
+                end
+                
                 if topscore ~= 0 then
                     local misses = RStats:GetTapNoteScore("TapNoteScore_Miss")+RStats:GetTapNoteScore("TapNoteScore_CheckpointMiss")
                     local boos = RStats:GetTapNoteScore("TapNoteScore_W5")
@@ -53,8 +63,8 @@ t[#t+1] = Def.ActorFrame{
                     local greats = RStats:GetTapNoteScore("TapNoteScore_W3")
                     local perfects = RStats:GetTapNoteScore("TapNoteScore_W2")
                     local marvelous = RStats:GetTapNoteScore("TapNoteScore_W1")
-                    c.Text_score:settext(commify(topscore))
-                    for i=1,temp do
+                    for i=1, #scores do
+                        -- XXX: What are we trying to do here??
                         if scores[i] then
                             topscore = scores[i];
                             assert(topscore)
@@ -90,12 +100,13 @@ t[#t+1] = Def.ActorFrame{
         Name="Text_name",
         InitCommand=function(s) s:y(-34):maxwidth(300/0.8):zoom(0.8) end,
     };
-    Def.BitmapText{
-        Font="Common normal",
-        Text="";
-        Name="Text_score",
-        InitCommand=function(s) s:xy(10,-6):halign(1) end,
-    };
+    ScoreAndGrade.GetScoreActorRolling{
+        Font = '_avenirnext lt pro bold/25px',
+        Load = 'RollingNumbersSongData',
+    }..{
+        Name='Text_score',
+        InitCommand=function(s) s:xy(0,-6):zoom(0.9) end,
+    },
     LoadActor(THEME:GetPathG("","myMusicWheel/default.lua"),pn,1,"Player","Current",diff)..{
         InitCommand=function(s) s:xy(40,-6) end,
     },

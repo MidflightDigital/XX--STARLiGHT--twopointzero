@@ -1,6 +1,7 @@
 local pn = ...
 local yspacing = 32
 local DiffList = Def.ActorFrame{};
+local ScoreAndGrade = LoadModule('ScoreAndGrade.lua')
 
 local function DrawDiffListItem(diff)
   local DifficultyListItem = Def.ActorFrame{
@@ -8,23 +9,43 @@ local function DrawDiffListItem(diff)
       s:y(Difficulty:Reverse()[diff] * yspacing)
     end,
     SetCommand=function(self)
-      self:GetChild("Meter"):visible(false)
-      local st=GAMESTATE:GetCurrentStyle():GetStepsType()
-      local song=GAMESTATE:GetCurrentSong()
-
+      local c = self:GetChildren()
+      
+      local song = GAMESTATE:GetCurrentSong()
+      local stepType = GAMESTATE:GetCurrentStyle():GetStepsType()
+      local steps
       if song then
-        if song:HasStepsTypeAndDifficulty( st, diff ) then
-          local steps = song:GetOneSteps( st, diff )
-          local meter = steps:GetMeter()
-          self:diffusealpha(1)
-
-          self:GetChild("Meter"):settext(IsMeterDec(meter)):visible(true)
-        else
-          self:diffusealpha(0.5)
-        end
-      else
+        steps = song:GetOneSteps(stepType, diff)
+      end
+      if not (song and steps) then
         self:diffusealpha(0.5)
+        c.Score:visible(false)
+        c.GradeFrame:visible(false)
+        c.Meter:visible(false)
+        return
+      end
+      self:diffusealpha(1)
+      
+      local meter = steps:GetMeter()
+      c.Meter:settext(IsMeterDec(meter)):visible(true)
+      
+      local profile
+      if PROFILEMAN:IsPersistentProfile(pn) then
+        profile = PROFILEMAN:GetProfile(pn)
+      else
+        profile = PROFILEMAN:GetMachineProfile()
       end;
+      local scores = profile:GetHighScoreList(song, steps):GetHighScores()
+      local score = scores[1]
+      if not score then
+        c.Score:visible(false)
+        c.GradeFrame:visible(false)
+        return
+      end
+      c.Score:visible(true)
+      c.GradeFrame:visible(true)
+      
+      self:playcommand('SetGrade', { Highscore = score, Steps = steps })
     end;
     Def.Quad{
       Name="Background";
@@ -57,50 +78,17 @@ local function DrawDiffListItem(diff)
       end;
     };
 
-    Def.BitmapText{
-      Font="_avenirnext lt pro bold/20px",
-      Name="Score";
-      InitCommand=function(s) s:draworder(5):x(pn==pn_2 and -69 or 69) end,
-      SetCommand=function(self)
-        self:settext("")
-
-        local st=GAMESTATE:GetCurrentStyle():GetStepsType()
-        local song=GAMESTATE:GetCurrentSong()
-        if song then
-          if song:HasStepsTypeAndDifficulty(st,diff) then
-            local steps = song:GetOneSteps(st,diff)
-
-            if PROFILEMAN:IsPersistentProfile(pn) then
-              profile = PROFILEMAN:GetProfile(pn)
-            else
-              profile = PROFILEMAN:GetMachineProfile()
-            end;
-
-            scorelist = profile:GetHighScoreList(song,steps)
-            local scores = scorelist:GetHighScores()
-            local topscore = 0
-
-            if scores[1] then
-              if ThemePrefs.Get("ConvertScoresAndGrades") == true then
-                topscore = SN2Scoring.GetSN2ScoreFromHighScore(steps, scores[1])
-              else
-                topscore = scores[1]:GetScore()
-              end
-            end;
-
-            self:strokecolor(Color.Black)
-            self:diffusealpha(1)
-
-            if topscore ~= 0 then
-                self:settext(commify(topscore))
-            end;
-          end;
-        end;
-      end;
-    };
-    LoadActor(THEME:GetPathG("","myMusicWheel/default.lua"),pn,1,"Player","One",diff)..{
-      InitCommand=function(s) s:x(pn==pn_2 and -148 or 140) end,
+    ScoreAndGrade.GetScoreActor{}..{
+      Name='Score',
+      InitCommand=function(s) s:draworder(5):x(pn==pn_2 and -69 or 69):strokecolor(Color.Black) end,
     },
+    ScoreAndGrade.GetGradeActor{
+      AlternativeFC = true,
+    }..{
+      Name='GradeFrame',
+      InitCommand=function(s) s:x(pn==pn_2 and -148 or 140) end,
+    }
+    
   };
   return DifficultyListItem
 end

@@ -1,4 +1,5 @@
 local t = Def.ActorFrame{};
+local ScoreAndGrade = LoadModule('ScoreAndGrade.lua')
 
 local xPosPlayer = {
   P1 = -320,
@@ -108,6 +109,40 @@ t[#t+1] = Def.ActorFrame{
     local short = ToEnumShortString(pn)
     self:x(xPosPlayer[short]):halign(0)
   end;
+  CurrentSongChangedMessageCommand=function(s) s:queuecommand('Set') end,
+  CurrentTrailP1ChangedMessageCommand=function(s) s:queuecommand('Set') end,
+  CurrentStepsP1ChangedMessageCommand=function(s) s:queuecommand('Set') end,
+  CurrentCourseChangedMessageCommand=function(s) s:queuecommand('Set') end,
+  SetCommand=function(s)
+    local c = s:GetChildren()
+    
+    local song = GAMESTATE:GetCurrentSong()
+    local steps = GAMESTATE:GetCurrentSteps(pn)
+    if not (song and steps) then
+      c.Score:visible(false)
+      c.Grade:visible(false)
+      return
+    end
+    
+    local profile
+    if PROFILEMAN:IsPersistentProfile(pn) then
+      profile = PROFILEMAN:GetProfile(pn)
+    else
+      profile = PROFILEMAN:GetMachineProfile()
+    end
+
+    local scores = profile:GetHighScoreList(song, steps):GetHighScores()
+    local score = scores[1]
+    if not score or score:GetScore() == 0 then
+      c.Score:visible(false)
+      c.Grade:visible(false)
+      return
+    end
+    c.Score:visible(true)
+    c.Grade:visible(true)
+    
+    s:playcommand('SetGrade', { Highscore = score, Steps = steps })
+  end,
   Def.Sprite{
     Texture="Player 1x2";
     InitCommand=function(s) s:xy(260,-80):pause():setstate(0) end,
@@ -123,101 +158,22 @@ t[#t+1] = Def.ActorFrame{
     Texture="Judge Inner",
     InitCommand=function(s) s:xy(230,5) end,
   };
-  Def.Quad{
-    InitCommand=function(s) s:xy(400,-30):zoom(0.2) end,
-    BeginCommand=function(s) s:playcommand("Set") end,
-    SetCommand=function(self)
-      local song = GAMESTATE:GetCurrentSong()
-      local steps = GAMESTATE:GetCurrentSteps(pn)
-
-      local profile, scorelist;
-      local text = "";
-      if song and steps then
-        local st = steps:GetStepsType();
-        local diff = steps:GetDifficulty();
-
-        if PROFILEMAN:IsPersistentProfile(pn) then
-          profile = PROFILEMAN:GetProfile(pn);
-        else
-          profile = PROFILEMAN:GetMachineProfile();
-        end;
-
-        scorelist = profile:GetHighScoreList(song,steps)
-        assert(scorelist);
-        local scores = scorelist:GetHighScores();
-        assert(scores);
-        local topscore=0;
-        if scores[1] then
-          topscore = SN2Scoring.GetSN2ScoreFromHighScore(steps, scores[1])
-        end;
-
-        local topgrade;
-        if scores[1] then
-          topgrade = scores[1]:GetGrade();
-          local tier = SN2Grading.ScoreToGrade(topscore, diff)
-          assert(topgrade);
-          if scores[1]:GetScore()>1  then
-            self:LoadBackground(THEME:GetPathB("ScreenEvaluationNormal decorations/grade/GradeDisplayEval",ToEnumShortString(tier)));
-            self:diffusealpha(1);
-          end;
-        else
-          self:diffusealpha(0)
-        end;
-      else
-        self:diffusealpha(0)
-      end;
-    end;
-    CurrentSongChangedMessageCommand=function(s) s:queuecommand("Set") end,
-    CurrentTrailP1ChangedMessageCommand=function(s) s:queuecommand("Set") end,
-    CurrentStepsP1ChangedMessageCommand=function(s) s:queuecommand("Set") end,
-    CurrentCourseChangedMessageCommand=function(s) s:queuecommand("Set") end,
-  };
-  Def.BitmapText{
-    Font="_avenirnext lt pro bold/25px",
-    Name="Score";
-    InitCommand=function(s) s:xy(400,15):zoom(0.8) end,
-    BeginCommand=function(s) s:playcommand("Set") end,
-    SetCommand=function(self)
-      self:settext("")
-
-      local st=GAMESTATE:GetCurrentStyle():GetStepsType()
-      local song=GAMESTATE:GetCurrentSong()
-      local steps = GAMESTATE:GetCurrentSteps(pn)
-      if song then
-        local diff = steps:GetDifficulty();
-        if song:HasStepsTypeAndDifficulty(st,diff) then
-          local steps = song:GetOneSteps(st,diff)
-
-          if PROFILEMAN:IsPersistentProfile(pn) then
-            profile = PROFILEMAN:GetProfile(pn)
-          else
-            profile = PROFILEMAN:GetMachineProfile()
-          end;
-
-          scorelist = profile:GetHighScoreList(song,steps)
-          local scores = scorelist:GetHighScores()
-          local topscore = 0
-
-          if scores[1] then
-            topscore = SN2Scoring.GetSN2ScoreFromHighScore(steps, scores[1])
-          end;
-
-          self:diffusealpha(1)
-
-          if topscore ~= 0 then
-            local scorel3 = topscore%1000
-            local scorel2 = (topscore/1000)%1000
-            local scorel1 = (topscore/1000000)%1000000
-            self:settextf("%01d"..",".."%03d"..",".."%03d",scorel1,scorel2,scorel3)
-          end;
-        end;
-      end;
-    end;
-    CurrentSongChangedMessageCommand=function(s) s:queuecommand("Set") end,
-    CurrentTrailP1ChangedMessageCommand=function(s) s:queuecommand("Set") end,
-    CurrentStepsP1ChangedMessageCommand=function(s) s:queuecommand("Set") end,
-    CurrentCourseChangedMessageCommand=function(s) s:queuecommand("Set") end,
-  };
+  ScoreAndGrade.GetGradeActor{
+    Big = true
+  }..{
+    Name='Grade',
+    InitCommand=function(s)
+      s:xy(400,-30):zoom(0.2)
+      s:GetChild('FullCombo'):zoom(1.5)
+    end,
+  },
+  ScoreAndGrade.GetScoreActorRolling{
+    Font = '_avenirnext lt pro bold/25px',
+    Load = 'RollingNumbersSongData',
+  }..{
+    Name='Score',
+    InitCommand=function(s) s:xy(400,15):zoom(0.8):strokecolor(Color.Black) end,
+  },
   Def.ActorFrame{
     InitCommand=function(s) s:xy(325,6):halign(1) end,
     CurrentSongChangedMessageCommand=function(s) s:queuecommand("Set") end,
