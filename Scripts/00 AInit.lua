@@ -687,3 +687,15 @@ function UpdateMWC()
     end
   end
 end
+
+function IsLuaVersionAtLeast(major, minor)
+	local maj, min = _VERSION:match("Lua (%d+)%.(%d+)")
+	if not maj or not min then
+		return false
+	end
+	maj = tonumber(maj)
+	min = tonumber(min)
+	if maj > major then return true end
+	if maj < major then return false end
+	return min >= minor
+end

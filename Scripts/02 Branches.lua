@@ -10,7 +10,7 @@ Branch.FirstScreen = function()
 end
 
 Branch.WarningOrAlert = function()
-	if _VERSION ~= "Lua 5.3" and tonumber(VersionDate()) < 20190328 then
+	if not IsLuaVersionAtLeast(5, 3) and tonumber(VersionDate()) < 20190328 then
 		return "ScreenOldSM"
 	else
 		if SN3Debug then
