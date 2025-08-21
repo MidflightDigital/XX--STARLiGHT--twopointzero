@@ -80,12 +80,10 @@ t[#t+1] = Def.ActorFrame{
                         end;
                     end;
                 else
-                    c.Text_score:settext("")
                     c.Text_judgments:settext("0\n0\n0\n0\n0\n0")
                 end
             end
         else
-            c.Text_score:settext("")
             c.Text_judgments:settext("0\n0\n0\n0\n0\n0")
         end
     end,
