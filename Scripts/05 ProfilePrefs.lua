@@ -34,11 +34,10 @@ local defaultPrefs =
 local gameSeed = nil
 local machinePrefs = DeepCopy(defaultPrefs)
 local profilePrefsSetting = create_setting('ProfilePrefs','ProfilePrefs.lua', defaultPrefs, 1, {})
-local allowMachineProfileSaveToFile = true
 ProfilePrefs = {}
 
 function ProfilePrefs.Read(profileID)
-	if not allowMachineProfileSaveToFile and profileID == "!MACHINE" then
+	if not ThemePrefs.Get('MachineProfileSaveToDisk') and profileID == "!MACHINE" then
 		if GAMESTATE then
 			local curGameSeed = GAMESTATE:GetGameSeed()
 			if curGameSeed ~= gameSeed then
@@ -55,7 +54,7 @@ function ProfilePrefs.Read(profileID)
 end
 
 function ProfilePrefs.Save(profileID)
-	if not allowMachineProfileSaveToFile and profileID == "!MACHINE" then
+	if not ThemePrefs.Get('MachineProfileSaveToDisk') and profileID == "!MACHINE" then
 		--don't do anything
 		return
 	end

@@ -122,7 +122,13 @@ local Prefs =
 		Default = false,
 		Choices = {"Off", "On"},
 		Values = {false,true},
-	}
+	},
+	MachineProfileSaveToDisk = 
+	{
+		Default = false,
+		Choices = {"No", "Yes"},
+		Values = {false, true},
+	},
 };
 
 ThemePrefs.InitAll(Prefs)
@@ -283,4 +289,3 @@ function JudgmentTransformCommand( self, params )
 	self:x( 0 )
 	self:y( params.bReverse and 67 or -76 )
 end
-
