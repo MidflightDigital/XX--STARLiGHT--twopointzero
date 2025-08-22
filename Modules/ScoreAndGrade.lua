@@ -238,7 +238,7 @@ function ScoreAndGrade.GetGradeActor(opts_in)
         if     fullComboType == 'TapNoteScore_W1' then FullCombo:diffuse(GameColor.Judgment['JudgmentLine_W1']):glowblink():effectperiod(0.20)
         elseif fullComboType == 'TapNoteScore_W2' then FullCombo:diffuse(GameColor.Judgment['JudgmentLine_W2']):glowshift()
         elseif fullComboType == 'TapNoteScore_W3' then FullCombo:diffuse(GameColor.Judgment['JudgmentLine_W3']):stopeffect()
-        elseif fullComboType == 'TapNoteScore_W4' then FullCombo:diffuse(GameColor.Judgment['TapNoteScore_W4']):stopeffect()
+        elseif fullComboType == 'TapNoteScore_W4' then FullCombo:diffuse(GameColor.Judgment['JudgmentLine_W4']):stopeffect()
         else
           assert(false, 'Unknown Full Combo type: ' .. fullComboType)
         end
