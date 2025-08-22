@@ -2,21 +2,21 @@ local t = LoadFallbackB()
 
 CustStage = 1
 
-local AutoSetStyle = ThemePrefs.Get('AutoSetStyle')
-if AutoSetStyle and AutoSetStyle ~= '' then
-  if AutoSetStyle == 'single'
-  or AutoSetStyle == 'double'
-  or AutoSetStyle == 'versus' then
+local AutoSelectStyle = ThemePrefs.Get('AutoSelectStyle')
+if AutoSelectStyle and AutoSelectStyle ~= '' then
+  if AutoSelectStyle == 'single'
+  or AutoSelectStyle == 'double'
+  or AutoSelectStyle == 'versus' then
     t[#t+1] = Def.Actor{
       OnCommand=function(s)
-        SCREENMAN:SystemMessage('Auto set style to: '..AutoSetStyle)
-        GAMESTATE:SetCurrentStyle(AutoSetStyle)
+        SCREENMAN:SystemMessage('Auto selected style: '..AutoSelectStyle)
+        GAMESTATE:SetCurrentStyle(AutoSelectStyle)
         SCREENMAN:SetNewScreen(Branch.AfterSelectStyle())
       end
     }
     return t
   else
-    Warning('ThemePerfs: Invalid AutoSetStyle value "'..AutoSetStyle..'", ignoring.')
+    Warning('ThemePerfs: Invalid AutoSelectStyle value "'..AutoSelectStyle..'", ignoring.')
   end
 end 
 

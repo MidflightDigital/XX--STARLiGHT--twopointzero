@@ -129,6 +129,12 @@ local Prefs =
 		Choices = {"No", "Yes"},
 		Values = {false, true},
 	},
+	AutoSelectStyle = 
+	{
+		Default = '',
+		Choices = {'Off', 'Single', 'Double', 'Versus'},
+		Values = {'', 'single', 'double', 'versus'},
+	},
 };
 
 ThemePrefs.InitAll(Prefs)
