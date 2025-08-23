@@ -20,7 +20,7 @@ for _, pn in ipairs(GAMESTATE:GetEnabledPlayers()) do
 	else
 		song = GAMESTATE:GetCurrentSong()
 	end
-	if show_cutins and st ~= 'StepsType_Dance_Double' and ThemePrefs.Get("FlashyCombo") == true and song:HasBGChanges() == false then
+	if show_cutins and st ~= 'StepsType_Dance_Double' and ThemePrefs.Get("CutIns") == true and song:HasBGChanges() == false then
 		--use ipairs here because i think it expects P1 is loaded before P2
 		if #Characters.GetAllCharacterNames() ~= 0 then
 			t[#t+1] = Def.ActorFrame {

@@ -264,6 +264,7 @@ end
 	return "ScreenSelectMusic"
 end]]
 
+CustStage = 1
 function CustStageCheck()
     if not GAMESTATE:IsAnExtraStage() then
         if GAMESTATE:GetCurrentStage() == "Stage_Final" then
@@ -685,4 +686,19 @@ function UpdateMWC()
       THEME:ReloadMetrics()
     end
   end
+end
+
+local versionMajor, versionMinor
+function IsLuaVersionAtLeast(major, minor)
+	if versionMajor == nil or versionMinor == nil then
+		local maj, min = _VERSION:match("Lua (%d+)%.(%d+)")
+		if not maj or not min then
+			error("IsLuaVersionAtLeast: couldn't parse Lua version \"" .. _VERSION .. "\"")
+		end
+		versionMajor = tonumber(maj)
+		versionMinor = tonumber(min)
+	end
+	if major < versionMajor then return true end
+	if major > versionMajor then return false end
+	return minor < versionMinor
 end

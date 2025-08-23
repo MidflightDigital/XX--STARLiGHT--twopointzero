@@ -1,3 +1,5 @@
+local guestName = 'Guest'
+
 function GetLocalProfiles()
 	local t = {}
 
@@ -564,6 +566,9 @@ local t = Def.ActorFrame{
 				s:queuecommand('UpdateInternal2');
 				if AllPlayersReady() then
 					if SCREENMAN:GetTopScreen():GetProfileIndex(p.PlayerNumber) == 0 then
+						local profile = PROFILEMAN:GetProfile(player)
+						profile:SetDisplayName(guestName)
+						profile:SetLastUsedHighScoreName(guestName)
 						SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
 					else
 						SCREENMAN:GetTopScreen():Finish()

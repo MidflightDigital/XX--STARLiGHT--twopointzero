@@ -19,7 +19,7 @@ local requiredFiles =
 local rootPath
 
 --If they're gonna work on organization, may as well follow it -Inori
- if _VERSION == "Lua 5.3" then
+ if IsLuaVersionAtLeast(5, 3) then
     rootPath = "/Appearance/SNCharacters/"
 else
     rootPath = "/SNCharacters/"
