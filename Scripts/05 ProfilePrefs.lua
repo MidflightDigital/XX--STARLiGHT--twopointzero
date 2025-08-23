@@ -37,7 +37,7 @@ local profilePrefsSetting = create_setting('ProfilePrefs','ProfilePrefs.lua', de
 ProfilePrefs = {}
 
 function ProfilePrefs.Read(profileID)
-	if not ThemePrefs.Get('MachineProfileSaveToDisk') and profileID == "!MACHINE" then
+	if not ThemePrefs.Get('MachinePrefsSaveToDisk') and profileID == "!MACHINE" then
 		if GAMESTATE then
 			local curGameSeed = GAMESTATE:GetGameSeed()
 			if curGameSeed ~= gameSeed then
@@ -54,7 +54,7 @@ function ProfilePrefs.Read(profileID)
 end
 
 function ProfilePrefs.Save(profileID)
-	if not ThemePrefs.Get('MachineProfileSaveToDisk') and profileID == "!MACHINE" then
+	if not ThemePrefs.Get('MachinePrefsSaveToDisk') and profileID == "!MACHINE" then
 		--don't do anything
 		return
 	end

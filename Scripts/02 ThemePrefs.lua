@@ -123,7 +123,7 @@ local Prefs =
 		Choices = {"Off", "On"},
 		Values = {false,true},
 	},
-	MachineProfileSaveToDisk = 
+	MachinePrefsSaveToDisk = 
 	{
 		Default = false,
 		Choices = {"No", "Yes"},
