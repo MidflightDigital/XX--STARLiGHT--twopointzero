@@ -688,14 +688,17 @@ function UpdateMWC()
   end
 end
 
+local versionMajor, versionMinor
 function IsLuaVersionAtLeast(major, minor)
-	local maj, min = _VERSION:match("Lua (%d+)%.(%d+)")
-	if not maj or not min then
-		return false
+	if versionMajor == nil or versionMinor == nil then
+		local maj, min = _VERSION:match("Lua (%d+)%.(%d+)")
+		if not maj or not min then
+			error("IsLuaVersionAtLeast: couldn't parse Lua version \"" .. _VERSION .. "\"")
+		end
+		versionMajor = tonumber(maj)
+		versionMinor = tonumber(min)
 	end
-	maj = tonumber(maj)
-	min = tonumber(min)
-	if maj > major then return true end
-	if maj < major then return false end
-	return min >= minor
+	if major < versionMajor then return true end
+	if major > versionMajor then return false end
+	return minor < versionMinor
 end
