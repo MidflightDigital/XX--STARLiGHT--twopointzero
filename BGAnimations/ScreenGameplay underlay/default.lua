@@ -207,6 +207,22 @@ for _, pn in ipairs(GAMESTATE:GetEnabledPlayers()) do
 		};
 	};
 
+	-- 4th, 8th, and 16th bars alphas are currently not properly initialized from metrics and broken.
+	-- This bug should be fixed by the next Outfox update. We can hotfix them here in Lua for now.
+	if tonumber(VersionDate()) <= 20250804 and type(NoteField.SetBeatBarsAlpha) == 'function' then
+		t[#t+1] = Def.Actor{
+			OnCommand=function(self)
+				local notefield = SCREENMAN:GetTopScreen():GetChild('Player'..ToEnumShortString(pn)):GetChild('NoteField')
+				notefield:SetBeatBarsAlpha(
+					tonumber(THEME:GetMetric('NoteField', 'BarMeasureAlpha')) or 0,
+					tonumber(THEME:GetMetric('NoteField', 'Bar4thAlpha')) or 0,
+					tonumber(THEME:GetMetric('NoteField', 'Bar8thAlpha')) or 0,
+					tonumber(THEME:GetMetric('NoteField', 'Bar16thAlpha')) or 0
+				)
+			end
+		}
+	end
+	
 	--[[
 	local StepsOrTrail
 	if GAMESTATE:IsCourseMode() then
