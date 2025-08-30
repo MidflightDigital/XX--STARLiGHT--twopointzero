@@ -27,7 +27,7 @@ local defaultPrefs =
 	evalpane2 = 2,
 	targetscore = "Off",
 	guidelines_top_aligned = false,
-	scorelabel = "profile",
+	scorelabel = "Profile",
 	Judgment = "DEFAULT",
 	Combo = "DEFAULT"
 }

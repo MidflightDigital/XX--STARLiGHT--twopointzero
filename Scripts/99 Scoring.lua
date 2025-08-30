@@ -115,7 +115,7 @@ function SN2Scoring.ComputeNormalScoreFromData(data, max)
         scoreCount = data[hns]
         maxFraction = maxFraction + scoreCount * multiplier
     end
-    return math.floor((maxFraction/objectCount) * maxScore - totalDeductions + 0.5)
+    return math.floor(((maxFraction/objectCount) * maxScore - totalDeductions)/10 + 0.5)*10
 end
 
 local exScoringTapValues =

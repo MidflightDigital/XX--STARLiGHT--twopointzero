@@ -47,7 +47,7 @@ for _, pn in ipairs(GAMESTATE:GetEnabledPlayers()) do
 	local pPrefs = ProfilePrefs.Read(profileID)
 
 	local style=GAMESTATE:GetCurrentStyle(pn)
-	local alf = pPrefs.filter
+	local filter_alpha = pPrefs.filter/100
 	local NumColumns = GAMESTATE:GetCurrentStyle():ColumnsPerPlayer()
 	local width=(style:GetWidth(pn)*(NumColumns/1.7))
 
@@ -69,13 +69,12 @@ for _, pn in ipairs(GAMESTATE:GetEnabledPlayers()) do
 	for i=1,2 do
 		DS[#DS+1] = Def.ActorFrame {
 			InitCommand=function(s)
-				s:x(i==1 and ((-width/2)-10) or ((width/2)+10)):visible(false)
-				if show_danger then s:visible(true) end
+				s:x(i==1 and ((-width/2)-10) or ((width/2)+10)):visible(show_danger)
 			end,
 			Def.Sprite {
 				Texture="rope",
 				InitCommand=function(s)
-					s:customtexturerect(0,0,1,2):zoomtoheight(_screen.h):diffuseshift():effectcolor1(Color.White):effectcolor2(Alpha(Color.White,0.5)):effectperiod(0.5)
+					s:customtexturerect(0,0,1,2):zoomtoheight(_screen.h):diffuseshift():effectcolor1(Color.White):effectcolor2(Alpha(Color.White,0.7)):effectperiod(0.5)
 					if GAMESTATE:PlayerIsUsingModifier(pn,'reverse') then
 						s:texcoordvelocity(0,-0.5)
 					elseif not GAMESTATE:PlayerIsUsingModifier(pn,'reverse') then
@@ -88,12 +87,17 @@ for _, pn in ipairs(GAMESTATE:GetEnabledPlayers()) do
 				Def.Sprite {
 					Texture="text",
 				};
-				Def.Sprite {
-					Texture="text",
+				Def.ActorFrame{
 					InitCommand=function(s)
-						s:heartbeat():effectmagnitude(1.5,1,0):effectperiod(0.5)
+						s:pulseramp():effectmagnitude(1,1.2,1):effectperiod(0.5)
 					end,
-				};
+					Def.Sprite {
+						Texture="text",
+						InitCommand=function(s)
+							s:diffuseramp():effectcolor1(color("1,1,1,0")):effectcolor2(color("1,1,1,0.8")):effectperiod(0.5)
+						end,
+					};
+				}
 			};
 		};
 	end
@@ -151,25 +155,28 @@ for _, pn in ipairs(GAMESTATE:GetEnabledPlayers()) do
 				if screen == "ScreenDemonstration" then
 					s:diffusealpha(0.5)
 				else
-					s:diffusealpha(alf/100)
+					s:diffusealpha(filter_alpha)
 				end
 			end,
-			HealthStateChangedMessageCommand= function(s, param)
-				if param.PlayerNumber == pn then
-					s:linear(0.1)
-					if param.HealthState == "HealthState_Danger" and show_danger then
-						s:diffuse(color("#ff1b00")):diffusealpha(0.75)
-					elseif param.HealthState == "HealthState_Dead" then
-						if GAMESTATE:GetPlayerState(pn):GetPlayerOptions('ModsLevel_Current'):FailSetting() == 'FailType_Immediate' then
-							s:diffusealpha(0)
-						else
-							s:diffuse(filter_color):diffusealpha(alf/100)
-						end
-					elseif param.HealthState == "HealthState_Alive" or param.HealthState == 'HealthState_Hot' then
-						s:diffuse(filter_color):diffusealpha(alf/100)
-					else
-						s:diffusealpha(0)
-					end
+			HealthStateChangedMessageCommand= function(self, param)
+				if param.PlayerNumber ~= pn then return end
+				local healthState = ToEnumShortString(param.HealthState)
+				local diffuseColor, diffuseAlpha
+				
+				if healthState == 'Dead' and GAMESTATE:GetPlayerState(pn):GetPlayerOptions('ModsLevel_Current'):FailSetting() == 'FailType_Immediate' then
+					diffuseAlpha = 0
+				elseif show_danger and (healthState == 'Danger' or healthState == 'Dead') then
+					diffuseColor = color('#bb1300ff')
+					diffuseAlpha = math.max(0.75, filter_alpha)
+				else -- Hot and Alive, and if show_danger is false then and Danger and Dead too (if FailSetting is not Immediate)
+					diffuseColor = filter_color
+					diffuseAlpha = filter_alpha
+				end
+				
+				if diffuseColor or diffuseAlpha then
+					self:stoptweening():linear(0.1)
+					if diffuseColor then self:diffuse(diffuseColor) end
+					if diffuseAlpha then self:diffusealpha(diffuseAlpha) end
 				end
 			end,
 		};
@@ -194,14 +201,17 @@ for _, pn in ipairs(GAMESTATE:GetEnabledPlayers()) do
 			end,
 		},
 		DS .. {
-			InitCommand=function(s) s:hibernate(math.huge) end,
-			HealthStateChangedMessageCommand=function(s,p)
-				if p.PlayerNumber == pn then
-					if p.HealthState=='HealthState_Danger' then
-						s:hibernate(0):linear(0.1):diffusealpha(1)
-					else
-						s:linear(0.1):diffusealpha(0):hibernate(math.huge)
-					end
+			InitCommand=function(s) s:diffusealpha(0) end,
+			HealthStateChangedMessageCommand=function(self, param)
+				if param.PlayerNumber ~= pn then return end
+				local healthState = ToEnumShortString(param.HealthState)
+				local failSetting = ToEnumShortString(GAMESTATE:GetPlayerState(pn):GetPlayerOptions('ModsLevel_Current'):FailSetting())
+				
+				if healthState == 'Danger' or (healthState == 'Dead' and (failSetting ~= 'Immediate' and failSetting ~= 'ImmediateContinue')) then
+					-- Only show danger bars if we can recover to clear the song. (i.e. Hide danger bars if we're dead and the song is guaranteed failed)
+					self:stoptweening():linear(0.1):diffusealpha(1)
+				else
+					self:stoptweening():linear(0.1):diffusealpha(0)
 				end
 			end,
 		};
