@@ -159,9 +159,12 @@ t[#t+1] = Def.Actor{
       end
       local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
 
-      local aScore = params.Data.AScoring
-      pss:SetScore(aScore.Score)
-      pss:SetCurMaxScore(aScore.MaxScore)
+			
+			-- Lets NOT do this as it just messes up Stats.xml with theme-specific scores. Instead we should 
+			-- display different scores depending on the ThemePrefs.Get("ConvertScoresAndGrades") setting
+      -- local aScore = params.Data.AScoring
+      -- pss:SetScore(aScore.Score)
+      -- pss:SetCurMaxScore(aScore.MaxScore)
 
       
       local fast, slow = 0, 0
