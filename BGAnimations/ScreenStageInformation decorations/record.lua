@@ -29,7 +29,7 @@ t[#t+1] = Def.ActorFrame{
       score = scores[1]
     end
     
-    s:playcommand('SetGrade', { Highscore = score, Steps = steps })
+    s:playcommand('SetScore', { Stats = score, Steps = steps })
   end;
   OnCommand=function(self)
     if pn == PLAYER_1 then
@@ -55,13 +55,12 @@ t[#t+1] = Def.ActorFrame{
       s:xy(pn==PLAYER_1 and -200 or 200,-60)
     end
   };
-  ScoreAndGrade.GetScoreActorRolling{
-    Font='ScoreDisplayNormal Text',
-  }..{
+  ScoreAndGrade.CreateScoreRollingActor{
     Name='Score',
+    Font='ScoreDisplayNormal Text',
     InitCommand=function(self)
       self:xy(pn=='PlayerNumber_P2' and 46 or -46,-32):strokecolor(Color.Black)
-    end;
+    end,
   },
   Def.BitmapText{
     Font="_avenirnext lt pro bold/42px";
@@ -114,9 +113,11 @@ t[#t+1] = Def.ActorFrame{
       s:settext(THEME:GetString("CustomDifficulty",ToEnumShortString(diff))):uppercase(true):diffuse(CustomDifficultyToColor(diff))
     end;
   };
-  ScoreAndGrade.GetGradeActor{}..{
+  ScoreAndGrade.CreateGradeActor{
     Name='Grade',
-    InitCommand=function(s) s:xy(pn=='PlayerNumber_P2' and -200 or 200,-32):zoom(1.4) end
+    InitCommand=function(self)
+      self:xy(pn=='PlayerNumber_P2' and -200 or 200,-32):zoom(1.4)
+    end,
   },
 }
 end;

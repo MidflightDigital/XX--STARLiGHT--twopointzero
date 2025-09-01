@@ -141,7 +141,7 @@ t[#t+1] = Def.ActorFrame{
     c.Score:visible(true)
     c.Grade:visible(true)
     
-    s:playcommand('SetGrade', { Highscore = score, Steps = steps })
+    s:playcommand('SetScore', { Stats = score, Steps = steps })
   end,
   Def.Sprite{
     Texture="Player 1x2";
@@ -158,21 +158,21 @@ t[#t+1] = Def.ActorFrame{
     Texture="Judge Inner",
     InitCommand=function(s) s:xy(230,5) end,
   };
-  ScoreAndGrade.GetGradeActor{
-    Big = true
-  }..{
+  ScoreAndGrade.CreateGradeActor{
     Name='Grade',
-    InitCommand=function(s)
-      s:xy(400,-30):zoom(0.2)
-      s:GetChild('FullCombo'):zoom(1.5)
+    Big = true,
+    InitCommand=function(self)
+      self:xy(400,-30):zoom(0.2)
+      self:GetChild('FullCombo'):zoom(1.5)
     end,
   },
-  ScoreAndGrade.GetScoreActorRolling{
-    Font = '_avenirnext lt pro bold/25px',
-    Load = 'RollingNumbersSongData',
-  }..{
+  ScoreAndGrade.CreateScoreRollingActor{
     Name='Score',
-    InitCommand=function(s) s:xy(400,15):zoom(0.8):strokecolor(Color.Black) end,
+    Font='_avenirnext lt pro bold/25px',
+    Load='RollingNumbersSongData',
+    InitCommand=function(self)
+      self:xy(400,15):zoom(0.8):strokecolor(Color.Black)
+    end,
   },
   Def.ActorFrame{
     InitCommand=function(s) s:xy(325,6):halign(1) end,

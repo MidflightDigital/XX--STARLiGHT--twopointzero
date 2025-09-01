@@ -187,7 +187,7 @@ local function RivalsPanel(pn)
 					c.Text_name:settext(score:GetName())
 				end
 				
-				s:playcommand('SetGrade', { Highscore = score, Steps = steps })
+				s:playcommand('SetScore', { Stats = score, Steps = steps })
 			end,
 			Def.Quad{
 				Name='Bar_underlay';
@@ -204,13 +204,17 @@ local function RivalsPanel(pn)
                 Font='_avenirnext lt pro bold/20px',
                 InitCommand=function(s) s:x(-60):halign(0):diffuse(Color.White):strokecolor(Color.Black):zoom(0.8) end,
             };
-			ScoreAndGrade.GetScoreActor{}..{
+			ScoreAndGrade.CreateScoreActor{
 				Name='Text_score',
-				InitCommand=function(s) s:x(160):halign(1):diffuse(Color.White):strokecolor(Color.Black):zoom(0.8) end,
+				InitCommand=function(self)
+					self:x(160):halign(1):diffuse(Color.White):strokecolor(Color.Black):zoom(0.8)
+				end,
 			},
-			ScoreAndGrade.GetGradeActor{}..{
+			ScoreAndGrade.CreateGradeActor{
 				Name='GradeFrame',
-				InitCommand=function(s) s:x(190) end,
+				InitCommand=function(self)
+					self:x(190)
+				end,
 			}
 		}
 	end

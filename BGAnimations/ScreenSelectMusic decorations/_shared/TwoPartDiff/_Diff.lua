@@ -36,7 +36,7 @@ local function DrawDiffListItem(diff)
         return
       end
       
-      s:playcommand('SetGrade', { Highscore = score, Steps = steps })
+      s:playcommand('SetScore', { Stats = score, Steps = steps })
     end;
 
     Def.Quad{
@@ -70,15 +70,18 @@ local function DrawDiffListItem(diff)
       end;
     };
     
-    ScoreAndGrade.GetScoreActor{}..{
+    ScoreAndGrade.CreateScoreActor{
       Name='Score',
-      InitCommand=function(s) s:draworder(5):x(pn==pn_2 and -69 or 69):strokecolor(Color.Black) end,
+      InitCommand=function(self)
+        self:draworder(5):x(pn==pn_2 and -69 or 69):strokecolor(Color.Black)
+      end,
     },
-    ScoreAndGrade.GetGradeActor{
-      AlternativeFC = true,
-    }..{
+    ScoreAndGrade.CreateGradeActor{
       Name='GradeFrame',
-      InitCommand=function(s) s:x(pn==pn_2 and -148 or 140) end,
+      AlternativeFC=true,
+      InitCommand=function(self)
+        self:x(pn==pn_2 and -148 or 140)
+      end,
     }
     
   };

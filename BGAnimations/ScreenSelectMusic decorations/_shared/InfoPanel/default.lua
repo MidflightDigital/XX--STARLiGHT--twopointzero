@@ -44,7 +44,7 @@ t[#t+1] = Def.ActorFrame{
                 assert(scores)
                 local score = scores[1]
                 
-                s:playcommand('SetGrade', { Highscore = score, Steps = steps })
+                s:playcommand('SetScore', { Stats = score, Steps = steps })
                 
                 local topscore = 0
                 if score then
@@ -98,12 +98,13 @@ t[#t+1] = Def.ActorFrame{
         Name="Text_name",
         InitCommand=function(s) s:y(-34):maxwidth(300/0.8):zoom(0.8) end,
     };
-    ScoreAndGrade.GetScoreActorRolling{
-        Font = '_avenirnext lt pro bold/25px',
-        Load = 'RollingNumbersSongData',
-    }..{
+    ScoreAndGrade.CreateScoreRollingActor{
         Name='Text_score',
-        InitCommand=function(s) s:xy(0,-6):zoom(0.9) end,
+        Font='_avenirnext lt pro bold/25px',
+        Load='RollingNumbersSongData',
+        InitCommand=function(self)
+            self:xy(0,-6):zoom(0.9)
+        end,
     },
     LoadActor(THEME:GetPathG("","myMusicWheel/default.lua"),pn,1,"Player","Current",diff)..{
         InitCommand=function(s) s:xy(40,-6) end,

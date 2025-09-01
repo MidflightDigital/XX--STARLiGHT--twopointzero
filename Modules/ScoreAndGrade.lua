@@ -19,7 +19,7 @@ function ScoreAndGrade.DefaultTierToSN2Tier(tier)
   return output
 end
 
-function ScoreAndGrade.GetFCType(obj)
+function ScoreAndGrade.GetFullComboType(obj)
   if DEBUG then return 'TapNoteScore_W1' end -- For testing
   
   local tnsFunc, hnsFunc
@@ -55,204 +55,213 @@ function ScoreAndGrade.GetFCType(obj)
   return nil
 end
 
-function ScoreAndGrade.GetScore(hs, steps, showEX)
+function ScoreAndGrade.GetScore(HSorPSS, steps, showEX)
   if DEBUG then return showEX and 300 or 1000000 end -- for testing
   if showEX then
-    return SN2Scoring.ComputeEXScoreFromData(SN2Scoring.GetCurrentScoreData(hs))
+    return SN2Scoring.ComputeEXScoreFromData(SN2Scoring.GetCurrentScoreData(HSorPSS))
   end
   
   if ThemePrefs.Get('ConvertScoresAndGrades') then
-    return SN2Scoring.GetSN2ScoreFromHighScore(steps, hs)
+    return SN2Scoring.GetSN2ScoreFromHighScore(steps, HSorPSS)
   end
   
-  return hs:GetScore()
+  return HSorPSS:GetScore()
 end
 
-function ScoreAndGrade.GetGrade(hs, steps)
+function ScoreAndGrade.GetGrade(HSorPSS, steps)
   if DEBUG then return 'Grade_Tier01' end -- for testing  
   if ThemePrefs.Get('ConvertScoresAndGrades') then
-    local score = SN2Scoring.GetSN2ScoreFromHighScore(steps, hs)
+    local score = SN2Scoring.GetSN2ScoreFromHighScore(steps, HSorPSS)
     return SN2Grading.ScoreToGrade(score)
   end
   
-  return ScoreAndGrade.DefaultTierToSN2Tier(hs:GetGrade())
+  return ScoreAndGrade.DefaultTierToSN2Tier(HSorPSS:GetGrade())
 end
 
-function ScoreAndGrade.GetScoreActor(opt_in)
-  local opts = {
+function ScoreAndGrade.CreateScoreActor(opts)
+  local properties = {
     Font = '_avenirnext lt pro bold/20px',
     ShowEXScore = false,
   }
-  if opts_in then
-    for k, v in pairs(opts_in) do opts[k] = v end
+  if opts then
+    for k, v in pairs(opts) do properties[k] = v end
   end
   
-  local t = Def.BitmapText{
-    Font=opts.Font,
-    SetGradeCommand = function(s, params)
-      local hs = params.Highscore
-      local steps = params.Steps
+  local SetScoreCommand = properties.SetScoreCommand
+  properties.SetScoreCommand = function(self, params)
+    local stats = params.Stats
+    local steps = params.Steps
+  
+    local score
+    if stats then
+      assert(steps)
+      score = ScoreAndGrade.GetScore(stats, steps, properties.ShowEXScore)
+    end
     
-      local score
-      if hs then
-        assert(steps)
-        score = ScoreAndGrade.GetScore(hs, steps, opts.ShowEXScore)
-      end
-      
-      s:settext(score and commify(score) or '0')
+    self:settext(score and commify(score) or '0')
+    
+    if SetScoreCommand then
+      SetScoreCommand(self, params)
     end
-  }
-  
-  return t
-end
-
-function ScoreAndGrade.GetScoreActorRolling(opts_in)
-  local opts = {
-    Font = '_avenirnext lt pro bold/46px',
-    ShowEXScore = false,
-    Load = 'RollingNumbers',
-  }
-  if opts_in then
-    for k, v in pairs(opts_in) do opts[k] = v end
   end
   
-  local t = Def.RollingNumbers{
-    Font = opts.Font,
-    SetGradeCommand = function(s, params)
-      local hs = params.Highscore
-      local steps = params.Steps
-      
-      local score
-      if hs then
-        assert(steps)
-        score = ScoreAndGrade.GetScore(hs, steps, opts.ShowEXScore)
-      end
-      s:Load(opts.Load):targetnumber(score and score or 0)
-    end
-  }
-  
-  return t
+  return Def.BitmapText(properties)
 end
 
-function ScoreAndGrade.GetGradeActor(opts_in)
-  local opts = {
+function ScoreAndGrade.CreateScoreRollingActor(opts)
+  local properties = {
+    Font = '_avenirnext lt pro bold/46px',
+    Load = 'RollingNumbers',
+    ShowEXScore = false,
+  }
+  if opts then
+    for k, v in pairs(opts) do properties[k] = v end
+  end
+  
+  local InitCommand = properties.InitCommand
+  properties.InitCommand = function(self)
+    self:Load(properties.Load)
+    if InitCommand then
+      InitCommand(self)
+    end
+  end
+  
+  local SetScoreCommand = properties.SetScoreCommand
+  properties.SetScoreCommand = function(self, params)
+    local stats = params.Stats
+    local steps = params.Steps
+    
+    local score
+    if stats then
+      assert(steps)
+      score = ScoreAndGrade.GetScore(stats, steps, properties.ShowEXScore)
+    end
+    self:targetnumber(score and score or 0)
+    
+    if SetScoreCommand then
+      SetScoreCommand(self, params)
+    end
+  end
+  
+  return Def.RollingNumbers(properties)
+end
+
+function ScoreAndGrade.CreateGradeActor(opts)
+  local properties = {
     Big = false,
     AlternativeFC = false,  -- Only effective if Big = false
     ActorConcat = nil,      -- Used to apply special OnCommand/OffCommand
   }
-  if opts_in then
-    for k, v in pairs(opts_in) do opts[k] = v end
+  if opts then
+    for k, v in pairs(opts) do properties[k] = v end
   end
-  local ActorConcat = opts.ActorConcat or {}
+  
+  properties[#properties+1] = Def.Sprite{
+    Name='Grade',
+  }
   
   local FullCombo
-  if opts.Big then 
-    FullCombo = Def.ActorFrame{
-      InitCommand=function(s) s:xy(170, 50):visible(false) end,
+  if properties.Big then 
+    properties[#properties+1] = Def.ActorFrame{
+      Name='FullCombo',
+      FOV=120,
+      InitCommand=function(self)
+        self:visible(false)
+        self:xy(190, 30):bob():effectmagnitude(0,0,20)
+      end,
       Def.ActorFrame{
-        Name='StarFrame',
-        FOV=120,
-        InitCommand=function(s) s:zoom(0):bob():effectmagnitude(0,0,20) end,
-        OnCommand=function(s) s:sleep(0.5):linear(0.2):zoom(0.8) end,
-        OffCommand=function(s) s:linear(0.2):zoom(0) end,
-        Def.ActorFrame{
-          Name='Star1',
-          InitCommand=function(s) s:spin():effectmagnitude(0,0,-170) end,
-          Def.Sprite{
-            Texture=THEME:GetPathB("ScreenEvaluationNormal","decorations/grade/star.png"),
-          },
-          Def.Sprite{
-            Name='ColorStar',
-            Texture=THEME:GetPathB("ScreenEvaluationNormal","decorations/grade/colorstar.png"),
-          }
-        };
-        Def.ActorFrame{
-          Name='Star2',
-          InitCommand=function(s) s:spin():effectmagnitude(0,0,80):diffusealpha(0.5) end,
-          Def.Sprite{
-            Texture=THEME:GetPathB("ScreenEvaluationNormal","decorations/grade/star.png"),
-          },
-          Def.Sprite{
-            Name='ColorStar',
-            Texture=THEME:GetPathB("ScreenEvaluationNormal","decorations/grade/colorstar.png"),
-          }
+        Name='Star1',
+        InitCommand=function(self)
+          self:spin():effectmagnitude(0,0,-170)
+        end,
+        Def.Sprite{
+          Texture=THEME:GetPathB('ScreenEvaluationNormal','decorations/grade/star.png'),
+        },
+        Def.Sprite{
+          Name='ColorStar',
+          Texture=THEME:GetPathB('ScreenEvaluationNormal','decorations/grade/colorstar.png'),
+        }
+      };
+      Def.ActorFrame{
+        Name='Star2',
+        InitCommand=function(self)
+          self:spin():effectmagnitude(0,0,80):diffusealpha(0.5)
+        end,
+        Def.Sprite{
+          Texture=THEME:GetPathB('ScreenEvaluationNormal','decorations/grade/star.png'),
+        },
+        Def.Sprite{
+          Name='ColorStar',
+          Texture=THEME:GetPathB('ScreenEvaluationNormal','decorations/grade/colorstar.png'),
         }
       }
 		}
   else
-    FullCombo = Def.Sprite{
-      InitCommand=function(s)
-        s:visible(false)
-        if opts.AlternativeFC then 
-          s:xy(18,4):Load(THEME:GetPathG("Player","Badge FullCombo")):zoom(0.5):shadowlength(1)
+    properties[#properties+1] = Def.Sprite{
+      Name='FullCombo',
+      InitCommand = function(self)
+        self:visible(false)
+        if properties.AlternativeFC then 
+          self:xy(18,4):Load(THEME:GetPathG('Player','Badge FullCombo')):zoom(0.5):shadowlength(1)
         else
-          s:xy(14,5):Load(THEME:GetPathG('','myMusicWheel/star.png')):zoom(0.4)
+          self:xy(14,5):Load(THEME:GetPathG('','myMusicWheel/star.png')):zoom(0.4)
         end
       end,
     }
   end
+  
+  local SetScoreCommand = properties.SetScoreCommand
+  properties.SetScoreCommand = function(self, params)
+    local stats = params.Stats
+    local steps = params.Steps
     
-  local t = Def.ActorFrame{
-    SetGradeCommand = function(s, params)
-      local hs = params.Highscore
-      local steps = params.Steps
+    local grade
+    if stats then
+      assert(steps)
+      grade = ScoreAndGrade.GetGrade(stats, steps)
+    end
+    self:visible(not not grade)
+    
+    if grade then
+      local Grade = self:GetChild('Grade')
+      local FullCombo = self:GetChild('FullCombo')
+      local fullComboType = ScoreAndGrade.GetFullComboType(stats)
       
-      local grade
-      if hs then
-        assert(steps)
-        grade = ScoreAndGrade.GetGrade(hs, steps)
-      end
-      
-      if not grade then
-        s:visible(false)
-        return
-      end
-      s:visible(true)
-      local Grade = s:GetChild('Grade')
-      local FullCombo = s:GetChild('FullCombo')
-      
-      if opts.Big then
+      if properties.Big then
         Grade:Load(THEME:GetPathB('ScreenEvaluationNormal decorations/grade/GradeDisplayEval', ToEnumShortString(grade)))
       else
         Grade:Load(THEME:GetPathG('myMusicWheel/GradeDisplayEval', ToEnumShortString(grade)))
       end
       
-      local fullComboType = ScoreAndGrade.GetFCType(hs)
-      if not fullComboType then
-        FullCombo:visible(false)
-        return
-      end
-      FullCombo:visible(true)
+      FullCombo:visible(not not fullComboType)
       
-      if opts.Big then
-        local ringColor = FullComboEffectColor[fullComboType]
-        if not ringColor then
-          assert(false, 'Unknown Full Combo type: ' .. fullComboType)
-          return
-        end
-        
-        local StarFrame = FullCombo:GetChild('StarFrame')
-        StarFrame:GetChild('Star1'):GetChild('ColorStar'):diffuse(ringColor)
-        StarFrame:GetChild('Star2'):GetChild('ColorStar'):diffuse(ringColor)
-      else
-        if     fullComboType == 'TapNoteScore_W1' then FullCombo:diffuse(GameColor.Judgment['JudgmentLine_W1']):glowblink():effectperiod(0.20)
-        elseif fullComboType == 'TapNoteScore_W2' then FullCombo:diffuse(GameColor.Judgment['JudgmentLine_W2']):glowshift()
-        elseif fullComboType == 'TapNoteScore_W3' then FullCombo:diffuse(GameColor.Judgment['JudgmentLine_W3']):stopeffect()
-        elseif fullComboType == 'TapNoteScore_W4' then FullCombo:diffuse(GameColor.Judgment['JudgmentLine_W4']):stopeffect()
+      if fullComboType then
+        if properties.Big then
+          local ringColor = FullComboEffectColor[fullComboType]
+          if ringColor then  
+            FullCombo:GetChild('Star1'):GetChild('ColorStar'):diffuse(ringColor)
+            FullCombo:GetChild('Star2'):GetChild('ColorStar'):diffuse(ringColor)
+          else
+            assert(false, 'Unknown Full Combo type: ' .. fullComboType)
+          end
         else
-          assert(false, 'Unknown Full Combo type: ' .. fullComboType)
+          if     fullComboType == 'TapNoteScore_W1' then FullCombo:diffuse(GameColor.Judgment['JudgmentLine_W1']):glowblink():effectperiod(0.20)
+          elseif fullComboType == 'TapNoteScore_W2' then FullCombo:diffuse(GameColor.Judgment['JudgmentLine_W2']):glowshift()
+          elseif fullComboType == 'TapNoteScore_W3' then FullCombo:diffuse(GameColor.Judgment['JudgmentLine_W3']):stopeffect()
+          elseif fullComboType == 'TapNoteScore_W4' then FullCombo:diffuse(GameColor.Judgment['JudgmentLine_W4']):stopeffect()
+          else
+            assert(false, 'Unknown Full Combo type: ' .. fullComboType)
+          end
         end
       end
-    end,
-    (Def.Sprite{
-      Name='Grade',
-    })..(ActorConcat['Grade'] or {}),
-    (FullCombo..{
-      Name='FullCombo',
-    })..(ActorConcat['FullCombo'] or {})
-  }
-  
-  return t
+    end
+    
+    if SetScoreCommand then
+      SetScoreCommand(self, params)
+    end
+  end
+    
+  return Def.ActorFrame(properties)
 end
 
 return ScoreAndGrade

@@ -37,7 +37,7 @@ local function RivalScore(pn,rival)
         return
       end
       
-      s:playcommand('SetGrade', { Highscore = score, Steps = StepsOrTrail })
+      s:playcommand('SetScore', { Stats = score, Steps = StepsOrTrail })
     end;
 		OnCommand=function(s) s:playcommand("Set") end,
 		CurrentSongChangedMessageCommand=function(s) s:playcommand("Set") end,
@@ -92,15 +92,18 @@ local function RivalScore(pn,rival)
 				end;
 			end;
 		};
-		ScoreAndGrade.GetScoreActor{	
-			Font='_avenirnext lt pro bold/25px'
-		}..{
+		ScoreAndGrade.CreateScoreActor{	
 			Name='Score',
-			InitCommand=function(s) s:x(215):zoom(1):halign(1):strokecolor(Color.Black) end,
+			Font='_avenirnext lt pro bold/25px',
+			InitCommand=function(self)
+				self:x(215):zoom(1):halign(1):strokecolor(Color.Black)
+			end,
 		},
-		ScoreAndGrade.GetGradeActor{}..{
+		ScoreAndGrade.CreateGradeActor{
 			Name='GradeFrame',
-			InitCommand=function(s) s:x(245):zoom(1.1) end,
+			InitCommand=function(self)
+				self:x(245):zoom(1.1)
+			end,
 		}
 
 	};

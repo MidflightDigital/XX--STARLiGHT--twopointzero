@@ -154,12 +154,7 @@ local function FindText(pss)
   return string.format('%02d STAGE', pss:GetSongsPassed())
 end
 
-for _, pn in pairs(GAMESTATE:GetEnabledPlayers()) do
-  local function m(metric)
-    metric = metric:gsub('PN', ToEnumShortString(pn))
-    return THEME:GetMetric(Var('LoadingScreen'),metric)
-  end
-  
+for _, pn in pairs(GAMESTATE:GetEnabledPlayers()) do  
   local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(pn)
   local steps = GAMESTATE:GetCurrentSteps(pn)
 
@@ -169,23 +164,7 @@ for _, pn in pairs(GAMESTATE:GetEnabledPlayers()) do
   local pPrefs = ProfilePrefs.Read(profileID)
   local showEXScore = pPrefs.ex_score
 
-  t[#t+1] = ScoreAndGrade.GetGradeActor{
-      Big = true,
-      ActorConcat = {
-        Grade = {
-          OnCommand = m('GradePNOnCommand'),
-          OffCommand = m('GradePNOffCommand')
-        }
-      }
-    }..{
-    InitCommand = function(s)
-      local c = s:GetChildren()
-      c.Grade:xy(m('GradePNX'), m('GradePNY'))		
-      c.FullCombo:xy(m('RingPNX'), m('RingPNY'))
-      
-      s:playcommand('SetGrade', { Highscore = pss, Steps = steps })
-    end,
-  }
+  t[#t+1] = loadfile(THEME:GetPathB('ScreenEvaluationNormal','decorations/grade'))(pn, pss, steps)
 
   t[#t+1] = Def.ActorFrame{
     Name='Scores',
@@ -196,16 +175,17 @@ for _, pn in pairs(GAMESTATE:GetEnabledPlayers()) do
         s:x(IsUsingWideScreen() and _screen.cx+500 or _screen.cx+440)
       end
       
-      s:playcommand('SetGrade', { Highscore = pss, Steps = steps })
+      s:playcommand('SetScore', { Stats = pss, Steps = steps })
     end,
     OnCommand=function(s) s:zoom(0):sleep(0.3):bounceend(0.2):zoom(2) end,
     OffCommand=function(s) s:linear(0.2):zoom(0) end,
-    ScoreAndGrade.GetScoreActorRolling{
-      Font = '_avenirnext lt pro bold/46px',
-      Load = showEXScore and 'RollingNumbersEXScore' or 'RollingNumbersEvaluation',
+    ScoreAndGrade.CreateScoreRollingActor{
+      Font='_avenirnext lt pro bold/46px',
+      Load=showEXScore and 'RollingNumbersEXScore' or 'RollingNumbersEvaluation',
       ShowEXScore = showEXScore,
-    }..{
-      InitCommand=function(s) s:strokecolor(Color.Black) end,
+      InitCommand=function(self)
+        self:strokecolor(Color.Black)
+      end,
     },
     Def.BitmapText{
       Font='_avenirnext lt pro bold/25px';
