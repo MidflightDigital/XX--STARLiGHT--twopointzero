@@ -23,7 +23,7 @@ return ScoreAndGrade.CreateGradeActor{
 	InitCommand=function(self)
 		local c = self:GetChildren()
 		c.Grade:xy(m('GradePNX'), m('GradePNY'))		
-		c.FullCombo:xy(m('RingPNX'), m('RingPNY'))
+		c.FullCombo:xy(m('RingPNX'), m('RingPNY')):fov(120):bob():effectmagnitude(0,0,20)
 		
 		self:playcommand('SetScore', { Stats = stats, Steps = steps })
 	end,

@@ -172,10 +172,9 @@ function ScoreAndGrade.CreateGradeActor(opts)
   if properties.Big then 
     properties[#properties+1] = Def.ActorFrame{
       Name='FullCombo',
-      FOV=120,
       InitCommand=function(self)
         self:visible(false)
-        self:xy(190, 30):bob():effectmagnitude(0,0,20)
+        self:xy(190, 30)
       end,
       Def.ActorFrame{
         Name='Star1',
