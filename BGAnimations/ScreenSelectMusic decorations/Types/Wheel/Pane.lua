@@ -133,7 +133,7 @@ t[#t+1] = Def.ActorFrame{
 
     local scores = profile:GetHighScoreList(song, steps):GetHighScores()
     local score = scores[1]
-    if not score or score:GetScore() == 0 then
+    if not score then
       c.Score:visible(false)
       c.Grade:visible(false)
       return

@@ -15,20 +15,19 @@ local function RivalScore(pn,rival)
 			else
 				SongOrCourse = GAMESTATE:GetCurrentSong()
 				StepsOrTrail = GAMESTATE:GetCurrentSteps(pn)
-			end;
+			end
       if not (SongOrCourse and StepsOrTrail) then
         c.Score:visible(false)
         c.GradeFrame:visible(false)
         return
       end
 			
-      
       local profile
       if PROFILEMAN:IsPersistentProfile(pn) then
         profile = PROFILEMAN:GetProfile(pn)
       else
         profile = PROFILEMAN:GetMachineProfile()
-      end;
+      end
       local scores = profile:GetHighScoreList(SongOrCourse, StepsOrTrail):GetHighScores()
       local score = scores[rival]
       if not score then
@@ -36,9 +35,11 @@ local function RivalScore(pn,rival)
         c.GradeFrame:visible(false)
         return
       end
+      c.Score:visible(true)
+      c.GradeFrame:visible(true)
       
       s:playcommand('SetScore', { Stats = score, Steps = StepsOrTrail })
-    end;
+    end,
 		OnCommand=function(s) s:playcommand("Set") end,
 		CurrentSongChangedMessageCommand=function(s) s:playcommand("Set") end,
 		CurrentCourseChangedMessageCommand=function(s) s:playcommand("Set") end,

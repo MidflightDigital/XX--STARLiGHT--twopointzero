@@ -13,7 +13,10 @@ local function DrawDiffListItem(diff)
       
       local song = GAMESTATE:GetCurrentSong()
       local stepType = GAMESTATE:GetCurrentStyle():GetStepsType()
-      local steps = song:GetOneSteps(stepType, diff)
+      local steps
+      if song then
+        steps = song:GetOneSteps(stepType, diff)
+      end
       if not (song and steps) then
         s:diffusealpha(0.5)
         c.Score:visible(false)
@@ -27,7 +30,7 @@ local function DrawDiffListItem(diff)
         profile = PROFILEMAN:GetProfile(pn)
       else
         profile = PROFILEMAN:GetMachineProfile()
-      end;
+      end
       local scores = profile:GetHighScoreList(song, steps):GetHighScores()
       local score = scores[1]
       if not score then
@@ -35,6 +38,8 @@ local function DrawDiffListItem(diff)
         c.GradeFrame:visible(false)
         return
       end
+      c.Score:visible(true)
+      c.GradeFrame:visible(true)
       
       s:playcommand('SetScore', { Stats = score, Steps = steps })
     end;

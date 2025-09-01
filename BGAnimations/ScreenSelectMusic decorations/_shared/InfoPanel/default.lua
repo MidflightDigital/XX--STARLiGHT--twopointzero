@@ -21,107 +21,97 @@ for i, pn in ipairs(GAMESTATE:GetHumanPlayers()) do
 end
 
 local function PlayerPanel()
-    local t = Def.ActorFrame{};
-t[#t+1] = Def.ActorFrame{
+    local t = Def.ActorFrame{}
     
-    SetCommand=function(s)
-        local c = s:GetChildren();
-        local song = GAMESTATE:GetCurrentSong() or GAMESTATE:GetCurrentCourse()
-        if song then
-            local steps = GAMESTATE:GetCurrentSteps(pn) or GAMESTATE:GetCurrentTrail(pn)
-            if steps then
-                c.Bar_underlay:visible(true)
-                c.Text_name:settext(PROFILEMAN:GetProfile(pn):GetDisplayName())
-
-                local profile
-                if PROFILEMAN:IsPersistentProfile(pn) then
-                    profile = PROFILEMAN:GetProfile(pn)
-                else
-                    profile = PROFILEMAN:GetMachineProfile()
-                end
-
-                local scores = profile:GetHighScoreList(song, steps):GetHighScores()
-                assert(scores)
-                local score = scores[1]
-                
-                s:playcommand('SetScore', { Stats = score, Steps = steps })
-                
-                local topscore = 0
-                if score then
-                    if ThemePrefs.Get("ConvertScoresAndGrades") and false then
-                        topscore = SN2Scoring.GetSN2ScoreFromHighScore(steps, score)
-                    else
-                        topscore = score:GetScore()
-                    end
-                    RStats = score -- Is this a global? Or just missing a local declaration?
-                end
-                
-                if topscore ~= 0 then
-                    local misses = RStats:GetTapNoteScore("TapNoteScore_Miss")+RStats:GetTapNoteScore("TapNoteScore_CheckpointMiss")
-                    local boos = RStats:GetTapNoteScore("TapNoteScore_W5")
-                    local goods = RStats:GetTapNoteScore("TapNoteScore_W4")
-                    local greats = RStats:GetTapNoteScore("TapNoteScore_W3")
-                    local perfects = RStats:GetTapNoteScore("TapNoteScore_W2")
-                    local marvelous = RStats:GetTapNoteScore("TapNoteScore_W1")
-                    for i=1, #scores do
-                        -- XXX: What are we trying to do here??
-                        if scores[i] then
-                            topscore = scores[i];
-                            assert(topscore)
-                            c.Text_judgmenttitles:diffusealpha(1)
-                            c.Text_judgments:settext(topscore:GetTapNoteScore("TapNoteScore_W1").."\n"
-                            ..topscore:GetTapNoteScore("TapNoteScore_W2").."\n"
-                            ..topscore:GetTapNoteScore("TapNoteScore_W3").."\n"
-                            ..topscore:GetTapNoteScore("TapNoteScore_W4").."\n"
-                            ..topscore:GetHoldNoteScore("HoldNoteScore_Held").."\n"
-                            ..topscore:GetTapNoteScore("TapNoteScore_W5")+topscore:GetTapNoteScore("TapNoteScore_Miss")):diffusealpha(1)
-                        else
-                            c.Text_judgments:settext("0\n0\n0\n0\n0\n0")
-                        end;
-                    end;
-                else
-                    c.Text_judgments:settext("0\n0\n0\n0\n0\n0")
-                end
+    t[#t+1] = Def.ActorFrame{
+        SetCommand=function(s)
+            local c = s:GetChildren()
+            
+			local SongOrCourse, StepsOrTrail
+            if GAMESTATE:IsCourseMode() then
+				SongOrCourse = GAMESTATE:GetCurrentCourse()
+				StepsOrTrail = GAMESTATE:GetCurrentTrail(pn)
+			else
+				SongOrCourse = GAMESTATE:GetCurrentSong()
+				StepsOrTrail = GAMESTATE:GetCurrentSteps(pn)
+			end
+            
+            if not (SongOrCourse and StepsOrTrail) then
+                c.Text_name:settext('')
+                c.Text_score:visible(false)
+                c.Text_judgments:settext("0\n0\n0\n0\n0\n0")
+                return
             end
-        else
-            c.Text_judgments:settext("0\n0\n0\n0\n0\n0")
-        end
-    end,
-    Def.Sprite{
-        Name="Bar_underlay",
-        Texture="playerbacker",
-        InitCommand=function(s) s:y(-20) end,
-    };
-    Def.BitmapText{
-        Font="Common normal",
-        Text="";
-        Name="Text_name",
-        InitCommand=function(s) s:y(-34):maxwidth(300/0.8):zoom(0.8) end,
-    };
-    ScoreAndGrade.CreateScoreRollingActor{
-        Name='Text_score',
-        Font='_avenirnext lt pro bold/25px',
-        Load='RollingNumbersSongData',
-        InitCommand=function(self)
-            self:xy(0,-6):zoom(0.9)
+            
+            local profile
+            if PROFILEMAN:IsPersistentProfile(pn) then
+                profile = PROFILEMAN:GetProfile(pn)
+            else
+                profile = PROFILEMAN:GetMachineProfile()
+            end
+            local scores = profile:GetHighScoreList(SongOrCourse, StepsOrTrail):GetHighScores()
+            local score = scores[1]
+            
+            if not score then
+                c.Text_name:settext('')
+                c.Text_score:visible(false)
+                c.Text_judgments:settext("0\n0\n0\n0\n0\n0")
+                return
+            end
+            c.Text_name:settext(score:GetName())
+            c.Text_score:visible(true)
+            s:playcommand('SetScore', { Stats = score, Steps = StepsOrTrail })
+            
+            local marvelous = score:GetTapNoteScore("TapNoteScore_W1")
+            local perfects = score:GetTapNoteScore("TapNoteScore_W2")
+            local greats = score:GetTapNoteScore("TapNoteScore_W3")
+            local goods = score:GetTapNoteScore("TapNoteScore_W4")
+            local oks = score:GetHoldNoteScore("HoldNoteScore_Held")
+            local misses = score:GetTapNoteScore("TapNoteScore_W5")+score:GetTapNoteScore("TapNoteScore_Miss")+score:GetTapNoteScore("TapNoteScore_CheckpointMiss")
+            c.Text_judgments:settext(
+                marvelous .. '\n' ..
+                perfects .. '\n' ..
+                greats .. '\n' ..
+                goods .. '\n' ..
+                oks .. '\n' ..
+                misses
+            )
         end,
-    },
-    LoadActor(THEME:GetPathG("","myMusicWheel/default.lua"),pn,1,"Player","Current",diff)..{
-        InitCommand=function(s) s:xy(40,-6) end,
-    },
-    Def.BitmapText{
-        Font="Common normal",
-        Name="Text_judgmenttitles",
-        InitCommand=function(s) s:zoom(0.9):halign(0):addx(-140):addy(80) end,
-        OnCommand=function(s) s:settext("Marvelous\nPerfect\nGreat\nGood\nOK\nMiss") end,
-    };
-    Def.BitmapText{
-        Font="Common normal",
-        Name="Text_judgments";
-        InitCommand=function(s) s:zoom(0.9):halign(1):addx(120):addy(80) end,
-    };
-}
-return t
+        Def.Sprite{
+            Name="Bar_underlay",
+            Texture="playerbacker",
+            InitCommand=function(s) s:y(-20) end,
+        };
+        Def.BitmapText{
+            Font="Common normal",
+            Text="";
+            Name="Text_name",
+            InitCommand=function(s) s:y(-34):maxwidth(300/0.8):zoom(0.8) end,
+        };
+        ScoreAndGrade.CreateScoreRollingActor{
+            Name='Text_score',
+            Font='_avenirnext lt pro bold/25px',
+            Load='RollingNumbersSongData',
+            InitCommand=function(self)
+                self:xy(0,-6):zoom(0.9)
+            end,
+        },
+        LoadActor(THEME:GetPathG("","myMusicWheel/default.lua"),pn,1,"Player","Current",diff)..{
+            InitCommand=function(s) s:xy(40,-6) end,
+        },
+        Def.BitmapText{
+            Font="Common normal",
+            Name="Text_judgmenttitles",
+            InitCommand=function(s) s:zoom(0.9):halign(0):addx(-140):addy(80) end,
+            OnCommand=function(s) s:settext("Marvelous\nPerfect\nGreat\nGood\nOK\nMiss") end,
+        };
+        Def.BitmapText{
+            Font="Common normal",
+            Name="Text_judgments";
+            InitCommand=function(s) s:zoom(0.9):halign(1):addx(120):addy(80) end,
+        };
+    }
+    return t
 end
 
 local difficulties = {"Difficulty_Beginner", "Difficulty_Easy", "Difficulty_Medium", "Difficulty_Hard", "Difficulty_Challenge", "Difficulty_Edit"}

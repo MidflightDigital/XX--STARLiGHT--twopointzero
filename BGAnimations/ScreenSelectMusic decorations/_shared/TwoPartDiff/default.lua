@@ -161,7 +161,11 @@ local function RivalsPanel(pn)
 					profile = PROFILEMAN:GetMachineProfile()
 				elseif rival == 2 then
 					--Always show player's High Score
-					profile = PROFILEMAN:GetProfile(pn)
+					if PROFILEMAN:IsPersistentProfile(pn) then
+						profile = PROFILEMAN:GetProfile(pn)
+					else
+						profile = PROFILEMAN:GetMachineProfile()
+					end
 				end
 				
 				local score
@@ -171,20 +175,21 @@ local function RivalsPanel(pn)
 				end
 				
 				if not score then
-					c.Text_name:visible(false)
 					c.Text_name:settext('')
+					c.Text_name:visible(false)
 					c.Text_score:visible(false)
 					c.GradeFrame:visible(false)
 					return
 				end
-				
 				c.Text_name:visible(true)
-				if score:GetName() == nil then
-					c.Text_name:settext('STEP')
-				elseif score:GetName() == '' then
-						c.Text_name:settext('NO NAME')
+				c.Text_score:visible(true)
+				c.GradeFrame:visible(true)
+				
+				local name = score:GetName()
+				if not name or name == ''  then
+					c.Text_name:settext('(NO NAME)')
 				else
-					c.Text_name:settext(score:GetName())
+					c.Text_name:settext(name)
 				end
 				
 				s:playcommand('SetScore', { Stats = score, Steps = steps })

@@ -30,7 +30,13 @@ t[#t+1] = Def.ActorFrame{
     end
     
     s:playcommand('SetScore', { Stats = score, Steps = steps })
-  end;
+    
+    if score then
+      c.Score_Name:settext(score:GetName())
+    else
+      c.Score_Name:settext('')
+    end
+  end,
   OnCommand=function(self)
     if pn == PLAYER_1 then
       self:addx(-800):sleep(1.2):decelerate(0.2):addx(800)
@@ -63,6 +69,7 @@ t[#t+1] = Def.ActorFrame{
     end,
   },
   Def.BitmapText{
+    Name='Score_Name',
     Font="_avenirnext lt pro bold/42px";
     InitCommand=function(self)
       self:y(14)
@@ -71,7 +78,6 @@ t[#t+1] = Def.ActorFrame{
     end;
     SetCommand=function(s)
       s:maxwidth(434);
-      s:settext(PROFILEMAN:GetProfile(pn):GetDisplayName())
     end;
   };
   Def.BitmapText{

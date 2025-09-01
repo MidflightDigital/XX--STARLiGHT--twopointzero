@@ -25,18 +25,17 @@ local function DrawDiffListItem(diff)
         return
       end
       self:diffusealpha(1)
-      
-      local meter = steps:GetMeter()
-      c.Meter:settext(IsMeterDec(meter)):visible(true)
+      c.Meter:visible(true):settext(IsMeterDec(steps:GetMeter()))
       
       local profile
       if PROFILEMAN:IsPersistentProfile(pn) then
         profile = PROFILEMAN:GetProfile(pn)
       else
         profile = PROFILEMAN:GetMachineProfile()
-      end;
+      end
       local scores = profile:GetHighScoreList(song, steps):GetHighScores()
       local score = scores[1]
+      
       if not score then
         c.Score:visible(false)
         c.GradeFrame:visible(false)
@@ -46,7 +45,7 @@ local function DrawDiffListItem(diff)
       c.GradeFrame:visible(true)
       
       self:playcommand('SetScore', { Stats = score, Steps = steps })
-    end;
+    end,
     Def.Quad{
       Name="Background";
       InitCommand=function(s) s:setsize(336,28):diffusealpha(0.8):draworder(0) end,
