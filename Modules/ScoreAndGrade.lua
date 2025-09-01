@@ -1,5 +1,9 @@
+if StarlightCache and StarlightCache.ScoreAndGrade then
+  return StarlightCache.ScoreAndGrade
+end
 
 local ScoreAndGrade = {}
+StarlightCache.ScoreAndGrade = ScoreAndGrade
 
 local DEBUG = false
 
