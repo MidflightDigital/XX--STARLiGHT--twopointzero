@@ -89,13 +89,15 @@ function ScoreAndGrade.CreateScoreActor(opts)
   
   local SetScoreCommand = properties.SetScoreCommand
   properties.SetScoreCommand = function(self, params)
-    local stats = params.Stats
-    local steps = params.Steps
-  
     local score
-    if stats then
-      assert(steps)
-      score = ScoreAndGrade.GetScore(stats, steps, properties.ShowEXScore)
+    if params then
+      local stats = params.Stats
+      local steps = params.Steps
+    
+      if stats then
+        assert(steps)
+        score = ScoreAndGrade.GetScore(stats, steps, properties.ShowEXScore)
+      end
     end
     
     self:settext(score and commify(score) or '0')
@@ -128,13 +130,15 @@ function ScoreAndGrade.CreateScoreRollingActor(opts)
   
   local SetScoreCommand = properties.SetScoreCommand
   properties.SetScoreCommand = function(self, params)
-    local stats = params.Stats
-    local steps = params.Steps
-    
     local score
-    if stats then
-      assert(steps)
-      score = ScoreAndGrade.GetScore(stats, steps, properties.ShowEXScore)
+    if params then
+      local stats = params.Stats
+      local steps = params.Steps
+      
+      if stats then
+        assert(steps)
+        score = ScoreAndGrade.GetScore(stats, steps, properties.ShowEXScore)
+      end
     end
     self:targetnumber(score and score or 0)
     
@@ -212,14 +216,18 @@ function ScoreAndGrade.CreateGradeActor(opts)
   
   local SetScoreCommand = properties.SetScoreCommand
   properties.SetScoreCommand = function(self, params)
-    local stats = params.Stats
-    local steps = params.Steps
-    
     local grade
-    if stats then
-      assert(steps)
-      grade = ScoreAndGrade.GetGrade(stats, steps)
+    local stats
+    if params then
+      stats = params.Stats
+      local steps = params.Steps
+      
+      if stats then
+        assert(steps)
+        grade = ScoreAndGrade.GetGrade(stats, steps)
+      end
     end
+    
     self:visible(not not grade)
     
     if grade then
