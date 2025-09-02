@@ -7,16 +7,18 @@ end
 local ScoreAndGrade = {}
 StarlightCache.ScoreAndGrade = ScoreAndGrade
 
+local GRADE_FAILED = 'Grade_Failed'
 
 -- Should we maybe have this in SN2Scoring instead?
 local defaultTierToSN2TierTable = {
-  Grade_Tier01 = 'Grade_Tier02', -- AAA
-  Grade_Tier02 = 'Grade_Tier04', -- AA
-  Grade_Tier03 = 'Grade_Tier07', -- A
-  Grade_Tier04 = 'Grade_Tier10', -- B 
-  Grade_Tier05 = 'Grade_Tier13', -- C
-  Grade_Tier06 = 'Grade_Tier16', -- D
-  Grade_Tier07 = 'Grade_Tier17', -- D
+  Grade_Tier01   = 'Grade_Tier02', -- AAA
+  Grade_Tier02   = 'Grade_Tier04', -- AA
+  Grade_Tier03   = 'Grade_Tier07', -- A
+  Grade_Tier04   = 'Grade_Tier10', -- B 
+  Grade_Tier05   = 'Grade_Tier13', -- C
+  Grade_Tier06   = 'Grade_Tier16', -- D
+  Grade_Tier07   = 'Grade_Tier17', -- D
+  [GRADE_FAILED] = GRADE_FAILED, -- Failed
 }
 function ScoreAndGrade.DefaultTierToSN2Tier(tier)
   local output = defaultTierToSN2TierTable[tier]
@@ -74,13 +76,42 @@ function ScoreAndGrade.GetScore(HSorPSS, steps, showEX)
 end
 
 function ScoreAndGrade.GetGrade(HSorPSS, steps)
-  if DEBUG then return 'Grade_Tier01' end -- for testing  
-  if ThemePrefs.Get('ConvertScoresAndGrades') then
+  if DEBUG then return 'Grade_Tier01' end -- for testing
+  
+  -- This is the most optimal way to check if HSorPSS is from a failed stage.
+  -- If the stage is not failed then PSS:GetGrade() will do some calculations to calculate the grade which we might
+  -- not really need, but there's PSS:GetFailed() which is just a getter function, so we can use that; See:
+  -- https://github.com/stepmania/stepmania/blob/d55acb1ba26f1c5b5e3048d6d6c0bd116625216f/src/PlayerStageStats.cpp#L183
+  -- Sadly, there is no such thing as HS:GetFailed(), but HS:GetGrade() is also just a getter function and returns the
+  -- result of a previously ran PSS:GetGrade(), so we can use that without needing to do any grade calculations; See:
+  -- https://github.com/stepmania/stepmania/blob/d55acb1ba26f1c5b5e3048d6d6c0bd116625216f/src/StageStats.cpp#L138
+  local grade
+  local isFailed
+  if lua.CheckType('HighScore', HSorPSS) then
+    grade = HSorPSS:GetGrade()
+    isFailed = grade == GRADE_FAILED
+  elseif lua.CheckType('PlayerStageStats', HSorPSS) then
+    isFailed = HSorPSS:GetFailed()
+    if isFailed then
+      -- We can safely presume this, PSS:GetGrade() would return the same in this case anyway
+      grade = GRADE_FAILED
+    end
+  else
+    error('First argument is not HighScore or PlayerStageStats')
+  end
+  
+  if not isFailed and ThemePrefs.Get('ConvertScoresAndGrades') then
     local score = SN2Scoring.GetSN2ScoreFromHighScore(steps, HSorPSS)
     return SN2Grading.ScoreToGrade(score)
   end
   
-  return ScoreAndGrade.DefaultTierToSN2Tier(HSorPSS:GetGrade())
+  if not grade then
+    -- If HSorPSS is a PSS and not from a failed stage, and we don't do any score and grade conversion,
+    -- then lets just do the calculations within PSS:GetGrade() because now we actually need it.
+    grade = HSorPSS:GetGrade()
+  end
+  
+  return ScoreAndGrade.DefaultTierToSN2Tier(grade)
 end
 
 function ScoreAndGrade.CreateScoreActor(opts)
