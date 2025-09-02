@@ -62,13 +62,14 @@ local selection = {
 
 local stepsData = {}
 
-local compareSteps = LoadModule "StepsUtil.lua".CompareSteps
+local compareSteps = LoadModule("StepsUtil.lua").CompareSteps
 local function SetActiveSelections()
 	for pn in EnabledPlayers() do
 		local playerSteps = GAMESTATE:GetCurrentSteps(pn)
 		for i=1,#stepsData do
 			if compareSteps(playerSteps, stepsData[i]) == 0 then
 				selection[pn] = i
+				break
 			end
 		end
 		assert(selection[pn], "couldn't set selection for "..pn)
@@ -255,73 +256,83 @@ local function genScrollerFrame(pn)
 			self:sleep(0.1)
 			self:queuecommand("CheckItem")
 		end,
+		-- Let's add input to this scroller.
+		ChangeStepsMessageCommand=function (self, param)
+			if param.Player ~= pn then return end
+			local dir = param.Direction
+			if selection[pn] ~= nil then
+				selection[pn] = selection[pn] + dir
+				self:SetDestinationItem( selection[pn]-1 )
+				self:playcommand("CheckItem")
+			end
+		end,
 		LoadFunction = function(self, itemIndex)
 			-- This will tell the scroller how many items will be generated for the scroller. It just needs a number.
 			-- "Call the expression with line = nil to find out the number of lines."
 			
 			-- Self is the actor represented for the actor set.
 			-- itemIndex is the item relative to the current selection from the user.
-			if self then
-				local steps = stepsData[itemIndex+1]
-				self:visible( steps ~= nil )
-				if steps then 
-					local diff = steps:GetDifficulty()
-					local diffItem = THEME:GetString("CustomDifficulty",ToEnumShortString(diff))
-					self:GetChild("DifficultyBG"):Load( THEME:GetPathB("ScreenSelectMusic","decorations/_shared/TwoPartDiff/".. diffItem) )
-					self:GetChild("Meter"):settext( IsMeterDec(steps:GetMeter()) ):diffuse(CustomDifficultyTwoPartToColor(diff))
-					self:GetChild("CFBPMDisplay"):settext( steps:GetAuthorCredit() ):diffuse(CustomDifficultyTwoPartToColor(diff))
-					self:GetChild("ShockArrow"):visible( steps:GetRadarValues(pn):GetValue('RadarCategory_Mines') >= 1 )
-					self:GetChild("Highlight").indexValue = itemIndex
-					
-					-- Handle highscore lamp.
-					local profile
-					local song = GAMESTATE:GetCurrentSong()
-					
-					if not song then return numItems end
-					
-					if PROFILEMAN:IsPersistentProfile(pn) then
-						profile = PROFILEMAN:GetProfile(pn)
-					else
-						profile = PROFILEMAN:GetMachineProfile()
-					end
-					
-					local scorelist = profile:GetHighScoreList(song,steps)
-					local scores = scorelist:GetHighScores()
-					local topscore
-					
-					local lampActor = self:GetChild("Lamp")
-					if scores[1] then
-						topscore = scores[1]
-						assert(topscore)
-						local misses = topscore:GetTapNoteScore("TapNoteScore_Miss")+topscore:GetTapNoteScore("TapNoteScore_CheckpointMiss")
-						local boos = topscore:GetTapNoteScore("TapNoteScore_W5")
-						local goods = topscore:GetTapNoteScore("TapNoteScore_W4")
-						local greats = topscore:GetTapNoteScore("TapNoteScore_W3")
-						local perfects = topscore:GetTapNoteScore("TapNoteScore_W2")
-						local marvelous = topscore:GetTapNoteScore("TapNoteScore_W1")
-						if (misses+boos) == 0 and scores[1]:GetScore() > 0 and (marvelous+perfects)>0 then
-							if (greats+perfects) == 0 then
-								lampActor:diffuse(FullComboEffectColor["JudgmentLine_W1"]):glowblink():effectperiod(0.20)
-							elseif greats == 0 then
-								lampActor:diffuse(GameColor.Judgment["JudgmentLine_W2"]):glowshift()
-							elseif (misses+boos+goods) == 0 then
-								lampActor:diffuse(GameColor.Judgment["JudgmentLine_W3"]):stopeffect()
-							elseif (misses+boos) == 0 then
-								lampActor:diffuse(GameColor.Judgment["JudgmentLine_W4"]):stopeffect()
-							end
-							lampActor:visible(true)
-						else
-							if topscore:GetGrade() ~= 'Grade_Failed' then
-								lampActor:visible(true):diffuse(color("#f70b9e"))
-							else
-								lampActor:visible(true):diffuse(color("#555452"))
-							end
-						end
-					else
-						lampActor:visible(false)
-					end
-				end
+			if not self then return numItems end
+			
+			local song = GAMESTATE:GetCurrentSong()
+			if not song then return numItems end
+			
+			local steps = stepsData[itemIndex+1]
+			if not steps then
+				self:visible(false)
+				return numItems
 			end
+			self:visible(true)
+			
+			local diff = steps:GetDifficulty()
+			local diffItem = THEME:GetString('CustomDifficulty', ToEnumShortString(diff))
+			local diffColor = CustomDifficultyTwoPartToColor(diff)
+			self:GetChild('DifficultyBG'):Load(THEME:GetPathB('ScreenSelectMusic','decorations/_shared/TwoPartDiff/' .. diffItem))
+			self:GetChild('Meter'):diffuse(diffColor):settext(IsMeterDec(steps:GetMeter()))
+			self:GetChild('CFBPMDisplay'):diffuse(diffColor):settext(steps:GetAuthorCredit())
+			self:GetChild('ShockArrow'):visible(steps:GetRadarValues(pn):GetValue('RadarCategory_Mines') > 0)
+			self:GetChild('Highlight').indexValue = itemIndex
+			
+			-- Handle highscore lamp.
+			local Lamp = self:GetChild('Lamp')
+			
+			local profile
+			if PROFILEMAN:IsPersistentProfile(pn) then
+				profile = PROFILEMAN:GetProfile(pn)
+			else
+				profile = PROFILEMAN:GetMachineProfile()
+			end
+			
+			local scores = profile:GetHighScoreList(song, steps):GetHighScores()
+			local score = scores[1]
+			if not score then
+				Lamp:visible(false)
+				return numItems
+			end			
+			Lamp:visible(true)
+			
+      local fullComboType = ScoreAndGrade.GetFullComboType(score)
+			if not fullComboType then
+				Lamp:stopeffect()
+				local grade = ScoreAndGrade.GetGrade(score, steps)
+				if grade == 'Grade_Failed' then
+					-- Can only happen on when using player profiles. The machine profile will not save steps scores from failed stages:
+					-- https://github.com/stepmania/stepmania/blob/d55acb1ba26f1c5b5e3048d6d6c0bd116625216f/src/ProfileManager.cpp#L876
+					Lamp:diffuse(color("#555452"))
+				else
+					Lamp:diffuse(color("#f70b9e"))
+				end
+				return numItems
+			end
+			
+			if     fullComboType == 'TapNoteScore_W1' then Lamp:diffuse(FullComboEffectColor["JudgmentLine_W1"]):glowblink():effectperiod(0.2)
+			elseif fullComboType == 'TapNoteScore_W2' then Lamp:diffuse(GameColor.Judgment['JudgmentLine_W2']):glowshift()
+			elseif fullComboType == 'TapNoteScore_W3' then Lamp:diffuse(GameColor.Judgment['JudgmentLine_W3']):stopeffect()
+			elseif fullComboType == 'TapNoteScore_W4' then Lamp:diffuse(GameColor.Judgment['JudgmentLine_W4']):stopeffect()
+			else
+				assert(false, 'Unknown Full Combo type: ' .. fullComboType)
+			end
+
 			return numItems
 		end,
 		TransformFunction=function(self, offset, itemIndex, numItems)
@@ -356,10 +367,9 @@ local function genScrollerFrame(pn)
 				Name="Highlight",
 				InitCommand=function(s) s:visible(false):diffuseramp():effectcolor1(Alpha(PlayerColor(pn),0)):effectcolor2(Alpha(PlayerColor(pn),1)):effectclock("beatnooffset") end,
 				CheckItemCommand=function (self)
-					if self.indexValue then
-						local scrollerActor = self:GetParent():GetParent()
-						self:visible( self.indexValue == scrollerActor:GetDestinationItem() )
-					end
+					if not self.indexValue then return end
+					local scrollerActor = self:GetParent():GetParent()
+					self:visible( self.indexValue == scrollerActor:GetDestinationItem() )
 				end,
 				["OK"..pn.."MessageCommand"]=function(self)
 					self:stopeffect():diffuse(PlayerColor(pn))
@@ -378,16 +388,6 @@ local function genScrollerFrame(pn)
 				OffCommand=function(s) s:stopeffect() end,
 			},
 		},
-		-- Let's add input to this scroller.
-		ChangeStepsMessageCommand=function (self, param)
-			if param.Player ~= pn then return end
-			local dir = param.Direction
-			if selection[pn] ~= nil then
-				selection[pn] = selection[pn] + dir
-				self:SetDestinationItem( selection[pn]-1 )
-				self:playcommand("CheckItem")
-			end
-		end,
 	}
 	
 	return t
