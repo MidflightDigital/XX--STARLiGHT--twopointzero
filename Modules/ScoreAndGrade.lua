@@ -1,11 +1,12 @@
-if StarlightCache and StarlightCache.ScoreAndGrade then
+local DEBUG = false
+
+if StarlightCache and StarlightCache.ScoreAndGrade and not DEBUG then
   return StarlightCache.ScoreAndGrade
 end
 
 local ScoreAndGrade = {}
 StarlightCache.ScoreAndGrade = ScoreAndGrade
 
-local DEBUG = false
 
 -- Should we maybe have this in SN2Scoring instead?
 local defaultTierToSN2TierTable = {
@@ -157,7 +158,7 @@ end
 function ScoreAndGrade.CreateGradeActor(opts)
   local properties = {
     Big = false,
-    AlternativeFC = false,  -- Only effective if Big = false
+    AlternativeFC = false,  -- Only effective if Big == false
     ActorConcat = nil,      -- Used to apply special OnCommand/OffCommand
   }
   if opts then
@@ -203,17 +204,30 @@ function ScoreAndGrade.CreateGradeActor(opts)
         }
       }
 		}
-  else
+  elseif properties.AlternativeFC then
     properties[#properties+1] = Def.Sprite{
       Name='FullCombo',
-      InitCommand = function(self)
+      Texture=THEME:GetPathG('Player', 'Badge FullCombo'),
+      InitCommand=function(self)
         self:visible(false)
-        if properties.AlternativeFC then 
-          self:xy(18,4):Load(THEME:GetPathG('Player','Badge FullCombo')):zoom(0.5):shadowlength(1)
-        else
-          self:xy(14,5):Load(THEME:GetPathG('','myMusicWheel/star.png')):zoom(0.4)
-        end
+        self:xy(18,4):zoom(0.5):shadowlength(1)
       end,
+    }
+  else
+    properties[#properties+1] = Def.ActorFrame{
+      Name='FullCombo',
+      InitCommand=function(self)
+        self:visible(false)
+        self:xy(14,5):zoom(0.4)
+      end,
+      Def.Sprite{
+        Name='Star',
+        Texture=THEME:GetPathG('','myMusicWheel/star.png'),
+      },
+      Def.Sprite{
+        Name='ColorStar',
+        Texture=THEME:GetPathG('','myMusicWheel/colorstar.png'),
+      }
     }
   end
   
@@ -256,10 +270,16 @@ function ScoreAndGrade.CreateGradeActor(opts)
             assert(false, 'Unknown Full Combo type: ' .. fullComboType)
           end
         else
-          if     fullComboType == 'TapNoteScore_W1' then FullCombo:diffuse(GameColor.Judgment['JudgmentLine_W1']):glowblink():effectperiod(0.20)
-          elseif fullComboType == 'TapNoteScore_W2' then FullCombo:diffuse(GameColor.Judgment['JudgmentLine_W2']):glowshift()
-          elseif fullComboType == 'TapNoteScore_W3' then FullCombo:diffuse(GameColor.Judgment['JudgmentLine_W3']):stopeffect()
-          elseif fullComboType == 'TapNoteScore_W4' then FullCombo:diffuse(GameColor.Judgment['JudgmentLine_W4']):stopeffect()
+          local FCRing
+          if properties.AlternativeFC then
+            FCRing = FullCombo
+          else
+            FCRing = FullCombo:GetChild('ColorStar')
+          end
+          if     fullComboType == 'TapNoteScore_W1' then FCRing:diffuse(GameColor.Judgment['JudgmentLine_W1']):glowblink():effectperiod(0.2)
+          elseif fullComboType == 'TapNoteScore_W2' then FCRing:diffuse(GameColor.Judgment['JudgmentLine_W2']):glowshift()
+          elseif fullComboType == 'TapNoteScore_W3' then FCRing:diffuse(GameColor.Judgment['JudgmentLine_W3']):stopeffect()
+          elseif fullComboType == 'TapNoteScore_W4' then FCRing:diffuse(GameColor.Judgment['JudgmentLine_W4']):stopeffect()
           else
             assert(false, 'Unknown Full Combo type: ' .. fullComboType)
           end
