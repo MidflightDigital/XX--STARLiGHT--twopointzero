@@ -16,7 +16,7 @@ It features a space/astronomy theme, offers a number of elements that make use o
 ## How to download
 For the latest cutting edge release:
 * Click on the **Code** button, then **Download ZIP** to download the theme.
- * You can also click [here](https://github.com/MidflightDigital/XX--STARLiGHT--twopointzero/archive/refs/heads/main.zip) to download it.
+~~* You can also click [here]() to download it.~~
 
 ### **Please use the above instructions. The current release is severely outdated. We recommend that you download a GUI git client to simplify downloading and keeping the theme up to date!**
 
