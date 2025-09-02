@@ -189,8 +189,8 @@ end
 function ScoreAndGrade.CreateGradeActor(opts)
   local properties = {
     Big = false,
+    HideFC = false,
     AlternativeFC = false,  -- Only effective if Big == false
-    ActorConcat = nil,      -- Used to apply special OnCommand/OffCommand
   }
   if opts then
     for k, v in pairs(opts) do properties[k] = v end
@@ -200,66 +200,67 @@ function ScoreAndGrade.CreateGradeActor(opts)
     Name='Grade',
   }
   
-  local FullCombo
-  if properties.Big then 
-    properties[#properties+1] = Def.ActorFrame{
-      Name='FullCombo',
-      InitCommand=function(self)
-        self:visible(false)
-        self:xy(190, 30)
-      end,
-      Def.ActorFrame{
-        Name='Star1',
+  if not properties.HideFC then
+    if properties.Big then 
+      properties[#properties+1] = Def.ActorFrame{
+        Name='FullCombo',
         InitCommand=function(self)
-          self:spin():effectmagnitude(0,0,-170)
+          self:visible(false)
+          self:xy(190, 30)
+        end,
+        Def.ActorFrame{
+          Name='Star1',
+          InitCommand=function(self)
+            self:spin():effectmagnitude(0,0,-170)
+          end,
+          Def.Sprite{
+            Texture=THEME:GetPathB('ScreenEvaluationNormal','decorations/grade/star.png'),
+          },
+          Def.Sprite{
+            Name='ColorStar',
+            Texture=THEME:GetPathB('ScreenEvaluationNormal','decorations/grade/colorstar.png'),
+          }
+        };
+        Def.ActorFrame{
+          Name='Star2',
+          InitCommand=function(self)
+            self:spin():effectmagnitude(0,0,80):diffusealpha(0.5)
+          end,
+          Def.Sprite{
+            Texture=THEME:GetPathB('ScreenEvaluationNormal','decorations/grade/star.png'),
+          },
+          Def.Sprite{
+            Name='ColorStar',
+            Texture=THEME:GetPathB('ScreenEvaluationNormal','decorations/grade/colorstar.png'),
+          }
+        }
+      }
+    elseif properties.AlternativeFC then
+      properties[#properties+1] = Def.Sprite{
+        Name='FullCombo',
+        Texture=THEME:GetPathG('Player', 'Badge FullCombo'),
+        InitCommand=function(self)
+          self:visible(false)
+          self:xy(18,4):zoom(0.5):shadowlength(1)
+        end,
+      }
+    else
+      properties[#properties+1] = Def.ActorFrame{
+        Name='FullCombo',
+        InitCommand=function(self)
+          self:visible(false)
+          self:xy(14,5):zoom(0.4)
         end,
         Def.Sprite{
-          Texture=THEME:GetPathB('ScreenEvaluationNormal','decorations/grade/star.png'),
+          Name='Star',
+          Texture=THEME:GetPathG('','myMusicWheel/star.png'),
         },
         Def.Sprite{
           Name='ColorStar',
-          Texture=THEME:GetPathB('ScreenEvaluationNormal','decorations/grade/colorstar.png'),
-        }
-      };
-      Def.ActorFrame{
-        Name='Star2',
-        InitCommand=function(self)
-          self:spin():effectmagnitude(0,0,80):diffusealpha(0.5)
-        end,
-        Def.Sprite{
-          Texture=THEME:GetPathB('ScreenEvaluationNormal','decorations/grade/star.png'),
-        },
-        Def.Sprite{
-          Name='ColorStar',
-          Texture=THEME:GetPathB('ScreenEvaluationNormal','decorations/grade/colorstar.png'),
+          Texture=THEME:GetPathG('','myMusicWheel/colorstar.png'),
         }
       }
-		}
-  elseif properties.AlternativeFC then
-    properties[#properties+1] = Def.Sprite{
-      Name='FullCombo',
-      Texture=THEME:GetPathG('Player', 'Badge FullCombo'),
-      InitCommand=function(self)
-        self:visible(false)
-        self:xy(18,4):zoom(0.5):shadowlength(1)
-      end,
-    }
-  else
-    properties[#properties+1] = Def.ActorFrame{
-      Name='FullCombo',
-      InitCommand=function(self)
-        self:visible(false)
-        self:xy(14,5):zoom(0.4)
-      end,
-      Def.Sprite{
-        Name='Star',
-        Texture=THEME:GetPathG('','myMusicWheel/star.png'),
-      },
-      Def.Sprite{
-        Name='ColorStar',
-        Texture=THEME:GetPathG('','myMusicWheel/colorstar.png'),
-      }
-    }
+    end
   end
   
   local SetScoreCommand = properties.SetScoreCommand
@@ -280,8 +281,6 @@ function ScoreAndGrade.CreateGradeActor(opts)
     
     if grade then
       local Grade = self:GetChild('Grade')
-      local FullCombo = self:GetChild('FullCombo')
-      local fullComboType = ScoreAndGrade.GetFullComboType(stats)
       
       if properties.Big then
         Grade:Load(THEME:GetPathB('ScreenEvaluationNormal decorations/grade/GradeDisplayEval', ToEnumShortString(grade)))
@@ -289,30 +288,34 @@ function ScoreAndGrade.CreateGradeActor(opts)
         Grade:Load(THEME:GetPathG('myMusicWheel/GradeDisplayEval', ToEnumShortString(grade)))
       end
       
-      FullCombo:visible(not not fullComboType)
-      
-      if fullComboType then
-        if properties.Big then
-          local ringColor = FullComboEffectColor[fullComboType]
-          if ringColor then  
-            FullCombo:GetChild('Star1'):GetChild('ColorStar'):diffuse(ringColor)
-            FullCombo:GetChild('Star2'):GetChild('ColorStar'):diffuse(ringColor)
+      if not properties.HideFC then
+        local FullCombo = self:GetChild('FullCombo')
+        local fullComboType = ScoreAndGrade.GetFullComboType(stats)
+        FullCombo:visible(not not fullComboType)
+        
+        if fullComboType then
+          if properties.Big then
+            local ringColor = FullComboEffectColor[fullComboType]
+            if ringColor then  
+              FullCombo:GetChild('Star1'):GetChild('ColorStar'):diffuse(ringColor)
+              FullCombo:GetChild('Star2'):GetChild('ColorStar'):diffuse(ringColor)
+            else
+              assert(false, 'Unknown Full Combo type: ' .. fullComboType)
+            end
           else
-            assert(false, 'Unknown Full Combo type: ' .. fullComboType)
-          end
-        else
-          local FCRing
-          if properties.AlternativeFC then
-            FCRing = FullCombo
-          else
-            FCRing = FullCombo:GetChild('ColorStar')
-          end
-          if     fullComboType == 'TapNoteScore_W1' then FCRing:diffuse(GameColor.Judgment['JudgmentLine_W1']):glowblink():effectperiod(0.2)
-          elseif fullComboType == 'TapNoteScore_W2' then FCRing:diffuse(GameColor.Judgment['JudgmentLine_W2']):glowshift()
-          elseif fullComboType == 'TapNoteScore_W3' then FCRing:diffuse(GameColor.Judgment['JudgmentLine_W3']):stopeffect()
-          elseif fullComboType == 'TapNoteScore_W4' then FCRing:diffuse(GameColor.Judgment['JudgmentLine_W4']):stopeffect()
-          else
-            assert(false, 'Unknown Full Combo type: ' .. fullComboType)
+            local FCRing
+            if properties.AlternativeFC then
+              FCRing = FullCombo
+            else
+              FCRing = FullCombo:GetChild('ColorStar')
+            end
+            if     fullComboType == 'TapNoteScore_W1' then FCRing:diffuse(GameColor.Judgment['JudgmentLine_W1']):glowblink():effectperiod(0.2)
+            elseif fullComboType == 'TapNoteScore_W2' then FCRing:diffuse(GameColor.Judgment['JudgmentLine_W2']):glowshift()
+            elseif fullComboType == 'TapNoteScore_W3' then FCRing:diffuse(GameColor.Judgment['JudgmentLine_W3']):stopeffect()
+            elseif fullComboType == 'TapNoteScore_W4' then FCRing:diffuse(GameColor.Judgment['JudgmentLine_W4']):stopeffect()
+            else
+              assert(false, 'Unknown Full Combo type: ' .. fullComboType)
+            end
           end
         end
       end
