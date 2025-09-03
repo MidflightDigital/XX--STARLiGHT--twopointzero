@@ -33,7 +33,14 @@ local maxHoldValues =
 --argument and return the number of TNSes or HNSes there are in that thing,
 --pack that information into something useful.
 --This is a pretty bad function description, so just see how it's used.
-local function GetScoreDataFromThing(thing, tnsFuncName, hnsFuncName)
+local function GetScoreDataFromThing(thing)
+    local tnsFuncName, hnsFuncName
+    if     lua.CheckType('HighScore',        thing) then tnsFuncName, hnsFuncName = 'GetTapNoteScore',  'GetHoldNoteScore'
+    elseif lua.CheckType('PlayerStageStats', thing) then tnsFuncName, hnsFuncName = 'GetTapNoteScores', 'GetHoldNoteScores'
+    else
+        error('First argument is not HighScore or PlayerStageStats')
+    end
+    
     local output = {}
     --how class function lookup works internally in Lua
     local hnsFunc = thing[hnsFuncName]
@@ -54,8 +61,8 @@ local function GetScoreDataFromThing(thing, tnsFuncName, hnsFuncName)
     return output
 end
 
-function SN2Scoring.GetCurrentScoreData(pss, judgment)
-    local scoreData = GetScoreDataFromThing(pss, "GetTapNoteScores", "GetHoldNoteScores")
+function SN2Scoring.GetCurrentScoreData(HSorPSS, judgment)    
+    local scoreData = GetScoreDataFromThing(HSorPSS)
     --workaround for the fact that the current TNS or HNS won't have been
     --added to the PSS yet.
     if judgment and scoreData[judgment] then
@@ -148,9 +155,8 @@ function SN2Scoring.ComputeEXScoreFromData(data,max)
     return totalScore * finalMultiplier
 end
 
-function SN2Scoring.GetSN2ScoreFromHighScore(steps, highScore)
-    local scoreData = GetScoreDataFromThing(highScore, "GetTapNoteScore",
-        "GetHoldNoteScore")
+function SN2Scoring.GetSN2ScoreFromHighScore(steps, HSorPSS)
+    local scoreData = GetScoreDataFromThing(HSorPSS)
     local radar = steps:GetRadarValues(pn)
     scoreData.Total = radar:GetValue('RadarCategory_TapsAndHolds')+
         radar:GetValue('RadarCategory_Holds')+radar:GetValue('RadarCategory_Rolls')

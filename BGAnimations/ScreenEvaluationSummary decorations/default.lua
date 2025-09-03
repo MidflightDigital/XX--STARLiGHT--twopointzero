@@ -1,7 +1,6 @@
-local i = 0;
-
-local t = Def.ActorFrame{};
-local jk = LoadModule "Jacket.lua"
+local t = Def.ActorFrame{}
+local jk = LoadModule('Jacket.lua')
+local ScoreAndGrade = LoadModule('ScoreAndGrade.lua')
 
 local function StageCheck()
 	if getenv("FixStage") == 1 then return 2 else return 1 end
@@ -9,14 +8,14 @@ end
 
 local yspacing = 105
 
-t[#t+1] = Def.Sound {
+t[#t+1] = Def.Sound{
 	File=THEME:GetPathS('_result', 'in'),
 	OnCommand=function(s) s:play() end,
-};
+}
 
 local dim_vol = 1
 
-t[#t+1] = Def.Actor {
+t[#t+1] = Def.Actor{
 	OffCommand=function(s)
 		s:queuecommand('Play')
 	end,
@@ -27,44 +26,45 @@ t[#t+1] = Def.Actor {
 			s:sleep(0.001):queuecommand('Play')
 		end
 	end
-};
+}
 
 local mStages = STATSMAN:GetStagesPlayed()
 for i = StageCheck(), mStages do
-	local ssStats;
+	local ssStats
 	if getenv("FixStage") == 1 then
-		ssStats = STATSMAN:GetPlayedStageStats( i-1 );
+		ssStats = STATSMAN:GetPlayedStageStats( i-1 )
 	else
-		ssStats = STATSMAN:GetPlayedStageStats( i );
+		ssStats = STATSMAN:GetPlayedStageStats( i )
 	end
-	local sssong = ssStats:GetPlayedSongs()[1];
+	local sssong = ssStats:GetPlayedSongs()[1]
 	t[#t+1] = Def.ActorFrame{
 		Name="Center",
 		Def.ActorFrame{
 			InitCommand=function(s) s:y(_screen.cy + ((mStages - i-1)*yspacing)):x(_screen.cx)
 				:basezoom(IsUsingWideScreen() and 1 or 0.8):zoomy(0)
 			end,
-			OnCommand=function(self) self:zoomy(0):sleep(0.25+(i-mStages)*-0.1):linear(0.2):zoomy(1) end;
+			OnCommand=function(self) self:zoomy(0):sleep(0.25+(i-mStages)*-0.1):linear(0.2):zoomy(1) end,
 			OffCommand=function(s) s:linear(0.25):zoomy(0) end,
-			Def.Sprite{Texture="line.png",};
+			Def.Sprite{Texture="line.png"},
 			Def.Sprite{
-				Name="Jacket";
+				Name="Jacket",
 				BeginCommand=function(s)
-					s:x(-290)
-					:Load(jk.GetSongGraphicPath(sssong,"Jacket")):scaletoclipped(87,87)
+					s:Load(jk.GetSongGraphicPath(sssong, "Jacket"))
+					s:x(-290):scaletoclipped(87,87)
 				end,
-			};
+			},
 			Def.BitmapText{
 				Name="Title",
 				Font="_avenirnext lt pro bold/42px",
 				BeginCommand=function(s)
 					s:x(26):settext(sssong:GetDisplayFullTitle()):maxwidth(400)
 				end,
-			};
-		};
-	};
+			},
+		},
+	}
 	for _,pn in pairs(GAMESTATE:GetEnabledPlayers()) do
 		local pss = ssStats:GetPlayerStageStats(pn)
+		local steps = pss:GetPlayedSteps()[1]
 		t[#t+1] = Def.ActorFrame{
 			Name="Stats",
 			InitCommand=function(s)
@@ -76,58 +76,58 @@ for i = StageCheck(), mStages do
 				end
 				s:addx(pn==PLAYER_1 and -SCREEN_WIDTH or SCREEN_WIDTH)
 			end,
+			BeginCommand=function(self)
+				self:playcommand('SetScore', { Stats = pss, Steps = steps})
+			end,
 			OnCommand=function(s)
 				s:sleep(0.05+(i-mStages)*-0.1):linear(0.4):addx(pn==PLAYER_1 and SCREEN_WIDTH or -SCREEN_WIDTH)
 			end,
 			OffCommand=function(s)
 				s:linear(0.4):addx(pn==PLAYER_1 and -SCREEN_WIDTH or SCREEN_WIDTH)
 			end,
-			Def.Sprite{Texture="total",};
+			Def.Sprite{Texture="total"},
 			Def.Sprite{
 				Texture="lamp",
 				InitCommand=function(s) s:visible(false):x(pn==PLAYER_1 and 256 or -256):rotationy(pn==PLAYER_1 and 0 or 180) end,
 				BeginCommand=function(s)
 					if ssStats then
-						s:diffuse(CustomDifficultyToColor(pss:GetPlayedSteps()[1]:GetDifficulty())):visible(true)
+						s:diffuse(CustomDifficultyToColor(steps:GetDifficulty())):visible(true)
 					end
 				end,
-			};
+			},
 			loadfile(THEME:GetPathB("ScreenEvaluationSummary","decorations/FullCombo"))()..{
 				Condition=pss:GetFailed() == false,
 				InitCommand=function(s)
-					s:xy(pn==PLAYER_1 and 210 or -210,30):visible(false)
+					s:visible(false)
+					s:xy(pn==PLAYER_1 and 210 or -210, 10)
 				end,
 				OnCommand=function(self)
-					self:zoom(0):sleep(0.45+(i-mStages)*-0.1):linear(0.4):zoom(0.3);
-				end;
-				BeginCommand=function(s)
-					if pss:GetGrade() ~= "Grade_Tier08" then
-						local fc_type = pss:FullComboType();
-						if fc_type then
-							s:diffuse(FullComboEffectColor[fc_type]):visible(true);
-						end
-					end;
-				end,
-			};
-			Def.Sprite{
-				Name="Grade",
-				InitCommand=function(s)
-					s:zoomy(0):diffuseshift():effectcolor1(Color.White):effectcolor2(Alpha(Color.White,0.8)):effectperiod(0.2)
+					self:zoom(0):sleep(0.45+(i-mStages)*-0.1):linear(0.4):zoom(0.3)
 				end,
 				BeginCommand=function(s)
-					local tier;
-					if ThemePrefs.Get("ConvertScoresAndGrades") == true then
-						tier = SN2Grading.ScoreToGrade(pss:GetScore())
-					else
-						tier = pss:GetGrade()
+					local fullComboType = ScoreAndGrade.GetFullComboType(pss)
+					if not fullComboType then
+						s:visible(false)
+						return
 					end
-					local Grade = pss:GetFailed() and 'Grade_Failed' or tier
-					s:Load(THEME:GetPathB("ScreenEvaluationNormal decorations/grade/GradeDisplayEval",ToEnumShortString(Grade)))
-					s:x(pss:FullComboType() and (pn==PLAYER_1 and 154 or -154) or (pn==PLAYER_1 and 174 or -174))
-					s:zoomx(0.25)
+					s:visible(true)
+					s:diffuse(FullComboEffectColor[fullComboType])
 				end,
-				OnCommand=function(s) s:sleep(0.45+(i-mStages)*-0.1):linear(0.4):zoomy(0.25) end;
-			};
+			},
+			ScoreAndGrade.CreateGradeActor{
+				Name='Grade',
+				Big=true,
+				HideFC=true,
+				InitCommand=function(self)
+					self:zoomy(0):diffuseshift():effectcolor1(Color.White):effectcolor2(Alpha(Color.White,0.8)):effectperiod(0.2)
+					local hasFullCombo = not pss:GetFailed() and not not ScoreAndGrade.GetFullComboType(pss)
+					self:x(hasFullCombo and (pn==PLAYER_1 and 130 or -154) or (pn==PLAYER_1 and 165 or -165))
+					self:zoomx(0.25)
+				end,
+				OnCommand=function(self)
+					self:sleep(0.45+(i-mStages)*-0.1):linear(0.4):zoomy(0.25)
+				end,
+			},
 			Def.BitmapText{
 				Name="Stage",
 				Font="_avenirnext lt pro bold/36px",
@@ -159,17 +159,16 @@ for i = StageCheck(), mStages do
 						s:settext(StageToLocalizedString(pStage).." STAGE")
 					end	
 				end
-			};
-			Def.RollingNumbers{
+			},
+			ScoreAndGrade.CreateScoreRollingActor{
 				File=THEME:GetPathF("","_avenirnext lt pro bold/36px"),
-				InitCommand=function(s) s:zoom(0.9):Load("RollingNumbersScore"):xy(pn==PLAYER_1 and 36 or -36,20)
-					:strokecolor(Color.Black):halign(pn==PLAYER_1 and 1 or 0)
+				InitCommand=function(self)
+					self:Load("RollingNumbersScore")
+					self:xy(pn==PLAYER_1 and 36 or -36,20):zoom(0.9)
+					self:strokecolor(Color.Black):halign(pn==PLAYER_1 and 1 or 0)
 				end,
-				BeginCommand=function(s)
-					s:targetnumber(pss:GetScore())
-				end,
-			}
-		};
+			},
+		}
 	end
 end
 
@@ -182,8 +181,8 @@ t[#t+1] = Def.ActorFrame{
 		OnCommand=function(s)
 			local style = GAMESTATE:GetCurrentStyle():GetName()
 			s:Load(THEME:GetPathB("","ScreenEvaluationSummary decorations/"..style)):y(-40)
-		end;
-	};
+		end,
+	},
 	Def.Sprite{
 		OnCommand=function(s)
 			local style = GAMESTATE:GetCurrentStyle():GetStyleType()
@@ -191,40 +190,40 @@ t[#t+1] = Def.ActorFrame{
 				s:Load(THEME:GetPathB("","ScreenEvaluationSummary decorations/1Pad"))
 			else
 				s:Load(THEME:GetPathB("","ScreenEvaluationSummary decorations/2Pad"))
-			end;
+			end
 			s:y(30)
-		end;
-	};
-};
+		end,
+	},
+}
 
 for _, pn in pairs(GAMESTATE:GetEnabledPlayers()) do
 	t[#t+1] = Def.ActorFrame{
-    OnCommand=function(s)
-      s:addx(pn=="PlayerNumber_P2" and 300 or -300):sleep(0.3):linear(0.2):addx(pn=="PlayerNumber_P2" and -300 or 300)
-    end;
-    OffCommand=function(s)
-      s:linear(0.2):addx(pn=="PlayerNumber_P2" and 300 or -300)
-    end;
-    Def.Sprite{
-		Texture=THEME:GetPathB("ScreenEvaluationNormal","decorations/player"),
-      	InitCommand=function(s)
-        	s:zoomx(pn=="PlayerNumber_P2" and -1 or 1):x(pn=="PlayerNumber_P2" and SCREEN_RIGHT or SCREEN_LEFT):halign(0):y(_screen.cy-300)
-      	end;
-    };
-    Def.BitmapText{
-      Font="_avenirnext lt pro bold/25px";
-      InitCommand=function(s)
-		local name = PROFILEMAN:GetProfile(pn):GetDisplayName()
-		
-		if name == "" then
-			name = pn==PLAYER_1 and "PLAYER 1" or "PLAYER 2"
-		end
-		
-        s:xy(pn==PLAYER_2 and SCREEN_RIGHT-134 or SCREEN_LEFT+134,_screen.cy-300)
-        s:settext(name)
-      end;
-    }
-  }
+		OnCommand=function(s)
+			s:addx(pn=="PlayerNumber_P2" and 300 or -300):sleep(0.3):linear(0.2):addx(pn=="PlayerNumber_P2" and -300 or 300)
+		end,
+		OffCommand=function(s)
+			s:linear(0.2):addx(pn=="PlayerNumber_P2" and 300 or -300)
+		end,
+		Def.Sprite{
+			Texture=THEME:GetPathB("ScreenEvaluationNormal","decorations/player"),
+			InitCommand=function(s)
+				s:zoomx(pn=="PlayerNumber_P2" and -1 or 1):x(pn=="PlayerNumber_P2" and SCREEN_RIGHT or SCREEN_LEFT):halign(0):y(_screen.cy-300)
+			end,
+		},
+		Def.BitmapText{
+			Font="_avenirnext lt pro bold/25px",
+			InitCommand=function(s)
+			local name = PROFILEMAN:GetProfile(pn):GetDisplayName()
+			
+			if name == "" then
+				name = pn==PLAYER_1 and "PLAYER 1" or "PLAYER 2"
+			end
+			
+			s:xy(pn==PLAYER_2 and SCREEN_RIGHT-134 or SCREEN_LEFT+134,_screen.cy-300)
+			s:settext(name)
+		end,
+		},
+	}
 end
 
 
@@ -233,6 +232,6 @@ t[#t+1] = loadfile(THEME:GetPathG(screen, "Header"))()..{
 	Name = "Header",
 }
 
-t[#t+1] = StandardDecorationFromFileOptional("Help","Help");
+t[#t+1] = StandardDecorationFromFileOptional("Help","Help")
 
 return t

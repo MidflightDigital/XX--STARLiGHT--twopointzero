@@ -1,3 +1,5 @@
+local ScoreAndGrade = LoadModule('ScoreAndGrade.lua')
+
 local t = Def.ActorFrame{
     InitCommand=function(s) s:xy(_screen.cx,_screen.cy+310) end,
     OnCommand=function(s) s:addy(SCREEN_HEIGHT/2):sleep(0.2):decelerate(0.2):addy(-SCREEN_HEIGHT/2) end,
@@ -254,163 +256,62 @@ local function DrawDifListItem(diff, pn)
     }
     for _,pn in pairs(GAMESTATE:GetEnabledPlayers()) do
       Item[#Item+1] = Def.ActorFrame{
-        Def.BitmapText{
-          Name="Score";
-          Font="_avenirnext lt pro bold/20px";
-          InitCommand=function(s) s:x(pn==PLAYER_2 and 260 or -260) end,
-          SetCommand=function(self)
-              self:settext("")
-            
-              local st=GAMESTATE:GetCurrentStyle():GetStepsType()
-              local song=GAMESTATE:GetCurrentSong()
-              if song then
-                 if song:HasStepsTypeAndDifficulty(st,diff) then
-                   local steps = song:GetOneSteps(st,diff)
-            
-                  if PROFILEMAN:IsPersistentProfile(pn) then
-                    profile = PROFILEMAN:GetProfile(pn)
-                  else
-                    profile = PROFILEMAN:GetMachineProfile()
-                  end;
-            
-                  scorelist = profile:GetHighScoreList(song,steps)
-                  local scores = scorelist:GetHighScores()
-                  local topscore = 0
-            
-                  if scores[1] then
-                    if ThemePrefs.Get("ConvertScoresAndGrades") == true then
-                      topscore = SN2Scoring.GetSN2ScoreFromHighScore(steps, scores[1])
-                    else
-                      topscore = scores[1]
-                    end
-                  end;
-            
-                  self:strokecolor(Color.Black)
-                  self:diffusealpha(1)
-            
-                  if topscore ~= 0 then
-                    self:settext(commify(topscore))
-                  end;
-                end;
-              end;
-            end;
-          };
-          Def.ActorFrame{
-            InitCommand=function(s) s:x(pn==PLAYER_2 and 176 or -186) end,
-            Def.Sprite{
-              Texture=THEME:GetPathG("Player","Badge FullCombo"),
-              InitCommand=function(s) s:shadowlength(1):zoom(0):xy(18,4) end,
-              OffCommand=function(s) s:decelerate(0.05):diffusealpha(0) end,
-              SetCommand=function(self)
-                local st=GAMESTATE:GetCurrentStyle():GetStepsType();
-                local song=GAMESTATE:GetCurrentSong();
-                local course = GAMESTATE:GetCurrentCourse();
-                if song then
-                  if song:HasStepsTypeAndDifficulty(st,diff) then
-                    local steps = song:GetOneSteps( st, diff );
-                    if PROFILEMAN:IsPersistentProfile(pn) then
-                      profile = PROFILEMAN:GetProfile(pn);
-                    else
-                      profile = PROFILEMAN:GetMachineProfile();
-                    end;
-                    scorelist = profile:GetHighScoreList(song,steps);
-                    assert(scorelist);
-                    local scores = scorelist:GetHighScores();
-                    assert(scores);
-                    local topscore;
-                    if scores[1] then
-                      topscore = scores[1];
-                      assert(topscore);
-                      local misses = topscore:GetTapNoteScore("TapNoteScore_Miss")+topscore:GetTapNoteScore("TapNoteScore_CheckpointMiss")
-                      local boos = topscore:GetTapNoteScore("TapNoteScore_W5")
-                      local goods = topscore:GetTapNoteScore("TapNoteScore_W4")
-                      local greats = topscore:GetTapNoteScore("TapNoteScore_W3")
-                      local perfects = topscore:GetTapNoteScore("TapNoteScore_W2")
-                      local marvelous = topscore:GetTapNoteScore("TapNoteScore_W1")
-                      if (misses+boos) == 0 and scores[1]:GetScore() > 0 and (marvelous+perfects)>0 then
-                        if (greats+perfects) == 0 then
-                          self:diffuse(GameColor.Judgment["JudgmentLine_W1"]);
-                          self:glowblink();
-                          self:effectperiod(0.20);
-                          self:zoom(0.5);
-                        elseif greats == 0 then
-                          self:diffuse(GameColor.Judgment["JudgmentLine_W2"]);
-                          self:glowshift();
-                          self:zoom(0.5);
-                        elseif (misses+boos+goods) == 0 then
-                          self:diffuse(GameColor.Judgment["JudgmentLine_W3"]);
-                          self:stopeffect();
-                          self:zoom(0.5);
-                        elseif (misses+boos) == 0 then
-                          self:diffuse(GameColor.Judgment["JudgmentLine_W4"]);
-                          self:stopeffect();
-                          self:zoom(0.5);
-                        end;
-                        self:diffusealpha(0.8);
-                      else
-                        self:diffusealpha(0);
-                      end;
-                    else
-                      self:diffusealpha(0);
-                    end;
-                  else
-                    self:diffusealpha(0);
-                  end;
-                else
-                  self:diffusealpha(0);
-                end;
-              end
-            };
-            Def.Quad{
-              Name="Grade";
-              SetCommand=function(self)
-              local st=GAMESTATE:GetCurrentStyle():GetStepsType();
-              local song=GAMESTATE:GetCurrentSong();
-              if song then
-                if song:HasStepsTypeAndDifficulty(st,diff) then
-                  local steps = song:GetOneSteps(st, diff)
-                  if PROFILEMAN:IsPersistentProfile(pn) then
-                    profile = PROFILEMAN:GetProfile(pn)
-                  else
-                    profile = PROFILEMAN:GetMachineProfile()
-                  end
-        
-                  scorelist = profile:GetHighScoreList(song,steps)
-                  local scores = scorelist:GetHighScores()
-        
-                  local topscore=0
-                  if scores[1] then
-                    topscore = SN2Scoring.GetSN2ScoreFromHighScore(steps, scores[1])
-                  end
-        
-                  local topgrade
-                  if scores[1] then
-                    topgrade = scores[1]:GetGrade();
-                    local tier = SN2Grading.ScoreToGrade(topscore, diff)
-                    assert(topgrade);
-                    if scores[1]:GetScore()>1  then
-                      if topgrade == 'Grade_Failed' then
-                        self:LoadBackground(THEME:GetPathG("","myMusicWheel/GradeDisplayEval Failed"));
-                      else
-                        self:LoadBackground(THEME:GetPathG("myMusicWheel/GradeDisplayEval",ToEnumShortString(tier)));
-                      end;
-                      self:diffusealpha(1);
-                    else
-                      self:diffusealpha(0);
-                    end;
-                  else
-                    self:diffusealpha(0);
-                  end;
-                else
-                  self:diffusealpha(0);
-                end;
-              else
-                self:diffusealpha(0);
-              end;
-            end;
-            };
-          }
-        }
+				CurrentSongChangedMessageCommand=function(s) s:queuecommand('Set') end,
+				CurrentCourseChangedMessageCommand=function(s) s:queuecommand('Set') end,
+				['CurrentSteps'..ToEnumShortString(pn)..'ChangedMessageCommand']=function(s) s:queuecommand('Set') end,
+				['CurrentTrail'..ToEnumShortString(pn)..'ChangedMessageCommand']=function(s) s:queuecommand('Set') end,
+				SetCommand=function(self)
+					local c = self:GetChildren()
+				
+					local song = GAMESTATE:GetCurrentSong()
+					local stepType = GAMESTATE:GetCurrentStyle():GetStepsType()
+					local steps
+					if song then
+						steps = song:GetOneSteps(stepType, diff)
+					end
+					if not (song and steps) then
+						c.Score:visible(false)
+						c.Grade:visible(false)
+						return
+					end
+						
+					local profile
+					if PROFILEMAN:IsPersistentProfile(pn) then
+						profile = PROFILEMAN:GetProfile(pn)
+					else
+						profile = PROFILEMAN:GetMachineProfile()
+					end
+					local scores = profile:GetHighScoreList(song, steps):GetHighScores()
+					local score = scores[1]
+					
+					if not score then
+						c.Score:visible(false)
+						c.Grade:visible(false)
+						return
+					end
+					c.Score:visible(true)
+					c.Grade:visible(true)
+					
+					self:playcommand('SetScore', { Stats = score, Steps = steps })
+				end,
+				ScoreAndGrade.CreateScoreActor{
+					Name='Score',
+          Font='_avenirnext lt pro bold/20px',
+					InitCommand=function(self)
+						self:x(pn==PLAYER_2 and 260 or -260):strokecolor(Color.Black)
+					end,
+				},
+				ScoreAndGrade.CreateGradeActor{
+					Name='Grade',
+					AlternativeFC=true,
+					InitCommand=function(self)
+						self:x(pn==PLAYER_2 and 176 or -186)
+					end,
+					OffCommand=function(self)
+						self:decelerate(0.05):diffusealpha(0)
+					end,
+				},
+			}
     end
     return Item
 end;
