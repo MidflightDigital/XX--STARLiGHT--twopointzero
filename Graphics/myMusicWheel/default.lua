@@ -1,97 +1,66 @@
 --[[
-    Unified Small Grade Display
-    pn: What do you think.
-    index: Index of the score you want to pull.
-    thing: Machine or Player Profile
-    stype: OneSteps or CurrentSteps
-    diff: Difficulty
-]]
+  Unified Small Grade Display
+  pn: Player number for grade display
+  index: Index of the score you want to pull
+  profileType: use Machine or Player Profile
+  stepType: "Current" for current step, or "One" to select a specific difficulty
+  diff: Difficulty if stepType == "One"
+--]]
 
+-- This file is mostly deprecated after the adoptation of the ScoreAndGrade module directly 
+-- into code that wants to display a grade. If you prefer to still use this file then you can, 
+-- as it's now a just a wrapper around the ScoreAndGrade.CreateGradeActor() function.
+  
 local args = {...}
 local pn = args[1]
 local index = args[2]
-local thing = args[3]
-local stype = args[4]
+local profileType = args[3]
+local stepType = args[4]
 local diff = args[5]
+local ScoreAndGrade = LoadModule('ScoreAndGrade.lua')
 
-return Def.ActorFrame{
-    SetCommand=function(s)
-        local fc = s:GetChild("FC")
-
-        s:GetChild("Grade"):visible(false)
-        fc:visible(false)
-
-        local song = GAMESTATE:GetCurrentSong()
-        if song then
-            local steps
-            local st = GAMESTATE:GetCurrentStyle():GetStepsType()
-            if stype == "Current" then
-                steps = GAMESTATE:GetCurrentSteps(pn)
-            elseif stype == "One" then
-                steps = song:GetOneSteps(st,diff)
-            end
-            local topscore = 0
-            local topgrade
-            local profile
-            if steps then
-                if thing == "Machine" then
-                    profile = PROFILEMAN:GetMachineProfile()
-                else
-                    profile = PROFILEMAN:GetProfile(pn)
-                end
-                scorelist = profile:GetHighScoreList(song,steps)
-                local scores = scorelist:GetHighScores()
-                if scores[index] then
-                    if ThemePrefs.Get("ConvertScoresAndGrades") then
-                        topscore = SN2Scoring.GetSN2ScoreFromHighScore(steps, scores[index])
-                        topgrade = SN2Grading.ScoreToGrade(topscore,steps)
-                    else
-                        topscore = scores[index]:GetScore()
-                        topgrade = scores[index]:GetGrade()
-                    end
-                end
-
-                if topscore ~= 0 then
-                    local misses = scores[index]:GetTapNoteScore("TapNoteScore_Miss")+scores[index]:GetTapNoteScore("TapNoteScore_CheckpointMiss")
-                    local boos = scores[index]:GetTapNoteScore("TapNoteScore_W5")
-                    local goods = scores[index]:GetTapNoteScore("TapNoteScore_W4")
-                    local greats = scores[index]:GetTapNoteScore("TapNoteScore_W3")
-                    local perfects = scores[index]:GetTapNoteScore("TapNoteScore_W2")
-                    local marvelous = scores[index]:GetTapNoteScore("TapNoteScore_W1")
-                    s:GetChild("Grade"):visible(true):Load(THEME:GetPathG("myMusicWheel/GradeDisplayEval",ToEnumShortString(topgrade)))
-                    if (misses+boos) == 0 and scores[index]:GetScore() > 0 and (marvelous+perfects)>0 then
-                        fc:visible(true)
-                        if (greats+perfects) == 0 then
-                          fc:GetChild("FCStarColor"):diffuse(GameColor.Judgment["JudgmentLine_W1"])
-                          :glowblink():effectperiod(0.20)
-                        elseif greats == 0 then
-                            fc:GetChild("FCStarColor"):diffuse(GameColor.Judgment["JudgmentLine_W2"])
-                          :glowshift()
-                        elseif (misses+boos+goods) == 0 then
-                            fc:GetChild("FCStarColor"):diffuse(GameColor.Judgment["JudgmentLine_W3"])
-                          :stopeffect()
-                        elseif (misses+boos) == 0 then
-                            fc:GetChild("FCStarColor"):diffuse(GameColor.Judgment["JudgmentLine_W4"])
-                            :stopeffect()
-                        end;
-                    end
-                end
-            end
-        end
-    end,
-    Def.Sprite{
-        Name="Grade",
-    },
-    Def.ActorFrame{
-        Name="FC",
-        InitCommand=function(s) s:zoom(0.4):xy(14,5) end,
-        Def.Sprite{
-            Name="FCStar",
-            Texture="star.png",
-        },
-        Def.Sprite{
-            Name="FCStarColor",
-            Texture="colorstar.png",
-        }
-    },
+return ScoreAndGrade.CreateGradeActor{
+  Name='Grade',
+  SetCommand=function(self)
+    local SongOrCourse, StepsOrTrail
+    if GAMESTATE:IsCourseMode() then
+      SongOrCourse = GAMESTATE:GetCurrentCourse()
+      StepsOrTrail = GAMESTATE:GetCurrentTrail(pn)
+    else
+      SongOrCourse = GAMESTATE:GetCurrentSong()
+      if stepType == 'Current' then
+        StepsOrTrail = GAMESTATE:GetCurrentSteps(pn)
+      elseif stepType == 'One' and SongOrCourse then
+        local stepType = GAMESTATE:GetCurrentStyle():GetStepsType()
+        StepsOrTrail = SongOrCourse:GetOneSteps(stepType, diff)
+      end
+    end
+    
+    if not (SongOrCourse and StepsOrTrail) then
+      self:visible(false)
+      return
+    end
+    
+    local profile
+    if profileType == 'Machine' then
+      profile = PROFILEMAN:GetMachineProfile()
+    else
+      if PROFILEMAN:IsPersistentProfile(pn) then
+        profile = PROFILEMAN:GetProfile(pn)
+      else
+        profile = PROFILEMAN:GetMachineProfile()
+      end
+    end
+    
+    local scores = profile:GetHighScoreList(SongOrCourse, StepsOrTrail):GetHighScores()
+    local score = scores[index]
+    
+    if not score then
+      self:visible(false)
+      return
+    end
+    self:visible(true)
+    
+    self:playcommand('SetScore', { Stats = score, Steps = StepsOrTrail })
+  end
 }

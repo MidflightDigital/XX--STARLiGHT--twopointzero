@@ -1,10 +1,11 @@
 local Y_SPACING = 140
-local Radar = LoadModule "DDR Groove Radar.lua"
+local Radar = LoadModule('DDR Groove Radar.lua')
+local ScoreAndGrade = LoadModule('ScoreAndGrade.lua')
 local numItems = 7
 
 local ver = ""
 if ThemePrefs.Get("SV") == "onepointzero" then
-  ver = "1_"
+	ver = "1_"
 end
 
 
@@ -14,7 +15,7 @@ local function DiffInputHandler(event)
 	local pn= event.PlayerNumber
 	local button = event.button
 	if event.type == "InputEventType_Release" then return end
-
+	
 	if (button == "Start") and GAMESTATE:IsPlayerEnabled(pn) and not keyset[pn] and getenv("OPList") == 0 then
 		keyset[pn] = true
 		MESSAGEMAN:Broadcast("OK"..pn)
@@ -61,13 +62,14 @@ local selection = {
 
 local stepsData = {}
 
-local compareSteps = LoadModule "StepsUtil.lua".CompareSteps
+local compareSteps = LoadModule("StepsUtil.lua").CompareSteps
 local function SetActiveSelections()
 	for pn in EnabledPlayers() do
 		local playerSteps = GAMESTATE:GetCurrentSteps(pn)
 		for i=1,#stepsData do
 			if compareSteps(playerSteps, stepsData[i]) == 0 then
 				selection[pn] = i
+				break
 			end
 		end
 		assert(selection[pn], "couldn't set selection for "..pn)
@@ -75,59 +77,59 @@ local function SetActiveSelections()
 end
 
 local function RadarPanel(pn)
-    local GR = {
-        {-1,-122, "Stream"}, --STREAM
-        {-120,-43, "Voltage"}, --VOLTAGE
-        {-108,72, "Air"}, --AIR
-        {108,72, "Freeze"}, --FREEZE
-        {120,-43, "Chaos"}, --CHAOS
-    }
-    local t = Def.ActorFrame{
+	local GR = {
+		{-1,-122, "Stream"}, --STREAM
+		{-120,-43, "Voltage"}, --VOLTAGE
+		{-108,72, "Air"}, --AIR
+		{108,72, "Freeze"}, --FREEZE
+		{120,-43, "Chaos"}, --CHAOS
+	}
+	local t = Def.ActorFrame{
 		StartSelectingStepsMessageCommand=function(s) s:queuecommand("Set") end,
 		ChangeStepsMessageCommand=function(s) s:queuecommand("Set") end,
 	}
-
-    t[#t+1] = Def.ActorFrame{
-        Def.ActorFrame{
-            Name="Radar",
-            Def.Sprite{
-                Texture=THEME:GetPathG("","_shared/Radar/"..ver.."GrooveRadar base.png"),
-            },
-            Def.Sprite{
-                Texture=THEME:GetPathG("","_shared/Radar/sweep.png"),
-                InitCommand = function(s) s:zoom(1.35):spin():effectmagnitude(0,0,100) end,
+	
+	t[#t+1] = Def.ActorFrame{
+		Def.ActorFrame{
+			Name="Radar",
+			Def.Sprite{
+				Texture=THEME:GetPathG("","_shared/Radar/"..ver.."GrooveRadar base.png"),
+			},
+			Def.Sprite{
+				Texture=THEME:GetPathG("","_shared/Radar/sweep.png"),
+				InitCommand = function(s) s:zoom(1.35):spin():effectmagnitude(0,0,100) end,
 				OffCommand=function(s) s:stoptweening() end,
-            },
-            Radar.create_ddr_groove_radar("radar",0,0,pn,125,Alpha(PlayerColor(pn),0.25))
-        }
-    }
-
-    for i,v in ipairs(GR) do
-        t[#t+1] = Def.ActorFrame{
-            InitCommand=function(s)
-                s:xy(v[1],v[2])
-            end,
-            Def.Sprite{
+			},
+			Radar.create_ddr_groove_radar("radar",0,0,pn,125,Alpha(PlayerColor(pn),0.25))
+		}
+	}
+	
+	for i,v in ipairs(GR) do
+		t[#t+1] = Def.ActorFrame{
+			InitCommand=function(s)
+				s:xy(v[1],v[2])
+			end,
+			Def.Sprite{
 				Texture=THEME:GetPathG("","_shared/Radar/"..ver.."RLabels"),
-                InitCommand=function(s) s:animate(0):setstate(i-1) end,
-            },
-            Def.BitmapText{
-                Font="_avenirnext lt pro bold/20px",
-                SetCommand=function(s)
-                    local song = GAMESTATE:GetCurrentSong()
-                    if song then
-                        local steps = GAMESTATE:GetCurrentSteps(pn)
-                        local value = lookup_ddr_radar_values(song, steps, pn)[i]
-                        s:settext(math.floor(value*100+0.5))
-                    else
-                        s:settext("")
-                    end
-                    s:strokecolor(color("#1f1f1f")):y(28)
-                end,
-            }
-        }
-    end
-    return t
+				InitCommand=function(s) s:animate(0):setstate(i-1) end,
+			},
+			Def.BitmapText{
+				Font="_avenirnext lt pro bold/20px",
+				SetCommand=function(s)
+					local song = GAMESTATE:GetCurrentSong()
+					if song then
+						local steps = GAMESTATE:GetCurrentSteps(pn)
+						local value = lookup_ddr_radar_values(song, steps, pn)[i]
+						s:settext(math.floor(value*100+0.5))
+					else
+						s:settext("")
+					end
+					s:strokecolor(color("#1f1f1f")):y(28)
+				end,
+			}
+		}
+	end
+	return t
 end
 
 local function RivalsPanel(pn)
@@ -139,175 +141,87 @@ local function RivalsPanel(pn)
 			SetCommand=function(s)
 				local c = s:GetChildren()
 				local song = GAMESTATE:GetCurrentSong()
-				if song then
-					local steps = GAMESTATE:GetCurrentSteps(pn)
-					if steps then
-						c.Bar_underlay:visible(true)
-						if rival == 1 then
-							c.Bar_underlay:diffuse(Color.Red)
-							c.Text_place:settext(THEME:GetString("RecordList","MachineBest"))
-						elseif rival == 2 then
-							c.Bar_underlay:diffuse(color("#00a651"))
-							c.Text_place:settext(THEME:GetString("RecordList","BestScore"))
-						else
-							c.Bar_underlay:diffuse(color("#006cff"))
-							if rival == 3 then
-								c.Text_place:settext(THEME:GetString("RecordList","Rival1"))
-							elseif rival == 4 then
-								c.Text_place:settext(THEME:GetString("RecordList","Rival2"))
-							elseif rival == 5 then
-								c.Text_place:settext(THEME:GetString("RecordList","Rival3"))
-							end
-						end
-					end
-
-					local profile
-					local scorelist
-					local scores
-					local topgrade
-					local topscore = 0
-					c.GradeArea:visible(false)
-					c.Text_score:settext("")
-					c.Text_name:settext("")
-					c.GradeArea:GetChild("FCStar"):visible(false)
-
+				local steps = GAMESTATE:GetCurrentSteps(pn)
+				if song and steps then
+					c.Bar_underlay:visible(true)
 					if rival == 1 then
-						--Always show machine best.
-						profile = PROFILEMAN:GetMachineProfile()
-						scorelist = profile:GetHighScoreList(song,steps)
-						scores = scorelist:GetHighScores()
-						if scores[1] then
-							if ThemePrefs.Get("ConvertScoresAndGrades") then
-								topscore = SN2Scoring.GetSN2ScoreFromHighScore(steps, scores[1])
-								topgrade = SN2Grading.ScoreToGrade(topscore,steps)
-							else
-								topscore = scores[1]:GetScore()
-								topgrade = scores[1]:GetGrade()
-							end
-						end
-						if topscore ~= 0 then
-							c.Text_score:settext(commify(topscore))
-							if scores[1]:GetName() ~= nil then
-								if scores[1]:GetName() == "" then
-									c.Text_name:settext("NO NAME")
-								else
-									c.Text_name:settext(scores[1]:GetName())
-								end
-							else
-								c.Text_name:settext("STEP")
-							end
-							local misses = scores[1]:GetTapNoteScore("TapNoteScore_Miss")+scores[1]:GetTapNoteScore("TapNoteScore_CheckpointMiss")
-                    		local boos = scores[1]:GetTapNoteScore("TapNoteScore_W5")
-                    		local goods = scores[1]:GetTapNoteScore("TapNoteScore_W4")
-                    		local greats = scores[1]:GetTapNoteScore("TapNoteScore_W3")
-                    		local perfects = scores[1]:GetTapNoteScore("TapNoteScore_W2")
-                    		local marvelous = scores[1]:GetTapNoteScore("TapNoteScore_W1")
-							c.GradeArea:visible(true)
-							c.GradeArea:GetChild("Grade"):Load(THEME:GetPathG("myMusicWheel/GradeDisplayEval",ToEnumShortString(topgrade)))
-							if (misses+boos) == 0 and scores[1]:GetScore() > 0 and (marvelous+perfects)>0 then
-								c.GradeArea:GetChild("FCStar"):visible(true)
-								if (greats+perfects) == 0 then
-									c.GradeArea:GetChild("FCStar"):diffuse(GameColor.Judgment["JudgmentLine_W1"])
-								  :glowblink():effectperiod(0.20)
-								elseif greats == 0 then
-									c.GradeArea:GetChild("FCStar"):diffuse(GameColor.Judgment["JudgmentLine_W2"])
-								  :glowshift()
-								elseif (misses+boos+goods) == 0 then
-									c.GradeArea:GetChild("FCStar"):diffuse(GameColor.Judgment["JudgmentLine_W3"])
-								  :stopeffect()
-								elseif (misses+boos) == 0 then
-									c.GradeArea:GetChild("FCStar"):diffuse(GameColor.Judgment["JudgmentLine_W4"])
-									:stopeffect()
-								end;
-							end
-						end
+						c.Bar_underlay:diffuse(Color.Red)
+						c.Text_place:settext(THEME:GetString('RecordList','MachineBest'))
 					elseif rival == 2 then
-						--Always show player's High Score
-						profile = PROFILEMAN:GetProfile(pn)
-						scorelist = profile:GetHighScoreList(song,steps)
-						scores = scorelist:GetHighScores()
-						if scores[1] then
-							if ThemePrefs.Get("ConvertScoresAndGrades") then
-								topscore = SN2Scoring.GetSN2ScoreFromHighScore(steps, scores[1])
-								topgrade = SN2Grading.ScoreToGrade(topscore,steps)
-							else
-								topscore = scores[1]:GetScore()
-								topgrade = scores[1]:GetGrade()
-							end
-						end
-						if topscore ~= 0 then
-							c.Text_score:settext(commify(topscore))
-							if scores[1]:GetName() ~= nil then
-								if scores[1]:GetName() == "" then
-									c.Text_name:settext("NO NAME")
-								else
-									c.Text_name:settext(scores[1]:GetName())
-								end
-							else
-								c.Text_name:settext("STEP")
-							end
-							local misses = scores[1]:GetTapNoteScore("TapNoteScore_Miss")+scores[1]:GetTapNoteScore("TapNoteScore_CheckpointMiss")
-                    		local boos = scores[1]:GetTapNoteScore("TapNoteScore_W5")
-                    		local goods = scores[1]:GetTapNoteScore("TapNoteScore_W4")
-                    		local greats = scores[1]:GetTapNoteScore("TapNoteScore_W3")
-                    		local perfects = scores[1]:GetTapNoteScore("TapNoteScore_W2")
-                    		local marvelous = scores[1]:GetTapNoteScore("TapNoteScore_W1")
-							c.GradeArea:visible(true)
-							c.GradeArea:GetChild("Grade"):Load(THEME:GetPathG("myMusicWheel/GradeDisplayEval",ToEnumShortString(topgrade)))
-							if (misses+boos) == 0 and scores[1]:GetScore() > 0 and (marvelous+perfects)>0 then
-								c.GradeArea:GetChild("FCStar"):visible(true)
-								if (greats+perfects) == 0 then
-									c.GradeArea:GetChild("FCStar"):diffuse(GameColor.Judgment["JudgmentLine_W1"])
-								  :glowblink():effectperiod(0.20)
-								elseif greats == 0 then
-									c.GradeArea:GetChild("FCStar"):diffuse(GameColor.Judgment["JudgmentLine_W2"])
-								  :glowshift()
-								elseif (misses+boos+goods) == 0 then
-									c.GradeArea:GetChild("FCStar"):diffuse(GameColor.Judgment["JudgmentLine_W3"])
-								  :stopeffect()
-								elseif (misses+boos) == 0 then
-									c.GradeArea:GetChild("FCStar"):diffuse(GameColor.Judgment["JudgmentLine_W4"])
-									:stopeffect()
-								end;
-							end
-						end
+						c.Bar_underlay:diffuse(color('#00a651'))
+						c.Text_place:settext(THEME:GetString('RecordList','BestScore'))
+					else
+						c.Bar_underlay:diffuse(color('#006cff'))
+						c.Text_place:settext(THEME:GetString('RecordList','Rival'..(rival-2)))
 					end
-							
 				end
+				
+				local profile
+				if rival == 1 then
+					--Always show machine best.
+					profile = PROFILEMAN:GetMachineProfile()
+				elseif rival == 2 then
+					--Always show player's High Score
+					if PROFILEMAN:IsPersistentProfile(pn) then
+						profile = PROFILEMAN:GetProfile(pn)
+					else
+						profile = PROFILEMAN:GetMachineProfile()
+					end
+				end
+				
+				local score
+				if profile then
+					local scores = profile:GetHighScoreList(song, steps):GetHighScores()
+					score = scores[1]
+				end
+				
+				if not score then
+					c.Text_name:settext('')
+					c.Text_name:visible(false)
+					c.Text_score:visible(false)
+					c.GradeFrame:visible(false)
+					return
+				end
+				c.Text_name:visible(true)
+				c.Text_score:visible(true)
+				c.GradeFrame:visible(true)
+				
+				local name = score:GetName()
+				if not name or name == ''  then
+					c.Text_name:settext('(NO NAME)')
+				else
+					c.Text_name:settext(name)
+				end
+				
+				s:playcommand('SetScore', { Stats = score, Steps = steps })
 			end,
 			Def.Quad{
-				Name="Bar_underlay";
+				Name='Bar_underlay';
 				InitCommand=function(s) s:visible(false):setsize(410,28):faderight(0.75):diffusealpha(0.5) end,
 			};
 			Def.BitmapText{
-                Font="_avenirnext lt pro bold/25px",
-                Name="Text_place";
-                Text=rival;
-                InitCommand=function(s) s:x(-200):strokecolor(Alpha(Color.Black,0.5)):zoom(0.7):halign(0):maxwidth(140) end,
-            };
+				Font='_avenirnext lt pro bold/25px',
+				Name='Text_place';
+				Text=rival;
+				InitCommand=function(s) s:x(-200):strokecolor(Alpha(Color.Black,0.5)):zoom(0.7):halign(0):maxwidth(140) end,
+			};
 			Def.BitmapText{
-                Name="Text_name",
-                Font="_avenirnext lt pro bold/20px",
-                InitCommand=function(s) s:x(-60):halign(0):diffuse(Color.White):strokecolor(Color.Black):zoom(0.8) end,
-            };
-			Def.BitmapText{
-                Name="Text_score",
-                Font="_avenirnext lt pro bold/20px",
-                InitCommand=function(s) s:x(160):halign(1):diffuse(Color.White):strokecolor(Color.Black):zoom(0.8) end,
-            };
-			Def.ActorFrame{
-				Name="GradeArea",
-				InitCommand=function(s) s:x(190) end,
-				Def.Sprite{
-					Name="Grade",
-				},
-				Def.Sprite{
-					Name="FCStar",
-					Texture=THEME:GetPathG("","myMusicWheel/star.png"),
-					InitCommand=function(s) s:zoom(0.4):xy(14,5) end,
-				}
+				Name='Text_name',
+				Font='_avenirnext lt pro bold/20px',
+				InitCommand=function(s) s:x(-60):halign(0):diffuse(Color.White):strokecolor(Color.Black):zoom(0.8) end,
+			};
+			ScoreAndGrade.CreateScoreActor{
+				Name='Text_score',
+				InitCommand=function(self)
+					self:x(160):halign(1):diffuse(Color.White):strokecolor(Color.Black):zoom(0.8)
+				end,
+			},
+			ScoreAndGrade.CreateGradeActor{
+				Name='GradeFrame',
+				InitCommand=function(self)
+					self:x(190)
+				end,
 			}
-			
 		}
 	end
 	return t
@@ -315,7 +229,7 @@ end
 
 local function genScrollerFrame(pn)
 	local t = Def.ActorFrame{}
-
+	
 	t[#t+1] = Def.DynamicActorScroller{
 		NumItemsToDraw = numItems,
 		SecondsPerItem = 0.1,
@@ -323,7 +237,7 @@ local function genScrollerFrame(pn)
 		OnCommand=function(self)
 			-- For more information about this Input Controller, check "Custom Input".
 			-- https://outfox.wiki/dev/theming/Theming-Custom-Input/
-	
+			
 			-- TRICK: Make the scroller be outside of range, so by the time it comes back,
 			-- it has been loaded with the present steps data.
 			self:SetCurrentAndDestinationItem( numItems+2 )
@@ -334,86 +248,96 @@ local function genScrollerFrame(pn)
 		StartSelectingStepsMessageCommand=function (self)
 			local song = GAMESTATE:GetCurrentSong()
 			stepsData = SongUtil.GetPlayableSteps(song)
-	
+			
 			SetActiveSelections()
-	
+			
 			-- Force the scroller to update its items.
 			self:SetCurrentAndDestinationItem( selection[pn]-1 )
 			self:sleep(0.1)
 			self:queuecommand("CheckItem")
 		end,
+		-- Let's add input to this scroller.
+		ChangeStepsMessageCommand=function (self, param)
+			if param.Player ~= pn then return end
+			local dir = param.Direction
+			if selection[pn] ~= nil then
+				selection[pn] = selection[pn] + dir
+				self:SetDestinationItem( selection[pn]-1 )
+				self:playcommand("CheckItem")
+			end
+		end,
 		LoadFunction = function(self, itemIndex)
 			-- This will tell the scroller how many items will be generated for the scroller. It just needs a number.
 			-- "Call the expression with line = nil to find out the number of lines."
-	
+			
 			-- Self is the actor represented for the actor set.
 			-- itemIndex is the item relative to the current selection from the user.
-			if self then
-				local steps = stepsData[itemIndex+1]
-				self:visible( steps ~= nil )
-				if steps then 
-					local diff = steps:GetDifficulty()
-					local diffItem = THEME:GetString("CustomDifficulty",ToEnumShortString(diff))
-					self:GetChild("DifficultyBG"):Load( THEME:GetPathB("ScreenSelectMusic","decorations/_shared/TwoPartDiff/".. diffItem) )
-					self:GetChild("Meter"):settext( IsMeterDec(steps:GetMeter()) ):diffuse(CustomDifficultyTwoPartToColor(diff))
-					self:GetChild("CFBPMDisplay"):settext( steps:GetAuthorCredit() ):diffuse(CustomDifficultyTwoPartToColor(diff))
-					self:GetChild("ShockArrow"):visible( steps:GetRadarValues(pn):GetValue('RadarCategory_Mines') >= 1 )
-					self:GetChild("Highlight").indexValue = itemIndex
-
-					-- Handle highscore lamp.
-					local profile
-					local song = GAMESTATE:GetCurrentSong()
-
-					if not song then return numItems end
-
-					if PROFILEMAN:IsPersistentProfile(pn) then
-						profile = PROFILEMAN:GetProfile(pn)
-					else
-						profile = PROFILEMAN:GetMachineProfile()
-					end
-
-					local scorelist = profile:GetHighScoreList(song,steps)
-					local scores = scorelist:GetHighScores()
-					local topscore
-
-					local lampActor = self:GetChild("Lamp")
-					if scores[1] then
-						topscore = scores[1]
-						assert(topscore)
-                		local misses = topscore:GetTapNoteScore("TapNoteScore_Miss")+topscore:GetTapNoteScore("TapNoteScore_CheckpointMiss")
-                		local boos = topscore:GetTapNoteScore("TapNoteScore_W5")
-                		local goods = topscore:GetTapNoteScore("TapNoteScore_W4")
-                		local greats = topscore:GetTapNoteScore("TapNoteScore_W3")
-                		local perfects = topscore:GetTapNoteScore("TapNoteScore_W2")
-                		local marvelous = topscore:GetTapNoteScore("TapNoteScore_W1")
-						if (misses+boos) == 0 and scores[1]:GetScore() > 0 and (marvelous+perfects)>0 then
-							if (greats+perfects) == 0 then
-								lampActor:diffuse(FullComboEffectColor["JudgmentLine_W1"]):glowblink():effectperiod(0.20)
-							elseif greats == 0 then
-								lampActor:diffuse(GameColor.Judgment["JudgmentLine_W2"]):glowshift()
-							elseif (misses+boos+goods) == 0 then
-								lampActor:diffuse(GameColor.Judgment["JudgmentLine_W3"]):stopeffect()
-							elseif (misses+boos) == 0 then
-								lampActor:diffuse(GameColor.Judgment["JudgmentLine_W4"]):stopeffect()
-							end
-							lampActor:visible(true)
-						else
-							if topscore:GetGrade() ~= 'Grade_Failed' then
-								lampActor:visible(true):diffuse(color("#f70b9e"))
-							else
-								lampActor:visible(true):diffuse(color("#555452"))
-							end
-						end
-					else
-						lampActor:visible(false)
-					end
-				end
+			if not self then return numItems end
+			
+			local song = GAMESTATE:GetCurrentSong()
+			if not song then return numItems end
+			
+			local steps = stepsData[itemIndex+1]
+			if not steps then
+				self:visible(false)
+				return numItems
 			end
+			self:visible(true)
+			
+			local diff = steps:GetDifficulty()
+			local diffItem = THEME:GetString('CustomDifficulty', ToEnumShortString(diff))
+			local diffColor = CustomDifficultyTwoPartToColor(diff)
+			self:GetChild('DifficultyBG'):Load(THEME:GetPathB('ScreenSelectMusic','decorations/_shared/TwoPartDiff/' .. diffItem))
+			self:GetChild('Meter'):diffuse(diffColor):settext(IsMeterDec(steps:GetMeter()))
+			self:GetChild('CFBPMDisplay'):diffuse(diffColor):settext(steps:GetAuthorCredit())
+			self:GetChild('ShockArrow'):visible(steps:GetRadarValues(pn):GetValue('RadarCategory_Mines') > 0)
+			self:GetChild('Highlight').indexValue = itemIndex
+			
+			-- Handle highscore lamp.
+			local Lamp = self:GetChild('Lamp')
+			
+			local profile
+			if PROFILEMAN:IsPersistentProfile(pn) then
+				profile = PROFILEMAN:GetProfile(pn)
+			else
+				profile = PROFILEMAN:GetMachineProfile()
+			end
+			
+			local scores = profile:GetHighScoreList(song, steps):GetHighScores()
+			local score = scores[1]
+			if not score then
+				Lamp:visible(false)
+				return numItems
+			end			
+			Lamp:visible(true)
+			
+      local fullComboType = ScoreAndGrade.GetFullComboType(score)
+			if not fullComboType then
+				Lamp:stopeffect()
+				local grade = ScoreAndGrade.GetGrade(score, steps)
+				if grade == 'Grade_Failed' then
+					-- Can only happen on when using player profiles. The machine profile will not save steps scores from failed stages:
+					-- https://github.com/stepmania/stepmania/blob/d55acb1ba26f1c5b5e3048d6d6c0bd116625216f/src/ProfileManager.cpp#L876
+					Lamp:diffuse(color("#555452"))
+				else
+					Lamp:diffuse(color("#f70b9e"))
+				end
+				return numItems
+			end
+			
+			if     fullComboType == 'TapNoteScore_W1' then Lamp:diffuse(FullComboEffectColor["JudgmentLine_W1"]):glowblink():effectperiod(0.2)
+			elseif fullComboType == 'TapNoteScore_W2' then Lamp:diffuse(GameColor.Judgment['JudgmentLine_W2']):glowshift()
+			elseif fullComboType == 'TapNoteScore_W3' then Lamp:diffuse(GameColor.Judgment['JudgmentLine_W3']):stopeffect()
+			elseif fullComboType == 'TapNoteScore_W4' then Lamp:diffuse(GameColor.Judgment['JudgmentLine_W4']):stopeffect()
+			else
+				assert(false, 'Unknown Full Combo type: ' .. fullComboType)
+			end
+
 			return numItems
 		end,
 		TransformFunction=function(self, offset, itemIndex, numItems)
 			self:y( offset * Y_SPACING )
-
+			
 			self:diffusealpha( (offset < -3 or offset > 3) and 0 or 1 )
 		end,
 		-- By the rules, this is only adding a single item, which is an ActorFrame holding a BitmapText.
@@ -443,10 +367,9 @@ local function genScrollerFrame(pn)
 				Name="Highlight",
 				InitCommand=function(s) s:visible(false):diffuseramp():effectcolor1(Alpha(PlayerColor(pn),0)):effectcolor2(Alpha(PlayerColor(pn),1)):effectclock("beatnooffset") end,
 				CheckItemCommand=function (self)
-					if self.indexValue then
-						local scrollerActor = self:GetParent():GetParent()
-						self:visible( self.indexValue == scrollerActor:GetDestinationItem() )
-					end
+					if not self.indexValue then return end
+					local scrollerActor = self:GetParent():GetParent()
+					self:visible( self.indexValue == scrollerActor:GetDestinationItem() )
 				end,
 				["OK"..pn.."MessageCommand"]=function(self)
 					self:stopeffect():diffuse(PlayerColor(pn))
@@ -465,18 +388,8 @@ local function genScrollerFrame(pn)
 				OffCommand=function(s) s:stopeffect() end,
 			},
 		},
-		-- Let's add input to this scroller.
-		ChangeStepsMessageCommand=function (self, param)
-			if param.Player ~= pn then return end
-			local dir = param.Direction
-			if selection[pn] ~= nil then
-				selection[pn] = selection[pn] + dir
-				self:SetDestinationItem( selection[pn]-1 )
-				self:playcommand("CheckItem")
-			end
-		end,
 	}
-
+	
 	return t
 end
 
@@ -513,57 +426,57 @@ for _,pn in pairs(GAMESTATE:GetEnabledPlayers()) do
 					s:zoomx(pn==PLAYER_2 and -1 or 1)
 				end,
 				Def.Sprite{ Texture="WINDOW INNER",
-					InitCommand=function(s) s:diffuse(color("#333333")):y(14) end,
-				},
-				Def.Sprite{ Texture="WINDOW FRAME"}
+				InitCommand=function(s) s:diffuse(color("#333333")):y(14) end,
 			},
-			Def.ActorFrame{
-				Name="DIFF HEADER",
-				--Blaze it
-				InitCommand=function(s) s:y(-420) end,
-				Def.Sprite{
-					Texture="Header Box",
-					InitCommand=function(s) s:zoomx(pn==PLAYER_2 and -1 or 1) end,
-				},
-				Def.Sprite{
-					Texture="Diff Text",
-				}
+			Def.Sprite{ Texture="WINDOW FRAME"}
+		},
+		Def.ActorFrame{
+			Name="DIFF HEADER",
+			--Blaze it
+			InitCommand=function(s) s:y(-420) end,
+			Def.Sprite{
+				Texture="Header Box",
+				InitCommand=function(s) s:zoomx(pn==PLAYER_2 and -1 or 1) end,
 			},
-			RivalsPanel(pn)..{
-		        InitCommand=function(s) s:y(260) end,
-				StartSelectingStepsMessageCommand=function(s) s:queuecommand("Set") end,
-				ChangeStepsMessageCommand=function(s) s:queuecommand("Set") end,
-            };
-			RadarPanel(pn)..{
-				InitCommand=function(s) s:diffusealpha(0) end,
-				StartSelectingStepsMessageCommand=function(s) s:sleep(0.4):smooth(0.1):diffusealpha(0.5)
-					:smooth(0.1):diffusealpha(0.3):decelerate(0.3):diffusealpha(1)
-				end,
-			},
-			loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/_shared/TwoPartDiff/_Diff.lua"))(pn)..{
-				InitCommand=function(s) s:y(-360) end,
-				StartSelectingStepsMessageCommand=function(s) s:queuecommand("Set") end,
-				ChangeStepsMessageCommand=function(s) s:queuecommand("Set") end,
+			Def.Sprite{
+				Texture="Diff Text",
 			}
 		},
-		--Yes I'm loading a version of the diff list that literally only has the frame removed. Fight me.
-		Def.BitmapText{
-			Font="_avenirnext lt pro bold/25px",
-			Text="Please wait...",
-			InitCommand=function(s) s:diffusealpha(0):y(60):strokecolor(Color.Black):sleep(0.4) end,
-			AnimCommand=function(s) s:finishtweening():cropright(0.2):linear(0.5):cropright(0):queuecommand("Anim") end,
-			["OK"..pn.."MessageCommand"]=function(s)
-				s:x(-100):decelerate(0.4):x(0):diffusealpha(1):queuecommand("Anim")
+		RivalsPanel(pn)..{
+			InitCommand=function(s) s:y(260) end,
+			StartSelectingStepsMessageCommand=function(s) s:queuecommand("Set") end,
+			ChangeStepsMessageCommand=function(s) s:queuecommand("Set") end,
+		},
+		RadarPanel(pn)..{
+			InitCommand=function(s) s:diffusealpha(0) end,
+			StartSelectingStepsMessageCommand=function(s) s:sleep(0.4):smooth(0.1):diffusealpha(0.5)
+				:smooth(0.1):diffusealpha(0.3):decelerate(0.3):diffusealpha(1)
 			end,
-			RemoveCommand=function (self)
-				self:stoptweening():decelerate(0.4):x(0):diffusealpha(0)
-			end,
-			OffCommand=function(s) 
-				s:settext("O.K.!")
-				:finishtweening():diffusealpha(1):sleep(1):decelerate(0.3):diffusealpha(0)
-			end,
+		},
+		loadfile(THEME:GetPathB("ScreenSelectMusic","decorations/_shared/TwoPartDiff/_Diff.lua"))(pn)..{
+			InitCommand=function(s) s:y(-360) end,
+			StartSelectingStepsMessageCommand=function(s) s:queuecommand("Set") end,
+			ChangeStepsMessageCommand=function(s) s:queuecommand("Set") end,
 		}
+	},
+	--Yes I'm loading a version of the diff list that literally only has the frame removed. Fight me.
+	Def.BitmapText{
+		Font="_avenirnext lt pro bold/25px",
+		Text="Please wait...",
+		InitCommand=function(s) s:diffusealpha(0):y(60):strokecolor(Color.Black):sleep(0.4) end,
+		AnimCommand=function(s) s:finishtweening():cropright(0.2):linear(0.5):cropright(0):queuecommand("Anim") end,
+		["OK"..pn.."MessageCommand"]=function(s)
+			s:x(-100):decelerate(0.4):x(0):diffusealpha(1):queuecommand("Anim")
+		end,
+		RemoveCommand=function (self)
+			self:stoptweening():decelerate(0.4):x(0):diffusealpha(0)
+		end,
+		OffCommand=function(s) 
+			s:settext("O.K.!")
+			:finishtweening():diffusealpha(1):sleep(1):decelerate(0.3):diffusealpha(0)
+		end,
 	}
+}
 end
 
 return af
