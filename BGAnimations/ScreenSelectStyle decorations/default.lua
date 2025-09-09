@@ -1,6 +1,65 @@
-local t = LoadFallbackB();
+local t = LoadFallbackB()
 
 CustStage = 1
+
+function CanSetCurrentStyle(gameName, styleName)
+  local style
+  local styleNameLower = styleName:lower()
+  for _, v in pairs(GAMEMAN:GetStylesForGame(gameName)) do
+    if v:GetName():lower() == styleNameLower then
+      style = v
+      break
+    end
+  end
+  if not style then
+    return false, 'INVALID_STYLE'
+  end
+  
+  -- https://github.com/stepmania/stepmania/blob/d55acb1ba26f1c5b5e3048d6d6c0bd116625216f/src/GameState.cpp#L3180
+  local numSidesJoined = GAMESTATE:GetNumSidesJoined()
+  local styleType = ToEnumShortString(style:GetStyleType())
+  if numSidesJoined == 2 and (styleType == 'OnePlayerOneSide' or styleType == 'OnePlayerTwoSides') then
+    return false, 'TOO_MANY_PLAYERS'
+  elseif numSidesJoined == 1 and (styleType == 'TwoPlayersTwoSides' or styleType == 'TwoPlayersSharedSides') then
+    return false, 'TOO_FEW_PLAYERS'
+  end
+  
+  return true
+end
+
+local autoSelectStyle = ThemePrefs.Get('AutoSelectStyle')
+if autoSelectStyle and autoSelectStyle ~= '' then
+  autoSelectStyle = autoSelectStyle:lower()
+  
+  local canAutoSelectStyle, reasonCode = CanSetCurrentStyle('dance', autoSelectStyle) -- We currently only support dance
+  if canAutoSelectStyle then
+    t[#t+1] = Def.Actor{
+      OnCommand=function(s)
+        SCREENMAN:SystemMessage('Auto selected style: ' .. autoSelectStyle)
+        GAMESTATE:SetCurrentStyle(autoSelectStyle)
+        SCREENMAN:SetNewScreen(Branch.AfterSelectStyle())
+      end
+    }
+    return t
+  else
+    reasonCode = tostring(reasonCode)
+    
+    local reason
+    if reasonCode == 'TOO_MANY_PLAYERS' then
+      reason = 'Too many players joined for style \'' .. autoSelectStyle .. '\''
+    elseif reasonCode == 'TOO_FEW_PLAYERS' then
+      reason = 'Too few players joined for style \'' .. autoSelectStyle .. '\''
+    elseif reasonCode == 'INVALID_STYLE' then
+      reason = 'Invalid style \'' .. autoSelectStyle .. '\''
+      Warn('AutoSelectStyle theme preference is set to invalid style "' .. autoSelectStyle .. '"')
+    else
+      reason = 'Unknown reason \'' .. reasonCode .. '\''
+      Warn('Unknown CanSetCurrentStyle() reason "' .. reasonCode .. '"')
+    end
+    
+    SCREENMAN:SystemMessage('Cannot auto select style: ' .. reason .. ', please select style manually.')
+  end
+end 
 
 for i=1,2 do
   t[#t+1] = Def.ActorFrame{
