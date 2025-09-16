@@ -134,7 +134,7 @@ end
 
 local function RivalsPanel(pn)
 	local t = Def.ActorFrame{}
-	local rivals = {1,2,3,4,5}
+	local rivals = {1, 2, 3, 4, 5}
 	for rival in ivalues(rivals) do
 		t[#t+1] = Def.ActorFrame{
 			InitCommand=function(s) s:y((rivals[rival]*32)-32) end,
@@ -142,18 +142,25 @@ local function RivalsPanel(pn)
 				local c = s:GetChildren()
 				local song = GAMESTATE:GetCurrentSong()
 				local steps = GAMESTATE:GetCurrentSteps(pn)
-				if song and steps then
-					c.Bar_underlay:visible(true)
-					if rival == 1 then
-						c.Bar_underlay:diffuse(Color.Red)
-						c.Text_place:settext(THEME:GetString('RecordList','MachineBest'))
-					elseif rival == 2 then
-						c.Bar_underlay:diffuse(color('#00a651'))
-						c.Text_place:settext(THEME:GetString('RecordList','BestScore'))
-					else
-						c.Bar_underlay:diffuse(color('#006cff'))
-						c.Text_place:settext(THEME:GetString('RecordList','Rival'..(rival-2)))
-					end
+				if not (song and steps) then
+					c.Bar_underlay:visible(false)
+					c.Text_name:settext('')
+					c.Text_name:visible(false)
+					c.Text_score:visible(false)
+					c.GradeFrame:visible(false)
+					return
+				end
+				c.Bar_underlay:visible(true)
+				
+				if rival == 1 then
+					c.Bar_underlay:diffuse(Color.Red)
+					c.Text_place:settext(THEME:GetString('RecordList', 'MachineBest'))
+				elseif rival == 2 then
+					c.Bar_underlay:diffuse(color('#00a651'))
+					c.Text_place:settext(THEME:GetString('RecordList', 'BestScore'))
+				else
+					c.Bar_underlay:diffuse(color('#006cff'))
+					c.Text_place:settext(THEME:GetString('RecordList', 'Rival' .. (rival-2)))
 				end
 				
 				local profile
