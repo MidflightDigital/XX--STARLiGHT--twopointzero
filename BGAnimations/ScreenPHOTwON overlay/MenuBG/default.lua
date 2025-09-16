@@ -42,7 +42,7 @@ local function MakeRow(frames, idx)
     Def.Sprite{
       OnCommand=function(s) s:zoom(0.98):queuecommand("Set") end,
       SetCommand=function(self)
-        self:Load(THEME:GetPathB("","ScreenPHOTwON overlay/MenuBG/"..GetFrame(frames,"file").."Prev.png"));
+        self:Load(THEME:GetPathB("","ScreenPHOTwON overlay/MenuBG/"..GetFrame(frames,"file").."Prev"));
       end;
     };
     Def.ActorFrame{
