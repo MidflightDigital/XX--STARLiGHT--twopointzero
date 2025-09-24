@@ -194,6 +194,12 @@ local function GetMiniIndex(Mini)
     return index[Mini]
 end
 
+local function GetNumOptionsListItems(menu)
+    local listCommandsString = THEME:GetMetric('ScreenOptionsMaster', menu)
+    -- First command is always number of items
+    return tonumber(string.match(listCommandsString, '^([^;]+)'))
+end
+
 for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
     local OptionsListActor, OptionsListMenu
     local numRows
@@ -265,7 +271,7 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
         OptionsMenuChangedMessageCommand=function(self, params)
             if params.Player == pn then
                 OptionsListMenu = params.Menu
-                numRows = tonumber(THEME:GetMetric("ScreenOptionsMaster",OptionsListMenu))
+                numRows = GetNumOptionsListItems(OptionsListMenu)
                 if params.Menu ~= "SongMenu" and params.Menu ~= "AdvMenu" and params.Menu ~= "RemMenu" then
                     if params.Menu == "NoteSkins" or params.Menu == "Characters" or params.Menu == "Mini" or params.Menu == "MusicRate" then
                         OptionsListActor:stoptweening():diffusealpha(0)
