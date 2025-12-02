@@ -1,5 +1,5 @@
 local numwh = THEME:GetMetric("MusicWheel","NumWheelItems")+2
-local SongAttributes = LoadModule()'SongAttributes.lua')
+local SongAttributes = LoadModule('SongAttributes.lua')
 local Radar = LoadModule('DDR Groove Radar.lua')
 local ScoreAndGrade = LoadModule('ScoreAndGrade.lua')
 
