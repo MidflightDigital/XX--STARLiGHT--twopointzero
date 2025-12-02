@@ -663,29 +663,22 @@ function IsAnExtraStage()
 end
 
 
+-- TODO: This function is deprecated and can be safely removed in the next major version: version Threepointzero.
+-- Right now this function is only used to revert an old workaround that was added to fix MusicWheelA's scrolling
+-- sound in the past. With the rework of MusicWheelA's vertical scrolling we don't need the workaround anymore.
 function UpdateMWC()
-	local mw_path = THEME:GetCurrentThemeDirectory().."/Sounds/MusicWheel change.redir"
-  if ThemePrefs.Get("WheelType") ~= CurrentWT then
-    if not CurrentWT and FILEMAN:DoesFileExist(mw_path) then
-      CurrentWT = ThemePrefs.Get("WheelType")
-    else
-      local f = RageFileUtil.CreateRageFile()
-      local worked = f:Open(mw_path, 10)
-      if worked then
-        if ThemePrefs.Get("WheelType") == "A" then
-          f:Write("_silent")
-        else
-          f:Write("MusicWheel/dance/Default/change.ogg")
-        end
-        f:Close()
-      elseif SN3Debug then
-        SCREENMAN:SystemMessage("Couldn't open MusicWheel change redir")
-      end
-      f:destroy()
-	  CurrentWT = ThemePrefs.Get("WheelType")
-      THEME:ReloadMetrics()
-    end
-  end
+	if ThemePrefs.Get('WheelType') ~= 'A' then return end
+	local mw_path = THEME:GetCurrentThemeDirectory() .. '/Sounds/MusicWheel change.redir'
+	local f = RageFileUtil.CreateRageFile()
+	local worked = f:Open(mw_path, 10)
+	if worked then
+		-- Revert old workaround patch done by old code
+		f:Write("MusicWheel/dance/Default/change.ogg")
+		f:Close()
+	elseif SN3Debug then
+		SCREENMAN:SystemMessage("Couldn't open MusicWheel change redir")
+	end
+	f:destroy()
 end
 
 local versionMajor, versionMinor

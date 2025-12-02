@@ -1,5 +1,8 @@
-return Def.Actor {
-	StartTransitioningMessageCommand=function(s)
-		s:sleep(THEME:GetMetric(Var 'LoadingScreen', 'InTransitionSeconds'))
+return Def.Actor{
+	StartTransitioningMessageCommand=function(self)
+		local screen = Var('LoadingScreen')
+		if screen then
+			self:sleep(THEME:GetMetric(screen, 'InTransitionSeconds'))
+		end
 	end,
 }
