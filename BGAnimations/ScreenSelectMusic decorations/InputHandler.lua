@@ -88,6 +88,11 @@ local function IsButtonPressed(player, button)
   if not pressedButtons then return false end
   return not not pressedButtons[button]
 end
+local function ResetPressedButtonsState()
+  for player in pairs(pressedButtonsPerPlayer) do
+    pressedButtonsPerPlayer[player] = nil
+  end
+end
 
 local function HandleInput_MusicWheelA(event)
   if not PREFSMAN:GetPreference('OnlyDedicatedMenuButtons') then return end
@@ -175,7 +180,11 @@ local t = Def.ActorFrame{
   OffCommand=function(self) 
     SCREENMAN:GetTopScreen():RemoveInputCallback(InputHandler)
     SCREENMAN:GetTopScreen():RemoveInputCallback(DDRInput(self))
-    pressedButtonsPerPlayer = {}
+    ResetPressedButtonsState()
+  end,
+  ResetInputStateMessageCommand=function()
+    -- We need to reset the state like this because there's no way to detect SM_LoseFocus or SM_GainFocus in Lua...
+    ResetPressedButtonsState()
   end,
   SongChosenMessageCommand=function(self) setenv("DList",1) self:playcommand("Off") end;
   SongUnchosenMessageCommand=function(self)
