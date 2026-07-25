@@ -41,12 +41,12 @@ return Def.ActorFrame{
   };
   Def.Quad{
     InitCommand=function(s) s:diffuse(Color.Black):FullScreen() end,
-    OnCommand=function(s) s:decelerate(0.5):diffusealpha(0):sleep(2.305):diffusealpha(0.4):sleep(0.059):diffusealpha(0):sleep(0.059):diffusealpha(0.5):sleep(0.059):diffusealpha(0):sleep(0.059):diffusealpha(0.6):sleep(0.059):diffusealpha(0):sleep(0.059):diffusealpha(0.7):sleep(0.059):diffusealpha(0):sleep(0.059):diffusealpha(0.8):sleep(0.059):diffusealpha(0):sleep(0.059):diffusealpha(0.9):sleep(0.059):diffusealpha(0):sleep(0.059):diffusealpha(1) end,
+    OnCommand=function(s) s:decelerate(0.5):diffusealpha(0):sleep(2.895):diffusealpha(1) end,
   };
   Def.Sprite{
     Texture="ty.png",
     InitCommand=function(s) s:Center():diffusealpha(0) end,
-    OnCommand=function(s) s:sleep(2.805):diffusealpha(0.4):sleep(0.059):diffusealpha(0):sleep(0.059):diffusealpha(0.5):sleep(0.059):diffusealpha(0):sleep(0.059):diffusealpha(0.6):sleep(0.059):diffusealpha(0):sleep(0.059):diffusealpha(0.7):sleep(0.059):diffusealpha(0):sleep(0.059):diffusealpha(0.8):sleep(0.059):diffusealpha(0):sleep(0.059):diffusealpha(0.9):sleep(0.059):diffusealpha(0):sleep(0.059):diffusealpha(1) end,
+    OnCommand=function(s) s:sleep(3.395):diffusealpha(1) end,
   };
   Def.Sound{
     File="go.ogg",

@@ -209,11 +209,6 @@ end
 
 local t = LoadFallbackB();
 
-t[#t+1] = Def.Sound {
-	File=THEME:GetPathS('', 'Profile_In'),
-	OnCommand=function(s) s:play() end,
-};
-
 local mode = {}
 local numPlayers = GAMESTATE:GetNumPlayersEnabled()
 
@@ -225,7 +220,6 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 			if params.PlayerNumber == pn then
 				if params.Name == 'Start' then
 					if mode[pn] == 0 then
-						SOUND:PlayOnce(THEME:GetPathS('', 'Profile_start'))
 						MESSAGEMAN:Broadcast('Player' .. pname(pn) .. 'Finish')
 						mode[pn] = 1
 					end
